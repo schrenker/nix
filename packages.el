@@ -54,3 +54,5 @@
 (package! evil-snipe :disable t)
 
 (package! key-chord)
+
+(package! org-roam)

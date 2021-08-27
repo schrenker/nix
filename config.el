@@ -1,4 +1,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(after! org
+    (setq org-todo-keywords
+          '((sequence "TODO" "DOING" "|" "DONE"))))
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -26,6 +29,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
+(setq doom-font (font-spec :family "JetBrains Mono NL" :size 13 ))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -34,7 +38,7 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
-(setq-default tab-width 4)
+(setq-default tab-width 2)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -53,9 +57,9 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq doom-font (font-spec :family "JetBrains Mono NL" :size 13 ))
 (setq-default frame-title-format '("%f [%m]"))
 
+;; Uniquify buffer names in buffer tab
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-separator "/")

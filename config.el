@@ -71,3 +71,5 @@
 (require 'key-chord)
 (key-chord-define evil-insert-state-map ";;" 'right-char)
 (key-chord-mode 1)
+
+(setq! evil-want-Y-yank-to-eol nil)

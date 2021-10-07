@@ -107,3 +107,5 @@
 (setq doom-modeline-major-mode-color-icon t)
 ;; Whether display the icon for the buffer state. It respects `doom-modeline-icon'.
 (setq doom-modeline-buffer-state-icon t)
+
+(setq org-babel-python-command "python3")

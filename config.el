@@ -109,3 +109,6 @@
 (setq doom-modeline-buffer-state-icon t)
 
 (setq org-babel-python-command "python3")
+
+;; Prevents freezes on "look"
+(add-hook 'org-mode-hook(lambda () ( company-mode -1)))

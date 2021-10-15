@@ -112,3 +112,17 @@
 
 ;; Prevents freezes on "look"
 (add-hook 'org-mode-hook(lambda () ( company-mode -1)))
+
+(after! org-fancy-priorities
+  (setq
+   org-priority-highest '?A
+   org-priority-lowest  '?D
+   org-priority-default '?D
+   org-priority-start-cycle-with-default t
+   org-priority-faces '((?A :foreground "#F54768")
+                        (?B :foreground "#F5C747")
+                        (?C :foreground "#62A6EB")
+                        (?D :foreground "#A0A0A0"))
+   org-fancy-priorities-list '("🅐","🅑","🅒","🅓")))
+
+(add-hook 'org-agenda-mode-hook 'org-fancy-priorities-mode)

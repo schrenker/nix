@@ -119,10 +119,16 @@
    org-priority-lowest  '?D
    org-priority-default '?D
    org-priority-start-cycle-with-default t
-   org-priority-faces '((?A :foreground "#F54768")
-                        (?B :foreground "#F5C747")
-                        (?C :foreground "#62A6EB")
-                        (?D :foreground "#A0A0A0"))
-   org-fancy-priorities-list '("🅐","🅑","🅒","🅓")))
+   org-priority-faces '((65 :foreground "#F25022")
+                        (66 :foreground "#00A4EF")
+                        (67 :foreground "#FFB900")
+                        (68 :foreground "#737373"))
+   org-fancy-priorities-list '((65 . "UI")
+                               (66 . "NI")
+                               (67 . "UN")
+                               (68 . "NN"))))
+
+
+
 
 (add-hook 'org-agenda-mode-hook 'org-fancy-priorities-mode)

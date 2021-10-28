@@ -132,3 +132,5 @@
 
 
 (add-hook 'org-agenda-mode-hook 'org-fancy-priorities-mode)
+        (setq org-todo-keywords
+                '((sequence "TODO" "DOING" "|" "DONE")))

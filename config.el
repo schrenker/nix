@@ -127,10 +127,3 @@
                                (66 . "NI")
                                (67 . "UN")
                                (68 . "NN"))))
-
-
-
-
-(add-hook 'org-agenda-mode-hook 'org-fancy-priorities-mode)
-        (setq org-todo-keywords
-                '((sequence "TODO" "DOING" "|" "DONE")))

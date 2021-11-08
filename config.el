@@ -6,6 +6,10 @@
 (setq doom-theme 'doom-one)
 (setq doom-font (font-spec :family "JetBrains Mono NL" :size 13 ))
 (setq display-line-numbers-type 'relative)
+(setq doom-themes-treemacs-theme "doom-colors")
+
+(require 'treemacs-all-the-icons)
+(treemacs-load-theme "all-the-icons")
 
 (setq-default tab-width 2)
 (setq-default frame-title-format '("%f [%m]"))

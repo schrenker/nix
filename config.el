@@ -86,4 +86,4 @@
 
 (after! org
     (setq org-todo-keywords
-          '((sequence "TODO" "DOING" "|" "DONE"))))
+          '((sequence "TODO" "DOING" "WAITING" "NEXT" "|" "DONE" "WONTDO"))))

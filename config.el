@@ -30,22 +30,6 @@
 (setq! evil-want-Y-yank-to-eol nil)
 
 (setq org-directory "/Users/sebastian/Code/engineer_notebook")
-;;(setq org-roam-directory "/Users/sebastian/Code/engineer_notebook")
-
-;;(use-package! websocket
-;;    :after org-roam)
-
-;;(use-package! org-roam-ui
-;;    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;    :hook (after-init . org-roam-ui-mode)
-;;    :config
-;;    (setq org-roam-ui-sync-theme t
-;;          org-roam-ui-follow t
-;;         org-roam-ui-update-on-save t
-;;          org-roam-ui-open-on-start t))
 
 ;; Remap for window switching, do it doesn't require `w` key
 (define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
@@ -69,6 +53,11 @@
 ;; Prevents freezes on "look"
 (add-hook 'org-mode-hook(lambda () ( company-mode -1)))
 
+;; Eisenhower Matrix
+;; UI: Urgent Important
+;; NI: Not urgent but Important
+;; UN: Urgent but Not important
+;; NN: Not urgent and Not important
 (after! org-fancy-priorities
   (setq
    org-priority-highest '?A
@@ -84,6 +73,10 @@
                                (67 . "UN")
                                (68 . "NN"))))
 
+;; TODO: base for all tasks
+;; NEXT: planned to be done in near future
+;; DOING: currently in progress
+;; WAITING: Tasks, that were in progress, but the progress halted
 (after! org
     (setq org-todo-keywords
-          '((sequence "TODO" "DOING" "WAITING" "NEXT" "|" "DONE" "WONTDO"))))
+          '((sequence "TODO" "NEXT" "DOING" "WAITING"  "|" "DONE" "WONTDO"))))

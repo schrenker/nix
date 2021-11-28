@@ -64,3 +64,5 @@
 (package! go-playground)
 
 (package! treemacs-all-the-icons)
+
+(package! restclient)

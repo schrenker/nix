@@ -82,8 +82,9 @@
           '((sequence "TODO" "NEXT" "DOING" "WAITING"  "|" "DONE" "WONTDO"))))
 
 
-(lsp-register-client
-    (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
-                     :major-modes '(python-mode)
-                     :remote? t
-                     :server-id 'pyls-remote))
+(after! lsp-clients
+        (lsp-register-client
+        (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
+                        :major-modes '(python-mode)
+                        :remote? t
+                        :server-id 'pyls-remote)))

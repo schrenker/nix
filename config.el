@@ -31,12 +31,6 @@
 
 (setq org-directory "/Users/sebastian/Code/engineer_notebook")
 
-;; Remap for window switching, do it doesn't require `w` key
-(define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
-(define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
-(define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
-(define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
-
 ;; Whether display icons in the mode-line.
 ;; While using the server mode in GUI, should set the value explicitly.
 (setq doom-modeline-icon (display-graphic-p))
@@ -88,3 +82,8 @@
                         :major-modes '(python-mode)
                         :remote? t
                         :server-id 'pyls-remote)))
+
+;; Required to use hledger instead of ledger itself.
+;; (setq ledger-mode-should-check-version nil
+;;       ledger-report-links-in-register nil
+;;       ledger-binary-path "hledger")

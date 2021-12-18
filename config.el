@@ -72,8 +72,8 @@
 ;; DOING: currently in progress
 ;; WAITING: Tasks, that were in progress, but the progress halted
 (after! org
-    (setq org-todo-keywords
-          '((sequence "TODO" "NEXT" "DOING" "WAITING"  "|" "DONE" "WONTDO"))))
+        (setq org-todo-keywords
+                '((sequence "TODO" "NEXT" "DOING" "WAITING"  "|" "DONE" "WONTDO"))))
 
 
 (after! lsp-clients
@@ -87,3 +87,10 @@
 ;; (setq ledger-mode-should-check-version nil
 ;;       ledger-report-links-in-register nil
 ;;       ledger-binary-path "hledger")
+
+(remove-hook! flycheck-mode #'+flycheck-popup-mode)
+ (defun +lsp|disable-flycheck-popup-mode-maybe ()
+      "TODO"
+      (when (and (bound-and-true-p lsp-ui-mode) lsp-ui-sideline-enable)
+        (+flycheck-popup-mode -1)))
+    (add-hook '+flycheck-popup-mode-hook #'+lsp|disable-flycheck-popup-mode-maybe)

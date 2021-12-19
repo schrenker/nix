@@ -1,53 +1,71 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
+;; SYSTEM/KEYS
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
              mac-option-modifier        'alt
              mac-pass-control-to-system nil)))
 
+(require 'key-chord)
+(key-chord-define evil-insert-state-map ";;" 'right-char)
+(key-chord-mode 1)
+
+(setq!
+ evil-want-Y-yank-to-eol nil)
+
+;; UI
+(require 'treemacs-all-the-icons)
+(treemacs-load-theme "all-the-icons")
+
+(require 'uniquify)
 (setq-default
  tab-width 2
+ uniquify-buffer-name-style 'forward
  frame-title-format '("%f [%m]"))
 
 (setq
- user-full-name "Sebastian Zawadzki"
- user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz")
-
- auto-save-default t
- make-backup-files t
-
- +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2)
- initial-frame-alist '((fullscreen . maximized))
-
  doom-theme 'doom-one
  doom-font (font-spec :family "JetBrains Mono NL" :size 13 )
  doom-themes-treemacs-theme "doom-colors"
  display-line-numbers-type 'relative
+
  doom-modeline-icon (display-graphic-p)
  doom-modeline-major-mode-icon t
  doom-modeline-major-mode-color-icon t
  doom-modeline-buffer-state-icon t
 
+ +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2)
+ initial-frame-alist '((fullscreen . maximized))
+
+ uniquify-separator "/"
+ uniquify-after-kill-buffer-p t
+ uniquify-ignore-buffers-re "^\\*"
+
+ scroll-margin 7)
+
+;; LSP
+(after! lsp-clients
+        (lsp-register-client
+        (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
+                        :major-modes '(python-mode)
+                        :remote? t
+                        :server-id 'pyls-remote)))
+
+;; MISC
+(setq
+ user-full-name "Sebastian Zawadzki"
+ user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz")
+
+ auto-save-default t
+ make-backup-files t)
+
+;; ORG MODE
+(setq
  org-directory "/Users/sebastian/Code/engineer_notebook"
  org-babel-python-command "python3"
  org-superstar-headline-bullets-list '("⁖")
  org-superstar-prettify-item-bullets nil
-
- evil-want-Y-yank-to-eol nil
-
- scroll-margin 7)
-
-(require 'treemacs-all-the-icons)
-(treemacs-load-theme "all-the-icons")
-
-(require 'key-chord)
-(key-chord-define evil-insert-state-map ";;" 'right-char)
-(key-chord-mode 1)
-
-(require 'uniquify)
-(setq-default uniquify-buffer-name-style 'forward)
-(setq uniquify-separator "/")
-(setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
-(setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
+ )
 
 (defun adjust-org-company-backends ()
   (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
@@ -57,6 +75,7 @@
 (add-hook 'org-mode-hook(lambda () ( company-mode -1)))
 
 (after! org (setq org-insert-heading-respect-content nil))
+
 (after! org
   (setq
    org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
@@ -66,6 +85,7 @@
      ("[WAITING]" :foreground "#DA8548" :weight normal)
      ("[DONE]" :foreground "#9FA4BB" :weight normal)
      ("[CANCELLED]" :foreground "#574C58" :weight normal))))
+
 (after! org-fancy-priorities
   (setq
    org-priority-highest '?A
@@ -78,9 +98,3 @@
    org-fancy-priorities-list '((65 . "⁂")
                                (66 . "⁑")
                                (67 . "⁕"))))
-(after! lsp-clients
-        (lsp-register-client
-        (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
-                        :major-modes '(python-mode)
-                        :remote? t
-                        :server-id 'pyls-remote)))

@@ -16,7 +16,7 @@
  make-backup-files t
 
  +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2)
- initial-frame-alist '((top . 1) (left . 1) (width . 114) (height . 32))
+ initial-frame-alist '((fullscreen . maximized))
 
  doom-theme 'doom-one
  doom-font (font-spec :family "JetBrains Mono NL" :size 13 )

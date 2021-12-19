@@ -59,29 +59,28 @@
 (after! org (setq org-insert-heading-respect-content nil))
 (after! org
   (setq
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)"  "|" "DONE(d)" "CANCELLED(c)"))
+   org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
    org-todo-keyword-faces
-   '(("TODO" :foreground "#B5EAD7" :weight normal :underline t)
-     ("INPROGRESS" :foreground "#E2F0CB" :weight normal :underline t)
-     ("WAITING" :foreground "#FFDAC1" :weight normal :underline t)
-     ("DONE" :foreground "#9FA4BB" :weight normal :underline t)
-     ("CANCELLED" :foreground "#574C58" :weight normal :underline t))))
-(after! lsp-clients
-        (lsp-register-client
-        (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
-                        :major-modes '(python-mode)
-                        :remote? t
-                        :server-id 'pyls-remote)))
-
+   '(("[TODO]" :foreground "#EFEFEF" :weight normal)
+     ("[INPROGRESS]" :foreground "#98BE65" :weight normal)
+     ("[WAITING]" :foreground "#DA8548" :weight normal)
+     ("[DONE]" :foreground "#9FA4BB" :weight normal)
+     ("[CANCELLED]" :foreground "#574C58" :weight normal))))
 (after! org-fancy-priorities
   (setq
    org-priority-highest '?A
    org-priority-lowest  '?C
    org-priority-default '?C
    org-priority-start-cycle-with-default t
-   org-priority-faces '((65 :foreground "#D4213D" :weight normal :underline t)
-                        (66 :foreground "#FADA5E" :weight normal :underline t)
-                        (67 :foreground "#88AED0" :weight normal :underline t))
-   org-fancy-priorities-list '((65 . "HIGH")
-                               (66 . "MID")
-                               (67 . "LOW"))))
+   org-priority-faces '((65 :foreground "#FF6C6B" :weight normal)
+                        (66 :foreground "#ECBE7B" :weight normal)
+                        (67 :foreground "#51AFEF" :weight normal))
+   org-fancy-priorities-list '((65 . "⁂")
+                               (66 . "⁑")
+                               (67 . "⁕"))))
+(after! lsp-clients
+        (lsp-register-client
+        (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
+                        :major-modes '(python-mode)
+                        :remote? t
+                        :server-id 'pyls-remote)))

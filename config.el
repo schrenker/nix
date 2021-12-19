@@ -1,6 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; SYSTEM/KEYS
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
              mac-option-modifier        'alt
@@ -10,22 +9,25 @@
 (key-chord-define evil-insert-state-map ";;" 'right-char)
 (key-chord-mode 1)
 
-(setq!
- evil-want-Y-yank-to-eol nil)
-
-;; UI
 (require 'treemacs-all-the-icons)
 (treemacs-load-theme "all-the-icons")
 
 (require 'uniquify)
+
 (setq-default
  tab-width 2
  uniquify-buffer-name-style 'forward
+ window-combination-resize t
+ truncate-string-ellipsis "…"
  frame-title-format '("%f [%m]"))
 
 (setq
+ user-full-name "Sebastian Zawadzki"
+ user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz")
+
  doom-theme 'doom-one
  doom-font (font-spec :family "JetBrains Mono NL" :size 13 )
+ doom-big-font (font-spec :family "JetBrains Mono NL" :size 16)
  doom-themes-treemacs-theme "doom-colors"
  display-line-numbers-type 'relative
 
@@ -41,9 +43,31 @@
  uniquify-after-kill-buffer-p t
  uniquify-ignore-buffers-re "^\\*"
 
- scroll-margin 7)
+ evil-vsplit-window-right t
+ evil-split-window-below t
 
-;; LSP
+ auto-save-default t
+ make-backup-files t
+
+ auth-sources '("~/.authinfo.gpg")
+ auth-source-cache-expiry nil
+
+ org-directory "/Users/sebastian/Code/engineer_notebook"
+ org-babel-python-command "python3"
+ org-superstar-headline-bullets-list '("⁖")
+ org-superstar-prettify-item-bullets nil
+
+ scroll-margin 5)
+
+(setq!
+ evil-want-Y-yank-to-eol nil)
+
+
+(add-hook! org-mode
+                (adjust-org-company-backends)
+                (electric-indent-local-mode -1))
+(add-hook 'org-mode-hook(lambda () ( company-mode -1)))
+
 (after! lsp-clients
         (lsp-register-client
         (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
@@ -51,33 +75,9 @@
                         :remote? t
                         :server-id 'pyls-remote)))
 
-;; MISC
-(setq
- user-full-name "Sebastian Zawadzki"
- user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz")
-
- auto-save-default t
- make-backup-files t)
-
-;; ORG MODE
-(setq
- org-directory "/Users/sebastian/Code/engineer_notebook"
- org-babel-python-command "python3"
- org-superstar-headline-bullets-list '("⁖")
- org-superstar-prettify-item-bullets nil
- )
-
-(defun adjust-org-company-backends ()
-  (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
-  (setq-local company-backends nil))
-(add-hook! org-mode (adjust-org-company-backends))
-(add-hook! org-mode (electric-indent-local-mode -1))
-(add-hook 'org-mode-hook(lambda () ( company-mode -1)))
-
-(after! org (setq org-insert-heading-respect-content nil))
-
 (after! org
   (setq
+   org-insert-heading-respect-content nil
    org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
    org-todo-keyword-faces
    '(("[TODO]" :foreground "#EFEFEF" :weight normal)
@@ -98,3 +98,7 @@
    org-fancy-priorities-list '((65 . "⁂")
                                (66 . "⁑")
                                (67 . "⁕"))))
+
+(defun adjust-org-company-backends ()
+  (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
+  (setq-local company-backends nil))

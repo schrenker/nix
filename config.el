@@ -16,7 +16,6 @@
 
 (setq-default
  tab-width 2
- uniquify-buffer-name-style 'forward
  window-combination-resize t
  truncate-string-ellipsis "…"
  frame-title-format '("%f [%m]"))
@@ -39,6 +38,7 @@
  +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2)
  initial-frame-alist '((fullscreen . maximized))
 
+ uniquify-buffer-name-style 'forward
  uniquify-separator "/"
  uniquify-after-kill-buffer-p t
  uniquify-ignore-buffers-re "^\\*"
@@ -57,11 +57,9 @@
  org-superstar-headline-bullets-list '("⁖")
  org-superstar-prettify-item-bullets nil
 
+ evil-want-Y-yank-to-eol nil
+
  scroll-margin 5)
-
-(setq!
- evil-want-Y-yank-to-eol nil)
-
 
 (add-hook! org-mode
                 (adjust-org-company-backends)
@@ -102,3 +100,11 @@
 (defun adjust-org-company-backends ()
   (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
   (setq-local company-backends nil))
+
+(use-package! kubernetes
+  :ensure t
+  :commands (kubernetes-overview))
+
+(use-package! kubernetes-evil
+  :ensure t
+  :after kubernetes)

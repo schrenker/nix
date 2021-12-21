@@ -4,6 +4,12 @@
        (setq mac-command-modifier       'meta
              mac-option-modifier        'alt
              mac-pass-control-to-system nil)))
+(map! "M-c" 'kill-ring-save)
+(map! "M-v" 'yank)
+(map! "M-q" 'save-buffers-kill-terminal)
+(map! :leader
+      (:prefix-map ("k" . "kubernetes?")
+       :desc "kubernetes-overview" "k" #'kubernetes-overview))
 
 (require 'key-chord)
 (key-chord-define evil-insert-state-map ";;" 'right-char)

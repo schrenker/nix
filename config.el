@@ -65,6 +65,11 @@
 
  evil-want-Y-yank-to-eol nil
 
+ company-minimum-prefix-length 3
+ company-auto-complete nil
+ company-idle-delay 0
+ company-require-match nil
+
  scroll-margin 5)
 
 (add-hook! org-mode

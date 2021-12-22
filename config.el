@@ -107,6 +107,11 @@
    org-fancy-priorities-list '((65 . "⁂")
                                (66 . "⁑")
                                (67 . "⁕"))))
+(after! tex-mode
+  (map-delete sp-pairs 'LaTeX-mode)
+  (map-delete sp-pairs 'latex-mode)
+  (map-delete sp-pairs 'tex-mode)
+  (map-delete sp-pairs 'plain-tex-mode))
 
 (defun adjust-org-company-backends ()
   (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)

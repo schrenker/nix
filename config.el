@@ -27,6 +27,7 @@
  frame-title-format '("%f [%m]"))
 
 (setq
+
  user-full-name "Sebastian Zawadzki"
  user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz")
 
@@ -62,8 +63,12 @@
  org-babel-python-command "python3"
  org-superstar-headline-bullets-list '("⁖")
  org-superstar-prettify-item-bullets nil
+ org-log-done 'time
 
  evil-want-Y-yank-to-eol nil
+
+ projectile-auto-discover t
+ projectile-project-search-path '("~/code")
 
  company-minimum-prefix-length 3
  company-auto-complete nil
@@ -89,7 +94,7 @@
    org-insert-heading-respect-content nil
    org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
    org-todo-keyword-faces
-   '(("[TODO]" :foreground "#EFEFEF" :weight normal)
+   '(("[TODO]" :foreground "#8741bb" :weight normal)
      ("[INPROGRESS]" :foreground "#98BE65" :weight normal)
      ("[WAITING]" :foreground "#DA8548" :weight normal)
      ("[DONE]" :foreground "#9FA4BB" :weight normal)
@@ -107,6 +112,7 @@
    org-fancy-priorities-list '((65 . "⁂")
                                (66 . "⁑")
                                (67 . "⁕"))))
+;; backspace choppiness
 (after! tex-mode
   (map-delete sp-pairs 'LaTeX-mode)
   (map-delete sp-pairs 'latex-mode)
@@ -117,6 +123,19 @@
   (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
   (setq-local company-backends nil))
 
+(defun synchronize-theme ()
+  (let* ((light-theme 'doom-one-light)
+         (dark-theme 'doom-one)
+         (start-time-light-theme 6)
+         (end-time-light-theme 16)
+         (hour (string-to-number (substring (current-time-string) 11 13)))
+         (next-theme (if (member hour (number-sequence start-time-light-theme end-time-light-theme))
+                         light-theme dark-theme)))
+    (when (not (equal doom-theme next-theme))
+      (setq doom-theme next-theme)
+      (load-theme next-theme))))
+(run-with-timer 0 900 'synchronize-theme)
+
 (use-package! kubernetes
   :ensure t
   :commands (kubernetes-overview))
@@ -124,3 +143,6 @@
 (use-package! kubernetes-evil
   :ensure t
   :after kubernetes)
+
+(projectile-discover-projects-in-search-path)
+(projectile-cleanup-known-projects)

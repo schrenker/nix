@@ -24,6 +24,7 @@
  tab-width 2
  window-combination-resize t
  truncate-string-ellipsis "…"
+ uniquify-buffer-name-style 'forward
  frame-title-format '("%f [%m]"))
 
 (setq
@@ -123,26 +124,29 @@
   (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
   (setq-local company-backends nil))
 
-(defun synchronize-theme ()
-  (let* ((light-theme 'doom-one-light)
-         (dark-theme 'doom-one)
-         (start-time-light-theme 6)
-         (end-time-light-theme 16)
-         (hour (string-to-number (substring (current-time-string) 11 13)))
-         (next-theme (if (member hour (number-sequence start-time-light-theme end-time-light-theme))
-                         light-theme dark-theme)))
-    (when (not (equal doom-theme next-theme))
-      (setq doom-theme next-theme)
-      (load-theme next-theme))))
-(run-with-timer 0 900 'synchronize-theme)
-
-(use-package! kubernetes
-  :ensure t
-  :commands (kubernetes-overview))
-
-(use-package! kubernetes-evil
-  :ensure t
-  :after kubernetes)
+;; (defun synchronize-theme ()
+;;   (let* ((light-theme 'doom-one-light)
+;;          (dark-theme 'doom-one)
+;;          (start-time-light-theme 6)
+;;          (end-time-light-theme 15)
+;;          (hour (string-to-number (substring (current-time-string) 11 13)))
+;;          (next-theme (if (member hour (number-sequence start-time-light-theme end-time-light-theme))
+;;                          light-theme dark-theme)))
+;;     (when (not (equal doom-theme next-theme))
+;;       (setq doom-theme next-theme)
+;;       (load-theme next-theme))))
+;; (run-with-timer 0 900 'synchronize-theme)
 
 (projectile-discover-projects-in-search-path)
 (projectile-cleanup-known-projects)
+
+(defun my/apply-theme (appearance)
+  "Load theme, taking current system APPEARANCE into consideration."
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase appearance
+    ('light (setq doom-theme 'doom-one-light)
+             (load-theme 'doom-one-light t))
+    ('dark (setq doom-theme 'doom-one)
+             (load-theme 'doom-one t))))
+
+(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)

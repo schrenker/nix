@@ -1,4 +1,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(require 'key-chord)
+(require 'treemacs-all-the-icons)
+(require 'uniquify)
 
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
@@ -11,14 +14,10 @@
       (:prefix-map ("k" . "kubernetes?")
        :desc "kubernetes-overview" "k" #'kubernetes-overview))
 
-(require 'key-chord)
 (key-chord-define evil-insert-state-map ";;" 'right-char)
 (key-chord-mode 1)
 
-(require 'treemacs-all-the-icons)
-(treemacs-load-theme "all-the-icons")
-
-(require 'uniquify)
+(set-popup-rule! "^\\*cider-repl*" :actions '(display-buffer-in-side-window) :side 'right :width 100 :quit nil :select nil)
 
 (setq-default
  tab-width 2
@@ -28,14 +27,15 @@
  frame-title-format '("%f [%m]"))
 
 (setq
-
  user-full-name "Sebastian Zawadzki"
  user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz")
 
+ initial-frame-alist '((fullscreen . maximized))
  doom-theme 'doom-one
  doom-font (font-spec :family "JetBrains Mono NL" :size 12 )
  doom-themes-treemacs-theme "doom-colors"
  display-line-numbers-type 'relative
+ scroll-margin 5
 
  doom-modeline-icon (display-graphic-p)
  doom-modeline-major-mode-icon t
@@ -43,7 +43,6 @@
  doom-modeline-buffer-state-icon t
 
  +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2)
- initial-frame-alist '((fullscreen . maximized))
 
  uniquify-buffer-name-style 'forward
  uniquify-separator "/"
@@ -70,12 +69,15 @@
  projectile-auto-discover t
  projectile-project-search-path '("~/code")
 
+ company-tooltip-align-annotations t
+ company-tooltip-minimum (- scroll-margin 1)
+ company-tooltip-flip-when-above t
  company-minimum-prefix-length 3
  company-auto-complete nil
  company-idle-delay 0
  company-require-match nil
 
- cider-repl-pop-to-buffer-on-connect nil
+ cider-repl-pop-to-buffer-on-connect t
  cider-repl-display-in-current-window nil
  cider-repl-display-help-banner nil
  cider-repl-use-pretty-printing t
@@ -83,9 +85,7 @@
  TeX-engine-alist
    '((xetex "XeTeX -shell escape"
             "xetex -shell-escape"
-            "xelatex -shell-escape"))
-
- scroll-margin 5)
+            "xelatex -shell-escape")))
 
 (defun adjust-org-company-backends ()
   (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
@@ -156,3 +156,4 @@
 
 (projectile-discover-projects-in-search-path)
 (projectile-cleanup-known-projects)
+(treemacs-load-theme "all-the-icons")

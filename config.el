@@ -125,14 +125,14 @@
      ("[DONE]" :foreground "#9FA4BB" :weight normal)
      ("[CANCELLED]" :foreground "#574C58" :weight normal)))
   (custom-set-faces!
-    '(org-level-1 :height 1.04 :inherit outline-1)
-    '(org-level-2 :height 1.04 :inherit outline-2)
-    '(org-level-3 :height 1.03 :inherit outline-3)
-    '(org-level-4 :height 1.03 :inherit outline-4)
-    '(org-level-5 :height 1.02 :inherit outline-5)
-    '(org-level-6 :height 1.02 :inherit outline-6)
-    '(org-level-7 :height 1.01 :inherit outline-7)
-    '(org-level-8 :height 1.01 :inherit outline-8)))
+    '(org-level-1 :height 1.05 :inherit outline-1)
+    '(org-level-2 :height 1.05 :inherit outline-2)
+    '(org-level-3 :height 1.04 :inherit outline-3)
+    '(org-level-4 :height 1.04 :inherit outline-4)
+    '(org-level-5 :height 1.03 :inherit outline-5)
+    '(org-level-6 :height 1.03 :inherit outline-6)
+    '(org-level-7 :height 1.02 :inherit outline-7)
+    '(org-level-8 :height 1.02 :inherit outline-8)))
 
 (after! org-fancy-priorities
   (setq

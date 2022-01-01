@@ -53,7 +53,6 @@
 (package! evil-snipe :disable t)
 (package! key-chord)
 (package! org-roam)
-(unpin! org-roam)
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
 (package! gotest)
@@ -63,3 +62,4 @@
 (package! org-appear
   :recipe (:host github
            :repo "awth13/org-appear"))
+(package! org-caldav)

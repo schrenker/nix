@@ -3,11 +3,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("835868dcd17131ba8b9619d14c67c127aa18b90a82438c8613586331129dda63" "246a9596178bb806c5f41e5b571546bb6e0f4bd41a9da0df5dfbca7ec6e2250c" default)))
+ '(org-agenda-files
+   '("/Users/sebastian/code/engineer_notebook/journal/20220131" "/Users/sebastian/code/engineer_notebook/journal/20211227"))
+ '(safe-local-variable-values '((TeX-command-extra-options . "-shell-escape"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(org-level-1 ((t (:height 1.05 :inherit outline-1))))
+ '(org-level-2 ((t (:height 1.05 :inherit outline-2))))
+ '(org-level-3 ((t (:height 1.04 :inherit outline-3))))
+ '(org-level-4 ((t (:height 1.04 :inherit outline-4))))
+ '(org-level-5 ((t (:height 1.03 :inherit outline-5))))
+ '(org-level-6 ((t (:height 1.03 :inherit outline-6))))
+ '(org-level-7 ((t (:height 1.02 :inherit outline-7))))
+ '(org-level-8 ((t (:height 1.02 :inherit outline-8)))))

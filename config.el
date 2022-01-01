@@ -2,6 +2,9 @@
 (require 'key-chord)
 (require 'treemacs-all-the-icons)
 (require 'uniquify)
+(require 'org-journal)
+(require 'org-agenda)
+(require 'org-caldav)
 
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
@@ -10,14 +13,14 @@
 (map! "M-c" 'kill-ring-save)
 (map! "M-v" 'yank)
 (map! "M-q" 'save-buffers-kill-terminal)
-(map! :leader
-      (:prefix-map ("k" . "kubernetes?")
-       :desc "kubernetes-overview" "k" #'kubernetes-overview))
+;; (map! :leader
+;;       (:prefix-map ("k" . "kubernetes?")
+;;        :desc "kubernetes-overview" "k" #'kubernetes-overview))
 
 (key-chord-define evil-insert-state-map ";;" 'right-char)
 (key-chord-mode 1)
 
-(set-popup-rule! "^\\*cider-repl*" :actions '(display-buffer-in-side-window) :side 'right :width 100 :quit nil :select nil)
+;; (set-popup-rule! "^\\*cider-repl*" :actions '(display-buffer-in-side-window) :side 'right :width 100 :quit nil :select nil)
 
 (setq-default
  tab-width 2
@@ -63,10 +66,15 @@
  org-superstar-headline-bullets-list '("⁖")
  org-superstar-prettify-item-bullets nil
  org-log-done 'time
+ org-journal-dir "/Users/sebastian/code/engineer_notebook/journal"
+ org-journal-file-type 'weekly
+ org-journal-enable-agenda-integration t
+ org-icalendar-store-UID t
+ org-icalendar-include-todo "all"
+ org-icalendar-combined-agenda-file "/Users/sebastian/code/engineer_notebook/journal/org_journal.ics"
 
  evil-want-Y-yank-to-eol nil
 
- projectile-auto-discover t
  projectile-project-search-path '("~/code")
 
  company-tooltip-align-annotations t
@@ -77,10 +85,7 @@
  company-idle-delay 0
  company-require-match nil
 
- cider-repl-pop-to-buffer-on-connect t
- cider-repl-display-in-current-window nil
- cider-repl-display-help-banner nil
- cider-repl-use-pretty-printing t
+ flycheck-global-modes '(not LaTeX-mode latex-mode)
 
  TeX-engine-alist
    '((xetex "XeTeX -shell escape"
@@ -107,6 +112,7 @@
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
+
 (after! lsp-clients
         (lsp-register-client
         (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
@@ -116,6 +122,13 @@
 
 (after! org
   (setq
+   org-priority-highest '?A
+   org-priority-lowest  '?C
+   org-priority-default '?C
+   org-priority-start-cycle-with-default t
+   org-priority-faces '((65 :foreground "#FF6C6B" :weight normal)
+                        (66 :foreground "#ECBE7B" :weight normal)
+                        (67 :foreground "#51AFEF" :weight normal))
    org-insert-heading-respect-content nil
    org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
    org-todo-keyword-faces
@@ -136,13 +149,6 @@
 
 (after! org-fancy-priorities
   (setq
-   org-priority-highest '?A
-   org-priority-lowest  '?C
-   org-priority-default '?C
-   org-priority-start-cycle-with-default t
-   org-priority-faces '((65 :foreground "#FF6C6B" :weight normal)
-                        (66 :foreground "#ECBE7B" :weight normal)
-                        (67 :foreground "#51AFEF" :weight normal))
    org-fancy-priorities-list '((65 . "⁂")
                                (66 . "⁑")
                                (67 . "⁕"))))
@@ -153,7 +159,4 @@
   (map-delete sp-pairs 'tex-mode)
   (map-delete sp-pairs 'plain-tex-mode))
 
-
-(projectile-discover-projects-in-search-path)
-(projectile-cleanup-known-projects)
 (treemacs-load-theme "all-the-icons")

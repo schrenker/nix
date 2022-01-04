@@ -2,9 +2,10 @@
 (require 'key-chord)
 (require 'treemacs-all-the-icons)
 (require 'uniquify)
-(require 'org-journal)
-(require 'org-agenda)
-(require 'org-caldav)
+(require 'org-crypt)
+;; (require 'org-journal)
+;; (require 'org-agenda)
+;; (require 'org-caldav)
 
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
@@ -27,7 +28,8 @@
  window-combination-resize t
  truncate-string-ellipsis "…"
  uniquify-buffer-name-style 'forward
- frame-title-format '("%f [%m]"))
+ frame-title-format '("Doom"))
+ ns-use-proxy-icon nil
 
 (setq
  user-full-name "Sebastian Zawadzki"
@@ -69,11 +71,16 @@
  org-journal-dir "/Users/sebastian/code/engineer_notebook/journal"
  org-journal-file-type 'weekly
  org-journal-enable-agenda-integration t
- org-icalendar-store-UID t
- org-icalendar-include-todo "all"
- org-icalendar-combined-agenda-file "/Users/sebastian/code/engineer_notebook/journal/org_journal.ics"
+ org-journal-file-header '(`weekly "#+TITLE: Weekly Journal\n#+STARTUP: showeverything")
+ ;; org-icalendar-store-UID t
+ ;; org-icalendar-include-todo "all"
+ ;; org-icalendar-combined-agenda-file "/Users/sebastian/code/engineer_notebook/journal/org_journal.ics"
+ org-tags-column -77
+ org-tags-exclude-from-inheritance '("crypt")
+ org-crypt-key nil
 
  evil-want-Y-yank-to-eol nil
+ +evil-want-o/O-to-continue-comments nil
 
  projectile-project-search-path '("~/code")
 
@@ -122,6 +129,7 @@
 
 (after! org
   (setq
+   org-crypt-disable-auto-save "encrypt"
    org-priority-highest '?A
    org-priority-lowest  '?C
    org-priority-default '?C
@@ -153,10 +161,10 @@
                                (66 . "⁑")
                                (67 . "⁕"))))
 ;; backspace choppiness
-(after! tex-mode
-  (map-delete sp-pairs 'LaTeX-mode)
-  (map-delete sp-pairs 'latex-mode)
-  (map-delete sp-pairs 'tex-mode)
-  (map-delete sp-pairs 'plain-tex-mode))
+;; (after! tex-mode
+;;   (map-delete sp-pairs 'LaTeX-mode)
+;;   (map-delete sp-pairs 'latex-mode)
+;;   (map-delete sp-pairs 'tex-mode)
+;;   (map-delete sp-pairs 'plain-tex-mode))
 
 (treemacs-load-theme "all-the-icons")

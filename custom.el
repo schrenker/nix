@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
-   '("/Users/sebastian/code/engineer_notebook/journal/20220131" "/Users/sebastian/code/engineer_notebook/journal/20211227"))
+   '("/Users/sebastian/code/engineer_notebook/journal/20220103"))
  '(safe-local-variable-values '((TeX-command-extra-options . "-shell-escape"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -3,9 +3,7 @@
 (require 'treemacs-all-the-icons)
 (require 'uniquify)
 (require 'org-crypt)
-;; (require 'org-journal)
-;; (require 'org-agenda)
-;; (require 'org-caldav)
+(require 'dap-go)
 
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
@@ -22,14 +20,15 @@
 (key-chord-mode 1)
 
 ;; (set-popup-rule! "^\\*cider-repl*" :actions '(display-buffer-in-side-window) :side 'right :width 100 :quit nil :select nil)
+(set-popup-rule! "\\*helm-mode-tldr\\*" :ignore t)
 
 (setq-default
  tab-width 2
  window-combination-resize t
  truncate-string-ellipsis "…"
  uniquify-buffer-name-style 'forward
- frame-title-format '("Doom"))
  ns-use-proxy-icon nil
+ frame-title-format '("Doom"))
 
 (setq
  user-full-name "Sebastian Zawadzki"
@@ -59,6 +58,9 @@
 
  auto-save-default t
  make-backup-files t
+ require-final-newline nil
+
+ lsp-enable-dap-auto-configure t
 
  auth-sources '("~/.authinfo.gpg")
  auth-source-cache-expiry nil
@@ -129,7 +131,7 @@
 
 (after! org
   (setq
-   org-crypt-disable-auto-save "encrypt"
+   org-crypt-disable-auto-save t
    org-priority-highest '?A
    org-priority-lowest  '?C
    org-priority-default '?C

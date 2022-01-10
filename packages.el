@@ -52,14 +52,11 @@
 (package! evil-commentary)
 (package! evil-snipe :disable t)
 (package! key-chord)
-(package! org-roam)
-(package! websocket)
-(package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
 (package! gotest)
-(package! go-playground)
 (package! treemacs-all-the-icons)
 (package! restclient)
-(package! org-appear
-  :recipe (:host github
-           :repo "awth13/org-appear"))
-(package! org-caldav)
+(package! dap-mode)
+(package! tldr)
+;; (package! org-appear
+;;   :recipe (:host github
+;;            :repo "awth13/org-appear"))

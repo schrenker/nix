@@ -20,7 +20,6 @@
 (key-chord-mode 1)
 
 ;; (set-popup-rule! "^\\*cider-repl*" :actions '(display-buffer-in-side-window) :side 'right :width 100 :quit nil :select nil)
-(set-popup-rule! "\\*helm-mode-tldr\\*" :ignore t)
 
 (setq-default
  tab-width 2
@@ -60,26 +59,20 @@
  make-backup-files t
  require-final-newline nil
 
- lsp-enable-dap-auto-configure t
+ ;; lsp-enable-dap-auto-configure t
 
  auth-sources '("~/.authinfo.gpg")
  auth-source-cache-expiry nil
 
  org-directory "/Users/sebastian/code/engineer_notebook"
+ org-default-notes-file (concat org-directory "/!capture.org")
  org-babel-python-command "python3"
  org-superstar-headline-bullets-list '("⁖")
  org-superstar-prettify-item-bullets nil
  org-log-done 'time
- org-journal-dir "/Users/sebastian/code/engineer_notebook/journal"
- org-journal-file-type 'weekly
- org-journal-enable-agenda-integration t
- org-journal-file-header '(`weekly "#+TITLE: Weekly Journal\n#+STARTUP: showeverything")
- ;; org-icalendar-store-UID t
- ;; org-icalendar-include-todo "all"
- ;; org-icalendar-combined-agenda-file "/Users/sebastian/code/engineer_notebook/journal/org_journal.ics"
  org-tags-column -77
  org-tags-exclude-from-inheritance '("crypt")
- org-crypt-key nil
+ org-crypt-key "Sebastian Zawadzki"
 
  evil-want-Y-yank-to-eol nil
  +evil-want-o/O-to-continue-comments nil
@@ -89,7 +82,7 @@
  company-tooltip-align-annotations t
  company-tooltip-minimum (- scroll-margin 1)
  company-tooltip-flip-when-above t
- company-minimum-prefix-length 3
+ company-minimum-prefix-length 1
  company-auto-complete nil
  company-idle-delay 0
  company-require-match nil
@@ -114,6 +107,8 @@
     ('dark (setq doom-theme 'doom-one)
              (load-theme 'doom-one t))))
 
+(defun eshell/cdd () (interactive) (eshell/cd-to-project))
+
 (add-hook! org-mode
                 (adjust-org-company-backends)
                 (electric-indent-local-mode -1))
@@ -121,13 +116,12 @@
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
-
-(after! lsp-clients
-        (lsp-register-client
-        (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
-                        :major-modes '(python-mode)
-                        :remote? t
-                        :server-id 'pyls-remote)))
+;; (after! lsp-clients
+;;         (lsp-register-client
+;;         (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
+;;                         :major-modes '(python-mode)
+;;                         :remote? t
+;;                         :server-id 'pyls-remote)))
 
 (after! org
   (setq
@@ -139,7 +133,6 @@
    org-priority-faces '((65 :foreground "#FF6C6B" :weight normal)
                         (66 :foreground "#ECBE7B" :weight normal)
                         (67 :foreground "#51AFEF" :weight normal))
-   org-insert-heading-respect-content nil
    org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
    org-todo-keyword-faces
    '(("[TODO]" :foreground "#8741bb" :weight normal)
@@ -170,3 +163,7 @@
 ;;   (map-delete sp-pairs 'plain-tex-mode))
 
 (treemacs-load-theme "all-the-icons")
+
+(when (and (executable-find "fish")
+           (require 'fish-completion nil t))
+  (global-fish-completion-mode))

@@ -20,10 +20,9 @@
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
-       (company +childframe)          ; the ultimate code completion backend
+       (company +tng)          ; the ultimate code completion backend
        (helm
         +fuzzy
-        ;; +childframe
         +icons)              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;; (ivy
@@ -81,10 +80,10 @@
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
-       ;;eshell            ; the elisp shell that works everywhere
+       eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
-       vterm             ; the best terminal emulation in Emacs
+       ;; vterm             ; the best terminal emulation in Emacs
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
@@ -101,7 +100,7 @@
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
-       lsp               ; M-x vscode
+       (lsp +elgot)                 ; M-x vscode
        magit             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -115,7 +114,7 @@
 
        :os
        (:if IS-MAC macos)  ; improve compatibility with macOS
-       ( tty +osc)               ; improve the terminal Emacs experience
+       ;; ( tty +osc)               ; improve the terminal Emacs experience
 
        :lang
        ;;agda              ; types of types of types of types...
@@ -159,8 +158,8 @@
        ;;ocaml             ; an objective camel
        (org
         +pretty
-        +journal
-        +pomodoro)               ; organize your plain life in plain text
+        +pomodoro
+        )               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional

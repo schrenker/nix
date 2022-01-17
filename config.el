@@ -16,6 +16,9 @@
 ;;       (:prefix-map ("k" . "kubernetes?")
 ;;        :desc "kubernetes-overview" "k" #'kubernetes-overview))
 
+(map! :map evil-window-map
+      :g "w" 'ace-window)
+
 (key-chord-define evil-insert-state-map ";;" 'right-char)
 (key-chord-mode 1)
 
@@ -167,3 +170,14 @@
 (when (and (executable-find "fish")
            (require 'fish-completion nil t))
   (global-fish-completion-mode))
+
+;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
+(with-eval-after-load 'git-timemachine
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  ;; force update evil keymaps after git-timemachine-mode loaded
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+
+(custom-set-faces!
+  '(aw-leading-char-face
+    :foreground "red"
+    :weight bold :height 1.5 ))

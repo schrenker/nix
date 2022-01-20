@@ -3,12 +3,11 @@
 (require 'treemacs-all-the-icons)
 (require 'uniquify)
 (require 'org-crypt)
-(require 'dap-go)
 
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
-             mac-option-modifier        'alt
-             mac-pass-control-to-system nil)))
+             mac-option-modifier        'alt)))
+
 (map! "M-c" 'kill-ring-save)
 (map! "M-v" 'yank)
 (map! "M-q" 'save-buffers-kill-terminal)
@@ -17,7 +16,8 @@
 ;;        :desc "kubernetes-overview" "k" #'kubernetes-overview))
 
 (map! :map evil-window-map
-      :g "w" 'ace-window)
+      :g "w" 'ace-window
+      :g "t" 'treemacs-select-window)
 
 (key-chord-define evil-insert-state-map ";;" 'right-char)
 (key-chord-mode 1)
@@ -57,12 +57,12 @@
 
  evil-vsplit-window-right t
  evil-split-window-below t
+ evil-want-Y-yank-to-eol nil
+ +evil-want-o/O-to-continue-comments nil
 
  auto-save-default t
  make-backup-files t
  require-final-newline nil
-
- ;; lsp-enable-dap-auto-configure t
 
  auth-sources '("~/.authinfo.gpg")
  auth-source-cache-expiry nil
@@ -76,9 +76,6 @@
  org-tags-column -77
  org-tags-exclude-from-inheritance '("crypt")
  org-crypt-key "Sebastian Zawadzki"
-
- evil-want-Y-yank-to-eol nil
- +evil-want-o/O-to-continue-comments nil
 
  projectile-project-search-path '("~/code")
 
@@ -115,16 +112,17 @@
 (add-hook! org-mode
                 (adjust-org-company-backends)
                 (electric-indent-local-mode -1))
+
 (add-hook 'org-mode-hook(lambda () ( company-mode -1)))
 
-(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+(add-hook 'org-mode-hook (lambda ()
+  "Beautify Org Checkbox Symbol"
+  (push '("[ ]" . "☐") prettify-symbols-alist)
+  (push '("[X]" . "☑" ) prettify-symbols-alist)
+  (push '("[-]" . "❍" ) prettify-symbols-alist)
+  (prettify-symbols-mode)))
 
-;; (after! lsp-clients
-;;         (lsp-register-client
-;;         (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
-;;                         :major-modes '(python-mode)
-;;                         :remote? t
-;;                         :server-id 'pyls-remote)))
+(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
 (after! org
   (setq
@@ -141,7 +139,7 @@
    '(("[TODO]" :foreground "#8741bb" :weight normal)
      ("[INPROGRESS]" :foreground "#98BE65" :weight normal)
      ("[WAITING]" :foreground "#DA8548" :weight normal)
-     ("[DONE]" :foreground "#9FA4BB" :weight normal)
+     ("[DONE]" :foreground "#9FA4BB" :weight normal )
      ("[CANCELLED]" :foreground "#574C58" :weight normal)))
   (custom-set-faces!
     '(org-level-1 :height 1.05 :inherit outline-1)
@@ -158,12 +156,6 @@
    org-fancy-priorities-list '((65 . "⁂")
                                (66 . "⁑")
                                (67 . "⁕"))))
-;; backspace choppiness
-;; (after! tex-mode
-;;   (map-delete sp-pairs 'LaTeX-mode)
-;;   (map-delete sp-pairs 'latex-mode)
-;;   (map-delete sp-pairs 'tex-mode)
-;;   (map-delete sp-pairs 'plain-tex-mode))
 
 (treemacs-load-theme "all-the-icons")
 
@@ -181,3 +173,19 @@
   '(aw-leading-char-face
     :foreground "red"
     :weight bold :height 1.5 ))
+
+(defface org-checkbox-done-text
+  '((t (:foreground "#71696A" :strike-through t)))
+  "Face for the text part of a checked org-mode checkbox.")
+
+(font-lock-add-keywords
+ 'org-mode
+ `(("^[ \t]*\\(?:[-+*]\\|[0-9]+[).]\\)[ \t]+\\(\\(?:\\[@\\(?:start:\\)?[0-9]+\\][ \t]*\\)?\\[\\(?:X\\|\\([0-9]+\\)/\\2\\)\\][^\n]*\n\\)"
+    1 'org-checkbox-done-text prepend))
+ 'append)
+
+;; Replace list hyphen with dot
+(font-lock-add-keywords 'org-mode
+ '(("^ *\\([-]\\) "
+ (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+

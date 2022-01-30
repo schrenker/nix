@@ -19,6 +19,13 @@
       :g "w" 'ace-window
       :g "t" 'treemacs-select-window)
 
+(map! :map org-mode-map
+      :localleader "$" 'org-decrypt-entry
+      :localleader "a i" 'org-display-inline-images
+      :n "g j" 'evil-next-visual-line
+      :n "g k" 'evil-previous-visual-line
+      :g "<tab>" 'org-cycle)
+
 (key-chord-define evil-insert-state-map ";;" 'right-char)
 (key-chord-mode 1)
 
@@ -38,7 +45,7 @@
 
  initial-frame-alist '((fullscreen . maximized))
  doom-theme 'doom-one
- doom-font (font-spec :family "JetBrains Mono NL" :size 12 )
+ doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12 )
  doom-themes-treemacs-theme "doom-colors"
  display-line-numbers-type 'relative
  scroll-margin 5
@@ -76,6 +83,9 @@
  org-tags-column -77
  org-tags-exclude-from-inheritance '("crypt")
  org-crypt-key "Sebastian Zawadzki"
+ org-display-remote-inline-images t
+ org-startup-with-inline-images t
+ org-image-actual-width nil
 
  projectile-project-search-path '("~/code")
 
@@ -86,6 +96,7 @@
  company-auto-complete nil
  company-idle-delay 0
  company-require-match nil
+ company-global-modes '(not org-mode)
 
  flycheck-global-modes '(not LaTeX-mode latex-mode)
 
@@ -107,8 +118,6 @@
     ('dark (setq doom-theme 'doom-one)
              (load-theme 'doom-one t))))
 
-(defun eshell/cdd () (interactive) (eshell/cd-to-project))
-
 (add-hook! org-mode
                 (adjust-org-company-backends)
                 (electric-indent-local-mode -1))
@@ -117,9 +126,9 @@
 
 (add-hook 'org-mode-hook (lambda ()
   "Beautify Org Checkbox Symbol"
-  (push '("[ ]" . "☐") prettify-symbols-alist)
-  (push '("[X]" . "☑" ) prettify-symbols-alist)
-  (push '("[-]" . "❍" ) prettify-symbols-alist)
+  (push '("[ ]" . "") prettify-symbols-alist)
+  (push '("[-]" . "" ) prettify-symbols-alist)
+  (push '("[X]" . "" ) prettify-symbols-alist)
   (prettify-symbols-mode)))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
@@ -174,9 +183,9 @@
     :foreground "red"
     :weight bold :height 1.5 ))
 
-(defface org-checkbox-done-text
-  '((t (:foreground "#71696A" :strike-through t)))
-  "Face for the text part of a checked org-mode checkbox.")
+;; (defface org-checkbox-done-text
+;;   '((t (:strike-through t)))
+;;   "Face for the text part of a checked org-mode checkbox.")
 
 (font-lock-add-keywords
  'org-mode

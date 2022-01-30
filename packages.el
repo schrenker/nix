@@ -52,10 +52,8 @@
 (package! evil-commentary)
 (package! evil-snipe :disable t)
 (package! key-chord)
-(package! gotest)
 (package! treemacs-all-the-icons)
 (package! restclient)
-(package! dap-mode)
 (package! tldr)
 ;; (package! org-appear
 ;;   :recipe (:host github

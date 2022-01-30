@@ -22,9 +22,8 @@
 (map! :map org-mode-map
       :localleader "$" 'org-decrypt-entry
       :localleader "a i" 'org-display-inline-images
-      :n "g j" 'evil-next-visual-line
-      :n "g k" 'evil-previous-visual-line
       :g "<tab>" 'org-cycle)
+
 
 (key-chord-define evil-insert-state-map ";;" 'right-char)
 (key-chord-mode 1)
@@ -158,7 +157,9 @@
     '(org-level-5 :height 1.03 :inherit outline-5)
     '(org-level-6 :height 1.03 :inherit outline-6)
     '(org-level-7 :height 1.02 :inherit outline-7)
-    '(org-level-8 :height 1.02 :inherit outline-8)))
+    '(org-level-8 :height 1.02 :inherit outline-8))
+  (map! :nv "gj" #'evil-next-visual-line
+        :nv "gk" #'evil-previous-visual-line))
 
 (after! org-fancy-priorities
   (setq
@@ -197,4 +198,3 @@
 (font-lock-add-keywords 'org-mode
  '(("^ *\\([-]\\) "
  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-

@@ -36,22 +36,14 @@
 
 (after! org
   (setq
+   org-crypt-disable-auto-save t
    org-priority-highest '?A
    org-priority-lowest  '?C
    org-priority-default '?C
    org-priority-start-cycle-with-default t
-   org-priority-faces '((65 :foreground "#FF6C6B" :weight normal)
-                        (66 :foreground "#ECBE7B" :weight normal)
-                        (67 :foreground "#51AFEF" :weight normal))))
-
-(after! org-fancy-priorities
-  (setq
-   org-fancy-priorities-list '((65 . "⁂")
-                               (66 . "⁑")
-                               (67 . "⁕"))))
-
-(after! org
-  (setq
+   org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
+                        (?B :foreground "#ECBE7B" :weight normal)
+                        (?C :foreground "#51AFEF" :weight normal))
    org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
    org-todo-keyword-faces
    '(("[TODO]" :foreground "#8741bb" :weight normal)
@@ -59,6 +51,12 @@
      ("[WAITING]" :foreground "#DA8548" :weight normal)
      ("[DONE]" :foreground "#9FA4BB" :weight normal )
      ("[CANCELLED]" :foreground "#574C58" :weight normal))))
+
+;; (after! org-fancy-priorities
+;;   (setq
+;;    org-fancy-priorities-list '("⁂","⁑","⁕")))
+
+;; (add-hook 'org-mode-hook 'org-fancy-priorities-mode)
 
 (setq company-global-modes '(not org-mode))
 
@@ -176,6 +174,9 @@
   (push '("[ ]" . "") prettify-symbols-alist)
   (push '("[-]" . "" ) prettify-symbols-alist)
   (push '("[X]" . "" ) prettify-symbols-alist)
+  (push '("[#A]" . "⁂" ) prettify-symbols-alist)
+  (push '("[#B]" . "⁑" ) prettify-symbols-alist)
+  (push '("[#C]" . "⁕" ) prettify-symbols-alist)
   (prettify-symbols-mode)))
 
 (setq-default tab-width 2)

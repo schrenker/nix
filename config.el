@@ -3,7 +3,7 @@
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
 
-(setq evil-want-Y-yank-to-eol nil)
+(setq evil-want-Y-yank-to-eol t)
 
 (setq +evil-want-o/O-to-continue-comments nil)
 
@@ -51,12 +51,6 @@
      ("[WAITING]" :foreground "#DA8548" :weight normal)
      ("[DONE]" :foreground "#9FA4BB" :weight normal )
      ("[CANCELLED]" :foreground "#574C58" :weight normal))))
-
-;; (after! org-fancy-priorities
-;;   (setq
-;;    org-fancy-priorities-list '("⁂","⁑","⁕")))
-
-;; (add-hook 'org-mode-hook 'org-fancy-priorities-mode)
 
 (setq company-global-modes '(not org-mode))
 
@@ -114,7 +108,11 @@
 (map! :map org-mode-map
       :localleader "$" 'org-decrypt-entry
       :localleader "a i" 'org-display-inline-images
-      :g "<tab>" 'org-cycle)
+      "<tab>" 'org-cycle
+       "M-l" #'org-promote-subtree
+       "M-h" #'org-demote-subtree
+       "M-k" #'org-move-subtree-up
+       "M-j" #'org-move-subtree-down)
 
 (after! org
   (map! :nv "gj" #'evil-next-visual-line
@@ -155,14 +153,14 @@
 
 (after! org
   (custom-set-faces!
-    '(org-level-1 :height 1.05 :inherit outline-1)
-    '(org-level-2 :height 1.05 :inherit outline-2)
+    '(org-level-1 :height 1.04 :inherit outline-1)
+    '(org-level-2 :height 1.04 :inherit outline-2)
     '(org-level-3 :height 1.04 :inherit outline-3)
     '(org-level-4 :height 1.04 :inherit outline-4)
-    '(org-level-5 :height 1.03 :inherit outline-5)
-    '(org-level-6 :height 1.03 :inherit outline-6)
-    '(org-level-7 :height 1.02 :inherit outline-7)
-    '(org-level-8 :height 1.02 :inherit outline-8)))
+    '(org-level-5 :height 1.04 :inherit outline-5)
+    '(org-level-6 :height 1.04 :inherit outline-6)
+    '(org-level-7 :height 1.04 :inherit outline-7)
+    '(org-level-8 :height 1.04 :inherit outline-8)))
 
 (setq org-superstar-prettify-item-bullets nil)
 

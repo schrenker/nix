@@ -1,8 +1,96 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-(require 'key-chord)
+
+(setq evil-vsplit-window-right t
+      evil-split-window-below t)
+
+(setq evil-want-Y-yank-to-eol nil)
+
+(setq +evil-want-o/O-to-continue-comments nil)
+
 (require 'treemacs-all-the-icons)
-(require 'uniquify)
+(treemacs-load-theme "all-the-icons")
+
+(setq  doom-themes-treemacs-theme "doom-colors")
+
+(setq
+ org-directory "/Users/sebastian/code/engineer_notebook"
+ org-default-notes-file (concat org-directory "/!capture.org"))
+
 (require 'org-crypt)
+
+(setq
+ org-tags-exclude-from-inheritance '("crypt")
+ org-crypt-disable-auto-save t
+ org-crypt-key "Sebastian Zawadzki")
+
+(add-hook! org-mode (electric-indent-local-mode -1))
+
+(setq
+ org-display-remote-inline-images t
+ org-startup-with-inline-images t
+ org-image-actual-width nil)
+
+(setq org-log-done 'time)
+
+(setq org-tags-column -77)
+
+(after! org
+  (setq
+   org-priority-highest '?A
+   org-priority-lowest  '?C
+   org-priority-default '?C
+   org-priority-start-cycle-with-default t
+   org-priority-faces '((65 :foreground "#FF6C6B" :weight normal)
+                        (66 :foreground "#ECBE7B" :weight normal)
+                        (67 :foreground "#51AFEF" :weight normal))))
+
+(after! org-fancy-priorities
+  (setq
+   org-fancy-priorities-list '((65 . "⁂")
+                               (66 . "⁑")
+                               (67 . "⁕"))))
+
+(after! org
+  (setq
+   org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
+   org-todo-keyword-faces
+   '(("[TODO]" :foreground "#8741bb" :weight normal)
+     ("[INPROGRESS]" :foreground "#98BE65" :weight normal)
+     ("[WAITING]" :foreground "#DA8548" :weight normal)
+     ("[DONE]" :foreground "#9FA4BB" :weight normal )
+     ("[CANCELLED]" :foreground "#574C58" :weight normal))))
+
+(setq company-global-modes '(not org-mode))
+
+(defun adjust-org-company-backends ()
+  (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
+  (setq-local company-backends nil))
+
+(add-hook 'org-mode-hook (adjust-org-company-backends))
+(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
+
+(setq company-auto-complete nil)
+
+(setq
+ company-tooltip-align-annotations t
+ company-tooltip-minimum (- scroll-margin 1)
+ company-tooltip-flip-when-above t)
+
+(setq
+ company-minimum-prefix-length 1
+ company-require-match nil)
+
+(setq company-idle-delay 0)
+
+(setq flycheck-global-modes '(not LaTeX-mode latex-mode))
+
+(setq TeX-engine-alist
+      '((xetex "XeTeX -shell escape"
+               "xetex -shell-escape"
+               "xelatex -shell-escape")))
+
+(setq  user-full-name "Sebastian Zawadzki"
+ user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz"))
 
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
@@ -11,105 +99,32 @@
 (map! "M-c" 'kill-ring-save)
 (map! "M-v" 'yank)
 (map! "M-q" 'save-buffers-kill-terminal)
-;; (map! :leader
-;;       (:prefix-map ("k" . "kubernetes?")
-;;        :desc "kubernetes-overview" "k" #'kubernetes-overview))
 
 (map! :map evil-window-map
       :g "w" 'ace-window
       :g "t" 'treemacs-select-window)
+
+(require 'key-chord)
+
+(key-chord-define evil-insert-state-map ";;" 'right-char)
+(key-chord-mode 1)
+
+(with-eval-after-load 'git-timemachine
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 (map! :map org-mode-map
       :localleader "$" 'org-decrypt-entry
       :localleader "a i" 'org-display-inline-images
       :g "<tab>" 'org-cycle)
 
+(after! org
+  (map! :nv "gj" #'evil-next-visual-line
+        :nv "gk" #'evil-previous-visual-line))
 
-(key-chord-define evil-insert-state-map ";;" 'right-char)
-(key-chord-mode 1)
-
-;; (set-popup-rule! "^\\*cider-repl*" :actions '(display-buffer-in-side-window) :side 'right :width 100 :quit nil :select nil)
-
-(setq-default
- tab-width 2
- window-combination-resize t
- truncate-string-ellipsis "…"
- uniquify-buffer-name-style 'forward
- ns-use-proxy-icon nil
- frame-title-format '("Doom"))
-
-(setq
- user-full-name "Sebastian Zawadzki"
- user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz")
-
- initial-frame-alist '((fullscreen . maximized))
- doom-theme 'doom-one
- doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12 )
- doom-themes-treemacs-theme "doom-colors"
- display-line-numbers-type 'relative
- scroll-margin 5
-
- doom-modeline-icon (display-graphic-p)
- doom-modeline-major-mode-icon t
- doom-modeline-major-mode-color-icon t
- doom-modeline-buffer-state-icon t
-
- +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2)
-
- uniquify-buffer-name-style 'forward
- uniquify-separator "/"
- uniquify-after-kill-buffer-p t
- uniquify-ignore-buffers-re "^\\*"
-
- evil-vsplit-window-right t
- evil-split-window-below t
- evil-want-Y-yank-to-eol nil
- +evil-want-o/O-to-continue-comments nil
-
- auto-save-default t
- make-backup-files t
- require-final-newline nil
-
- auth-sources '("~/.authinfo.gpg")
- auth-source-cache-expiry nil
-
- org-directory "/Users/sebastian/code/engineer_notebook"
- org-default-notes-file (concat org-directory "/!capture.org")
- org-babel-python-command "python3"
- org-superstar-headline-bullets-list '("⁖")
- org-superstar-prettify-item-bullets nil
- org-log-done 'time
- org-tags-column -77
- org-tags-exclude-from-inheritance '("crypt")
- org-crypt-key "Sebastian Zawadzki"
- org-display-remote-inline-images t
- org-startup-with-inline-images t
- org-image-actual-width nil
-
- projectile-project-search-path '("~/code")
-
- company-tooltip-align-annotations t
- company-tooltip-minimum (- scroll-margin 1)
- company-tooltip-flip-when-above t
- company-minimum-prefix-length 1
- company-auto-complete nil
- company-idle-delay 0
- company-require-match nil
- company-global-modes '(not org-mode)
-
- flycheck-global-modes '(not LaTeX-mode latex-mode)
-
- TeX-engine-alist
-   '((xetex "XeTeX -shell escape"
-            "xetex -shell-escape"
-            "xelatex -shell-escape")))
-
-(defun adjust-org-company-backends ()
-  (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
-  (setq-local company-backends nil))
+(setq doom-theme 'doom-one)
 
 (defun my/apply-theme (appearance)
-  "Load theme, taking current system APPEARANCE into consideration."
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
     ('light (setq doom-theme 'doom-one-light)
@@ -117,38 +132,30 @@
     ('dark (setq doom-theme 'doom-one)
              (load-theme 'doom-one t))))
 
-(add-hook! org-mode
-                (adjust-org-company-backends)
-                (electric-indent-local-mode -1))
-
-(add-hook 'org-mode-hook(lambda () ( company-mode -1)))
-
-(add-hook 'org-mode-hook (lambda ()
-  "Beautify Org Checkbox Symbol"
-  (push '("[ ]" . "") prettify-symbols-alist)
-  (push '("[-]" . "" ) prettify-symbols-alist)
-  (push '("[X]" . "" ) prettify-symbols-alist)
-  (prettify-symbols-mode)))
-
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
+(setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
+
+(setq initial-frame-alist '((fullscreen . maximized)))
+
+(setq-default
+ frame-title-format '("Doom")
+ ns-use-proxy-icon nil)
+
+(custom-set-faces!
+  '(aw-leading-char-face
+    :foreground "red"
+    :weight bold :height 1.5 ))
+
+(setq
+ doom-modeline-icon (display-graphic-p)
+ doom-modeline-major-mode-icon t
+ doom-modeline-major-mode-color-icon t
+ doom-modeline-buffer-state-icon t)
+
+(setq org-superstar-headline-bullets-list '("⁖"))
+
 (after! org
-  (setq
-   org-crypt-disable-auto-save t
-   org-priority-highest '?A
-   org-priority-lowest  '?C
-   org-priority-default '?C
-   org-priority-start-cycle-with-default t
-   org-priority-faces '((65 :foreground "#FF6C6B" :weight normal)
-                        (66 :foreground "#ECBE7B" :weight normal)
-                        (67 :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
-   org-todo-keyword-faces
-   '(("[TODO]" :foreground "#8741bb" :weight normal)
-     ("[INPROGRESS]" :foreground "#98BE65" :weight normal)
-     ("[WAITING]" :foreground "#DA8548" :weight normal)
-     ("[DONE]" :foreground "#9FA4BB" :weight normal )
-     ("[CANCELLED]" :foreground "#574C58" :weight normal)))
   (custom-set-faces!
     '(org-level-1 :height 1.05 :inherit outline-1)
     '(org-level-2 :height 1.05 :inherit outline-2)
@@ -157,44 +164,50 @@
     '(org-level-5 :height 1.03 :inherit outline-5)
     '(org-level-6 :height 1.03 :inherit outline-6)
     '(org-level-7 :height 1.02 :inherit outline-7)
-    '(org-level-8 :height 1.02 :inherit outline-8))
-  (map! :nv "gj" #'evil-next-visual-line
-        :nv "gk" #'evil-previous-visual-line))
+    '(org-level-8 :height 1.02 :inherit outline-8)))
 
-(after! org-fancy-priorities
-  (setq
-   org-fancy-priorities-list '((65 . "⁂")
-                               (66 . "⁑")
-                               (67 . "⁕"))))
+(setq org-superstar-prettify-item-bullets nil)
 
-(treemacs-load-theme "all-the-icons")
+(font-lock-add-keywords 'org-mode
+ '(("^ *\\([-]\\) "
+ (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(add-hook 'org-mode-hook (lambda ()
+  (push '("[ ]" . "") prettify-symbols-alist)
+  (push '("[-]" . "" ) prettify-symbols-alist)
+  (push '("[X]" . "" ) prettify-symbols-alist)
+  (prettify-symbols-mode)))
+
+(setq-default tab-width 2)
+
+(setq  display-line-numbers-type 'relative)
+
+(setq scroll-margin 5)
+
+(setq-default window-combination-resize t)
+
+(setq-default truncate-string-ellipsis "…")
+
+(setq require-final-newline nil)
+
+(require 'uniquify)
+
+(setq-default
+ uniquify-buffer-name-style 'forward)
+
+(setq
+ uniquify-separator "/"
+ uniquify-after-kill-buffer-p t
+ uniquify-ignore-buffers-re "^\\*")
+
+(setq auto-save-default t)
+
+(setq make-backup-files t)
+
+(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2))
+
+(setq projectile-project-search-path '("~/code"))
 
 (when (and (executable-find "fish")
            (require 'fish-completion nil t))
   (global-fish-completion-mode))
-
-;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
-(with-eval-after-load 'git-timemachine
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  ;; force update evil keymaps after git-timemachine-mode loaded
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
-
-(custom-set-faces!
-  '(aw-leading-char-face
-    :foreground "red"
-    :weight bold :height 1.5 ))
-
-;; (defface org-checkbox-done-text
-;;   '((t (:strike-through t)))
-;;   "Face for the text part of a checked org-mode checkbox.")
-
-(font-lock-add-keywords
- 'org-mode
- `(("^[ \t]*\\(?:[-+*]\\|[0-9]+[).]\\)[ \t]+\\(\\(?:\\[@\\(?:start:\\)?[0-9]+\\][ \t]*\\)?\\[\\(?:X\\|\\([0-9]+\\)/\\2\\)\\][^\n]*\n\\)"
-    1 'org-checkbox-done-text prepend))
- 'append)
-
-;; Replace list hyphen with dot
-(font-lock-add-keywords 'org-mode
- '(("^ *\\([-]\\) "
- (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))

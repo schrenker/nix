@@ -52,6 +52,12 @@
      ("[DONE]" :foreground "#9FA4BB" :weight normal )
      ("[CANCELLED]" :foreground "#574C58" :weight normal))))
 
+(after! org-fancy-priorities
+  (setq
+   org-fancy-priorities-list '((65 . "⁂")
+                               (66 . "⁑")
+                               (67 . "⁕"))))
+
 (setq company-global-modes '(not org-mode))
 
 (defun adjust-org-company-backends ()
@@ -108,11 +114,7 @@
 (map! :map org-mode-map
       :localleader "$" 'org-decrypt-entry
       :localleader "a i" 'org-display-inline-images
-      "<tab>" 'org-cycle
-       "M-l" #'org-promote-subtree
-       "M-h" #'org-demote-subtree
-       "M-k" #'org-move-subtree-up
-       "M-j" #'org-move-subtree-down)
+      "<tab>" 'org-cycle)
 
 (after! org
   (map! :nv "gj" #'evil-next-visual-line

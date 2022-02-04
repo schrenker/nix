@@ -12,23 +12,20 @@
 
 (setq  doom-themes-treemacs-theme "doom-colors")
 
-(setq
- org-directory "/Users/sebastian/code/engineer_notebook"
- org-default-notes-file (concat org-directory "/!capture.org"))
+(setq org-directory "/Users/sebastian/code/engineer_notebook"
+      org-default-notes-file (concat org-directory "/!capture.org"))
 
 (require 'org-crypt)
 
-(setq
- org-tags-exclude-from-inheritance '("crypt")
- org-crypt-disable-auto-save t
- org-crypt-key "Sebastian Zawadzki")
+(setq org-tags-exclude-from-inheritance '("crypt")
+      org-crypt-disable-auto-save t
+      org-crypt-key "Sebastian Zawadzki")
 
 (add-hook! org-mode (electric-indent-local-mode -1))
 
-(setq
- org-display-remote-inline-images t
- org-startup-with-inline-images t
- org-image-actual-width nil)
+(setq org-display-remote-inline-images t
+      org-startup-with-inline-images t
+      org-image-actual-width nil)
 
 (setq org-log-done 'time)
 
@@ -59,24 +56,16 @@
                                (67 . "⁕"))))
 
 (setq company-global-modes '(not org-mode))
-
-(defun adjust-org-company-backends ()
-  (remove-hook 'after-change-major-mode-hook '+company-init-backends-h)
-  (setq-local company-backends nil))
-
-(add-hook 'org-mode-hook (adjust-org-company-backends))
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 
 (setq company-auto-complete nil)
 
-(setq
- company-tooltip-align-annotations t
- company-tooltip-minimum (- scroll-margin 1)
- company-tooltip-flip-when-above t)
+(setq company-tooltip-align-annotations t
+      company-tooltip-minimum (- scroll-margin 1)
+      company-tooltip-flip-when-above t)
 
-(setq
- company-minimum-prefix-length 1
- company-require-match nil)
+(setq company-minimum-prefix-length 1
+      company-require-match nil)
 
 (setq company-idle-delay 0)
 
@@ -88,7 +77,7 @@
                "xelatex -shell-escape")))
 
 (setq  user-full-name "Sebastian Zawadzki"
- user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz"))
+       user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz"))
 
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
@@ -145,11 +134,10 @@
     :foreground "red"
     :weight bold :height 1.5 ))
 
-(setq
- doom-modeline-icon (display-graphic-p)
- doom-modeline-major-mode-icon t
- doom-modeline-major-mode-color-icon t
- doom-modeline-buffer-state-icon t)
+(setq doom-modeline-icon (display-graphic-p)
+      doom-modeline-major-mode-icon t
+      doom-modeline-major-mode-color-icon t
+      doom-modeline-buffer-state-icon t)
 
 (setq org-superstar-headline-bullets-list '("⁖"))
 
@@ -196,10 +184,9 @@
 (setq-default
  uniquify-buffer-name-style 'forward)
 
-(setq
- uniquify-separator "/"
- uniquify-after-kill-buffer-p t
- uniquify-ignore-buffers-re "^\\*")
+(setq uniquify-separator "/"
+      uniquify-after-kill-buffer-p t
+      uniquify-ignore-buffers-re "^\\*")
 
 (setq auto-save-default t)
 

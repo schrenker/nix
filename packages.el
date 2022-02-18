@@ -6,7 +6,9 @@
 
 (package! treemacs-all-the-icons)
 
+(package! org-kanban)
+
 (package! key-chord)
 
 (package! restclient)
-(package! tldr)
+(package! cheat-sh)

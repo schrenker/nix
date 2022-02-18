@@ -34,7 +34,7 @@
 
 *** Line up Y behavior to other operators
 #+begin_src emacs-lisp :tangle config.el
- (setq evil-want-Y-yank-to-eol t)
+(setq evil-want-Y-yank-to-eol t)
 #+end_src
 
 *** Don't continue comments on o/O, creating empty lines
@@ -82,6 +82,11 @@
 *** Disable electric indent
 #+begin_src emacs-lisp :tangle config.el
 (add-hook! org-mode (electric-indent-local-mode -1))
+#+end_src
+
+*** Org kanban
+#+begin_src emacs-lisp :tangle packages.el
+(package! org-kanban)
 #+end_src
 
 *** Inline images
@@ -269,10 +274,10 @@
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
-    ('light (setq doom-theme 'doom-one-light)
-             (load-theme 'doom-one-light t))
-    ('dark (setq doom-theme 'doom-one)
-             (load-theme 'doom-one t))))
+    ('light (setq doom-theme 'doom-solarized-light)
+             (load-theme 'doom-solarized-light t))
+    ('dark (setq doom-theme 'doom-solarized-dark)
+             (load-theme 'doom-solarized-dark t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 #+end_src
@@ -431,7 +436,7 @@
 **** Packages
 #+begin_src emacs-lisp :tangle packages.el
 (package! restclient)
-(package! tldr)
+(package! cheat-sh)
 #+end_src
 
 
@@ -538,7 +543,7 @@
 
        :os
        (:if IS-MAC macos)  ; improve compatibility with macOS
-       ;; ( tty +osc)               ; improve the terminal Emacs experience
+       ( tty +osc)               ; improve the terminal Emacs experience
 
        :lang
        ;;agda              ; types of types of types of types...
@@ -548,7 +553,7 @@
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
-       ;;csharp            ; unity, .NET, and mono shenanigans
+       csharp            ; unity, .NET, and mono shenanigans
        data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
        ;;elixir            ; erlang done right

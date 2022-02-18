@@ -114,10 +114,10 @@
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
-    ('light (setq doom-theme 'doom-one-light)
-             (load-theme 'doom-one-light t))
-    ('dark (setq doom-theme 'doom-one)
-             (load-theme 'doom-one t))))
+    ('light (setq doom-theme 'doom-solarized-light)
+             (load-theme 'doom-solarized-light t))
+    ('dark (setq doom-theme 'doom-solarized-dark)
+             (load-theme 'doom-solarized-dark t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 

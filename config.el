@@ -1,5 +1,73 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(setq  user-full-name "Sebastian Zawadzki"
+       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
+
+(cond (IS-MAC
+       (setq mac-command-modifier       'meta
+             mac-option-modifier        'alt)))
+
+(map! "M-c" 'kill-ring-save)
+(map! "M-v" 'yank)
+(map! "M-q" 'save-buffers-kill-terminal)
+
+;; (setq doom-theme 'doom-one)
+
+(defun my/apply-theme (appearance)
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase appearance
+    ('light (setq doom-theme 'doom-solarized-light)
+             (load-theme 'doom-solarized-light t))
+    ('dark (setq doom-theme 'doom-solarized-dark)
+             (load-theme 'doom-solarized-dark t))))
+
+(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+
+(setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
+
+(setq initial-frame-alist '((fullscreen . maximized)))
+
+(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2))
+
+(setq-default
+ frame-title-format '("Doom")
+ ns-use-proxy-icon nil)
+
+(custom-set-faces!
+  '(aw-leading-char-face
+    :foreground "red"
+    :weight bold :height 1.5 ))
+
+(setq doom-modeline-icon (display-graphic-p)
+      doom-modeline-major-mode-icon t
+      doom-modeline-major-mode-color-icon t
+      doom-modeline-buffer-state-icon t)
+
+(setq-default window-combination-resize t)
+
+(setq-default truncate-string-ellipsis "…")
+
+(require 'uniquify)
+
+(setq-default
+ uniquify-buffer-name-style 'forward)
+
+(setq uniquify-separator "/"
+      uniquify-after-kill-buffer-p t
+      uniquify-ignore-buffers-re "^\\*")
+
+(setq auto-save-default t)
+
+(setq make-backup-files t)
+
+(setq-default tab-width 2)
+
+(setq  display-line-numbers-type 'relative)
+
+(setq scroll-margin 5)
+
+(setq require-final-newline nil)
+
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
 
@@ -20,10 +88,14 @@
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
-(require 'treemacs-all-the-icons)
-(treemacs-load-theme "all-the-icons")
+(map! :map org-mode-map
+      :localleader "$" 'org-decrypt-entry
+      :localleader "a i" 'org-display-inline-images
+      "<tab>" 'org-cycle)
 
-(setq  doom-themes-treemacs-theme "doom-colors")
+(after! org
+  (map! :nv "gj" #'evil-next-visual-line
+        :nv "gk" #'evil-previous-visual-line))
 
 (setq org-directory "/Users/sebastian/code/engineer_notebook"
       org-default-notes-file (concat org-directory "/!capture.org"))
@@ -41,8 +113,6 @@
       org-image-actual-width nil)
 
 (setq org-log-done 'time)
-
-(setq org-tags-column -77)
 
 (after! org
   (setq
@@ -62,82 +132,8 @@
      ("[DONE]" :foreground "#9FA4BB" :weight normal )
      ("[CANCELLED]" :foreground "#574C58" :weight normal))))
 
-(after! org-fancy-priorities
-  (setq
-   org-fancy-priorities-list '((65 . "⁂")
-                               (66 . "⁑")
-                               (67 . "⁕"))))
-
 (setq company-global-modes '(not org-mode))
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
-
-(setq company-auto-complete nil)
-
-(setq company-tooltip-align-annotations t
-      company-tooltip-minimum (- scroll-margin 1)
-      company-tooltip-flip-when-above t)
-
-(setq company-minimum-prefix-length 1
-      company-require-match nil)
-
-(setq company-idle-delay 0)
-
-(setq flycheck-global-modes '(not LaTeX-mode latex-mode))
-
-(setq TeX-engine-alist
-      '((xetex "XeTeX -shell escape"
-               "xetex -shell-escape"
-               "xelatex -shell-escape")))
-
-(setq  user-full-name "Sebastian Zawadzki"
-       user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz"))
-
-(cond (IS-MAC
-       (setq mac-command-modifier       'meta
-             mac-option-modifier        'alt)))
-
-(map! "M-c" 'kill-ring-save)
-(map! "M-v" 'yank)
-(map! "M-q" 'save-buffers-kill-terminal)
-
-(map! :map org-mode-map
-      :localleader "$" 'org-decrypt-entry
-      :localleader "a i" 'org-display-inline-images
-      "<tab>" 'org-cycle)
-
-(after! org
-  (map! :nv "gj" #'evil-next-visual-line
-        :nv "gk" #'evil-previous-visual-line))
-
-(setq doom-theme 'doom-one)
-
-(defun my/apply-theme (appearance)
-  (mapc #'disable-theme custom-enabled-themes)
-  (pcase appearance
-    ('light (setq doom-theme 'doom-solarized-light)
-             (load-theme 'doom-solarized-light t))
-    ('dark (setq doom-theme 'doom-solarized-dark)
-             (load-theme 'doom-solarized-dark t))))
-
-(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
-
-(setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
-
-(setq initial-frame-alist '((fullscreen . maximized)))
-
-(setq-default
- frame-title-format '("Doom")
- ns-use-proxy-icon nil)
-
-(custom-set-faces!
-  '(aw-leading-char-face
-    :foreground "red"
-    :weight bold :height 1.5 ))
-
-(setq doom-modeline-icon (display-graphic-p)
-      doom-modeline-major-mode-icon t
-      doom-modeline-major-mode-color-icon t
-      doom-modeline-buffer-state-icon t)
 
 (setq org-superstar-headline-bullets-list '("⁖"))
 
@@ -167,35 +163,26 @@
   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
   (prettify-symbols-mode)))
 
-(setq-default tab-width 2)
+(after! org-fancy-priorities
+  (setq
+   org-fancy-priorities-list '((65 . "⁂")
+                               (66 . "⁑")
+                               (67 . "⁕"))))
 
-(setq  display-line-numbers-type 'relative)
+(setq org-tags-column -77)
 
-(setq scroll-margin 5)
+(require 'treemacs-all-the-icons)
+(treemacs-load-theme "all-the-icons")
 
-(setq-default window-combination-resize t)
+(setq  doom-themes-treemacs-theme "doom-colors")
 
-(setq-default truncate-string-ellipsis "…")
+(setq company-auto-complete nil)
 
-(setq require-final-newline nil)
+(setq company-tooltip-align-annotations t
+      company-tooltip-minimum (- scroll-margin 1)
+      company-tooltip-flip-when-above t)
 
-(require 'uniquify)
+(setq company-minimum-prefix-length 1
+      company-require-match nil)
 
-(setq-default
- uniquify-buffer-name-style 'forward)
-
-(setq uniquify-separator "/"
-      uniquify-after-kill-buffer-p t
-      uniquify-ignore-buffers-re "^\\*")
-
-(setq auto-save-default t)
-
-(setq make-backup-files t)
-
-(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2))
-
-(setq projectile-project-search-path '("~/code"))
-
-(when (and (executable-find "fish")
-           (require 'fish-completion nil t))
-  (global-fish-completion-mode))
+(setq company-idle-delay 0)

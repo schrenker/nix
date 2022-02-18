@@ -103,6 +103,153 @@
        (default +bindings +smartparens))
 #+end_src
 
+* Emacs
+** Personal information
+- Basic personal information, that some of the packages might require
+#+begin_src emacs-lisp :tangle config.el
+(setq  user-full-name "Sebastian Zawadzki"
+       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
+#+end_src
+
+** Keybindings
+*** Mac specific keybindings
+- Command is such a versatile key on Mac, I want to use it a lot in emacs as well
+- Option as alt is really nothing important, but figured it might as well be bound to it
+#+begin_src emacs-lisp :tangle config.el
+(cond (IS-MAC
+       (setq mac-command-modifier       'meta
+             mac-option-modifier        'alt)))
+#+end_src
+
+*** Mac style copy/paste/app exiting
+- I really like using cmd+c and cmd+v as copy paste, it's what I'm used to
+- Makes even more sense that I share system clipboard with emacs on MacOS (I don't even remember original behavior anymore lol)
+- Cmd+q to quit, same as on MacOS
+#+begin_src emacs-lisp :tangle config.el
+(map! "M-c" 'kill-ring-save)
+(map! "M-v" 'yank)
+(map! "M-q" 'save-buffers-kill-terminal)
+#+end_src
+
+** Appearance
+*** Default fallback theme
+#+begin_src emacs-lisp :tangle config.el
+;; (setq doom-theme 'doom-one)
+#+end_src
+
+*** Day/Night mode switching function (based on emacs-plus patch)
+- I regularly use day theme at day and night at night, so this is really great setting for me
+- Both variants of solarized look awesome
+#+begin_src emacs-lisp :tangle config.el
+(defun my/apply-theme (appearance)
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase appearance
+    ('light (setq doom-theme 'doom-solarized-light)
+             (load-theme 'doom-solarized-light t))
+    ('dark (setq doom-theme 'doom-solarized-dark)
+             (load-theme 'doom-solarized-dark t))))
+
+(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+#+end_src
+
+*** Set font
+- FiraCode font is cool and totally readable
+- Retina for that MacOS screens
+#+begin_src emacs-lisp :tangle config.el
+(setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
+#+end_src
+
+*** Start emacs maximized
+#+begin_src emacs-lisp :tangle config.el
+(setq initial-frame-alist '((fullscreen . maximized)))
+#+end_src
+
+*** Truncate doom dashboard
+#+begin_src emacs-lisp :tangle config.el
+(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2))
+#+end_src
+
+*** Set frame title and icon
+- Remove unneeded clutter for frame title
+#+begin_src emacs-lisp :tangle config.el
+(setq-default
+ frame-title-format '("Doom")
+ ns-use-proxy-icon nil)
+#+end_src
+
+*** Make window indicator more visible
+- This setting makes window switching number more visible
+- Window switching number appears when window switch happens with more than two windows
+#+begin_src emacs-lisp :tangle config.el
+(custom-set-faces!
+  '(aw-leading-char-face
+    :foreground "red"
+    :weight bold :height 1.5 ))
+#+end_src
+
+*** Modeline
+- Setup icons for modeline
+#+begin_src emacs-lisp :tangle config.el
+(setq doom-modeline-icon (display-graphic-p)
+      doom-modeline-major-mode-icon t
+      doom-modeline-major-mode-color-icon t
+      doom-modeline-buffer-state-icon t)
+#+end_src
+
+*** Always make windows proportional after splitting
+#+begin_src emacs-lisp :tangle config.el
+(setq-default window-combination-resize t)
+#+end_src
+
+*** Truncate ellipsis
+#+begin_src emacs-lisp :tangle config.el
+(setq-default truncate-string-ellipsis "…")
+#+end_src
+
+*** Uniquify
+- Make buffer names unique (use path in name in case of duplicates)
+#+begin_src emacs-lisp :tangle config.el
+(require 'uniquify)
+
+(setq-default
+ uniquify-buffer-name-style 'forward)
+
+(setq uniquify-separator "/"
+      uniquify-after-kill-buffer-p t
+      uniquify-ignore-buffers-re "^\\*")
+#+end_src
+
+** Editor
+*** Enable autosave
+#+begin_src emacs-lisp :tangle config.el
+(setq auto-save-default t)
+#+end_src
+
+*** Auto backup files
+#+begin_src emacs-lisp :tangle config.el
+(setq make-backup-files t)
+#+end_src
+
+*** Set default tab-width
+#+begin_src emacs-lisp :tangle config.el
+(setq-default tab-width 2)
+#+end_src
+
+*** Relative numbers
+#+begin_src emacs-lisp :tangle config.el
+(setq  display-line-numbers-type 'relative)
+#+end_src
+
+*** Set scroll margin
+#+begin_src emacs-lisp :tangle config.el
+(setq scroll-margin 5)
+#+end_src
+
+*** Disable final newline in files
+#+begin_src emacs-lisp :tangle config.el
+(setq require-final-newline nil)
+#+end_src
+
 * Evil
 ** Set up evil packages
 - Quick commenting/uncommenting with evil-commentary
@@ -167,25 +314,28 @@
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 #+end_src
 
-* Package config
-
-** Treemacs
-*** Pull all the icons for treemacs
-#+begin_src emacs-lisp :tangle packages.el
-(package! treemacs-all-the-icons)
-#+end_src
-
-*** Set treemacs themes
+* Org mode
+** Keybinds
+*** org-mode-map
+- Set keybind for decryption of entries
+- Set keybind for showing inline images
+- Force tab to use org-cycle instead of faultly switching to company after reload
 #+begin_src emacs-lisp :tangle config.el
-(require 'treemacs-all-the-icons)
-(treemacs-load-theme "all-the-icons")
-
-(setq  doom-themes-treemacs-theme "doom-colors")
+(map! :map org-mode-map
+      :localleader "$" 'org-decrypt-entry
+      :localleader "a i" 'org-display-inline-images
+      "<tab>" 'org-cycle)
 #+end_src
 
+*** Set visual line movement via gj and gk
+- want gj and gk to move per visual line, instead of some weird paragraph jumping
+#+begin_src emacs-lisp :tangle config.el
+(after! org
+  (map! :nv "gj" #'evil-next-visual-line
+        :nv "gk" #'evil-previous-visual-line))
+#+end_src
 
-** Org mode
-*** Set up path for org mode
+** Set up path for org mode
 - Set main org-mode directory
 - Set capture file inside of org-mode directory
 #+begin_src emacs-lisp :tangle config.el
@@ -193,7 +343,7 @@
       org-default-notes-file (concat org-directory "/!capture.org"))
 #+end_src
 
-*** Set up headline encryption
+** Set up headline encryption
 - Encrypt headlines with tag "crypt"
 - Disable autosave for files with "crypt" tag
 - Use personal GPG key for encryption
@@ -205,17 +355,17 @@
       org-crypt-key "Sebastian Zawadzki")
 #+end_src
 
-*** Disable electric indent
+** Disable electric indent
 #+begin_src emacs-lisp :tangle config.el
 (add-hook! org-mode (electric-indent-local-mode -1))
 #+end_src
 
-*** Org kanban
+** Org kanban
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-kanban)
 #+end_src
 
-*** Inline images
+** Inline images
 - Enable displaying of remote inline images
 - Startup with inline images
 - Allow for controlling image width
@@ -225,17 +375,13 @@
       org-image-actual-width nil)
 #+end_src
 
-*** Log time of done tasks
+** Log time of done tasks
 #+begin_src emacs-lisp :tangle config.el
 (setq org-log-done 'time)
 #+end_src
 
-*** Move tags to the far right
-#+begin_src emacs-lisp :tangle config.el
-(setq org-tags-column -77)
-#+end_src
 
-*** Task status and prioritization
+** Task status and prioritization
 #+begin_src emacs-lisp :tangle config.el
 (after! org
   (setq
@@ -255,167 +401,16 @@
      ("[DONE]" :foreground "#9FA4BB" :weight normal )
      ("[CANCELLED]" :foreground "#574C58" :weight normal))))
 
-(after! org-fancy-priorities
-  (setq
-   org-fancy-priorities-list '((65 . "⁂")
-                               (66 . "⁑")
-                               (67 . "⁕"))))
 #+end_src
 
-
-** Company
-*** Disable company for org-mode
+** Disable company for org-mode
 #+begin_src emacs-lisp :tangle config.el
 (setq company-global-modes '(not org-mode))
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 #+end_src
 
-*** Disable autocommit of completion
-#+begin_src emacs-lisp :tangle config.el
-(setq company-auto-complete nil)
-#+end_src
-
-*** Tooltips
-#+begin_src emacs-lisp :tangle config.el
-(setq company-tooltip-align-annotations t
-      company-tooltip-minimum (- scroll-margin 1)
-      company-tooltip-flip-when-above t)
-#+end_src
-
-*** Matching
-#+begin_src emacs-lisp :tangle config.el
-(setq company-minimum-prefix-length 1
-      company-require-match nil)
-#+end_src
-
-*** Delay
-#+begin_src emacs-lisp :tangle config.el
-(setq company-idle-delay 0)
-#+end_src
-
-
-** Latex
-*** Disable flycheck
-#+begin_src emacs-lisp :tangle config.el
-(setq flycheck-global-modes '(not LaTeX-mode latex-mode))
-#+end_src
-
-*** Set up latex engine
-#+begin_src emacs-lisp :tangle config.el
-(setq TeX-engine-alist
-      '((xetex "XeTeX -shell escape"
-               "xetex -shell-escape"
-               "xelatex -shell-escape")))
-#+end_src
-
-
-* Config
-** Personal information
-- Basic personal information, that some of the packages might require
-#+begin_src emacs-lisp :tangle config.el
-(setq  user-full-name "Sebastian Zawadzki"
-       user-mail-address (rot13 "mnjnqmxvf95@tznvy.pbz"))
-#+end_src
-
-
-** Keybindings
-*** MacOs
-**** Mac specific keybindings
-#+begin_src emacs-lisp :tangle config.el
-(cond (IS-MAC
-       (setq mac-command-modifier       'meta
-             mac-option-modifier        'alt)))
-#+end_src
-
-
-**** Mac style copy/paste/app exiting
-#+begin_src emacs-lisp :tangle config.el
-(map! "M-c" 'kill-ring-save)
-(map! "M-v" 'yank)
-(map! "M-q" 'save-buffers-kill-terminal)
-#+end_src
-
-
-
-
-*** Org mode
-**** org-mode-map
-- Set keybind for decryption of entries
-- Set keybind for showing inline images
-- Force tab to use org-cycle instead of faultly switching to company after reload
-#+begin_src emacs-lisp :tangle config.el
-(map! :map org-mode-map
-      :localleader "$" 'org-decrypt-entry
-      :localleader "a i" 'org-display-inline-images
-      "<tab>" 'org-cycle)
-#+end_src
-
-*** Set visual line movement via gj and gk
-#+begin_src emacs-lisp :tangle config.el
-(after! org
-  (map! :nv "gj" #'evil-next-visual-line
-        :nv "gk" #'evil-previous-visual-line))
-#+end_src
-
-
 ** Appearance
-*** Emacs theme
-**** Default fallback theme
-#+begin_src emacs-lisp :tangle config.el
-(setq doom-theme 'doom-one)
-#+end_src
-
-**** Day/Night mode switching function (based on emacs-plus patch)
-#+begin_src emacs-lisp :tangle config.el
-(defun my/apply-theme (appearance)
-  (mapc #'disable-theme custom-enabled-themes)
-  (pcase appearance
-    ('light (setq doom-theme 'doom-solarized-light)
-             (load-theme 'doom-solarized-light t))
-    ('dark (setq doom-theme 'doom-solarized-dark)
-             (load-theme 'doom-solarized-dark t))))
-
-(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
-#+end_src
-
-**** Set font
-#+begin_src emacs-lisp :tangle config.el
-(setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
-#+end_src
-
-**** Start emacs maximized
-#+begin_src emacs-lisp :tangle config.el
-(setq initial-frame-alist '((fullscreen . maximized)))
-#+end_src
-
-**** Set frame title and icon
-#+begin_src emacs-lisp :tangle config.el
-(setq-default
- frame-title-format '("Doom")
- ns-use-proxy-icon nil)
-#+end_src
-
-**** Make window indicator more visible
-#+begin_src emacs-lisp :tangle config.el
-(custom-set-faces!
-  '(aw-leading-char-face
-    :foreground "red"
-    :weight bold :height 1.5 ))
-#+end_src
-
-
-*** Modeline
-- Setup icons for modeline
-#+begin_src emacs-lisp :tangle config.el
-(setq doom-modeline-icon (display-graphic-p)
-      doom-modeline-major-mode-icon t
-      doom-modeline-major-mode-color-icon t
-      doom-modeline-buffer-state-icon t)
-#+end_src
-
-
-*** Org mode
-**** Headlines
+*** Headlines
 #+begin_src emacs-lisp :tangle config.el
 (setq org-superstar-headline-bullets-list '("⁖"))
 
@@ -431,7 +426,7 @@
     '(org-level-8 :height 1.04 :inherit outline-8)))
 #+end_src
 
-**** Bullet points
+*** Bullet points
 - disable superstar, and replace with dot
 #+begin_src emacs-lisp :tangle config.el
 (setq org-superstar-prettify-item-bullets nil)
@@ -441,7 +436,7 @@
  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 #+end_src
 
-**** Checkboxes
+*** Checkboxes
 #+begin_src emacs-lisp :tangle config.el
 (add-hook 'org-mode-hook (lambda ()
   (push '("[ ]" . "") prettify-symbols-alist)
@@ -453,86 +448,61 @@
   (prettify-symbols-mode)))
 #+end_src
 
-
-** Behavior
-*** Set default tab-width
+*** Fancy priorities
 #+begin_src emacs-lisp :tangle config.el
-(setq-default tab-width 2)
+(after! org-fancy-priorities
+  (setq
+   org-fancy-priorities-list '((65 . "⁂")
+                               (66 . "⁑")
+                               (67 . "⁕"))))
 #+end_src
 
-*** Relative numbers
+*** Move tags to the far right
 #+begin_src emacs-lisp :tangle config.el
-(setq  display-line-numbers-type 'relative)
+(setq org-tags-column -77)
 #+end_src
 
-*** Set scroll margin
-#+begin_src emacs-lisp :tangle config.el
-(setq scroll-margin 5)
+* Treemacs
+** Pull all the icons for treemacs
+#+begin_src emacs-lisp :tangle packages.el
+(package! treemacs-all-the-icons)
 #+end_src
 
-*** Always make windows proportional after splitting
+** Set treemacs themes
 #+begin_src emacs-lisp :tangle config.el
-(setq-default window-combination-resize t)
+(require 'treemacs-all-the-icons)
+(treemacs-load-theme "all-the-icons")
+
+(setq  doom-themes-treemacs-theme "doom-colors")
 #+end_src
 
-*** Truncate ellipsis
+* Company
+
+** Disable autocommit of completion
 #+begin_src emacs-lisp :tangle config.el
-(setq-default truncate-string-ellipsis "…")
+(setq company-auto-complete nil)
 #+end_src
 
-*** Disable final newline in files
+** Tooltips
 #+begin_src emacs-lisp :tangle config.el
-(setq require-final-newline nil)
+(setq company-tooltip-align-annotations t
+      company-tooltip-minimum (- scroll-margin 1)
+      company-tooltip-flip-when-above t)
 #+end_src
 
-
-*** Uniquify
+** Matching
 #+begin_src emacs-lisp :tangle config.el
-(require 'uniquify)
-
-(setq-default
- uniquify-buffer-name-style 'forward)
-
-(setq uniquify-separator "/"
-      uniquify-after-kill-buffer-p t
-      uniquify-ignore-buffers-re "^\\*")
+(setq company-minimum-prefix-length 1
+      company-require-match nil)
 #+end_src
 
-
-*** Files
-**** Enable autosave
+** Delay
 #+begin_src emacs-lisp :tangle config.el
-(setq auto-save-default t)
+(setq company-idle-delay 0)
 #+end_src
 
-**** Auto backup files
-#+begin_src emacs-lisp :tangle config.el
-(setq make-backup-files t)
-#+end_src
-
-
-*** Misc
-**** Truncate doom dashboard
-#+begin_src emacs-lisp :tangle config.el
-(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2))
-#+end_src
-
-**** Projectile
-#+begin_src emacs-lisp :tangle config.el
-(setq projectile-project-search-path '("~/code"))
-#+end_src
-
-**** Fish completion
-#+begin_src emacs-lisp :tangle config.el
-(when (and (executable-find "fish")
-           (require 'fish-completion nil t))
-  (global-fish-completion-mode))
-#+end_src
-
-**** Packages
+* Tools
 #+begin_src emacs-lisp :tangle packages.el
 (package! restclient)
 (package! cheat-sh)
 #+end_src
-
-

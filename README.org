@@ -103,32 +103,71 @@
        (default +bindings +smartparens))
 #+end_src
 
-* Package config
-** Evil
-*** Set up evil packages
-  - Evil commentary for quick commenting/uncommenting
-  - disable evil snipe, so I can use 's' for substitution
+* Evil
+** Set up evil packages
+- Quick commenting/uncommenting with evil-commentary
+- I want to be able to use substitution with s, and don't use evil-snipe: disabled
 #+begin_src emacs-lisp :tangle packages.el
 (package! evil-commentary)
 (package! evil-snipe :disable t)
 #+end_src
 
-*** Split windows so that right/down is focused after the split
+** Split windows so that right/down is focused after the split
+- Focus the new window after split
+- I make the new window for a reason, why would I focus the old one?
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
 #+end_src
 
-*** Line up Y behavior to other operators
+** Line up Y behavior to other operators
+- Keep capital operators in line
+- For the whole lines, yy is used
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-want-Y-yank-to-eol t)
 #+end_src
 
-*** Don't continue comments on o/O, creating empty lines
+** Don't continue comments on o/O, creating empty lines
+- It gets into my way too much
+- If I want to continue commented line, I'll either manually comment it, or use evil-commentary
 #+begin_src emacs-lisp :tangle config.el
 (setq +evil-want-o/O-to-continue-comments nil)
 #+end_src
 
+** Keybinds
+*** Evil Window Map
+- Change regular active window rotation to ace-window, so I can choose by number if more than 2 windows are present
+- Enable jumping to treemacs from any window in frame
+#+begin_src emacs-lisp :tangle config.el
+(map! :map evil-window-map
+      :g "w" 'ace-window
+      :g "t" 'treemacs-select-window)
+#+end_src
+
+*** Enable key-chord and make double tap ';' move cursor to the right in insert mode
+- I don't want to each for an arrow key, ';' key is in the home row, so I can double tap to jump over any character, for example parenthesis
+- Utilize key-chord for this task
+#+begin_src emacs-lisp :tangle packages.el
+(package! key-chord)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(require 'key-chord)
+
+(key-chord-define evil-insert-state-map ";;" 'right-char)
+(key-chord-mode 1)
+#+end_src
+
+*** Disable evil keybindings for git-timemachine
+- They don't really work in git-timemachine
+- git-timemachine has it's own keybindings set, and it forces you to stick to it
+#+begin_src emacs-lisp :tangle config.el
+(with-eval-after-load 'git-timemachine
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+#+end_src
+
+* Package config
 
 ** Treemacs
 *** Pull all the icons for treemacs
@@ -297,36 +336,6 @@
 #+end_src
 
 
-**** emacs window control
-- Change regular active window rotation to ace-window
-- Enable jumping to treemacs from any window in frame
-#+begin_src emacs-lisp :tangle config.el
-(map! :map evil-window-map
-      :g "w" 'ace-window
-      :g "t" 'treemacs-select-window)
-#+end_src
-
-
-*** Evil
-**** Enables key-chord
-#+begin_src emacs-lisp :tangle packages.el
-(package! key-chord)
-#+end_src
-
-**** Double tapping ';' in insert mode moves cursor one character to the right
-#+begin_src emacs-lisp :tangle config.el
-(require 'key-chord)
-
-(key-chord-define evil-insert-state-map ";;" 'right-char)
-(key-chord-mode 1)
-#+end_src
-
-**** Disable evil keybindings for git-timemachine
-#+begin_src emacs-lisp :tangle config.el
-(with-eval-after-load 'git-timemachine
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
-#+end_src
 
 
 *** Org mode

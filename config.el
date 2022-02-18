@@ -7,6 +7,19 @@
 
 (setq +evil-want-o/O-to-continue-comments nil)
 
+(map! :map evil-window-map
+      :g "w" 'ace-window
+      :g "t" 'treemacs-select-window)
+
+(require 'key-chord)
+
+(key-chord-define evil-insert-state-map ";;" 'right-char)
+(key-chord-mode 1)
+
+(with-eval-after-load 'git-timemachine
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+
 (require 'treemacs-all-the-icons)
 (treemacs-load-theme "all-the-icons")
 
@@ -86,19 +99,6 @@
 (map! "M-c" 'kill-ring-save)
 (map! "M-v" 'yank)
 (map! "M-q" 'save-buffers-kill-terminal)
-
-(map! :map evil-window-map
-      :g "w" 'ace-window
-      :g "t" 'treemacs-select-window)
-
-(require 'key-chord)
-
-(key-chord-define evil-insert-state-map ";;" 'right-char)
-(key-chord-mode 1)
-
-(with-eval-after-load 'git-timemachine
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 (map! :map org-mode-map
       :localleader "$" 'org-decrypt-entry

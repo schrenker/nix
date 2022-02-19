@@ -1,5 +1,40 @@
 #+TITLE: Literate doom emacs config
 
+* Table of Contents :TOC:
+- [[#headers][Headers]]
+- [[#doom][Doom]]
+- [[#emacs][Emacs]]
+  - [[#personal-information][Personal information]]
+  - [[#keybindings][Keybindings]]
+  - [[#appearance][Appearance]]
+  - [[#editor][Editor]]
+- [[#evil][Evil]]
+  - [[#set-up-evil-packages][Set up evil packages]]
+  - [[#split-windows-so-that-rightdown-is-focused-after-the-split][Split windows so that right/down is focused after the split]]
+  - [[#line-up-y-behavior-to-other-operators][Line up Y behavior to other operators]]
+  - [[#dont-continue-comments-on-oo-creating-empty-lines][Don't continue comments on o/O, creating empty lines]]
+  - [[#keybinds][Keybinds]]
+- [[#org-mode][Org mode]]
+  - [[#keybinds-1][Keybinds]]
+  - [[#set-up-path-for-org-mode][Set up path for org mode]]
+  - [[#set-up-headline-encryption][Set up headline encryption]]
+  - [[#disable-electric-indent][Disable electric indent]]
+  - [[#org-kanban][Org kanban]]
+  - [[#inline-images][Inline images]]
+  - [[#log-time-of-done-tasks][Log time of done tasks]]
+  - [[#task-status-and-prioritization][Task status and prioritization]]
+  - [[#disable-company-for-org-mode][Disable company for org-mode]]
+  - [[#appearance-1][Appearance]]
+- [[#treemacs][Treemacs]]
+  - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
+  - [[#set-treemacs-themes][Set treemacs themes]]
+- [[#company][Company]]
+  - [[#disable-autocommit-of-completion][Disable autocommit of completion]]
+  - [[#tooltips][Tooltips]]
+  - [[#matching][Matching]]
+  - [[#delay][Delay]]
+- [[#tools][Tools]]
+
 * Headers
 - Setup lexical binding headers at the beginning of config files
 #+begin_src emacs-lisp :tangle init.el
@@ -134,7 +169,7 @@
 ** Appearance
 *** Default fallback theme
 #+begin_src emacs-lisp :tangle config.el
-;; (setq doom-theme 'doom-one)
+(setq doom-theme 'doom-solarized-light)
 #+end_src
 
 *** Day/Night mode switching function (based on emacs-plus patch)

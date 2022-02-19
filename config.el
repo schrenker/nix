@@ -11,7 +11,7 @@
 (map! "M-v" 'yank)
 (map! "M-q" 'save-buffers-kill-terminal)
 
-;; (setq doom-theme 'doom-one)
+(setq doom-theme 'doom-solarized-light)
 
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)

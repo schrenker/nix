@@ -86,6 +86,7 @@
        fold               ; (nigh) universal code folding
        (format +onsave)   ; automated prettiness
        snippets           ; my elves. They type so I don't have to
+       word-wrap
 
        :emacs
        ( dired +icons)    ; making dired pretty [functional] directory editor
@@ -122,7 +123,7 @@
        :lang
        (org +pretty +pomodoro +dragndrop) ; organize your plain life in plain text
        (go +lsp)                          ; the hipster dialect
-       (python +lsp +pyright)             ;beautiful is better than ugly
+       (python +lsp +pyright)             ; beautiful is better than ugly
        (sh +lsp +powershell)              ; she sells {ba,z,fi}sh shells on the C xor
        data                               ; config/data formats
        json                               ; At least it ain't XML
@@ -317,13 +318,20 @@
 #+end_src
 
 ** Keybinds
+
+*** Disable escape on "jk"
+- There are some polish words, that include "jk" like word "Kolejka" which in english is "Queue". Obviously this was confusing, and I use "ESC" anyway.
+#+begin_src emacs-lisp :tangle config.el
+(setq evil-escape-key-sequence nil)
+#+end_src
+
 *** Evil Window Map
 - Change regular active window rotation to ace-window, so I can choose by number if more than 2 windows are present
 - Enable jumping to treemacs from any window in frame
 #+begin_src emacs-lisp :tangle config.el
 (map! :map evil-window-map
       :g "w" 'ace-window
-      :g "t" 'treemacs-select-window)
+      :g "p" 'treemacs-select-window)
 #+end_src
 
 *** Enable key-chord and make double tap ';' move cursor to the right in insert mode
@@ -495,6 +503,11 @@
 *** Move tags to the far right
 #+begin_src emacs-lisp :tangle config.el
 (setq org-tags-column -77)
+#+end_src
+
+*** Enable word-wrap
+#+begin_src emacs-lisp :tangle config.el
+(add-hook 'org-mode-hook #'+word-wrap-mode)
 #+end_src
 
 * Treemacs

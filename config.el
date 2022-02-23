@@ -75,9 +75,11 @@
 
 (setq +evil-want-o/O-to-continue-comments nil)
 
+(setq evil-escape-key-sequence nil)
+
 (map! :map evil-window-map
       :g "w" 'ace-window
-      :g "t" 'treemacs-select-window)
+      :g "p" 'treemacs-select-window)
 
 (require 'key-chord)
 
@@ -170,6 +172,8 @@
                                (67 . "⁕"))))
 
 (setq org-tags-column -77)
+
+(add-hook 'org-mode-hook #'+word-wrap-mode)
 
 (require 'treemacs-all-the-icons)
 (treemacs-load-theme "all-the-icons")

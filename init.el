@@ -25,6 +25,7 @@
        fold               ; (nigh) universal code folding
        (format +onsave)   ; automated prettiness
        snippets           ; my elves. They type so I don't have to
+       word-wrap
 
        :emacs
        ( dired +icons)    ; making dired pretty [functional] directory editor
@@ -61,7 +62,7 @@
        :lang
        (org +pretty +pomodoro +dragndrop) ; organize your plain life in plain text
        (go +lsp)                          ; the hipster dialect
-       (python +lsp +pyright)             ;beautiful is better than ugly
+       (python +lsp +pyright)             ; beautiful is better than ugly
        (sh +lsp +powershell)              ; she sells {ba,z,fi}sh shells on the C xor
        data                               ; config/data formats
        json                               ; At least it ain't XML

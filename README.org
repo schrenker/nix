@@ -20,6 +20,7 @@
   - [[#set-up-headline-encryption][Set up headline encryption]]
   - [[#disable-electric-indent][Disable electric indent]]
   - [[#org-kanban][Org kanban]]
+  - [[#org-appear][Org appear]]
   - [[#inline-images][Inline images]]
   - [[#log-time-of-done-tasks][Log time of done tasks]]
   - [[#task-status-and-prioritization][Task status and prioritization]]
@@ -382,7 +383,7 @@
 - Set main org-mode directory
 - Set capture file inside of org-mode directory
 #+begin_src emacs-lisp :tangle config.el
-(setq org-directory "/Users/sebastian/code/engineer_notebook"
+(setq org-directory "/Users/sebastian/Code/engineer_notebook"
       org-default-notes-file (concat org-directory "/!capture.org"))
 #+end_src
 
@@ -406,6 +407,15 @@
 ** Org kanban
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-kanban)
+#+end_src
+
+** Org appear
+#+begin_src emacs-lisp :tangle packages.el
+(package! org-appear :recipe (:host github :repo "awth13/org-appear"))
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(add-hook 'org-mode-hook 'org-appear-mode)
 #+end_src
 
 ** Inline images
@@ -474,9 +484,15 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq org-superstar-prettify-item-bullets nil)
 
+;; (font-lock-add-keywords 'org-mode
+;;  '(("^ *\\([-]\\) "
+;;  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 (font-lock-add-keywords 'org-mode
- '(("^ *\\([-]\\) "
- (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([+]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◦"))))))
 #+end_src
 
 *** Checkboxes
@@ -508,6 +524,16 @@
 *** Enable word-wrap
 #+begin_src emacs-lisp :tangle config.el
 (add-hook 'org-mode-hook #'+word-wrap-mode)
+#+end_src
+
+*** Visual line mode
+#+begin_src emacs-lisp :tangle config.el
+(add-hook 'org-mode-hook 'visual-line-mode)
+#+end_src
+
+*** Emphasis markers
+#+begin_src emacs-lisp :tangle config.el
+(setq org-hide-emphasis-markers t)
 #+end_src
 
 * Treemacs

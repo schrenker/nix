@@ -8,6 +8,8 @@
 
 (package! org-kanban)
 
+(package! org-appear :recipe (:host github :repo "awth13/org-appear"))
+
 (package! treemacs-all-the-icons)
 
 (package! restclient)

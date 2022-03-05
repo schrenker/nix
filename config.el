@@ -99,7 +99,7 @@
   (map! :nv "gj" #'evil-next-visual-line
         :nv "gk" #'evil-previous-visual-line))
 
-(setq org-directory "/Users/sebastian/code/engineer_notebook"
+(setq org-directory "/Users/sebastian/Code/engineer_notebook"
       org-default-notes-file (concat org-directory "/!capture.org"))
 
 (require 'org-crypt)
@@ -109,6 +109,8 @@
       org-crypt-key "Sebastian Zawadzki")
 
 (add-hook! org-mode (electric-indent-local-mode -1))
+
+(add-hook 'org-mode-hook 'org-appear-mode)
 
 (setq org-display-remote-inline-images t
       org-startup-with-inline-images t
@@ -152,9 +154,15 @@
 
 (setq org-superstar-prettify-item-bullets nil)
 
+;; (font-lock-add-keywords 'org-mode
+;;  '(("^ *\\([-]\\) "
+;;  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 (font-lock-add-keywords 'org-mode
- '(("^ *\\([-]\\) "
- (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([+]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◦"))))))
 
 (add-hook 'org-mode-hook (lambda ()
   (push '("[ ]" . "") prettify-symbols-alist)
@@ -174,6 +182,10 @@
 (setq org-tags-column -77)
 
 (add-hook 'org-mode-hook #'+word-wrap-mode)
+
+(add-hook 'org-mode-hook 'visual-line-mode)
+
+(setq org-hide-emphasis-markers t)
 
 (require 'treemacs-all-the-icons)
 (treemacs-load-theme "all-the-icons")

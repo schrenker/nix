@@ -27,7 +27,7 @@
 
 (setq initial-frame-alist '((fullscreen . maximized)))
 
-(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2))
+(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 1))
 
 (setq-default
  frame-title-format '("Doom")
@@ -202,3 +202,5 @@
       company-require-match nil)
 
 (setq company-idle-delay 0)
+
+(setq yas/snippet-dirs (concat doom-private-dir "snippets"))

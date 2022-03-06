@@ -5,7 +5,7 @@
 - [[#doom][Doom]]
 - [[#emacs][Emacs]]
   - [[#personal-information][Personal information]]
-  - [[#keybindings][Keybindings]]
+  - [[#keybinds][Keybinds]]
   - [[#appearance][Appearance]]
   - [[#editor][Editor]]
 - [[#evil][Evil]]
@@ -13,9 +13,9 @@
   - [[#split-windows-so-that-rightdown-is-focused-after-the-split][Split windows so that right/down is focused after the split]]
   - [[#line-up-y-behavior-to-other-operators][Line up Y behavior to other operators]]
   - [[#dont-continue-comments-on-oo-creating-empty-lines][Don't continue comments on o/O, creating empty lines]]
-  - [[#keybinds][Keybinds]]
+  - [[#evil-keybinds][Evil keybinds]]
 - [[#org-mode][Org mode]]
-  - [[#keybinds-1][Keybinds]]
+  - [[#org-mode-keybinds][Org mode keybinds]]
   - [[#set-up-path-for-org-mode][Set up path for org mode]]
   - [[#set-up-headline-encryption][Set up headline encryption]]
   - [[#disable-electric-indent][Disable electric indent]]
@@ -25,7 +25,7 @@
   - [[#log-time-of-done-tasks][Log time of done tasks]]
   - [[#task-status-and-prioritization][Task status and prioritization]]
   - [[#disable-company-for-org-mode][Disable company for org-mode]]
-  - [[#appearance-1][Appearance]]
+  - [[#org-mode-appearance][Org mode appearance]]
 - [[#treemacs][Treemacs]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
   - [[#set-treemacs-themes][Set treemacs themes]]
@@ -35,6 +35,9 @@
   - [[#matching][Matching]]
   - [[#delay][Delay]]
 - [[#tools][Tools]]
+- [[#yasnippets][Yasnippets]]
+  - [[#disable-doom-provided-snippets][Disable doom provided snippets]]
+  - [[#set-snippets-directory-to-reside-in-doomdir][Set snippets directory to reside in doomdir]]
 
 * Headers
 - Setup lexical binding headers at the beginning of config files
@@ -148,7 +151,7 @@
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
 #+end_src
 
-** Keybindings
+** Keybinds
 *** Mac specific keybindings
 - Command is such a versatile key on Mac, I want to use it a lot in emacs as well
 - Option as alt is really nothing important, but figured it might as well be bound to it
@@ -203,7 +206,7 @@
 
 *** Truncate doom dashboard
 #+begin_src emacs-lisp :tangle config.el
-(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2))
+(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 1))
 #+end_src
 
 *** Set frame title and icon
@@ -318,7 +321,7 @@
 (setq +evil-want-o/O-to-continue-comments nil)
 #+end_src
 
-** Keybinds
+** Evil keybinds
 
 *** Disable escape on "jk"
 - There are some polish words, that include "jk" like word "Kolejka" which in english is "Queue". Obviously this was confusing, and I use "ESC" anyway.
@@ -359,7 +362,7 @@
 #+end_src
 
 * Org mode
-** Keybinds
+** Org mode keybinds
 *** org-mode-map
 - Set keybind for decryption of entries
 - Set keybind for showing inline images
@@ -462,7 +465,7 @@
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 #+end_src
 
-** Appearance
+** Org mode appearance
 *** Headlines
 #+begin_src emacs-lisp :tangle config.el
 (setq org-superstar-headline-bullets-list '("⁖"))
@@ -579,4 +582,18 @@
 #+begin_src emacs-lisp :tangle packages.el
 (package! restclient)
 (package! cheat-sh)
+#+end_src
+
+* Yasnippets
+- I really like behaviour of easy-templates in org-mode where you can use <s and other to expand into blocks
+- Since I use tng, almost all snippets are useless and conflict with it
+- In my case, I want to create templates, that when launched are completed, with no jumping around between fields
+** Disable doom provided snippets
+#+begin_src emacs-lisp :tangle packages.el
+(package! doom-snippets :ignore t)
+#+end_src
+
+** Set snippets directory to reside in doomdir
+#+begin_src emacs-lisp :tangle config.el
+(setq yas/snippet-dirs (concat doom-private-dir "snippets"))
 #+end_src

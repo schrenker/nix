@@ -3,6 +3,8 @@
 (setq  user-full-name "Sebastian Zawadzki"
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
 
+(setq custom-file nil)
+
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
              mac-option-modifier        'alt)))
@@ -12,6 +14,8 @@
 (map! "M-q" 'save-buffers-kill-terminal)
 
 (setq doom-theme 'doom-solarized-light)
+
+(setq fancy-splash-image (concat doom-private-dir "banner.png"))
 
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
@@ -202,5 +206,3 @@
       company-require-match nil)
 
 (setq company-idle-delay 0)
-
-(setq yas/snippet-dirs (concat doom-private-dir "snippets"))

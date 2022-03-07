@@ -14,5 +14,3 @@
 
 (package! restclient)
 (package! cheat-sh)
-
-(package! doom-snippets :ignore t)

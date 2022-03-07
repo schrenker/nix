@@ -5,6 +5,7 @@
 - [[#doom][Doom]]
 - [[#emacs][Emacs]]
   - [[#personal-information][Personal information]]
+  - [[#disable-customel-file][Disable custom.el file]]
   - [[#keybinds][Keybinds]]
   - [[#appearance][Appearance]]
   - [[#editor][Editor]]
@@ -34,10 +35,7 @@
   - [[#tooltips][Tooltips]]
   - [[#matching][Matching]]
   - [[#delay][Delay]]
-- [[#tools][Tools]]
-- [[#yasnippets][Yasnippets]]
-  - [[#disable-doom-provided-snippets][Disable doom provided snippets]]
-  - [[#set-snippets-directory-to-reside-in-doomdir][Set snippets directory to reside in doomdir]]
+- [[#additional-tools][Additional tools]]
 
 * Headers
 - Setup lexical binding headers at the beginning of config files
@@ -151,6 +149,11 @@
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
 #+end_src
 
+** Disable custom.el file
+#+begin_src emacs-lisp :tangle config.el
+(setq custom-file nil)
+#+end_src
+
 ** Keybinds
 *** Mac specific keybindings
 - Command is such a versatile key on Mac, I want to use it a lot in emacs as well
@@ -175,6 +178,11 @@
 *** Default fallback theme
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-theme 'doom-solarized-light)
+#+end_src
+
+*** Custom splash image
+#+begin_src emacs-lisp :tangle config.el
+(setq fancy-splash-image (concat doom-private-dir "banner.png"))
 #+end_src
 
 *** Day/Night mode switching function (based on emacs-plus patch)
@@ -578,22 +586,8 @@
 (setq company-idle-delay 0)
 #+end_src
 
-* Tools
+* Additional tools
 #+begin_src emacs-lisp :tangle packages.el
 (package! restclient)
 (package! cheat-sh)
-#+end_src
-
-* Yasnippets
-- I really like behaviour of easy-templates in org-mode where you can use <s and other to expand into blocks
-- Since I use tng, almost all snippets are useless and conflict with it
-- In my case, I want to create templates, that when launched are completed, with no jumping around between fields
-** Disable doom provided snippets
-#+begin_src emacs-lisp :tangle packages.el
-(package! doom-snippets :ignore t)
-#+end_src
-
-** Set snippets directory to reside in doomdir
-#+begin_src emacs-lisp :tangle config.el
-(setq yas/snippet-dirs (concat doom-private-dir "snippets"))
 #+end_src

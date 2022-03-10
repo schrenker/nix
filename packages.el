@@ -13,4 +13,6 @@
 (package! treemacs-all-the-icons)
 
 (package! restclient)
+(package! ob-restclient)
 (package! cheat-sh)
+(package! ob-powershell :recipe (:host github :repo "MoisMoshev/ob-powershell"))

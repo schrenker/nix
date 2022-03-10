@@ -589,5 +589,7 @@
 * Additional tools
 #+begin_src emacs-lisp :tangle packages.el
 (package! restclient)
+(package! ob-restclient)
 (package! cheat-sh)
+(package! ob-powershell :recipe (:host github :repo "MoisMoshev/ob-powershell"))
 #+end_src

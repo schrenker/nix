@@ -26,6 +26,7 @@
   - [[#log-time-of-done-tasks][Log time of done tasks]]
   - [[#task-status-and-prioritization][Task status and prioritization]]
   - [[#disable-company-for-org-mode][Disable company for org-mode]]
+  - [[#roam][Roam]]
   - [[#org-mode-appearance][Org mode appearance]]
 - [[#treemacs][Treemacs]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
@@ -36,6 +37,9 @@
   - [[#matching][Matching]]
   - [[#delay][Delay]]
 - [[#additional-tools][Additional tools]]
+  - [[#restclient][Restclient]]
+  - [[#powershell][Powershell]]
+  - [[#cheatsh][Cheat.sh]]
 
 * Headers
 - Setup lexical binding headers at the beginning of config files
@@ -117,21 +121,22 @@
        rgb             ; creating color strings
        terraform       ; infrastructure as code
        upload          ; map local to remote projects via ssh/ftp
+       taskrunner
 
        :os
        (:if IS-MAC macos) ; improve compatibility with macOS
        ( tty +osc)        ; improve the terminal Emacs experience
 
        :lang
-       (org +pretty +pomodoro +dragndrop) ; organize your plain life in plain text
-       (go +lsp)                          ; the hipster dialect
-       (python +lsp +pyright)             ; beautiful is better than ugly
-       (sh +lsp +powershell)              ; she sells {ba,z,fi}sh shells on the C xor
-       data                               ; config/data formats
-       json                               ; At least it ain't XML
-       yaml                               ; JSON, but readable
-       markdown                           ; writing docs for people to ignore
-       emacs-lisp                         ; drown in parentheses
+       (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
+       (go +lsp)                                 ; the hipster dialect
+       (python +lsp +pyright)                    ; beautiful is better than ugly
+       (sh +lsp +powershell)                     ; she sells {ba,z,fi}sh shells on the C xor
+       data                                      ; config/data formats
+       json                                      ; At least it ain't XML
+       yaml                                      ; JSON, but readable
+       markdown                                  ; writing docs for people to ignore
+       emacs-lisp                                ; drown in parentheses
 
        :app
        calendar
@@ -473,6 +478,13 @@
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 #+end_src
 
+** Roam
+#+begin_src emacs-lisp :tangle config.el
+(setq org-roam-capture-templates '(("d" "default" plain "%?"
+                                      :if-new (file+head "${slug}.org" "#+title: ${title}\n#+date: %u\n\n")
+                                      :immediate-finish t)))
+#+end_src
+
 ** Org mode appearance
 *** Headlines
 #+begin_src emacs-lisp :tangle config.el
@@ -587,9 +599,23 @@
 #+end_src
 
 * Additional tools
+** Restclient
 #+begin_src emacs-lisp :tangle packages.el
 (package! restclient)
 (package! ob-restclient)
-(package! cheat-sh)
+(package! company-restclient)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(add-to-list 'company-backends 'company-restclient)
+#+end_src
+
+** Powershell
+#+begin_src emacs-lisp :tangle packages.el
 (package! ob-powershell :recipe (:host github :repo "MoisMoshev/ob-powershell"))
+#+end_src
+
+** Cheat.sh
+#+begin_src emacs-lisp :tangle packages.el
+(package! cheat-sh)
 #+end_src

@@ -14,5 +14,8 @@
 
 (package! restclient)
 (package! ob-restclient)
-(package! cheat-sh)
+(package! company-restclient)
+
 (package! ob-powershell :recipe (:host github :repo "MoisMoshev/ob-powershell"))
+
+(package! cheat-sh)

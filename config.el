@@ -143,6 +143,10 @@
 (setq company-global-modes '(not org-mode))
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 
+(setq org-roam-capture-templates '(("d" "default" plain "%?"
+                                      :if-new (file+head "${slug}.org" "#+title: ${title}\n#+date: %u\n\n")
+                                      :immediate-finish t)))
+
 (setq org-superstar-headline-bullets-list '("⁖"))
 
 (after! org
@@ -206,3 +210,5 @@
       company-require-match nil)
 
 (setq company-idle-delay 0)
+
+(add-to-list 'company-backends 'company-restclient)

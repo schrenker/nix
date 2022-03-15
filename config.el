@@ -23,7 +23,8 @@
     ('light (setq doom-theme 'doom-solarized-light)
              (load-theme 'doom-solarized-light t))
     ('dark (setq doom-theme 'doom-solarized-dark)
-             (load-theme 'doom-solarized-dark t))))
+             (load-theme 'doom-solarized-dark t)))
+  (org-roam-ui-sync-theme))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
@@ -143,6 +144,17 @@
 (setq company-global-modes '(not org-mode))
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
 (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                       :if-new (file+head "${slug}.org" "#+title: ${title}\n#+date: %u\n\n")
                                       :immediate-finish t)))
@@ -167,10 +179,10 @@
 ;;  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◆"))))))
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([+]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◦"))))))
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 
 (add-hook 'org-mode-hook (lambda ()
   (push '("[ ]" . "") prettify-symbols-alist)

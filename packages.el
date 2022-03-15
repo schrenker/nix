@@ -10,6 +10,9 @@
 
 (package! org-appear :recipe (:host github :repo "awth13/org-appear"))
 
+(unpin! org-roam)
+(package! org-roam-ui)
+
 (package! treemacs-all-the-icons)
 
 (package! restclient)

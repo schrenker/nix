@@ -222,5 +222,3 @@
       company-require-match nil)
 
 (setq company-idle-delay 0)
-
-(add-to-list 'company-backends 'company-restclient)

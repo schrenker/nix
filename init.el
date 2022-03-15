@@ -65,11 +65,11 @@
        (go +lsp)                                 ; the hipster dialect
        (python +lsp +pyright)                    ; beautiful is better than ugly
        (sh +lsp +powershell)                     ; she sells {ba,z,fi}sh shells on the C xor
-       data                                      ; config/data formats
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        markdown                                  ; writing docs for people to ignore
        emacs-lisp                                ; drown in parentheses
+       rest
 
        :app
        calendar

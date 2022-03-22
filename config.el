@@ -107,10 +107,16 @@
 (setq org-directory "/Users/sebastian/Code/engineer_notebook"
       org-default-notes-file (concat org-directory "/!capture.org"))
 
+(setq org-tags-exclude-from-inheritance '("crypt"
+                                          "moc"
+                                          "inbox"
+                                          "evergreen"
+                                          "wip"
+                                          "unpolished"))
+
 (require 'org-crypt)
 
-(setq org-tags-exclude-from-inheritance '("crypt")
-      org-crypt-disable-auto-save t
+(setq org-crypt-disable-auto-save t
       org-crypt-key "Sebastian Zawadzki")
 
 (add-hook! org-mode (electric-indent-local-mode -1))
@@ -156,8 +162,15 @@
           org-roam-ui-open-on-start t))
 
 (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                      :if-new (file+head "${slug}.org" "#+title: ${title}\n#+date: %u\n\n")
+                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
                                       :immediate-finish t)))
+
+(after! org
+  (setq time-stamp-active t
+    time-stamp-start "#\\+modified: [ \t]*"
+    time-stamp-end "$"
+    time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
+(add-hook 'before-save-hook 'time-stamp))
 
 (setq org-superstar-headline-bullets-list '("⁖"))
 

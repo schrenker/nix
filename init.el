@@ -64,7 +64,7 @@
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (go +lsp)                                 ; the hipster dialect
        (python +lsp +pyright)                    ; beautiful is better than ugly
-       (sh +lsp +powershell)                     ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp +powershell +fish)               ; she sells {ba,z,fi}sh shells on the C xor
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        markdown                                  ; writing docs for people to ignore

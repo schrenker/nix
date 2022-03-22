@@ -18,6 +18,7 @@
 - [[#org-mode][Org mode]]
   - [[#org-mode-keybinds][Org mode keybinds]]
   - [[#set-up-path-for-org-mode][Set up path for org mode]]
+  - [[#exclude-certain-tags-from-inheritance][Exclude certain tags from inheritance]]
   - [[#set-up-headline-encryption][Set up headline encryption]]
   - [[#disable-electric-indent][Disable electric indent]]
   - [[#org-kanban][Org kanban]]
@@ -27,6 +28,7 @@
   - [[#task-status-and-prioritization][Task status and prioritization]]
   - [[#disable-company-for-org-mode][Disable company for org-mode]]
   - [[#roam][Roam]]
+  - [[#record-last-modified-date-in-org-mode][Record last modified date in org-mode]]
   - [[#org-mode-appearance][Org mode appearance]]
 - [[#treemacs][Treemacs]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
@@ -130,7 +132,7 @@
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (go +lsp)                                 ; the hipster dialect
        (python +lsp +pyright)                    ; beautiful is better than ugly
-       (sh +lsp +powershell)                     ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp +powershell +fish)               ; she sells {ba,z,fi}sh shells on the C xor
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        markdown                                  ; writing docs for people to ignore
@@ -404,6 +406,17 @@
       org-default-notes-file (concat org-directory "/!capture.org"))
 #+end_src
 
+** Exclude certain tags from inheritance
+#+begin_src emacs-lisp :tangle config.el
+(setq org-tags-exclude-from-inheritance '("crypt"
+                                          "moc"
+                                          "inbox"
+                                          "evergreen"
+                                          "wip"
+                                          "unpolished"))
+#+end_src
+
+
 ** Set up headline encryption
 - Encrypt headlines with tag "crypt"
 - Disable autosave for files with "crypt" tag
@@ -411,8 +424,7 @@
 #+begin_src emacs-lisp :tangle config.el
 (require 'org-crypt)
 
-(setq org-tags-exclude-from-inheritance '("crypt")
-      org-crypt-disable-auto-save t
+(setq org-crypt-disable-auto-save t
       org-crypt-key "Sebastian Zawadzki")
 #+end_src
 
@@ -504,8 +516,18 @@
 *** Default template
 #+begin_src emacs-lisp :tangle config.el
 (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                      :if-new (file+head "${slug}.org" "#+title: ${title}\n#+date: %u\n\n")
+                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
                                       :immediate-finish t)))
+#+end_src
+
+** Record last modified date in org-mode
+#+begin_src emacs-lisp :tangle config.el
+(after! org
+  (setq time-stamp-active t
+    time-stamp-start "#\\+modified: [ \t]*"
+    time-stamp-end "$"
+    time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
+(add-hook 'before-save-hook 'time-stamp))
 #+end_src
 
 ** Org mode appearance

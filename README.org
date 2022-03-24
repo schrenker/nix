@@ -293,7 +293,7 @@
 
 *** Relative numbers
 #+begin_src emacs-lisp :tangle config.el
-(setq  display-line-numbers-type 'relative)
+(setq  display-line-numbers-type 'visual)
 #+end_src
 
 *** Set scroll margin

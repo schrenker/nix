@@ -67,7 +67,7 @@
 
 (setq-default tab-width 2)
 
-(setq  display-line-numbers-type 'relative)
+(setq  display-line-numbers-type 'visual)
 
 (setq scroll-margin 5)
 

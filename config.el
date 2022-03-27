@@ -80,6 +80,9 @@
 
 (setq +evil-want-o/O-to-continue-comments nil)
 
+(map! :after evil-easymotion
+      :m "A-C-SPC" evilem-map) ;;g+ is temporary setting lol
+
 (setq evil-escape-key-sequence nil)
 
 (map! :map evil-window-map

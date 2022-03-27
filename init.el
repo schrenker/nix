@@ -54,7 +54,6 @@
        rgb             ; creating color strings
        terraform       ; infrastructure as code
        upload          ; map local to remote projects via ssh/ftp
-       taskrunner
 
        :os
        (:if IS-MAC macos) ; improve compatibility with macOS

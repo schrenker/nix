@@ -122,7 +122,6 @@
        rgb             ; creating color strings
        terraform       ; infrastructure as code
        upload          ; map local to remote projects via ssh/ftp
-       taskrunner
 
        :os
        (:if IS-MAC macos) ; improve compatibility with macOS
@@ -338,6 +337,12 @@
 #+end_src
 
 ** Evil keybinds
+
+*** Rebind evil-easymotion map to easier to reach key
+#+begin_src emacs-lisp :tangle config.el
+(map! :after evil-easymotion
+      :m "A-C-SPC" evilem-map) ;;g+ is temporary setting lol
+#+end_src
 
 *** Disable escape on "jk"
 - There are some polish words, that include "jk" like word "Kolejka" which in english is "Queue". Obviously this was confusing, and I use "ESC" anyway.

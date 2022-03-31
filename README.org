@@ -179,6 +179,11 @@
 (map! "M-q" 'save-buffers-kill-terminal)
 #+end_src
 
+*** Remove char backwards
+#+begin_src emacs-lisp :tangle config.el
+(map! "A-<backspace>" 'doom/delete-backward-word)
+#+end_src
+
 ** Appearance
 *** Default fallback theme
 #+begin_src emacs-lisp :tangle config.el
@@ -337,13 +342,6 @@
 #+end_src
 
 ** Evil keybinds
-
-*** Rebind evil-easymotion map to easier to reach key
-#+begin_src emacs-lisp :tangle config.el
-(map! :after evil-easymotion
-      :m "A-C-SPC" evilem-map) ;;g+ is temporary setting lol
-#+end_src
-
 *** Disable escape on "jk"
 - There are some polish words, that include "jk" like word "Kolejka" which in english is "Queue". Obviously this was confusing, and I use "ESC" anyway.
 #+begin_src emacs-lisp :tangle config.el

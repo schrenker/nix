@@ -13,6 +13,8 @@
 (map! "M-v" 'yank)
 (map! "M-q" 'save-buffers-kill-terminal)
 
+(map! "A-<backspace>" 'doom/delete-backward-word)
+
 (setq doom-theme 'doom-solarized-light)
 
 (setq fancy-splash-image (concat doom-private-dir "banner.png"))
@@ -79,9 +81,6 @@
 (setq evil-want-Y-yank-to-eol t)
 
 (setq +evil-want-o/O-to-continue-comments nil)
-
-(map! :after evil-easymotion
-      :m "A-C-SPC" evilem-map) ;;g+ is temporary setting lol
 
 (setq evil-escape-key-sequence nil)
 

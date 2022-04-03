@@ -15,6 +15,8 @@
 
 (map! "A-<backspace>" 'doom/delete-backward-word)
 
+(menu-bar-mode -1)
+
 (setq doom-theme 'doom-solarized-light)
 
 (setq fancy-splash-image (concat doom-private-dir "banner.png"))

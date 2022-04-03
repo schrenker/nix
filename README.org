@@ -185,6 +185,11 @@
 #+end_src
 
 ** Appearance
+*** Disable menu bar
+#+begin_src emacs-lisp :tangle config.el
+(menu-bar-mode -1)
+#+end_src
+
 *** Default fallback theme
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-theme 'doom-solarized-light)

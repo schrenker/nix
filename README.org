@@ -31,6 +31,7 @@
   - [[#record-last-modified-date-in-org-mode][Record last modified date in org-mode]]
   - [[#org-mode-appearance][Org mode appearance]]
 - [[#treemacs][Treemacs]]
+  - [[#treemacs-git-mode][Treemacs git mode]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
   - [[#set-treemacs-themes][Set treemacs themes]]
 - [[#company][Company]]
@@ -40,6 +41,7 @@
   - [[#delay][Delay]]
 - [[#additional-tools][Additional tools]]
   - [[#powershell][Powershell]]
+  - [[#flyspell][Flyspell]]
   - [[#cheatsh][Cheat.sh]]
 
 * Headers
@@ -107,6 +109,7 @@
 
        :checkers
        syntax ; tasing you for every semicolon you forget
+       (spell +flyspell +everywhere)
 
        :tools
        ansible
@@ -146,6 +149,8 @@
        (default +bindings +smartparens))
 #+end_src
 
+#+RESULTS:
+
 * Emacs
 ** Personal information
 - Basic personal information, that some of the packages might require
@@ -169,14 +174,16 @@
              mac-option-modifier        'alt)))
 #+end_src
 
-*** Mac style copy/paste/app exiting
+*** Mac style keyboard shortcuts
 - I really like using cmd+c and cmd+v as copy paste, it's what I'm used to
 - Makes even more sense that I share system clipboard with emacs on MacOS (I don't even remember original behavior anymore lol)
 - Cmd+q to quit, same as on MacOS
+- Cmd+m to minimize
 #+begin_src emacs-lisp :tangle config.el
 (map! "M-c" 'kill-ring-save)
 (map! "M-v" 'yank)
 (map! "M-q" 'save-buffers-kill-terminal)
+(map! "M-m" 'suspend-frame)
 #+end_src
 
 *** Remove char backwards
@@ -613,11 +620,15 @@
 #+end_src
 
 * Treemacs
+** Treemacs git mode
+#+begin_src emacs-lisp :tangle config.el
+(setq +treemacs-git-mode 'deferred)
+#+end_src
+
 ** Pull all the icons for treemacs
 #+begin_src emacs-lisp :tangle packages.el
 (package! treemacs-all-the-icons)
 #+end_src
-
 ** Set treemacs themes
 #+begin_src emacs-lisp :tangle config.el
 (require 'treemacs-all-the-icons)
@@ -656,6 +667,13 @@
 #+begin_src emacs-lisp :tangle packages.el
 (package! ob-powershell :recipe (:host github :repo "MoisMoshev/ob-powershell"))
 #+end_src
+
+** Flyspell
+#+begin_src emacs-lisp :tangle config.el
+(after! flyspell
+  (setq flyspell-lazy-idle-seconds 2))
+#+end_src
+
 
 ** Cheat.sh
 #+begin_src emacs-lisp :tangle packages.el

@@ -39,6 +39,7 @@
 
        :checkers
        syntax ; tasing you for every semicolon you forget
+       (spell +flyspell +everywhere)
 
        :tools
        ansible

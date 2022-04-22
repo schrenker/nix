@@ -12,6 +12,7 @@
 (map! "M-c" 'kill-ring-save)
 (map! "M-v" 'yank)
 (map! "M-q" 'save-buffers-kill-terminal)
+(map! "M-m" 'suspend-frame)
 
 (map! "A-<backspace>" 'doom/delete-backward-word)
 
@@ -224,6 +225,8 @@
 
 (setq org-hide-emphasis-markers t)
 
+(setq +treemacs-git-mode 'deferred)
+
 (require 'treemacs-all-the-icons)
 (treemacs-load-theme "all-the-icons")
 
@@ -239,3 +242,6 @@
       company-require-match nil)
 
 (setq company-idle-delay 0)
+
+(after! flyspell
+  (setq flyspell-lazy-idle-seconds 2))

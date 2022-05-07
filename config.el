@@ -16,7 +16,8 @@
 
 (map! "A-<backspace>" 'doom/delete-backward-word)
 
-(menu-bar-mode -1)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
 
 (setq doom-theme 'doom-solarized-light)
 
@@ -33,7 +34,8 @@
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
-(setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
+;; (setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
+(setq  doom-font (font-spec :family "JetBrains Mono NL" :size 13))
 
 (setq initial-frame-alist '((fullscreen . maximized)))
 
@@ -100,16 +102,18 @@
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
+(setq org-startup-folded 'nofold)
+
 (map! :map org-mode-map
       :localleader "$" 'org-decrypt-entry
-      :localleader "a i" 'org-display-inline-images
-      "<tab>" 'org-cycle)
+      :localleader "a i" 'org-display-inline-images)
 
 (after! org
   (map! :nv "gj" #'evil-next-visual-line
         :nv "gk" #'evil-previous-visual-line))
 
-(setq org-directory "/Users/sebastian/Code/engineer_notebook"
+(setq org-directory "/Users/sebastian/Code/brain"
+      org-roam-directory org-directory
       org-default-notes-file (concat org-directory "/!capture.org"))
 
 (setq org-tags-exclude-from-inheritance '("crypt"
@@ -154,6 +158,10 @@
 
 (setq company-global-modes '(not org-mode))
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
+
+(map! :map doom-leader-notes-map
+      :g "r t" 'org-roam-ui-sync-theme
+      :g "r o" 'org-roam-ui-open)
 
 (use-package! websocket
     :after org-roam)

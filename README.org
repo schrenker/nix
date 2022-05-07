@@ -149,8 +149,6 @@
        (default +bindings +smartparens))
 #+end_src
 
-#+RESULTS:
-
 * Emacs
 ** Personal information
 - Basic personal information, that some of the packages might require
@@ -192,9 +190,10 @@
 #+end_src
 
 ** Appearance
-*** Disable menu bar
+*** Disable menu and tool bar
 #+begin_src emacs-lisp :tangle config.el
-(menu-bar-mode -1)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
 #+end_src
 
 *** Default fallback theme
@@ -225,10 +224,9 @@
 #+end_src
 
 *** Set font
-- FiraCode font is cool and totally readable
-- Retina for that MacOS screens
 #+begin_src emacs-lisp :tangle config.el
-(setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
+;; (setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
+(setq  doom-font (font-spec :family "JetBrains Mono NL" :size 13))
 #+end_src
 
 *** Start emacs maximized
@@ -393,6 +391,9 @@
 #+end_src
 
 * Org mode
+#+begin_src emacs-lisp :tangle config.el
+(setq org-startup-folded 'nofold)
+#+end_src
 ** Org mode keybinds
 *** org-mode-map
 - Set keybind for decryption of entries
@@ -401,9 +402,9 @@
 #+begin_src emacs-lisp :tangle config.el
 (map! :map org-mode-map
       :localleader "$" 'org-decrypt-entry
-      :localleader "a i" 'org-display-inline-images
-      "<tab>" 'org-cycle)
+      :localleader "a i" 'org-display-inline-images)
 #+end_src
+
 
 *** Set visual line movement via gj and gk
 - want gj and gk to move per visual line, instead of some weird paragraph jumping
@@ -417,7 +418,8 @@
 - Set main org-mode directory
 - Set capture file inside of org-mode directory
 #+begin_src emacs-lisp :tangle config.el
-(setq org-directory "/Users/sebastian/Code/engineer_notebook"
+(setq org-directory "/Users/sebastian/Code/brain"
+      org-roam-directory org-directory
       org-default-notes-file (concat org-directory "/!capture.org"))
 #+end_src
 
@@ -507,6 +509,14 @@
 #+end_src
 
 ** Roam
+
+*** Org roam keybinds
+#+begin_src emacs-lisp :tangle config.el
+(map! :map doom-leader-notes-map
+      :g "r t" 'org-roam-ui-sync-theme
+      :g "r o" 'org-roam-ui-open)
+#+end_src
+
 *** Org-roam-ui
 - org-roam-ui requires unpinning of org-roam, so it is up to date
 #+begin_src emacs-lisp :tangle packages.el
@@ -527,7 +537,6 @@
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 #+end_src
-
 *** Default template
 #+begin_src emacs-lisp :tangle config.el
 (setq org-roam-capture-templates '(("d" "default" plain "%?"
@@ -673,7 +682,6 @@
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
 #+end_src
-
 
 ** Cheat.sh
 #+begin_src emacs-lisp :tangle packages.el

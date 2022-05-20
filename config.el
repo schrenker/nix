@@ -1,9 +1,10 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(require 'server)
+(unless (server-running-p) (server-start))
+
 (setq  user-full-name "Sebastian Zawadzki"
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
-
-(setq custom-file nil)
 
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
@@ -16,12 +17,13 @@
 
 (map! "A-<backspace>" 'doom/delete-backward-word)
 
-(menu-bar-mode 0)
-(tool-bar-mode 0)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
 (setq doom-theme 'doom-solarized-light)
 
-(setq fancy-splash-image (concat doom-private-dir "banner.png"))
+;; (setq fancy-splash-image (concat doom-private-dir "banner.png"))
 
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
@@ -51,8 +53,7 @@
     :weight bold :height 1.5 ))
 
 (setq doom-modeline-icon (display-graphic-p)
-      doom-modeline-major-mode-icon t
-      doom-modeline-major-mode-color-icon t
+      doom-modeline-major-mode-icon nil
       doom-modeline-buffer-state-icon t)
 
 (setq-default window-combination-resize t)
@@ -235,6 +236,8 @@
 
 (setq +treemacs-git-mode 'deferred)
 
+(setq treemacs-follow-mode t)
+
 (require 'treemacs-all-the-icons)
 (treemacs-load-theme "all-the-icons")
 
@@ -250,6 +253,16 @@
       company-require-match nil)
 
 (setq company-idle-delay 0)
+
+(require 'pyenv-mode)
+
+(defun projectile-pyenv-mode-set ()
+  (let ((project (projectile-project-name)))
+    (if (member project (pyenv-mode-versions))
+        (pyenv-mode-set project)
+      (pyenv-mode-unset))))
+
+(add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
 
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))

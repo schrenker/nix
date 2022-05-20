@@ -4,8 +4,8 @@
 - [[#headers][Headers]]
 - [[#doom][Doom]]
 - [[#emacs][Emacs]]
+  - [[#emacs-server][Emacs server]]
   - [[#personal-information][Personal information]]
-  - [[#disable-customel-file][Disable custom.el file]]
   - [[#keybinds][Keybinds]]
   - [[#appearance][Appearance]]
   - [[#editor][Editor]]
@@ -32,6 +32,7 @@
   - [[#org-mode-appearance][Org mode appearance]]
 - [[#treemacs][Treemacs]]
   - [[#treemacs-git-mode][Treemacs git mode]]
+  - [[#treemacs-modes][Treemacs modes]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
   - [[#set-treemacs-themes][Set treemacs themes]]
 - [[#company][Company]]
@@ -41,6 +42,7 @@
   - [[#delay][Delay]]
 - [[#additional-tools][Additional tools]]
   - [[#powershell][Powershell]]
+  - [[#python][Python]]
   - [[#flyspell][Flyspell]]
   - [[#cheatsh][Cheat.sh]]
 
@@ -131,9 +133,9 @@
        ( tty +osc)        ; improve the terminal Emacs experience
 
        :lang
+       (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (go +lsp)                                 ; the hipster dialect
-       (python +lsp +pyright)                    ; beautiful is better than ugly
        (sh +lsp +powershell +fish)               ; she sells {ba,z,fi}sh shells on the C xor
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
@@ -150,16 +152,17 @@
 #+end_src
 
 * Emacs
+** Emacs server
+#+begin_src emacs-lisp :tangle config.el
+(require 'server)
+(unless (server-running-p) (server-start))
+#+end_src
+
 ** Personal information
 - Basic personal information, that some of the packages might require
 #+begin_src emacs-lisp :tangle config.el
 (setq  user-full-name "Sebastian Zawadzki"
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
-#+end_src
-
-** Disable custom.el file
-#+begin_src emacs-lisp :tangle config.el
-(setq custom-file nil)
 #+end_src
 
 ** Keybinds
@@ -192,8 +195,9 @@
 ** Appearance
 *** Disable menu and tool bar
 #+begin_src emacs-lisp :tangle config.el
-(menu-bar-mode 0)
-(tool-bar-mode 0)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 #+end_src
 
 *** Default fallback theme
@@ -203,7 +207,7 @@
 
 *** Custom splash image
 #+begin_src emacs-lisp :tangle config.el
-(setq fancy-splash-image (concat doom-private-dir "banner.png"))
+;; (setq fancy-splash-image (concat doom-private-dir "banner.png"))
 #+end_src
 
 *** Day/Night mode switching function (based on emacs-plus patch)
@@ -261,8 +265,7 @@
 - Setup icons for modeline
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-modeline-icon (display-graphic-p)
-      doom-modeline-major-mode-icon t
-      doom-modeline-major-mode-color-icon t
+      doom-modeline-major-mode-icon nil
       doom-modeline-buffer-state-icon t)
 #+end_src
 
@@ -537,6 +540,7 @@
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 #+end_src
+
 *** Default template
 #+begin_src emacs-lisp :tangle config.el
 (setq org-roam-capture-templates '(("d" "default" plain "%?"
@@ -634,10 +638,16 @@
 (setq +treemacs-git-mode 'deferred)
 #+end_src
 
+** Treemacs modes
+#+begin_src emacs-lisp :tangle config.el
+(setq treemacs-follow-mode t)
+#+end_src
+
 ** Pull all the icons for treemacs
 #+begin_src emacs-lisp :tangle packages.el
 (package! treemacs-all-the-icons)
 #+end_src
+
 ** Set treemacs themes
 #+begin_src emacs-lisp :tangle config.el
 (require 'treemacs-all-the-icons)
@@ -675,6 +685,20 @@
 ** Powershell
 #+begin_src emacs-lisp :tangle packages.el
 (package! ob-powershell :recipe (:host github :repo "MoisMoshev/ob-powershell"))
+#+end_src
+
+** Python
+- set pyenv and virtualenv based on projectile name (testing)
+#+begin_src emacs-lisp :tangle config.el
+(require 'pyenv-mode)
+
+(defun projectile-pyenv-mode-set ()
+  (let ((project (projectile-project-name)))
+    (if (member project (pyenv-mode-versions))
+        (pyenv-mode-set project)
+      (pyenv-mode-unset))))
+
+(add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
 #+end_src
 
 ** Flyspell

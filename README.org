@@ -41,7 +41,6 @@
   - [[#matching][Matching]]
   - [[#delay][Delay]]
 - [[#additional-tools][Additional tools]]
-  - [[#powershell][Powershell]]
   - [[#python][Python]]
   - [[#flyspell][Flyspell]]
   - [[#cheatsh][Cheat.sh]]
@@ -135,11 +134,9 @@
        :lang
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
-       (go +lsp)                                 ; the hipster dialect
-       (sh +lsp +powershell +fish)               ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp +fish)               ; she sells {ba,z,fi}sh shells on the C xor
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
-       markdown                                  ; writing docs for people to ignore
        emacs-lisp                                ; drown in parentheses
        rest
 
@@ -682,10 +679,6 @@
 #+end_src
 
 * Additional tools
-** Powershell
-#+begin_src emacs-lisp :tangle packages.el
-(package! ob-powershell :recipe (:host github :repo "MoisMoshev/ob-powershell"))
-#+end_src
 
 ** Python
 - set pyenv and virtualenv based on projectile name (testing)

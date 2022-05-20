@@ -15,6 +15,4 @@
 
 (package! treemacs-all-the-icons)
 
-(package! ob-powershell :recipe (:host github :repo "MoisMoshev/ob-powershell"))
-
 (package! cheat-sh)

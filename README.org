@@ -4,10 +4,10 @@
 - [[#headers][Headers]]
 - [[#doom][Doom]]
 - [[#emacs][Emacs]]
-  - [[#emacs-server][Emacs server]]
   - [[#personal-information][Personal information]]
   - [[#keybinds][Keybinds]]
   - [[#appearance][Appearance]]
+  - [[#emacsclient][Emacsclient]]
   - [[#editor][Editor]]
 - [[#evil][Evil]]
   - [[#set-up-evil-packages][Set up evil packages]]
@@ -149,11 +149,11 @@
 #+end_src
 
 * Emacs
-** Emacs server
-#+begin_src emacs-lisp :tangle config.el
-(require 'server)
-(unless (server-running-p) (server-start))
-#+end_src
+# ** Emacs server
+# #+begin_src emacs-lisp :tangle config.el
+# (require 'server)
+# (unless (server-running-p) (server-start))
+# #+end_src
 
 ** Personal information
 - Basic personal information, that some of the packages might require
@@ -287,6 +287,13 @@
 (setq uniquify-separator "/"
       uniquify-after-kill-buffer-p t
       uniquify-ignore-buffers-re "^\\*")
+#+end_src
+
+** Emacsclient
+- Use "main" workspace for emacsclient
+#+begin_src emacs-lisp :tangle config.el
+(after! persp-mode
+  (setq persp-emacsclient-init-frame-behaviour-override "main"))
 #+end_src
 
 ** Editor

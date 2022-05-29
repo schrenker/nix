@@ -1,8 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(require 'server)
-(unless (server-running-p) (server-start))
-
 (setq  user-full-name "Sebastian Zawadzki"
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
 
@@ -68,6 +65,9 @@
 (setq uniquify-separator "/"
       uniquify-after-kill-buffer-p t
       uniquify-ignore-buffers-re "^\\*")
+
+(after! persp-mode
+  (setq persp-emacsclient-init-frame-behaviour-override "main"))
 
 (setq auto-save-default t)
 
@@ -253,6 +253,8 @@
       company-require-match nil)
 
 (setq company-idle-delay 0)
+
+(setq vterm-always-compile-module t)
 
 (require 'pyenv-mode)
 

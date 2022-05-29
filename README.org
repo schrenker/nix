@@ -40,6 +40,7 @@
   - [[#tooltips][Tooltips]]
   - [[#matching][Matching]]
   - [[#delay][Delay]]
+- [[#vterm][Vterm]]
 - [[#additional-tools][Additional tools]]
   - [[#python][Python]]
   - [[#flyspell][Flyspell]]
@@ -683,6 +684,11 @@
 ** Delay
 #+begin_src emacs-lisp :tangle config.el
 (setq company-idle-delay 0)
+#+end_src
+
+* Vterm
+#+begin_src emacs-lisp :tangle config.el
+(setq vterm-always-compile-module t)
 #+end_src
 
 * Additional tools

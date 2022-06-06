@@ -18,7 +18,10 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+(require 'centaur-tabs)
 (centaur-tabs-group-by-projectile-project)
+
+(setq centaur-tabs-show-count t)
 
 (setq doom-theme 'doom-solarized-light)
 
@@ -60,13 +63,11 @@
 (setq-default truncate-string-ellipsis "…")
 
 (require 'uniquify)
-
-(setq-default
- uniquify-buffer-name-style 'forward)
-
-(setq uniquify-separator "/"
-      uniquify-after-kill-buffer-p t
-      uniquify-ignore-buffers-re "^\\*")
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
+(setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers;       uniquify-ignore-buffers-re "^\\*")
+(setq-hook! 'persp-mode-hook uniquify-buffer-name-style 'forward)
 
 (after! persp-mode
   (setq persp-emacsclient-init-frame-behaviour-override "main"))

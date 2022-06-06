@@ -200,9 +200,16 @@
 (scroll-bar-mode -1)
 #+end_src
 
-*** Show tabs of current projectile project only
+*** Tabs
+- group tabs by projectile project
 #+begin_src emacs-lisp :tangle config.el
+(require 'centaur-tabs)
 (centaur-tabs-group-by-projectile-project)
+#+end_src
+
+- show tab index and count
+#+begin_src emacs-lisp :tangle config.el
+(setq centaur-tabs-show-count t)
 #+end_src
 
 *** Default fallback theme
@@ -288,13 +295,11 @@
 - Make buffer names unique (use path in name in case of duplicates)
 #+begin_src emacs-lisp :tangle config.el
 (require 'uniquify)
-
-(setq-default
- uniquify-buffer-name-style 'forward)
-
-(setq uniquify-separator "/"
-      uniquify-after-kill-buffer-p t
-      uniquify-ignore-buffers-re "^\\*")
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
+(setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers;       uniquify-ignore-buffers-re "^\\*")
+(setq-hook! 'persp-mode-hook uniquify-buffer-name-style 'forward)
 #+end_src
 
 ** Emacsclient

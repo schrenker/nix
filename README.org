@@ -6,7 +6,7 @@
 - [[#emacs][Emacs]]
   - [[#personal-information][Personal information]]
   - [[#keybinds][Keybinds]]
-  - [[#appearance][Appearance]]
+  - [[#ui][UI]]
   - [[#emacsclient][Emacsclient]]
   - [[#editor][Editor]]
 - [[#evil][Evil]]
@@ -90,6 +90,7 @@
        vi-tilde-fringe          ; fringe tildes to mark beyond EOB
        (window-select +numbers) ; visually switch windows
        workspaces               ; tab emulation, persistence & separate workspaces
+       tabs
 
        :editor
        (evil +everywhere) ; come to the dark side, we have cookies
@@ -190,12 +191,17 @@
 (map! "A-<backspace>" 'doom/delete-backward-word)
 #+end_src
 
-** Appearance
+** UI
 *** Disable menu and tool bar
 #+begin_src emacs-lisp :tangle config.el
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+#+end_src
+
+*** Show tabs of current projectile project only
+#+begin_src emacs-lisp :tangle config.el
+(centaur-tabs-group-by-projectile-project)
 #+end_src
 
 *** Default fallback theme

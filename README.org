@@ -45,6 +45,7 @@
   - [[#python][Python]]
   - [[#flyspell][Flyspell]]
   - [[#cheatsh][Cheat.sh]]
+  - [[#nov][Nov]]
 
 * Headers
 - Setup lexical binding headers at the beginning of config files
@@ -112,7 +113,7 @@
 
        :checkers
        syntax ; tasing you for every semicolon you forget
-       (spell +flyspell +everywhere)
+       (spell +flyspell)
 
        :tools
        ansible
@@ -136,7 +137,7 @@
        :lang
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
-       (sh +lsp +fish)               ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses
@@ -722,4 +723,32 @@
 ** Cheat.sh
 #+begin_src emacs-lisp :tangle packages.el
 (package! cheat-sh)
+#+end_src
+
+** Nov
+#+begin_src emacs-lisp :tangle packages.el
+(package! nov.el)
+(package! nov-xwidget :recipe (:host "github" :repo "chenyanming/nov-xwidget"))
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+#+end_src
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! esxml)
+#+end_src
+
+
+#+begin_src emacs-lisp :tangle config.el
+(use-package nov-xwidget
+  :demand t
+  :after nov
+  :config
+  (map! :map nov-mode-map
+        :n "gv" 'nov-xwidget-view)
+  (map! :map nov-xwidget-mode-map
+        :n "L" 'nov-xwidget-next-document
+        :n "H" 'nov-xwidget-previous-document)
+  (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
 #+end_src

@@ -18,6 +18,7 @@
        vi-tilde-fringe          ; fringe tildes to mark beyond EOB
        (window-select +numbers) ; visually switch windows
        workspaces               ; tab emulation, persistence & separate workspaces
+       tabs
 
        :editor
        (evil +everywhere) ; come to the dark side, we have cookies
@@ -39,7 +40,7 @@
 
        :checkers
        syntax ; tasing you for every semicolon you forget
-       (spell +flyspell +everywhere)
+       (spell +flyspell)
 
        :tools
        ansible
@@ -63,7 +64,7 @@
        :lang
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
-       (sh +lsp +fish)               ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses

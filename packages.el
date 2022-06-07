@@ -13,6 +13,8 @@
 (unpin! org-roam)
 (package! org-roam-ui)
 
+(package! org-autolist)
+
 (package! treemacs-all-the-icons)
 
 (package! cheat-sh)

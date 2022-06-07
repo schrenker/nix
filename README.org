@@ -30,6 +30,7 @@
   - [[#roam][Roam]]
   - [[#record-last-modified-date-in-org-mode][Record last modified date in org-mode]]
   - [[#org-mode-appearance][Org mode appearance]]
+  - [[#org-autolist][Org autolist]]
 - [[#treemacs][Treemacs]]
   - [[#treemacs-git-mode][Treemacs git mode]]
   - [[#treemacs-modes][Treemacs modes]]
@@ -647,6 +648,15 @@
 *** Emphasis markers
 #+begin_src emacs-lisp :tangle config.el
 (setq org-hide-emphasis-markers t)
+#+end_src
+
+** Org autolist
+#+begin_src emacs-lisp :tangle packages.el
+(package! org-autolist)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
 #+end_src
 
 * Treemacs

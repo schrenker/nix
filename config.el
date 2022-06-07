@@ -237,6 +237,8 @@
 
 (setq org-hide-emphasis-markers t)
 
+(add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
+
 (setq +treemacs-git-mode 'deferred)
 
 (setq treemacs-follow-mode t)

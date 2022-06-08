@@ -437,7 +437,8 @@
 #+begin_src emacs-lisp :tangle config.el
 (after! org
   (map! :nv "gj" #'evil-next-visual-line
-        :nv "gk" #'evil-previous-visual-line))
+        :nv "gk" #'evil-previous-visual-line
+        :i  "<tab>" #'org-cycle))
 #+end_src
 
 ** Set up path for org mode
@@ -530,8 +531,8 @@
 
 ** Disable company for org-mode
 #+begin_src emacs-lisp :tangle config.el
-(setq company-global-modes '(not org-mode))
-(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
+;; (setq company-global-modes '(not org-mode))
+;; (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 #+end_src
 
 ** Roam
@@ -704,7 +705,7 @@
 
 ** Matching
 #+begin_src emacs-lisp :tangle config.el
-(setq company-minimum-prefix-length 1
+(setq company-minimum-prefix-length 2
       company-require-match nil)
 #+end_src
 

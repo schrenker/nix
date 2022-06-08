@@ -116,7 +116,8 @@
 
 (after! org
   (map! :nv "gj" #'evil-next-visual-line
-        :nv "gk" #'evil-previous-visual-line))
+        :nv "gk" #'evil-previous-visual-line
+        :i  "<tab>" #'org-cycle))
 
 (setq org-directory "/Users/sebastian/Code/brain"
       org-roam-directory org-directory
@@ -162,8 +163,8 @@
      ("[DONE]" :foreground "#9FA4BB" :weight normal )
      ("[CANCELLED]" :foreground "#574C58" :weight normal))))
 
-(setq company-global-modes '(not org-mode))
-(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
+;; (setq company-global-modes '(not org-mode))
+;; (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 
 (map! :map doom-leader-notes-map
       :g "r t" 'org-roam-ui-sync-theme
@@ -256,7 +257,7 @@
       company-tooltip-minimum (- scroll-margin 1)
       company-tooltip-flip-when-above t)
 
-(setq company-minimum-prefix-length 1
+(setq company-minimum-prefix-length 2
       company-require-match nil)
 
 (setq company-idle-delay 0)

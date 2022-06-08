@@ -213,6 +213,11 @@
 (setq centaur-tabs-show-count t)
 #+end_src
 
+- disable tabs for ibuffer buffer
+#+begin_src emacs-lisp :tangle config.el
+(add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
+#+end_src
+
 *** Default fallback theme
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-theme 'doom-solarized-light)
@@ -712,6 +717,7 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq vterm-always-compile-module t)
 #+end_src
+
 
 * Additional tools
 

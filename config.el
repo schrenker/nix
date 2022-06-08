@@ -23,6 +23,8 @@
 
 (setq centaur-tabs-show-count t)
 
+(add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
+
 (setq doom-theme 'doom-solarized-light)
 
 ;; (setq fancy-splash-image (concat doom-private-dir "banner.png"))

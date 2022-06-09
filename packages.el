@@ -17,6 +17,9 @@
 
 (package! treemacs-all-the-icons)
 
+(package! tree-sitter)
+(package! tree-sitter-langs)
+
 (package! cheat-sh)
 
 (package! nov.el)

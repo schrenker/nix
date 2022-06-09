@@ -49,7 +49,7 @@
        editorconfig    ; let someone else argue about tabs vs spaces
        (eval +overlay) ; run code, run (also, repls)
        lookup          ; navigate your code and its documentation
-       (lsp +elgot)    ; M-x vscode
+       (lsp +eglot)    ; M-x vscode
        magit           ; a git porcelain for Emacs
        make            ; run make tasks from Emacs
        pdf             ; pdf enhancements

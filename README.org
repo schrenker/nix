@@ -44,6 +44,7 @@
 - [[#vterm][Vterm]]
 - [[#additional-tools][Additional tools]]
   - [[#python][Python]]
+  - [[#treesitter][Treesitter]]
   - [[#flyspell][Flyspell]]
   - [[#cheatsh][Cheat.sh]]
   - [[#nov][Nov]]
@@ -123,7 +124,7 @@
        editorconfig    ; let someone else argue about tabs vs spaces
        (eval +overlay) ; run code, run (also, repls)
        lookup          ; navigate your code and its documentation
-       (lsp +elgot)    ; M-x vscode
+       (lsp +eglot)    ; M-x vscode
        magit           ; a git porcelain for Emacs
        make            ; run make tasks from Emacs
        pdf             ; pdf enhancements
@@ -734,6 +735,20 @@
       (pyenv-mode-unset))))
 
 (add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
+#+end_src
+
+** Treesitter
+#+begin_src emacs-lisp :tangle packages.el
+(package! tree-sitter)
+(package! tree-sitter-langs)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(use-package! tree-sitter
+  :config
+  (require 'tree-sitter-langs)
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 #+end_src
 
 ** Flyspell

@@ -119,12 +119,13 @@
 
        :tools
        ansible
+       (debugger +lsp)
        direnv
        docker
        editorconfig    ; let someone else argue about tabs vs spaces
        (eval +overlay) ; run code, run (also, repls)
        lookup          ; navigate your code and its documentation
-       (lsp +eglot)    ; M-x vscode
+       lsp             ; M-x vscode
        magit           ; a git porcelain for Emacs
        make            ; run make tasks from Emacs
        pdf             ; pdf enhancements
@@ -137,6 +138,7 @@
        ( tty +osc)        ; improve the terminal Emacs experience
 
        :lang
+       (go +lsp)
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
@@ -154,12 +156,6 @@
 #+end_src
 
 * Emacs
-# ** Emacs server
-# #+begin_src emacs-lisp :tangle config.el
-# (require 'server)
-# (unless (server-running-p) (server-start))
-# #+end_src
-
 ** Personal information
 - Basic personal information, that some of the packages might require
 #+begin_src emacs-lisp :tangle config.el
@@ -217,6 +213,7 @@
 - disable tabs for ibuffer buffer
 #+begin_src emacs-lisp :tangle config.el
 (add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
+(add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
 #+end_src
 
 *** Default fallback theme
@@ -437,18 +434,19 @@
 - want gj and gk to move per visual line, instead of some weird paragraph jumping
 #+begin_src emacs-lisp :tangle config.el
 (after! org
-  (map! :nv "gj" #'evil-next-visual-line
-        :nv "gk" #'evil-previous-visual-line
-        :i  "<tab>" #'org-cycle))
+  (map! :map org-mode-map
+        :nv "gj" #'evil-next-visual-line
+        :nv "gk" #'evil-previous-visual-line))
 #+end_src
 
 ** Set up path for org mode
 - Set main org-mode directory
 - Set capture file inside of org-mode directory
 #+begin_src emacs-lisp :tangle config.el
-(setq org-directory "/Users/sebastian/Code/brain"
+(setq org-directory "/Users/sebastian/Library/Mobile Documents/com~apple~CloudDocs/brain"
       org-roam-directory org-directory
-      org-default-notes-file (concat org-directory "/!capture.org"))
+      org-default-notes-file (concat org-directory "/!capture.org")
+      +org-capture-notes-file org-default-notes-file)
 #+end_src
 
 ** Exclude certain tags from inheritance
@@ -719,7 +717,6 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq vterm-always-compile-module t)
 #+end_src
-
 
 * Additional tools
 

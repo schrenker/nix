@@ -44,12 +44,13 @@
 
        :tools
        ansible
+       (debugger +lsp)
        direnv
        docker
        editorconfig    ; let someone else argue about tabs vs spaces
        (eval +overlay) ; run code, run (also, repls)
        lookup          ; navigate your code and its documentation
-       (lsp +eglot)    ; M-x vscode
+       lsp             ; M-x vscode
        magit           ; a git porcelain for Emacs
        make            ; run make tasks from Emacs
        pdf             ; pdf enhancements
@@ -62,6 +63,7 @@
        ( tty +osc)        ; improve the terminal Emacs experience
 
        :lang
+       (go +lsp)
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor

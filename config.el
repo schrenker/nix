@@ -24,6 +24,7 @@
 (setq centaur-tabs-show-count t)
 
 (add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
+(add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
 
 (setq doom-theme 'doom-solarized-light)
 
@@ -115,13 +116,14 @@
       :localleader "a i" 'org-display-inline-images)
 
 (after! org
-  (map! :nv "gj" #'evil-next-visual-line
-        :nv "gk" #'evil-previous-visual-line
-        :i  "<tab>" #'org-cycle))
+  (map! :map org-mode-map
+        :nv "gj" #'evil-next-visual-line
+        :nv "gk" #'evil-previous-visual-line))
 
-(setq org-directory "/Users/sebastian/Code/brain"
+(setq org-directory "/Users/sebastian/Library/Mobile Documents/com~apple~CloudDocs/brain"
       org-roam-directory org-directory
-      org-default-notes-file (concat org-directory "/!capture.org"))
+      org-default-notes-file (concat org-directory "/!capture.org")
+      +org-capture-notes-file org-default-notes-file)
 
 (setq org-tags-exclude-from-inheritance '("crypt"
                                           "moc"

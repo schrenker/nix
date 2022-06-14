@@ -184,7 +184,7 @@
           org-roam-ui-open-on-start t))
 
 (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
+                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
                                       :immediate-finish t)))
 
 (after! org
@@ -193,6 +193,14 @@
     time-stamp-end "$"
     time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
 (add-hook 'before-save-hook 'time-stamp))
+
+(setq org-capture-templates
+      '(
+        ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+         "** %U\n%i%?" :empty-lines 1)
+        ("t" "Task" entry (file+headline org-default-notes-file "Tasks")
+         "** [TODO] %?" :empty-lines 1)
+        ))
 
 (setq org-superstar-headline-bullets-list '("⁖"))
 

@@ -30,6 +30,7 @@
   - [[#roam][Roam]]
   - [[#record-last-modified-date-in-org-mode][Record last modified date in org-mode]]
   - [[#org-capture-templates][Org capture templates]]
+  - [[#org-capture-anywhere-macos][Org capture anywhere MacOS]]
   - [[#org-mode-appearance][Org mode appearance]]
   - [[#org-autolist][Org autolist]]
 - [[#treemacs][Treemacs]]
@@ -584,13 +585,47 @@
 
 ** Org capture templates
 #+begin_src emacs-lisp :tangle config.el
-(setq org-capture-templates
-      '(
-        ("n" "Note" entry (file+headline org-default-notes-file "Notes")
-         "** %U\n%i%?" :empty-lines 1)
-        ("t" "Task" entry (file+headline org-default-notes-file "Tasks")
-         "** [TODO] %?" :empty-lines 1)
-        ))
+(after! org
+  (setq org-capture-templates
+        '(
+          ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+           "** %U\n%i%?" :empty-lines 1)
+          ("t" "Task" entry (file+headline org-default-notes-file "Tasks")
+           "** [TODO] %?" :empty-lines 1)
+          )))
+#+end_src
+
+** Org capture anywhere MacOS
+#+begin_src emacs-lisp :tangle packages.el
+(package! noflet)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(require 'noflet)
+(defun schrenker/make-capture-frame ()
+  "Create a new frame and run `org-capture'."
+  (interactive)
+  (make-frame '((name . "capture")
+                (top . 300)
+                (left . 700)
+                (width . 80)
+                (height . 25)))
+  (select-frame-by-name "capture")
+  (delete-other-windows)
+  (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
+          (org-capture)))
+
+(defadvice org-capture-finalize
+    (after delete-capture-frame activate)
+  "Advise capture-finalize to close the frame."
+  (if (equal "capture" (frame-parameter nil 'name))
+      (delete-frame)))
+
+(defadvice org-capture-destroy
+    (after delete-capture-frame activate)
+  "Advise capture-destroy to close the frame."
+  (if (equal "capture" (frame-parameter nil 'name))
+      (delete-frame)))
 #+end_src
 
 ** Org mode appearance

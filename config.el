@@ -28,8 +28,6 @@
 
 (setq doom-theme 'doom-solarized-light)
 
-;; (setq fancy-splash-image (concat doom-private-dir "banner.png"))
-
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
@@ -41,7 +39,6 @@
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
-;; (setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
 (setq  doom-font (font-spec :family "JetBrains Mono NL" :size 13))
 
 (setq initial-frame-alist '((fullscreen . maximized)))
@@ -94,6 +91,10 @@
 
 (setq +evil-want-o/O-to-continue-comments nil)
 
+(defun schrenker/evil-change (orig-fn beg end &optional type _ &rest args)
+    (apply orig-fn beg end type ?_ args))
+(advice-add 'evil-change :around 'schrenker/evil-change)
+
 (setq evil-escape-key-sequence nil)
 
 (map! :map evil-window-map
@@ -128,9 +129,7 @@
 (setq org-tags-exclude-from-inheritance '("crypt"
                                           "moc"
                                           "inbox"
-                                          "evergreen"
-                                          "wip"
-                                          "unpolished"))
+                                          "wip"))
 
 (require 'org-crypt)
 
@@ -244,9 +243,6 @@
 
 (setq org-superstar-prettify-item-bullets nil)
 
-;; (font-lock-add-keywords 'org-mode
-;;  '(("^ *\\([-]\\) "
-;;  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◆"))))))
@@ -255,9 +251,6 @@
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 
 (add-hook 'org-mode-hook (lambda ()
-  (push '("[ ]" . "") prettify-symbols-alist)
-  (push '("[-]" . "" ) prettify-symbols-alist)
-  (push '("[X]" . "" ) prettify-symbols-alist)
   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
   (push '("[#C]" . "⁕" ) prettify-symbols-alist)

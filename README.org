@@ -14,6 +14,7 @@
   - [[#split-windows-so-that-rightdown-is-focused-after-the-split][Split windows so that right/down is focused after the split]]
   - [[#line-up-y-behavior-to-other-operators][Line up Y behavior to other operators]]
   - [[#dont-continue-comments-on-oo-creating-empty-lines][Don't continue comments on o/O, creating empty lines]]
+  - [[#changed-text-doesnt-go-into-clipboard][Changed text doesn't go into clipboard]]
   - [[#evil-keybinds][Evil keybinds]]
 - [[#org-mode][Org mode]]
   - [[#org-mode-keybinds][Org mode keybinds]]
@@ -52,7 +53,6 @@
   - [[#nov][Nov]]
 
 * Headers
-- Setup lexical binding headers at the beginning of config files
 #+begin_src emacs-lisp :tangle init.el
 ;;; init.el -*- lexical-binding: t; -*-
 #+end_src
@@ -67,15 +67,6 @@
 #+end_src
 
 * Doom
-- This is main doom configuration file
-- Doom packages are focused mostly on Admin/DevOps/SRE work.
-  - org-mode for huge documentation potential
-  - Many of the packages are selected for configuration formats, like JSON, YAML
-  - Tools like ansible, terraform
-  - Shell scripting with powershell option (big fan of azure)
-  - vterm as I prefer my own system shell (fish) instead of eshell
-  - evil and tng for quick movement and completion
-  - helm for powerful searches
 #+begin_src emacs-lisp :tangle init.el
 (doom! :completion
        (company +tng)       ; the ultimate code completion backend
@@ -159,7 +150,6 @@
 
 * Emacs
 ** Personal information
-- Basic personal information, that some of the packages might require
 #+begin_src emacs-lisp :tangle config.el
 (setq  user-full-name "Sebastian Zawadzki"
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
@@ -167,8 +157,6 @@
 
 ** Keybinds
 *** Mac specific keybindings
-- Command is such a versatile key on Mac, I want to use it a lot in emacs as well
-- Option as alt is really nothing important, but figured it might as well be bound to it
 #+begin_src emacs-lisp :tangle config.el
 (cond (IS-MAC
        (setq mac-command-modifier       'meta
@@ -176,10 +164,6 @@
 #+end_src
 
 *** Mac style keyboard shortcuts
-- I really like using cmd+c and cmd+v as copy paste, it's what I'm used to
-- Makes even more sense that I share system clipboard with emacs on MacOS (I don't even remember original behavior anymore lol)
-- Cmd+q to quit, same as on MacOS
-- Cmd+m to minimize
 #+begin_src emacs-lisp :tangle config.el
 (map! "M-c" 'kill-ring-save)
 (map! "M-v" 'yank)
@@ -201,18 +185,18 @@
 #+end_src
 
 *** Tabs
-- group tabs by projectile project
+**** Group tabs by projectile project
 #+begin_src emacs-lisp :tangle config.el
 (require 'centaur-tabs)
 (centaur-tabs-group-by-projectile-project)
 #+end_src
 
-- show tab index and count
+**** Show tab index and count
 #+begin_src emacs-lisp :tangle config.el
 (setq centaur-tabs-show-count t)
 #+end_src
 
-- disable tabs for ibuffer buffer
+**** Disable tabs for specific buffers
 #+begin_src emacs-lisp :tangle config.el
 (add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
 (add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
@@ -223,15 +207,7 @@
 (setq doom-theme 'doom-solarized-light)
 #+end_src
 
-*** Custom splash image
-#+begin_src emacs-lisp :tangle config.el
-;; (setq fancy-splash-image (concat doom-private-dir "banner.png"))
-#+end_src
-
 *** Day/Night mode switching function (based on emacs-plus patch)
-- I regularly use day theme at day and night at night, so this is really great setting for me
-- Both variants of solarized look awesome
-- Also sync UI of org-roam
 #+begin_src emacs-lisp :tangle config.el
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
@@ -247,7 +223,6 @@
 
 *** Set font
 #+begin_src emacs-lisp :tangle config.el
-;; (setq  doom-font (font-spec :family "FiraCode Nerd Font" :style "Retina" :size 12))
 (setq  doom-font (font-spec :family "JetBrains Mono NL" :size 13))
 #+end_src
 
@@ -262,7 +237,6 @@
 #+end_src
 
 *** Set frame title and icon
-- Remove unneeded clutter for frame title
 #+begin_src emacs-lisp :tangle config.el
 (setq-default
  frame-title-format '("Doom")
@@ -270,8 +244,6 @@
 #+end_src
 
 *** Make window indicator more visible
-- This setting makes window switching number more visible
-- Window switching number appears when window switch happens with more than two windows
 #+begin_src emacs-lisp :tangle config.el
 (custom-set-faces!
   '(aw-leading-char-face
@@ -280,7 +252,6 @@
 #+end_src
 
 *** Modeline
-- Setup icons for modeline
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-modeline-icon (display-graphic-p)
       doom-modeline-major-mode-icon nil
@@ -298,7 +269,6 @@
 #+end_src
 
 *** Uniquify
-- Make buffer names unique (use path in name in case of duplicates)
 #+begin_src emacs-lisp :tangle config.el
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
@@ -309,7 +279,6 @@
 #+end_src
 
 ** Emacsclient
-- Use "main" workspace for emacsclient
 #+begin_src emacs-lisp :tangle config.el
 (after! persp-mode
   (setq persp-emacsclient-init-frame-behaviour-override "main"))
@@ -348,45 +317,41 @@
 
 * Evil
 ** Set up evil packages
-- Quick commenting/uncommenting with evil-commentary
-- I want to be able to use substitution with s, and don't use evil-snipe: disabled
 #+begin_src emacs-lisp :tangle packages.el
 (package! evil-commentary)
 (package! evil-snipe :disable t)
 #+end_src
 
 ** Split windows so that right/down is focused after the split
-- Focus the new window after split
-- I make the new window for a reason, why would I focus the old one?
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
 #+end_src
 
 ** Line up Y behavior to other operators
-- Keep capital operators in line
-- For the whole lines, yy is used
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-want-Y-yank-to-eol t)
 #+end_src
 
 ** Don't continue comments on o/O, creating empty lines
-- It gets into my way too much
-- If I want to continue commented line, I'll either manually comment it, or use evil-commentary
 #+begin_src emacs-lisp :tangle config.el
 (setq +evil-want-o/O-to-continue-comments nil)
 #+end_src
 
+** Changed text doesn't go into clipboard
+#+begin_src emacs-lisp :tangle config.el
+(defun schrenker/evil-change (orig-fn beg end &optional type _ &rest args)
+    (apply orig-fn beg end type ?_ args))
+(advice-add 'evil-change :around 'schrenker/evil-change)
+#+end_src
+
 ** Evil keybinds
 *** Disable escape on "jk"
-- There are some polish words, that include "jk" like word "Kolejka" which in english is "Queue". Obviously this was confusing, and I use "ESC" anyway.
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-escape-key-sequence nil)
 #+end_src
 
 *** Evil Window Map
-- Change regular active window rotation to ace-window, so I can choose by number if more than 2 windows are present
-- Enable jumping to treemacs from any window in frame
 #+begin_src emacs-lisp :tangle config.el
 (map! :map evil-window-map
       :g "w" 'ace-window
@@ -394,8 +359,6 @@
 #+end_src
 
 *** Enable key-chord and make double tap ';' move cursor to the right in insert mode
-- I don't want to each for an arrow key, ';' key is in the home row, so I can double tap to jump over any character, for example parenthesis
-- Utilize key-chord for this task
 #+begin_src emacs-lisp :tangle packages.el
 (package! key-chord)
 #+end_src
@@ -408,8 +371,6 @@
 #+end_src
 
 *** Disable evil keybindings for git-timemachine
-- They don't really work in git-timemachine
-- git-timemachine has it's own keybindings set, and it forces you to stick to it
 #+begin_src emacs-lisp :tangle config.el
 (with-eval-after-load 'git-timemachine
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
@@ -420,11 +381,10 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq org-startup-folded 'nofold)
 #+end_src
+
 ** Org mode keybinds
-*** org-mode-map
-- Set keybind for decryption of entries
-- Set keybind for showing inline images
-- Force tab to use org-cycle instead of faultly switching to company after reload
+
+*** Org-mode-map
 #+begin_src emacs-lisp :tangle config.el
 (map! :map org-mode-map
       :localleader "$" 'org-decrypt-entry
@@ -433,7 +393,6 @@
 
 
 *** Set visual line movement via gj and gk
-- want gj and gk to move per visual line, instead of some weird paragraph jumping
 #+begin_src emacs-lisp :tangle config.el
 (after! org
   (map! :map org-mode-map
@@ -442,8 +401,6 @@
 #+end_src
 
 ** Set up path for org mode
-- Set main org-mode directory
-- Set capture file inside of org-mode directory
 #+begin_src emacs-lisp :tangle config.el
 (setq org-directory "/Users/sebastian/Library/Mobile Documents/com~apple~CloudDocs/brain"
       org-roam-directory org-directory
@@ -456,16 +413,11 @@
 (setq org-tags-exclude-from-inheritance '("crypt"
                                           "moc"
                                           "inbox"
-                                          "evergreen"
-                                          "wip"
-                                          "unpolished"))
+                                          "wip"))
 #+end_src
 
 
 ** Set up headline encryption
-- Encrypt headlines with tag "crypt"
-- Disable autosave for files with "crypt" tag
-- Use personal GPG key for encryption
 #+begin_src emacs-lisp :tangle config.el
 (require 'org-crypt)
 
@@ -493,9 +445,6 @@
 #+end_src
 
 ** Inline images
-- Enable displaying of remote inline images
-- Startup with inline images
-- Allow for controlling image width
 #+begin_src emacs-lisp :tangle config.el
 (setq org-display-remote-inline-images t
       org-startup-with-inline-images t
@@ -546,13 +495,11 @@
 #+end_src
 
 *** Org-roam-ui
-- org-roam-ui requires unpinning of org-roam, so it is up to date
 #+begin_src emacs-lisp :tangle packages.el
 (unpin! org-roam)
 (package! org-roam-ui)
 #+end_src
 
-- Settings for org-roam-ui
 #+begin_src emacs-lisp :tangle config.el
 (use-package! websocket
     :after org-roam)
@@ -629,6 +576,7 @@
 #+end_src
 
 ** Org mode appearance
+
 *** Headlines
 #+begin_src emacs-lisp :tangle config.el
 (setq org-superstar-headline-bullets-list '("⁖"))
@@ -646,13 +594,9 @@
 #+end_src
 
 *** Bullet points
-- disable superstar, and replace with dot
 #+begin_src emacs-lisp :tangle config.el
 (setq org-superstar-prettify-item-bullets nil)
 
-;; (font-lock-add-keywords 'org-mode
-;;  '(("^ *\\([-]\\) "
-;;  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◆"))))))
@@ -664,9 +608,6 @@
 *** Checkboxes
 #+begin_src emacs-lisp :tangle config.el
 (add-hook 'org-mode-hook (lambda ()
-  (push '("[ ]" . "") prettify-symbols-alist)
-  (push '("[-]" . "" ) prettify-symbols-alist)
-  (push '("[X]" . "" ) prettify-symbols-alist)
   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
@@ -712,6 +653,7 @@
 #+end_src
 
 * Treemacs
+
 ** Treemacs git mode
 #+begin_src emacs-lisp :tangle config.el
 (setq +treemacs-git-mode 'deferred)
@@ -768,7 +710,6 @@
 * Additional tools
 
 ** Python
-- set pyenv and virtualenv based on projectile name (testing)
 #+begin_src emacs-lisp :tangle config.el
 (require 'pyenv-mode)
 

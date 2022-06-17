@@ -57,6 +57,7 @@
        rgb             ; creating color strings
        terraform       ; infrastructure as code
        upload          ; map local to remote projects via ssh/ftp
+       tree-sitter
 
        :os
        (:if IS-MAC macos) ; improve compatibility with macOS
@@ -71,6 +72,7 @@
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses
        rest
+       nix
 
        :app
        calendar

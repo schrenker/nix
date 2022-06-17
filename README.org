@@ -47,7 +47,6 @@
 - [[#vterm][Vterm]]
 - [[#additional-tools][Additional tools]]
   - [[#python][Python]]
-  - [[#treesitter][Treesitter]]
   - [[#flyspell][Flyspell]]
   - [[#cheatsh][Cheat.sh]]
   - [[#nov][Nov]]
@@ -125,6 +124,7 @@
        rgb             ; creating color strings
        terraform       ; infrastructure as code
        upload          ; map local to remote projects via ssh/ftp
+       tree-sitter
 
        :os
        (:if IS-MAC macos) ; improve compatibility with macOS
@@ -139,6 +139,7 @@
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses
        rest
+       nix
 
        :app
        calendar
@@ -171,7 +172,7 @@
 (map! "M-m" 'suspend-frame)
 #+end_src
 
-*** Remove char backwards
+*** Remove word backwards
 #+begin_src emacs-lisp :tangle config.el
 (map! "A-<backspace>" 'doom/delete-backward-word)
 #+end_src
@@ -722,20 +723,6 @@
 (add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
 #+end_src
 
-** Treesitter
-#+begin_src emacs-lisp :tangle packages.el
-(package! tree-sitter)
-(package! tree-sitter-langs)
-#+end_src
-
-#+begin_src emacs-lisp :tangle config.el
-(use-package! tree-sitter
-  :config
-  (require 'tree-sitter-langs)
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-#+end_src
-
 ** Flyspell
 #+begin_src emacs-lisp :tangle config.el
 (after! flyspell
@@ -750,7 +737,7 @@
 ** Nov
 #+begin_src emacs-lisp :tangle packages.el
 (package! nov.el)
-(package! nov-xwidget :recipe (:host "github" :repo "chenyanming/nov-xwidget"))
+(package! nov-xwidget :recipe (:host github :repo "chenyanming/nov-xwidget"))
 #+end_src
 
 #+begin_src emacs-lisp :tangle config.el

@@ -19,12 +19,9 @@
 
 (package! treemacs-all-the-icons)
 
-(package! tree-sitter)
-(package! tree-sitter-langs)
-
 (package! cheat-sh)
 
 (package! nov.el)
-(package! nov-xwidget :recipe (:host "github" :repo "chenyanming/nov-xwidget"))
+(package! nov-xwidget :recipe (:host github :repo "chenyanming/nov-xwidget"))
 
 (package! esxml)

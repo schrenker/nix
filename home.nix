@@ -12,14 +12,23 @@ in
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
+    arping
+    aspell
     azure-cli
     coreutils-prefixed
+    direnv
     fish
     git
     go
+    golangci-lint
     jq
     kubectl
+    neofetch
+    podman
+    shellcheck
     terraform
+    tmux
+    yamllint
   ];
 
   # programs.direnv.enable = true;

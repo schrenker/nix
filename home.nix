@@ -36,6 +36,17 @@ in
 
   programs.fish = {
     enable = true;
+
+    shellInit = builtins.readFile ./fish/shellInit.fish;
+
+    shellAliases = {
+      config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
+      wget = "wget --hsts-file ~/.config/wget/wget-hsts";
+      vi = "TERM=xterm-new emacsclient -nw";
+      nQ = "networkQuality";
+      fixproj = "rm ~/.config/emacs/.local/cache/treemacs-persist";
+    };
+
     plugins = [
       {
         name = "plugin-bang-bang";

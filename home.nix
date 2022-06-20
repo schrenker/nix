@@ -14,15 +14,14 @@ in
   home.packages = with pkgs; [
     arping
     aspell
-    azure-cli
     coreutils-prefixed
-    direnv
-    fish
+    nix-direnv
     git
     go
     golangci-lint
     jq
     kubectl
+    mas
     neofetch
     podman
     shellcheck
@@ -31,8 +30,8 @@ in
     yamllint
   ];
 
-  # programs.direnv.enable = true;
-  # programs.direnv.nix-direnv.enable = true;
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
 
   # programs.go = {
   #   enable = true;
@@ -52,48 +51,20 @@ in
   #   }];
   # };
 
-  # programs.git = {
-  #   enable = true;
-  #   package = unstable.git;
+  programs.git = {
+    enable = true;
 
-  #   signing.key = "0x48F495E9FD7D11E2";
-  #   signing.signByDefault = true;
+    userEmail = "sebastian@zawadzki.tech";
+    userName = "Sebastian Zawadzki";
 
-  #   userEmail = "sebastian@zawadzki.tech";
-  #   userName = "Sebastian Zawadzki";
+    extraConfig = {
+      init.defaultBranch = "master";
+    };
 
-  #   aliases = {
-  #     rs = "restore --staged";
-  #     amend = "commit --amend --reuse-message=HEAD";
-  #   };
-
-  #   extraConfig = {
-  #     push.default = "simple";
-  #     fetch.prune = true;
-  #     init.defaultBranch = "main";
-  #   };
-
-  #   ignores = [
-  #     ".DS_Store"
-  #     ".AppleDouble"
-  #     ".LSOverride"
-
-  #     "._*"
-
-  #     ".DocumentRevisions-V100"
-  #     ".fseventsd"
-  #     ".Spotlight-V100"
-  #     ".TemporaryItems"
-  #     ".Trashes"
-  #     ".VolumeIcon.icns"
-  #     ".com.apple.timemachine.donotpresent"
-  #     ".AppleDB"
-  #     ".AppleDesktop"
-  #     "Network Trash Folder"
-  #     "Temporary Items"
-  #     ".apdisk"
-  #   ];
-  # };
+    ignores = [
+      ".DS_Store"
+    ];
+  };
 
   # programs.zsh = {
   #   enable = true;

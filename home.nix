@@ -34,6 +34,39 @@ in
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 
+  programs.fish = {
+    enable = true;
+    plugins = [
+      {
+        name = "plugin-bang-bang";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-bang-bang";
+          rev = "f969c618301163273d0a03d002614d9a81952c1e";
+          sha256 = "LnIPFnkfp0qtmbfKlupPTr+ThUwT9/TD+IAT8GBMnmk=";
+        };
+      }
+      {
+        name = "plugin-foreign-env";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-foreign-env";
+          rev = "b3dd471bcc885b597c3922e4de836e06415e52dd";
+          sha256 = "LnIPFnkfp0qtmbfKlupPTr+ThUwT9/TD+IAT8GBMnmk=";
+        };
+      }
+      {
+        name = "theme-cmorrell.com";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "theme-cmorrell.com";
+          rev = "de213619ec87a3434781dd6ea8b47e219e46fb11";
+          sha256 = "LnIPFnkfp0qtmbfKlupPTr+ThUwT9/TD+IAT8GBMnmk=";
+        };
+      }
+    ];
+  };
+
   # programs.go = {
   #   enable = true;
   #   package = unstable.go_1_18;

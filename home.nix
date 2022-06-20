@@ -78,23 +78,11 @@ in
     ];
   };
 
-  # programs.go = {
-  #   enable = true;
-  #   package = unstable.go_1_18;
-  #   goPrivate = [ "gitlab.shopware.com" ];
-  #   goPath = "code/go";
-  # };
-
-  # programs.gpg = {
-  #   enable = true;
-  #   scdaemonSettings = {
-  #     disable-ccid = true;
-  #   };
-  #   publicKeys = [{
-  #     source = ./home/gnupg/f.pub;
-  #     trust = "ultimate";
-  #   }];
-  # };
+  programs.go = {
+    enable = true;
+    package = pkgs.go_1_18;
+    goPath = ".local/go";
+  };
 
   programs.git = {
     enable = true;
@@ -111,6 +99,9 @@ in
     ];
   };
 
+  programs.gpg = {
+    enable = true;
+  };
 #   home.file = {
 #     ".gnupg/pubkey.pub".source = config.lib.file.mkOutOfStoreSymlink ./home/gnupg/f.pub;
 #     ".gnupg/gpg-agent.conf".text = ''

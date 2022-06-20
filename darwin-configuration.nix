@@ -8,6 +8,7 @@
     # define packages available on system level for all users
   ];
 
+
   # auto upgrade nix package and the daemon service
   services.nix-daemon.enable = true;
 
@@ -28,6 +29,14 @@
 
   home-manager.useUserPackages = true;
   home-manager.users.ansible = ./home.nix;
+
+  homebrew.enable = true;
+  homebrew.brews = [];
+  homebrew.casks = [];
+  homebrew.cleanup = "zap";
+  homebrew.extraconfig = ''
+  '';
+  homebrew.masApps = {};
 
   fonts.fontDir.enable = true;
   fonts.fonts = with pkgs; [

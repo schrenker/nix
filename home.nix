@@ -22,7 +22,6 @@ in
     golangci-lint
     jq
     kubectl
-    mas
     neofetch
     podman
     shellcheck

@@ -33,8 +33,10 @@
   homebrew.enable = true;
   homebrew.brews = [];
   homebrew.casks = [];
+  homebrew.taps = ["d12frosted/emacs-plus"];
   homebrew.cleanup = "zap";
-  homebrew.extraconfig = ''
+  homebrew.extraConfig = ''
+  brew "emacs-plus", args: ["with-imagemagick", "with-no-frame-refocus", "with-native-comp", "with-nobu417-big-sur-icon", "with-xwidgets"]
   '';
   homebrew.masApps = {};
 
@@ -43,7 +45,13 @@
      recursive
      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
-
+  system.defaults.finder._FXShowPosixPathInTitle = true;
+  # system.defaults.finder._FXSortFoldersFirst = true;
+  system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = true;
+  system.defaults.dock.autohide = true;
+  system.defaults.dock.autohide-delay = "0.75";
+  system.defaults.dock.autohide-time-modifier = "0";
+  system.defaults.dock.mineffect = "suck";
 
   # Add ability to used TouchID for sudo authentication
   # security.pam.enableSudoTouchIdAuth = true;

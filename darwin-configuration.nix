@@ -12,12 +12,15 @@
   services.nix-daemon.enable = true;
 
   # create /etc/zshrc that loads the nix-darwin environment
+  programs.bash.enable = true;
   programs.zsh.enable = true;
+  programs.fish.enable = true;
+  environment.shells = with pkgs; [ bashInteractive fish zsh ];
+  # requires 'chsh -s /run/current-system/sw/bin/fish' after that to set up fish
 
   # backwards compatibility, please read the changelog before changing
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
-
   users.users.ansible = {
     name = "ansible";
     home = "/Users/ansible";

@@ -15,6 +15,7 @@ in
     arping
     aspell
     coreutils-prefixed
+    fish
     nix-direnv
     git
     go
@@ -65,39 +66,6 @@ in
       ".DS_Store"
     ];
   };
-
-  # programs.zsh = {
-  #   enable = true;
-  #   enableCompletion = false;
-  #   oh-my-zsh = {
-  #     enable = true;
-  #     theme = "trapd00r";
-  #     plugins = ["git" "docker" "docker-compose" "aws"];
-  #   };
-  #   localVariables = {
-  #     EDITOR = "nvim";
-  #     PATH = "$PATH:$GOPATH/bin:$HOME/.local/bin";
-  #   };
-  #   sessionVariables = {
-  #     DOCKER_BUILDKIT = 1;
-  #   };
-  #   shellAliases = {
-  #     ykrestart = "gpgconf --reload scdaemon && gpgconf --kill gpg-agent && gpg-connect-agent updatestartuptty /bye";
-  #     awsume = ". awsume";
-  #     vi = "lvim";
-  #     vim = "lvim";
-  #     gpo = "git pull origin $(git_current_branch)";
-  #   };
-  #   initExtra = ''
-  #     # yubikey setup
-  #     export GIT_SSH="/usr/bin/ssh"
-  #     export GPG_TTY="$(tty)"
-  #     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-  #     gpgconf --launch gpg-agent
-  #     # custom scripts
-  #     ${builtins.readFile ./home/zsh/scripts.sh}
-  #   '';
-  # };
 
 #   home.file = {
 #     ".gnupg/pubkey.pub".source = config.lib.file.mkOutOfStoreSymlink ./home/gnupg/f.pub;

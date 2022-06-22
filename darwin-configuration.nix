@@ -65,10 +65,10 @@
   homebrew.masApps = {};
 
   fonts.fontDir.enable = true;
-  fonts.fonts = with pkgs; [
-     recursive
-     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-  ];
+  # fonts.fonts = with pkgs; [
+  #    recursive
+  #    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  # ];
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.finder.ShowStatusBar = true;
   system.defaults.finder.FXPreferredViewStyle = "clmv";

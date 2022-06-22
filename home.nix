@@ -50,7 +50,7 @@ in
           owner = "oh-my-fish";
           repo = "plugin-bang-bang";
           rev = "f969c618301163273d0a03d002614d9a81952c1e";
-          sha256 = "LnIPFnkfp0qtmbfKlupPTr+ThUwT9/TD+IAT8GBMnmk=";
+          sha256 = "A8ydBX4LORk+nutjHurqNNWFmW6LIiBPQcxS3x4nbeQ=";
         };
       }
       {
@@ -59,7 +59,7 @@ in
           owner = "oh-my-fish";
           repo = "plugin-foreign-env";
           rev = "b3dd471bcc885b597c3922e4de836e06415e52dd";
-          sha256 = "LnIPFnkfp0qtmbfKlupPTr+ThUwT9/TD+IAT8GBMnmk=";
+          sha256 = "3h03WQrBZmTXZLkQh1oVyhv6zlyYsSDS7HTHr+7WjY8=";
         };
       }
       {
@@ -68,7 +68,7 @@ in
           owner = "oh-my-fish";
           repo = "theme-cmorrell.com";
           rev = "de213619ec87a3434781dd6ea8b47e219e46fb11";
-          sha256 = "LnIPFnkfp0qtmbfKlupPTr+ThUwT9/TD+IAT8GBMnmk=";
+          sha256 = "3h03WQrBZmTXZLkQh1oVyhv6zlyYsSDS7HTHr+7WjY8=";
         };
       }
     ];

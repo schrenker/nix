@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
-git-crypt unlock
-
 echo "Installing home-manager"
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
 nix-channel --update
 
-echo "Backing up /etc/nix/nix.conf"
+echo "Backing up /etc/nix/nix.conf and shells"
 sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
+sudo mv /etc/shells /etc/shells.bkp
 
 echo "Installing nix-darwin"
 nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
@@ -23,6 +22,7 @@ if [ ! -d "$HOME/.config/doom" ]; then
   mkdir -p $HOME/.config
   git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
   git clone https://github.com/schrenker/doom.d.git ~/.config/doom
+  $HOME/.config/emacs/bin/doom  install
 fi
 
 echo "Reload shell to activate fish and run commands:"
@@ -33,4 +33,4 @@ echo
 echo "For doom installation:"
 echo 'doom install'
 
-brew uninstall git-crypt
+/opt/homebrew/bin/brew uninstall git-crypt

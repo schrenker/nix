@@ -4,4 +4,5 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 /opt/homebrew/bin/brew install git-crypt
 
-echo "Reload shell and launch bootstrap.sh script"
+echo 'Reload shell and launch bootstrap.sh script'
+echo 'Remember about unlocking secrets from git before running bootstrap.sh'

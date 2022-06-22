@@ -18,8 +18,6 @@ in
     fish
     nix-direnv
     git
-    go
-    golangci-lint
     jq
     kubectl
     neofetch
@@ -36,7 +34,7 @@ in
   programs.fish = {
     enable = true;
 
-    shellInit = builtins.readFile ./fish/shellInit.fish;
+    shellInit = builtins.readFile ./dotfiles/config.fish;
 
     shellAliases = {
       config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
@@ -77,12 +75,6 @@ in
     ];
   };
 
-  programs.go = {
-    enable = true;
-    package = pkgs.go_1_18;
-    goPath = ".local/go";
-  };
-
   programs.git = {
     enable = true;
 
@@ -100,6 +92,10 @@ in
 
   programs.gpg = {
     enable = true;
+  };
+
+  home.file = {
+    ".gnupg/gpg-agent.conf".source = config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
   };
 #   home.file = {
 #     ".gnupg/pubkey.pub".source = config.lib.file.mkOutOfStoreSymlink ./home/gnupg/f.pub;

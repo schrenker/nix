@@ -89,10 +89,6 @@ in
     ];
   };
 
-  programs.gpg = {
-    enable = true;
-  };
-
   home.file = {
     ".gnupg/gpg-agent.conf".source = config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
   };

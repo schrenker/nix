@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+git-crypt unlock
+
 echo "Installing home-manager"
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
@@ -30,3 +32,5 @@ echo 'darwin-rebuild switch'
 echo
 echo "For doom installation:"
 echo 'doom install'
+
+brew uninstall git-crypt

@@ -99,6 +99,4 @@
   system.defaults.loginwindow.GuestEnabled = false;
 
   system.defaults.screencapture.location = "$HOME/Pictures/Screenshots";
-  # Add ability to used TouchID for sudo authentication
-  # security.pam.enableSudoTouchIdAuth = true;
 }

@@ -1,21 +1,23 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-sh <(curl -L https://nixos.org/nix/install)
-
+echo "Installing home-manager"
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
 nix-channel --update
 
-# let nix-darwin handle /etc/nix/nix.conf
+echo "Backing up /etc/nix/nix.conf"
 sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
 
-# install nix-darwin
+echo "Installing nix-darwin"
 nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
 ./result/bin/darwin-installer
 
+echo "Changing current user login shell to fish"
 chsh -s /run/current-system/sw/bin/fish
 
+echo "Checking for emacs configuration"
 if [ ! -d "$HOME/.config/doom" ]; then
+  echo "Missing. Pulling doom emacs"
   mkdir -p $HOME/.config
   git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
   git clone https://github.com/schrenker/doom.d.git ~/.config/doom

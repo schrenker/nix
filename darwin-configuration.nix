@@ -21,13 +21,13 @@
   # backwards compatibility, please read the changelog before changing
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
-  users.users.ansible = {
-    name = "ansible";
-    home = "/Users/ansible";
+  users.users.sebastian = {
+    name = "sebastian";
+    home = "/Users/sebastian";
   };
 
   home-manager.useUserPackages = true;
-  home-manager.users.ansible = ./home.nix;
+  home-manager.users.sebastian = ./home.nix;
 
   homebrew.enable = true;
   homebrew.brews = [

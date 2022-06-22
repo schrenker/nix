@@ -4,8 +4,8 @@ let
 in
 {
   home.stateVersion = "22.05";
-  home.username = "ansible";
-  home.homeDirectory = "/Users/ansible";
+  home.username = "sebastian";
+  home.homeDirectory = "/Users/sebastian";
 
   programs.home-manager.enable = true;
 

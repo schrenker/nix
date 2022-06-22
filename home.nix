@@ -22,6 +22,7 @@ in
     kubectl
     neofetch
     podman
+    rnix-lsp
     shellcheck
     terraform
     tmux

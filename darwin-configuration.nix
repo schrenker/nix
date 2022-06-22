@@ -31,9 +31,34 @@
   home-manager.users.ansible = ./home.nix;
 
   homebrew.enable = true;
-  homebrew.brews = [];
-  homebrew.casks = [];
-  homebrew.taps = ["d12frosted/emacs-plus"];
+  homebrew.brews = [
+    "coreutils"
+    "editorconfig"
+  ];
+  homebrew.casks = [
+    "alt-tab"
+    "bartender"
+    "font-jetbrains-mono"
+    "hazeover"
+    "karabiner-elements"
+    "logitech-options"
+    "lulu"
+    "numi"
+    "podman-desktop"
+    "raspberry-pi-imager"
+    "raycast"
+    "synologyassistant"
+    "utm"
+    "wireshark"
+    "zsa-wally"
+  ];
+  homebrew.taps = [
+    "d12frosted/emacs-plus"
+    "homebrew/cask"
+    "homebrew/cask-versions"
+    "homebrew/cask-drivers"
+    "homebrew/cask-fonts"
+  ];
   homebrew.cleanup = "zap";
   homebrew.extraConfig = ''
   brew "emacs-plus", args: ["with-imagemagick", "with-no-frame-refocus", "with-native-comp", "with-nobu417-big-sur-icon", "with-xwidgets"]

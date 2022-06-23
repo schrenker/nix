@@ -1,6 +1,5 @@
 { config, pkgs, lib, ... }:
-let
-  unstable = import <unstable> { config = { allowUnfree = true; }; };
+let unstable = import <unstable> { config = { allowUnfree = true; }; };
 in
 {
   home.stateVersion = "22.05";
@@ -77,16 +76,13 @@ in
     userEmail = "sebastian@zawadzki.tech";
     userName = "Sebastian Zawadzki";
 
-    extraConfig = {
-      init.defaultBranch = "master";
-    };
+    extraConfig = { init.defaultBranch = "master"; };
 
-    ignores = [
-      ".DS_Store"
-    ];
+    ignores = [ ".DS_Store" ];
   };
 
   home.file = {
-    ".gnupg/gpg-agent.conf".source = config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
+    ".gnupg/gpg-agent.conf".source =
+      config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
   };
 }

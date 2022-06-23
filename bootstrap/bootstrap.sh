@@ -32,5 +32,3 @@ echo 'darwin-rebuild switch'
 echo
 echo "For doom installation:"
 echo 'doom install'
-
-/opt/homebrew/bin/brew uninstall git-crypt

@@ -15,12 +15,13 @@ in
     arping
     aspell
     fish
-    nix-direnv
     git
     git-crypt
     jq
     kubectl
     neofetch
+    nix-direnv
+    nixfmt
     podman
     rnix-lsp
     shellcheck

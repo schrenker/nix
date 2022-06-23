@@ -62,13 +62,21 @@
   homebrew.extraConfig = ''
   brew "emacs-plus", args: ["with-imagemagick", "with-no-frame-refocus", "with-native-comp", "with-nobu417-big-sur-icon", "with-xwidgets"]
   '';
-  homebrew.masApps = {};
+  homebrew.masApps = {
+    "Wipr" = 1320666476;
+    "Microsoft Remote Desktop" = 1295203466;
+    "ImageFinder for Safari" = 1514863337;
+    "SponsorBlock for YouTube - Skip Sponsorships" = 1573461917;
+    "Hush" = 1544743900;
+    "Equinox" = 1591510203;
+    "Bitwarden" = 1352778147;
+    "Amphetamine" = 937984704;
+    "Sorted" = 1306893526;
+    "Noir" = 1592917505;
+  };
 
   fonts.fontDir.enable = true;
-  # fonts.fonts = with pkgs; [
-  #    recursive
-  #    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-  # ];
+
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.finder.ShowStatusBar = true;
   system.defaults.finder.FXPreferredViewStyle = "clmv";

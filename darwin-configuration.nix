@@ -28,7 +28,7 @@
   home-manager.users.sebastian = ./home.nix;
 
   homebrew.enable = true;
-  homebrew.brews = [ "coreutils" "editorconfig" ];
+  homebrew.brews = [ "coreutils" "editorconfig" "pngpaste" ];
   homebrew.casks = [
     "alt-tab"
     "bartender"
@@ -41,6 +41,7 @@
     "podman-desktop"
     "raspberry-pi-imager"
     "raycast"
+    "steam"
     "synologyassistant"
     "utm"
     "wireshark"

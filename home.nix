@@ -13,18 +13,20 @@ in
   home.packages = with pkgs; [
     arping
     aspell
+    cmake
+    fd
     fish
     git
     git-crypt
+    go-task
     jq
-    kubectl
     neofetch
     nix-direnv
     nixfmt
     podman
+    ripgrep
     rnix-lsp
     shellcheck
-    terraform
     tmux
     yamllint
   ];
@@ -64,6 +66,13 @@ in
         name = "theme-cmorrell.com";
         src = builtins.fetchGit {
           url = "https://github.com/oh-my-fish/theme-cmorrell.com";
+          ref = "master";
+        };
+      }
+      {
+        name = "plugin-direnv";
+        src = builtins.fetchGit {
+          url = "https://github.com/oh-my-fish/plugin-direnv";
           ref = "master";
         };
       }

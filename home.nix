@@ -92,6 +92,9 @@ in
   home.file = {
     ".gnupg/gpg-agent.conf".source =
       config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
+    ".config/iterm2/com.googlecode.iterm2.plist".source = config.lib.file.mkOutOfStoreSymlink ./dotfiles/iterm2/com.googlecode.iterm2.plist;
+    "Library/Application Support/iTerm2/Scripts/AutoLaunch/auto_dark_mode.py".source = config.lib.file.mkOutOfStoreSymlink ./dotfiles/iterm2/auto_dark_mode.py;
+
     ".ssh/git".source = config.lib.file.mkOutOfStoreSymlink ./secrets/git;
     ".ssh/default".source = config.lib.file.mkOutOfStoreSymlink ./secrets/default;
     ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink ./secrets/ssh_config;

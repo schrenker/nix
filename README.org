@@ -6,6 +6,8 @@ Projects used:
   - https://github.com/LnL7/nix-darwin
   - https://github.com/nix-community/home-manager
 
+For programming environments, https://github.com/nix-community/nix-direnv is used, along with shell.nix files for isolated, clean environment.
+
 ** File structure
 - bootstrap/: Scripts used for initial installation. After first install not used anymore. Also if not found, pulls emacs config:
   + https://github.com/doomemacs/doomemacs

@@ -2,6 +2,8 @@
 
 This repository contains my personal MacOS configuration, based on nix package manager.
 
+I am a big fan of defining everything in code. Motivation for creating this was reproducible, versioned, idempotent configuration management for my personal laptop. This approach also allows me to store all my configuration in a single directory, and symlink it to the system.
+
 Projects used:
   - https://github.com/LnL7/nix-darwin
   - https://github.com/nix-community/home-manager

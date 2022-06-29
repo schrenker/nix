@@ -40,7 +40,6 @@ in
     shellInit = builtins.readFile ./dotfiles/config.fish;
 
     shellAliases = {
-      config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
       wget = "wget --hsts-file ~/.config/wget/wget-hsts";
       vi = "TERM=xterm-new emacsclient -nw";
       nQ = "networkQuality";

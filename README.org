@@ -1,0 +1,16 @@
+#+title: Nix-dots
+
+This repository contains my personal MacOS configuration, based on nix package manager.
+
+Projects used:
+  - https://github.com/LnL7/nix-darwin
+  - https://github.com/nix-community/home-manager
+
+** File structure
+- bootstrap/: Scripts used for initial installation. After first install not used anymore. Also if not found, pulls emacs config:
+  + https://github.com/doomemacs/doomemacs
+  + https://github.com/schrenker/doom.d
+- dotfiles/: Non encrypted configuration files
+- secrets/: Encrypted configuration files/secrets
+- darwin-configuration.nix: System-wide config, including MacOS config, brew packages, etc.
+- home.nix: Personal config, scope limited to home directory.

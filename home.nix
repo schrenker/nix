@@ -18,11 +18,13 @@ in
     fish
     git
     git-crypt
+    gnupg
     go-task
     jq
     neofetch
     nix-direnv
     nixfmt
+    pinentry_mac
     podman
     ripgrep
     rnix-lsp

@@ -92,5 +92,8 @@ in
   home.file = {
     ".gnupg/gpg-agent.conf".source =
       config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
+    ".ssh/git".source = config.lib.file.mkOutOfStoreSymlink ./secrets/git;
+    ".ssh/default".source = config.lib.file.mkOutOfStoreSymlink ./secrets/default;
+    ".ssh/config".source = config.lib.file.mkOutOfStoreSymlink ./secrets/ssh_config;
   };
 }

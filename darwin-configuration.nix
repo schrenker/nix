@@ -102,5 +102,5 @@
 
   system.defaults.loginwindow.GuestEnabled = false;
 
-  system.defaults.screencapture.location = "$HOME/Pictures/Screenshots";
+  system.defaults.screencapture.location = "~/Pictures/Screenshots";
 }

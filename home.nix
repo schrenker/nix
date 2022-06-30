@@ -25,7 +25,6 @@ in
     nix-direnv
     nixfmt
     pinentry_mac
-    podman
     ripgrep
     rnix-lsp
     shellcheck
@@ -46,6 +45,7 @@ in
       vi = "TERM=xterm-new emacsclient -nw";
       nQ = "networkQuality";
       fixproj = "rm ~/.config/emacs/.local/cache/treemacs-persist";
+      # docker = "podman";
     };
 
     plugins = [

@@ -23,10 +23,8 @@ in
     jq
     neofetch
     nix-direnv
-    nixfmt
     pinentry_mac
     ripgrep
-    rnix-lsp
     shellcheck
     tmux
     yamllint

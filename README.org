@@ -10,10 +10,11 @@ Projects used:
 
 For programming environments, https://github.com/nix-community/nix-direnv is used, along with shell.nix files for isolated, clean environment.
 
-** File structure
-- bootstrap/: Scripts used for initial installation. After first install not used anymore. Also if not found, pulls emacs config:
-  + https://github.com/doomemacs/doomemacs
-  + https://github.com/schrenker/doom.d
+** Structure
+- scripts/: Scripts used for things, that can't be done via nix, or I haven't figured out how to do them yet:
+  + bootstrap/: Scripts used for initial installation. After first install not used anymore. Also if not found, pulls emacs config:
+    - https://github.com/doomemacs/doomemacs
+    - https://github.com/schrenker/doom.d
 - dotfiles/: Non encrypted configuration files
 - secrets/: Encrypted configuration files/secrets
 - darwin-configuration.nix: System-wide config, including MacOS config, brew packages, etc.

@@ -3,4 +3,4 @@
 *.log
 tmp/
 
-bootstrap/result
+result/

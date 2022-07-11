@@ -25,9 +25,8 @@ in
     nix-direnv
     pinentry_mac
     ripgrep
-    shellcheck
     tmux
-    yamllint
+    wget
   ];
 
   programs.direnv.enable = true;
@@ -43,7 +42,7 @@ in
       vi = "TERM=xterm-new emacsclient -nw";
       nQ = "networkQuality";
       fixproj = "rm ~/.config/emacs/.local/cache/treemacs-persist";
-      # docker = "podman";
+      docker = "podman";
     };
 
     plugins = [

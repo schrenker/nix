@@ -306,16 +306,3 @@
 
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
-
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-
-(use-package nov-xwidget
-  :demand t
-  :after nov
-  :config
-  (map! :map nov-mode-map
-        :n "gv" 'nov-xwidget-view)
-  (map! :map nov-xwidget-mode-map
-        :n "L" 'nov-xwidget-next-document
-        :n "H" 'nov-xwidget-previous-document)
-  (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))

@@ -29,7 +29,7 @@
        word-wrap
 
        :emacs
-       ( dired +icons)    ; making dired pretty [functional] directory editor
+       ( dired +dirvish +icons)    ; making dired pretty [functional] directory editor
        electric           ; smarter, keyword-based electric-indent
        ( ibuffer +icons ) ; interactive buffer management
        ( undo +tree )     ; persistent, smarter undo for your inevitable mistakes
@@ -46,11 +46,11 @@
        ansible
        (debugger +lsp)
        direnv
-       docker
+       (docker +lsp)
        editorconfig    ; let someone else argue about tabs vs spaces
        (eval +overlay) ; run code, run (also, repls)
        lookup          ; navigate your code and its documentation
-       lsp             ; M-x vscode
+       (lsp +peek)             ; M-x vscode
        magit           ; a git porcelain for Emacs
        make            ; run make tasks from Emacs
        pdf             ; pdf enhancements
@@ -68,6 +68,7 @@
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
+       (csharp +lsp +dotnet)
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses

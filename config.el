@@ -18,6 +18,8 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+(which-function-mode)
+
 (require 'centaur-tabs)
 (centaur-tabs-group-by-projectile-project)
 
@@ -76,7 +78,7 @@
 
 (setq make-backup-files t)
 
-(setq-default tab-width 2)
+(setq-default tab-width 4)
 
 (setq  display-line-numbers-type 'visual)
 
@@ -134,7 +136,7 @@
 (require 'org-crypt)
 
 (setq org-crypt-disable-auto-save t
-      org-crypt-key "Sebastian Zawadzki")
+      org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu"))
 
 (add-hook! org-mode (electric-indent-local-mode -1))
 
@@ -164,8 +166,8 @@
      ("[DONE]" :foreground "#9FA4BB" :weight normal )
      ("[CANCELLED]" :foreground "#574C58" :weight normal))))
 
-;; (setq company-global-modes '(not org-mode))
-;; (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
+(setq company-global-modes '(not org-mode))
+(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 
 (map! :map doom-leader-notes-map
       :g "r t" 'org-roam-ui-sync-theme
@@ -294,15 +296,10 @@
 
 (setq vterm-always-compile-module t)
 
-(require 'pyenv-mode)
+(add-hook 'nix-mode-hook #'lsp!)
 
-(defun projectile-pyenv-mode-set ()
-  (let ((project (projectile-project-name)))
-    (if (member project (pyenv-mode-versions))
-        (pyenv-mode-set project)
-      (pyenv-mode-unset))))
-
-(add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
 
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))

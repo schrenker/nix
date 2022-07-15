@@ -45,8 +45,8 @@
   - [[#matching][Matching]]
   - [[#delay][Delay]]
 - [[#vterm][Vterm]]
+- [[#lsp][LSP]]
 - [[#additional-tools][Additional tools]]
-  - [[#python][Python]]
   - [[#flyspell][Flyspell]]
   - [[#cheatsh][Cheat.sh]]
 
@@ -95,7 +95,7 @@
        word-wrap
 
        :emacs
-       ( dired +icons)    ; making dired pretty [functional] directory editor
+       ( dired +dirvish +icons)    ; making dired pretty [functional] directory editor
        electric           ; smarter, keyword-based electric-indent
        ( ibuffer +icons ) ; interactive buffer management
        ( undo +tree )     ; persistent, smarter undo for your inevitable mistakes
@@ -112,11 +112,11 @@
        ansible
        (debugger +lsp)
        direnv
-       docker
+       (docker +lsp)
        editorconfig    ; let someone else argue about tabs vs spaces
        (eval +overlay) ; run code, run (also, repls)
        lookup          ; navigate your code and its documentation
-       lsp             ; M-x vscode
+       (lsp +peek)             ; M-x vscode
        magit           ; a git porcelain for Emacs
        make            ; run make tasks from Emacs
        pdf             ; pdf enhancements
@@ -134,6 +134,7 @@
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
+       (csharp +lsp +dotnet)
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses
@@ -182,6 +183,11 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+#+end_src
+
+*** Show current function in modeline
+#+begin_src emacs-lisp :tangle config.el
+(which-function-mode)
 #+end_src
 
 *** Tabs
@@ -297,7 +303,7 @@
 
 *** Set default tab-width
 #+begin_src emacs-lisp :tangle config.el
-(setq-default tab-width 2)
+(setq-default tab-width 4)
 #+end_src
 
 *** Relative numbers
@@ -422,7 +428,7 @@
 (require 'org-crypt)
 
 (setq org-crypt-disable-auto-save t
-      org-crypt-key "Sebastian Zawadzki")
+      org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu"))
 #+end_src
 
 ** Disable electric indent
@@ -481,8 +487,8 @@
 
 ** Disable company for org-mode
 #+begin_src emacs-lisp :tangle config.el
-;; (setq company-global-modes '(not org-mode))
-;; (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
+(setq company-global-modes '(not org-mode))
+(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 #+end_src
 
 ** Roam
@@ -707,20 +713,17 @@
 (setq vterm-always-compile-module t)
 #+end_src
 
-* Additional tools
-
-** Python
+* LSP
 #+begin_src emacs-lisp :tangle config.el
-(require 'pyenv-mode)
-
-(defun projectile-pyenv-mode-set ()
-  (let ((project (projectile-project-name)))
-    (if (member project (pyenv-mode-versions))
-        (pyenv-mode-set project)
-      (pyenv-mode-unset))))
-
-(add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
+(add-hook 'nix-mode-hook #'lsp!)
 #+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
+#+end_src
+
+* Additional tools
 
 ** Flyspell
 #+begin_src emacs-lisp :tangle config.el

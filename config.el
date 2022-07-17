@@ -158,13 +158,13 @@
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
                         (?C :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "[TODO](t)" "[INPROGRESS](i)" "[WAITING](w)"  "|" "[DONE](d)" "[CANCELLED](c)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)"  "|" "DONE(d)" "CANCELLED(c)"))
    org-todo-keyword-faces
-   '(("[TODO]" :foreground "#8741bb" :weight normal)
-     ("[INPROGRESS]" :foreground "#98BE65" :weight normal)
-     ("[WAITING]" :foreground "#DA8548" :weight normal)
-     ("[DONE]" :foreground "#9FA4BB" :weight normal )
-     ("[CANCELLED]" :foreground "#574C58" :weight normal))))
+   '(("TODO" :foreground "#8741bb" :weight bold :underline t)
+     ("INPROGRESS" :foreground "#98BE65" :weight bold :underline t)
+     ("WAITING" :foreground "#DA8548" :weight bold :underline t)
+     ("DONE" :foreground "#9FA4BB" :weight bold :underline t )
+     ("CANCELLED" :foreground "#574C58" :weight bold :underline t))))
 
 (setq company-global-modes '(not org-mode))
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
@@ -201,7 +201,7 @@
           ("n" "Note" entry (file+headline org-default-notes-file "Notes")
            "** %U\n%i%?" :empty-lines 1)
           ("t" "Task" entry (file+headline org-default-notes-file "Tasks")
-           "** [TODO] %?" :empty-lines 1)
+           "** TODO %?" :empty-lines 1)
           )))
 
 (require 'noflet)

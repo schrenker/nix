@@ -12,7 +12,6 @@ in
 
   home.packages = with pkgs; [
     arping
-    aspell
     cmake
     fd
     fish

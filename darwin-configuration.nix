@@ -28,7 +28,12 @@
   home-manager.users.sebastian = ./home.nix;
 
   homebrew.enable = true;
-  homebrew.brews = [ "coreutils" "editorconfig" "pngpaste" ];
+  homebrew.brews = [
+    "aspell"
+    "coreutils"
+    "editorconfig"
+    "pngpaste"
+  ];
   homebrew.casks = [
     "alt-tab"
     "bartender"

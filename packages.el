@@ -20,3 +20,5 @@
 (package! treemacs-all-the-icons)
 
 (package! cheat-sh)
+
+(package! inheritenv)

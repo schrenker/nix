@@ -296,10 +296,26 @@
 
 (setq vterm-always-compile-module t)
 
-(add-hook 'nix-mode-hook #'lsp!)
+(require 'lsp)
 
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
 
+(add-hook 'nix-mode-hook #'lsp!)
+
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
+                  :major-modes '(terraform-mode)
+                  :server-id 'terraform-ls))
+
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
+
+(add-hook! prog-mode #'flymake-mode)
+
+(after! lsp-mode
+  (setq lsp-diagnostics-provider :flymake))
+
+(require 'inheritenv)
+(inheritenv-add-advice #'with-temp-buffer)
+(inheritenv-add-advice #'lsp--install-server-internal)

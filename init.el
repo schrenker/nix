@@ -2,7 +2,8 @@
 
 (doom! :completion
        (company +tng)       ; the ultimate code completion backend
-       (helm +fuzzy +icons) ; the *other* search engine for love and life
+       ;; (helm +fuzzy +icons) ; the *other* search engine for love and life
+       (vertico +icons)
 
        :ui
        doom                     ; what makes DOOM look the way it does
@@ -73,7 +74,7 @@
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses
        rest
-       nix
+       (nix +lsp)
 
        :app
        calendar

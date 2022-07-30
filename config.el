@@ -34,9 +34,9 @@
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
     ('light (setq doom-theme 'doom-solarized-light)
-             (load-theme 'doom-solarized-light t))
+            (load-theme 'doom-solarized-light t))
     ('dark (setq doom-theme 'doom-solarized-dark)
-             (load-theme 'doom-solarized-dark t)))
+           (load-theme 'doom-solarized-dark t)))
   (org-roam-ui-sync-theme))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
@@ -94,7 +94,7 @@
 (setq +evil-want-o/O-to-continue-comments nil)
 
 (defun schrenker/evil-change (orig-fn beg end &optional type _ &rest args)
-    (apply orig-fn beg end type ?_ args))
+  (apply orig-fn beg end type ?_ args))
 (advice-add 'evil-change :around 'schrenker/evil-change)
 
 (setq evil-escape-key-sequence nil)
@@ -174,26 +174,26 @@
       :g "r o" 'org-roam-ui-open)
 
 (use-package! websocket
-    :after org-roam)
+  :after org-roam)
 
 (use-package! org-roam-ui
-    :after org-roam
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+  :after org-roam
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 
 (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
-                                      :immediate-finish t)))
+                                    :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
+                                    :immediate-finish t)))
 
 (after! org
   (setq time-stamp-active t
-    time-stamp-start "#\\+modified: [ \t]*"
-    time-stamp-end "$"
-    time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
-(add-hook 'before-save-hook 'time-stamp))
+        time-stamp-start "#\\+modified: [ \t]*"
+        time-stamp-end "$"
+        time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
+  (add-hook 'before-save-hook 'time-stamp))
 
 (after! org
   (setq org-capture-templates
@@ -216,7 +216,7 @@
   (select-frame-by-name "capture")
   (delete-other-windows)
   (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-          (org-capture)))
+    (org-capture)))
 
 (defadvice org-capture-finalize
     (after delete-capture-frame activate)
@@ -253,10 +253,10 @@
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 
 (add-hook 'org-mode-hook (lambda ()
-  (push '("[#A]" . "⁂" ) prettify-symbols-alist)
-  (push '("[#B]" . "⁑" ) prettify-symbols-alist)
-  (push '("[#C]" . "⁕" ) prettify-symbols-alist)
-  (prettify-symbols-mode)))
+                           (push '("[#A]" . "⁂" ) prettify-symbols-alist)
+                           (push '("[#B]" . "⁑" ) prettify-symbols-alist)
+                           (push '("[#C]" . "⁕" ) prettify-symbols-alist)
+                           (prettify-symbols-mode)))
 
 (after! org-fancy-priorities
   (setq
@@ -303,10 +303,19 @@
 
 (add-hook 'nix-mode-hook #'lsp!)
 
+(setq lsp-disabled-clients '(tfls tfmls))
+
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-language-id-configuration
+               '(terraform-mode . "terraform")))
+
 (lsp-register-client
  (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
-                  :major-modes '(terraform-mode)
+                  :activation-fn (lsp-activate-on "terraform")
+                  :priority 0
                   :server-id 'terraform-ls))
+
+(add-hook 'terraform-mode-hook #'lsp-deferred)
 
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
@@ -318,4 +327,3 @@
 
 (require 'inheritenv)
 (inheritenv-add-advice #'with-temp-buffer)
-(inheritenv-add-advice #'lsp--install-server-internal)

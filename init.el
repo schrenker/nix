@@ -69,7 +69,6 @@
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
-       (csharp +lsp +dotnet)
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses

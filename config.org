@@ -137,7 +137,6 @@
        (python +lsp +pyright +pyenv)                    ; beautiful is better than ugly
        (org +pretty +pomodoro +dragndrop +roam2) ; organize your plain life in plain text
        (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
-       (csharp +lsp +dotnet)
        json                                      ; At least it ain't XML
        yaml                                      ; JSON, but readable
        emacs-lisp                                ; drown in parentheses
@@ -723,7 +722,25 @@
 
 #+begin_src emacs-lisp :tangle config.el
 (with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'")
+
+  )
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(setq lsp-disabled-clients '(tfls tfmls))
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(after! lsp-ui
+  (setq lsp-ui-sideline-show-diagnostics t
+        lsp-headerline-breadcrumb-enable t
+        lsp-ui-sideline-show-code-actions t
+        lsp-ui-sideline-show-hover t
+        lsp-ui-doc-enable t
+        lsp-ui-doc-position "Bottom"
+        lsp-ui-doc-delay 1
+        lsp-ui-doc-show-with-cursor t))
 #+end_src
 
 *** nix
@@ -733,8 +750,6 @@
 
 *** Terraform
 #+begin_src emacs-lisp :tangle config.el
-(setq lsp-disabled-clients '(tfls tfmls))
-
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-language-id-configuration
     '(terraform-mode . "terraform")))

@@ -1,5 +1,8 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;; (require 'profiler)
+;; (profiler-start 'cpu)
+
 (setq  user-full-name "Sebastian Zawadzki"
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
 
@@ -14,9 +17,7 @@
 
 (map! "A-<backspace>" 'doom/delete-backward-word)
 
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(setq +workspaces-on-switch-project-behavior 'non-empty)
 
 (which-function-mode)
 
@@ -27,6 +28,8 @@
 
 (add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
 (add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
+
+(setq centaur-tabs-gray-out-icons 'buffer)
 
 (setq doom-theme 'doom-solarized-light)
 
@@ -69,7 +72,8 @@
 (setq uniquify-separator "/")
 (setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers;       uniquify-ignore-buffers-re "^\\*")
-(setq-hook! 'persp-mode-hook uniquify-buffer-name-style 'forward)
+(after! persp-mode
+  (setq-hook! 'persp-mode-hook uniquify-buffer-name-style 'forward))
 
 (after! persp-mode
   (setq persp-emacsclient-init-frame-behaviour-override "main"))
@@ -86,6 +90,8 @@
 
 (setq require-final-newline nil)
 
+(setq evil-want-fine-undo t)
+
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
 
@@ -96,6 +102,8 @@
 (defun schrenker/evil-change (orig-fn beg end &optional type _ &rest args)
     (apply orig-fn beg end type ?_ args))
 (advice-add 'evil-change :around 'schrenker/evil-change)
+
+(setq evil-kill-on-visual-paste nil)
 
 (setq evil-escape-key-sequence nil)
 
@@ -158,11 +166,12 @@
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
                         (?C :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)"  "|" "DONE(d)" "CANCELLED(c)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "REVIEW(r)" "|" "DONE(d)" "CANCELLED(c)"))
    org-todo-keyword-faces
    '(("TODO" :foreground "#8741bb" :weight bold :underline t)
      ("INPROGRESS" :foreground "#98BE65" :weight bold :underline t)
      ("WAITING" :foreground "#DA8548" :weight bold :underline t)
+     ("REVIEW" :foreground "#00BFFF" :weight bold :underline t)
      ("DONE" :foreground "#9FA4BB" :weight bold :underline t )
      ("CANCELLED" :foreground "#574C58" :weight bold :underline t))))
 
@@ -274,6 +283,10 @@
 
 (add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
 
+(map! :map doom-leader-open-map
+      :g "p" 'treemacs
+      :g "P" 'treemacs-find-file)
+
 (setq +treemacs-git-mode 'deferred)
 
 (setq treemacs-follow-mode t)
@@ -296,6 +309,13 @@
 
 (setq vterm-always-compile-module t)
 
+(setq vterm-max-scrollback 100000
+      vterm-buffer-name-string "VT %s")
+
+(map! :after vterm
+       :map vterm-mode-map
+       :ni "<tab>" #'vterm-send-tab)
+
 (require 'lsp)
 
 (with-eval-after-load 'lsp-mode
@@ -317,17 +337,13 @@
 
 (add-hook 'nix-mode-hook #'lsp!)
 
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-language-id-configuration
-    '(terraform-mode . "terraform")))
-
 (lsp-register-client
  (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
-                  :activation-fn (lsp-activate-on "terraform")
-                  :priority 0
+                  :major-modes '(terraform-mode)
+                  :priority 10
                   :server-id 'terraform-ls))
 
-(add-hook 'terraform-mode-hook #'lsp-deferred)
+;; (add-hook 'terraform-mode-hook #'lsp-deferred)
 
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
@@ -339,3 +355,9 @@
 
 (require 'inheritenv)
 (inheritenv-add-advice #'with-temp-buffer)
+
+(setq eshell-buffer-name "eshell")
+
+(map! :map dired-mode-map
+      :n "h" #'dired-up-directory
+      :n "l" #'dired-find-alternate-file)

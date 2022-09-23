@@ -1,6 +1,8 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
+(unpin! doom-themes)
+
 (package! evil-commentary)
 (package! evil-snipe :disable t)
 

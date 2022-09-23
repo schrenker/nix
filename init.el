@@ -12,9 +12,9 @@
        modeline                                  ; snazzy, Atom-inspired modeline, plus API
        ophints                                   ; highlight the region an operation acts on
        (popup +defaults +all)                    ; tame sudden yet inevitable temporary windows
-       treemacs                                  ; a project drawer, like neotree but cooler
+       ;; treemacs                                  ; a project drawer, like neotree but cooler
        unicode                                   ; extended unicode support for various languages
-       vc-gutter                                 ; vcs diff in the fringe
+       (vc-gutter +diff-hl +pretty)                                 ; vcs diff in the fringe
        vi-tilde-fringe                           ; fringe tildes to mark beyond EOB
        (window-select +numbers)                  ; visually switch windows
        workspaces                                ; tab emulation, persistence & separate workspaces
@@ -29,7 +29,7 @@
        word-wrap
 
        :emacs
-       ( dired +dirvish +icons)                  ; making dired pretty [functional] directory editor
+       ( dired +icons +ranger)                  ; making dired pretty [functional] directory editor
        electric                                  ; smarter, keyword-based electric-indent
        ( ibuffer +icons )                        ; interactive buffer management
        ( undo +tree )                            ; persistent, smarter undo for your inevitable mistakes
@@ -47,7 +47,6 @@
        (debugger +lsp)
        direnv
        (docker +lsp)
-       editorconfig                              ; let someone else argue about tabs vs spaces
        (eval +overlay)                           ; run code, run (also, repls)
        lookup                                    ; navigate your code and its documentation
        (lsp +peek)                               ; M-x vscode
@@ -80,3 +79,18 @@
        :config
        literate
        (default +bindings +smartparens))
+
+(after! comp
+  (mapc (doom-partial #'add-to-list 'native-comp-deferred-compilation-deny-list)
+        (list "/emacs-jupyter.*\\.el\\'"
+              "/evil-collection-vterm\\.el\\'"
+              "/vterm\\.el\\'"
+              "/with-editor\\.el\\'")))
+
+(setq native-comp-deferred-compilation nil)
+(after! (doom-packages straight)
+  (setq straight--native-comp-available t))
+
+;; (menu-bar-mode -1)
+;; (tool-bar-mode -1)
+;; (scroll-bar-mode -1)

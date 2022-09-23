@@ -1,8 +1,11 @@
-#+TITLE: Literate doom emacs config
+#+TITLE: Literate doom Emacs config
 
 * Table of Contents :TOC:
 - [[#headers][Headers]]
 - [[#doom][Doom]]
+  - [[#vterm-endless-compilation-fix][Vterm endless compilation fix]]
+  - [[#natively-compile-on-doom-sync][Natively compile on doom sync]]
+- [[#profiler][Profiler]]
 - [[#emacs][Emacs]]
   - [[#personal-information][Personal information]]
   - [[#keybinds][Keybinds]]
@@ -11,10 +14,12 @@
   - [[#editor][Editor]]
 - [[#evil][Evil]]
   - [[#set-up-evil-packages][Set up evil packages]]
+  - [[#fine-undo][Fine Undo]]
   - [[#split-windows-so-that-rightdown-is-focused-after-the-split][Split windows so that right/down is focused after the split]]
   - [[#line-up-y-behavior-to-other-operators][Line up Y behavior to other operators]]
   - [[#dont-continue-comments-on-oo-creating-empty-lines][Don't continue comments on o/O, creating empty lines]]
   - [[#changed-text-doesnt-go-into-clipboard][Changed text doesn't go into clipboard]]
+  - [[#visual-mode-changes-dont-go-into-clipboard][Visual mode changes don't go into clipboard]]
   - [[#evil-keybinds][Evil keybinds]]
 - [[#org-mode][Org mode]]
   - [[#org-mode-keybinds][Org mode keybinds]]
@@ -35,6 +40,7 @@
   - [[#org-mode-appearance][Org mode appearance]]
   - [[#org-autolist][Org autolist]]
 - [[#treemacs][Treemacs]]
+  - [[#treemacs-keybindings][Treemacs keybindings]]
   - [[#treemacs-git-mode][Treemacs git mode]]
   - [[#treemacs-modes][Treemacs modes]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
@@ -51,6 +57,8 @@
   - [[#flymake][Flymake]]
   - [[#cheatsh][Cheat.sh]]
   - [[#inheritenv][Inheritenv]]
+  - [[#eshell][Eshell]]
+  - [[#dired-evil][Dired evil]]
 
 * Headers
 #+begin_src emacs-lisp :tangle init.el
@@ -80,9 +88,9 @@
        modeline                                  ; snazzy, Atom-inspired modeline, plus API
        ophints                                   ; highlight the region an operation acts on
        (popup +defaults +all)                    ; tame sudden yet inevitable temporary windows
-       treemacs                                  ; a project drawer, like neotree but cooler
+       ;; treemacs                                  ; a project drawer, like neotree but cooler
        unicode                                   ; extended unicode support for various languages
-       vc-gutter                                 ; vcs diff in the fringe
+       (vc-gutter +diff-hl +pretty)                                 ; vcs diff in the fringe
        vi-tilde-fringe                           ; fringe tildes to mark beyond EOB
        (window-select +numbers)                  ; visually switch windows
        workspaces                                ; tab emulation, persistence & separate workspaces
@@ -97,7 +105,7 @@
        word-wrap
 
        :emacs
-       ( dired +dirvish +icons)                  ; making dired pretty [functional] directory editor
+       ( dired +icons +ranger)                  ; making dired pretty [functional] directory editor
        electric                                  ; smarter, keyword-based electric-indent
        ( ibuffer +icons )                        ; interactive buffer management
        ( undo +tree )                            ; persistent, smarter undo for your inevitable mistakes
@@ -115,7 +123,6 @@
        (debugger +lsp)
        direnv
        (docker +lsp)
-       editorconfig                              ; let someone else argue about tabs vs spaces
        (eval +overlay)                           ; run code, run (also, repls)
        lookup                                    ; navigate your code and its documentation
        (lsp +peek)                               ; M-x vscode
@@ -150,6 +157,29 @@
        (default +bindings +smartparens))
 #+end_src
 
+** Vterm endless compilation fix
+#+begin_src emacs-lisp :tangle init.el
+(after! comp
+  (mapc (doom-partial #'add-to-list 'native-comp-deferred-compilation-deny-list)
+        (list "/emacs-jupyter.*\\.el\\'"
+              "/evil-collection-vterm\\.el\\'"
+              "/vterm\\.el\\'"
+              "/with-editor\\.el\\'")))
+#+end_src
+
+** Natively compile on doom sync
+#+begin_src emacs-lisp :tangle init.el
+(setq native-comp-deferred-compilation nil)
+(after! (doom-packages straight)
+  (setq straight--native-comp-available t))
+#+end_src
+
+* Profiler
+#+begin_src emacs-lisp :tangle config.el
+;; (require 'profiler)
+;; (profiler-start 'cpu)
+#+end_src
+
 * Emacs
 ** Personal information
 #+begin_src emacs-lisp :tangle config.el
@@ -179,11 +209,15 @@
 #+end_src
 
 ** UI
-*** Disable menu and tool bar
+*** Workspaces
 #+begin_src emacs-lisp :tangle config.el
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+ (setq +workspaces-on-switch-project-behavior 'non-empty)
+#+end_src
+*** Disable menu and tool bar
+#+begin_src emacs-lisp :tangle init.el
+;; (menu-bar-mode -1)
+;; (tool-bar-mode -1)
+;; (scroll-bar-mode -1)
 #+end_src
 
 *** Show current function in modeline
@@ -207,6 +241,16 @@
 #+begin_src emacs-lisp :tangle config.el
 (add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
 (add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
+#+end_src
+
+**** Gray out non focused buffer icons
+#+begin_src emacs-lisp :tangle config.el
+(setq centaur-tabs-gray-out-icons 'buffer)
+#+end_src
+
+*** Unpin doom themes
+#+begin_src emacs-lisp :tangle packages.el
+(unpin! doom-themes)
 #+end_src
 
 *** Default fallback theme
@@ -282,7 +326,8 @@
 (setq uniquify-separator "/")
 (setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers;       uniquify-ignore-buffers-re "^\\*")
-(setq-hook! 'persp-mode-hook uniquify-buffer-name-style 'forward)
+(after! persp-mode
+  (setq-hook! 'persp-mode-hook uniquify-buffer-name-style 'forward))
 #+end_src
 
 ** Emacsclient
@@ -329,6 +374,11 @@
 (package! evil-snipe :disable t)
 #+end_src
 
+** Fine Undo
+#+begin_src emacs-lisp :tangle config.el
+(setq evil-want-fine-undo t)
+#+end_src
+
 ** Split windows so that right/down is focused after the split
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-vsplit-window-right t
@@ -351,6 +401,12 @@
     (apply orig-fn beg end type ?_ args))
 (advice-add 'evil-change :around 'schrenker/evil-change)
 #+end_src
+
+** Visual mode changes don't go into clipboard
+#+begin_src emacs-lisp :tangle config.el
+(setq evil-kill-on-visual-paste nil)
+#+end_src
+
 
 ** Evil keybinds
 *** Disable escape on "jk"
@@ -476,11 +532,12 @@
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
                         (?C :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)"  "|" "DONE(d)" "CANCELLED(c)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "REVIEW(r)" "|" "DONE(d)" "CANCELLED(c)"))
    org-todo-keyword-faces
    '(("TODO" :foreground "#8741bb" :weight bold :underline t)
      ("INPROGRESS" :foreground "#98BE65" :weight bold :underline t)
      ("WAITING" :foreground "#DA8548" :weight bold :underline t)
+     ("REVIEW" :foreground "#00BFFF" :weight bold :underline t)
      ("DONE" :foreground "#9FA4BB" :weight bold :underline t )
      ("CANCELLED" :foreground "#574C58" :weight bold :underline t))))
 
@@ -661,6 +718,13 @@
 
 * Treemacs
 
+** Treemacs keybindings
+#+begin_src emacs-lisp :tangle config.el
+(map! :map doom-leader-open-map
+      :g "p" 'treemacs
+      :g "P" 'treemacs-find-file)
+#+end_src
+
 ** Treemacs git mode
 #+begin_src emacs-lisp :tangle config.el
 (setq +treemacs-git-mode 'deferred)
@@ -714,6 +778,17 @@
 (setq vterm-always-compile-module t)
 #+end_src
 
+#+begin_src emacs-lisp :tangle config.el
+(setq vterm-max-scrollback 100000
+      vterm-buffer-name-string "VT %s")
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(map! :after vterm
+       :map vterm-mode-map
+       :ni "<tab>" #'vterm-send-tab)
+#+end_src
+
 * LSP
 #+begin_src emacs-lisp :tangle config.el
 (require 'lsp)
@@ -749,17 +824,13 @@
 
 *** Terraform
 #+begin_src emacs-lisp :tangle config.el
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-language-id-configuration
-    '(terraform-mode . "terraform")))
-
 (lsp-register-client
  (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
-                  :activation-fn (lsp-activate-on "terraform")
-                  :priority 0
+                  :major-modes '(terraform-mode)
+                  :priority 10
                   :server-id 'terraform-ls))
 
-(add-hook 'terraform-mode-hook #'lsp-deferred)
+;; (add-hook 'terraform-mode-hook #'lsp-deferred)
 #+end_src
 
 * Additional tools
@@ -791,4 +862,16 @@
 #+begin_src emacs-lisp :tangle config.el
 (require 'inheritenv)
 (inheritenv-add-advice #'with-temp-buffer)
+#+end_src
+
+** Eshell
+#+begin_src emacs-lisp :tangle config.el
+(setq eshell-buffer-name "eshell")
+#+end_src
+
+** Dired evil
+#+begin_src emacs-lisp :tangle config.el
+(map! :map dired-mode-map
+      :n "h" #'dired-up-directory
+      :n "l" #'dired-find-alternate-file)
 #+end_src

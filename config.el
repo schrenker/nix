@@ -10,12 +10,13 @@
        (setq mac-command-modifier       'meta
              mac-option-modifier        'alt)))
 
-(map! "M-c" 'kill-ring-save)
-(map! "M-v" 'yank)
-(map! "M-q" 'save-buffers-kill-terminal)
-(map! "M-m" 'suspend-frame)
+(map! "M-c" #'kill-ring-save)
+(map! "M-v" #'yank)
+(map! "M-q" #'save-buffers-kill-terminal)
+(map! "M-m" #'suspend-frame)
+(map! "M-w" #'kill-this-buffer)
 
-(map! "A-<backspace>" 'doom/delete-backward-word)
+(map! "A-<backspace>" #'doom/delete-backward-word)
 
 (setq +workspaces-on-switch-project-behavior 'non-empty)
 
@@ -108,8 +109,8 @@
 (setq evil-escape-key-sequence nil)
 
 (map! :map evil-window-map
-      :g "w" 'ace-window
-      :g "p" 'treemacs-select-window)
+      :g "w" #'ace-window
+      :g "p" #'treemacs-select-window)
 
 (require 'key-chord)
 
@@ -123,8 +124,8 @@
 (setq org-startup-folded 'nofold)
 
 (map! :map org-mode-map
-      :localleader "$" 'org-decrypt-entry
-      :localleader "a i" 'org-display-inline-images)
+      :localleader "$" #'org-decrypt-entry
+      :localleader "a i" #'org-display-inline-images)
 
 (after! org
   (map! :map org-mode-map
@@ -179,8 +180,8 @@
 (add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 
 (map! :map doom-leader-notes-map
-      :g "r t" 'org-roam-ui-sync-theme
-      :g "r o" 'org-roam-ui-open)
+      :g "r t" #'org-roam-ui-sync-theme
+      :g "r o" #'org-roam-ui-open)
 
 (use-package! websocket
     :after org-roam)
@@ -277,7 +278,7 @@
 
 (add-hook 'org-mode-hook #'+word-wrap-mode)
 
-(add-hook 'org-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook #'visual-line-mode)
 
 (setq org-hide-emphasis-markers t)
 
@@ -314,7 +315,10 @@
 
 (map! :after vterm
        :map vterm-mode-map
-       :ni "<tab>" #'vterm-send-tab)
+       :ni "<tab>" #'vterm-send-tab
+       :nvi "M-v" #'evil-collection-vterm-paste-after
+       :nvi "M-c" #'evil-yank
+       :i   "A-<backspace>" '(lambda () (interactive) (vterm-send-key (kbd "C-w"))))
 
 (require 'lsp)
 

@@ -38,16 +38,14 @@
   homebrew.casks = [
     "alt-tab"
     "bartender"
+    "cloudflare-warp"
     "crossover"
     "font-jetbrains-mono"
     "hazeover"
     "karabiner-elements"
     "logitech-options"
     "lulu"
-    "minishift"
     "numi"
-    "paintbrush"
-    "rambox"
     "raspberry-pi-imager"
     "raycast"
     "synologyassistant"
@@ -61,22 +59,29 @@
     "homebrew/cask-versions"
     "homebrew/cask-drivers"
     "homebrew/cask-fonts"
+    "PlayCover/playcover"
   ];
   homebrew.cleanup = "zap";
   homebrew.extraConfig = ''
     brew "emacs-plus", args: ["with-imagemagick", "with-no-frame-refocus", "with-native-comp", "with-nobu417-big-sur-icon", "with-xwidgets"]
   '';
   homebrew.masApps = {
-    "Wipr" = 1320666476;
-    "Microsoft Remote Desktop" = 1295203466;
-    "ImageFinder for Safari" = 1514863337;
-    "SponsorBlock for YouTube - Skip Sponsorships" = 1573461917;
-    "Hush" = 1544743900;
-    "Equinox" = 1591510203;
-    "Bitwarden" = 1352778147;
-    "Amphetamine" = 937984704;
-    "Sorted" = 1306893526;
-    "Noir" = 1592917505;
+    "Amphetamine " = 937984704;
+    "Bitwarden " = 1352778147;
+    "DuckDuckGo Privacy for Safari " = 1482920575;
+    "Equinox " = 1591510203;
+    "Flow " = 1423210932;
+    "Hush " = 1544743900;
+    "ImageFinder for Safari " = 1514863337;
+    "Microsoft Excel " = 462058435;
+    "Microsoft PowerPoint " = 462062816;
+    "Microsoft Remote Desktop " = 1295203466;
+    "Microsoft Word " = 462054704;
+    "Noir " = 1592917505;
+    "Sorted " = 1306893526;
+    "SponsorBlock for YouTube - Skip Sponsorships " = 1573461917;
+    "uBlacklist for Safari " = 1547912640;
+    "Wipr " = 1320666476;
   };
 
   fonts.fontDir.enable = true;

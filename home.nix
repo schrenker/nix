@@ -92,6 +92,8 @@ in
   home.file = {
     ".gnupg/gpg-agent.conf".source =
       config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
+    ".config/lulublock.txt".source =
+      config.lib.file.mkOutOfStoreSymlink ./dotfiles/lulublock.txt;
     ".config/iterm2/com.googlecode.iterm2.plist".source =
       config.lib.file.mkOutOfStoreSymlink
         ./dotfiles/iterm2/com.googlecode.iterm2.plist;

@@ -3,7 +3,7 @@
 (use-package! corfu
   :custom
   (corfu-separator ?\s)
-  (corfu-preview-current t)
+  (corfu-preview-current 'insert)
   (corfu-auto t)
   (corfu-on-exact-match nil)
   (corfu-quit-no-match t)

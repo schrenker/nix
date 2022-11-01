@@ -1,8 +1,10 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
 (doom! :completion
-       (company +tng)                            ; the ultimate code completion backend
        (vertico +icons)
+
+       :local
+       (corfu +icons +orderless)
 
        :ui
        doom                                      ; what makes DOOM look the way it does

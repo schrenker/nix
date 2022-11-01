@@ -32,7 +32,6 @@
   - [[#inline-images][Inline images]]
   - [[#log-time-of-done-tasks][Log time of done tasks]]
   - [[#task-status-and-prioritization][Task status and prioritization]]
-  - [[#disable-company-for-org-mode][Disable company for org-mode]]
   - [[#roam][Roam]]
   - [[#record-last-modified-date-in-org-mode][Record last modified date in org-mode]]
   - [[#org-capture-templates][Org capture templates]]
@@ -45,11 +44,7 @@
   - [[#treemacs-modes][Treemacs modes]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
   - [[#set-treemacs-themes][Set treemacs themes]]
-- [[#company][Company]]
-  - [[#disable-autocommit-of-completion][Disable autocommit of completion]]
-  - [[#tooltips][Tooltips]]
-  - [[#matching][Matching]]
-  - [[#delay][Delay]]
+- [[#corfu][Corfu]]
 - [[#vterm][Vterm]]
 - [[#lsp][LSP]]
 - [[#additional-tools][Additional tools]]
@@ -77,8 +72,10 @@
 * Doom
 #+begin_src emacs-lisp :tangle init.el
 (doom! :completion
-       (company +tng)                            ; the ultimate code completion backend
        (vertico +icons)
+
+       :local
+       (corfu +icons +orderless)
 
        :ui
        doom                                      ; what makes DOOM look the way it does
@@ -545,12 +542,6 @@
 
 #+end_src
 
-** Disable company for org-mode
-#+begin_src emacs-lisp :tangle config.el
-(setq company-global-modes '(not org-mode))
-(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
-#+end_src
-
 ** Roam
 
 *** Org roam keybinds
@@ -750,29 +741,32 @@
 (setq  doom-themes-treemacs-theme "doom-colors")
 #+end_src
 
-* Company
-
-** Disable autocommit of completion
+* Corfu
 #+begin_src emacs-lisp :tangle config.el
-(setq company-auto-complete nil)
+(setq corfu-preview-current 'insert
+      corfu-preselect-first nil ;; Disable candidate preselection
+      corfu-excluded-modes
+      '(erc-mode
+        circe-mode
+        help-mode
+        gud-mode
+        vterm-mode
+        org-mode))
 #+end_src
 
-** Tooltips
 #+begin_src emacs-lisp :tangle config.el
-(setq company-tooltip-align-annotations t
-      company-tooltip-minimum (- scroll-margin 1)
-      company-tooltip-flip-when-above t)
+    (map! :desc "complete" "TAB" #'completion-at-point
+          (:map 'corfu-map
+           :desc "next" "TAB" #'corfu-next
+           :desc "next" "<tab>" #'corfu-next
+           :desc "next" [tab] #'corfu-next
+           :desc "previous" "S-TAB" #'corfu-previous
+           :desc "previous" "<backtab>"  #'corfu-previous
+           :desc "previous" [backtab] #'corfu-previous))
 #+end_src
 
-** Matching
 #+begin_src emacs-lisp :tangle config.el
-(setq company-minimum-prefix-length 2
-      company-require-match nil)
-#+end_src
-
-** Delay
-#+begin_src emacs-lisp :tangle config.el
-(setq company-idle-delay 0)
+(global-corfu-mode)
 #+end_src
 
 * Vterm

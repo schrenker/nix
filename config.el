@@ -175,9 +175,6 @@
      ("DONE" :foreground "#9FA4BB" :weight bold :underline t )
      ("CANCELLED" :foreground "#574C58" :weight bold :underline t))))
 
-(setq company-global-modes '(not org-mode))
-(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
-
 (map! :map doom-leader-notes-map
       :g "r t" #'org-roam-ui-sync-theme
       :g "r o" #'org-roam-ui-open)
@@ -296,16 +293,26 @@
 
 (setq  doom-themes-treemacs-theme "doom-colors")
 
-(setq company-auto-complete nil)
+(setq corfu-preview-current 'insert
+      corfu-preselect-first nil ;; Disable candidate preselection
+      corfu-excluded-modes
+      '(erc-mode
+        circe-mode
+        help-mode
+        gud-mode
+        vterm-mode
+        org-mode))
 
-(setq company-tooltip-align-annotations t
-      company-tooltip-minimum (- scroll-margin 1)
-      company-tooltip-flip-when-above t)
+(map! :desc "complete" "TAB" #'completion-at-point
+      (:map 'corfu-map
+       :desc "next" "TAB" #'corfu-next
+       :desc "next" "<tab>" #'corfu-next
+       :desc "next" [tab] #'corfu-next
+       :desc "previous" "S-TAB" #'corfu-previous
+       :desc "previous" "<backtab>"  #'corfu-previous
+       :desc "previous" [backtab] #'corfu-previous))
 
-(setq company-minimum-prefix-length 2
-      company-require-match nil)
-
-(setq company-idle-delay 0)
+(global-corfu-mode)
 
 (setq vterm-always-compile-module t)
 

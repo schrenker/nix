@@ -258,17 +258,17 @@
                         '(("^ *\\([+]\\) "
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 
-(add-hook 'org-mode-hook (lambda ()
-  (push '("[#A]" . "⁂" ) prettify-symbols-alist)
-  (push '("[#B]" . "⁑" ) prettify-symbols-alist)
-  (push '("[#C]" . "⁕" ) prettify-symbols-alist)
-  (prettify-symbols-mode)))
+;; (add-hook 'org-mode-hook (lambda ()
+;;   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
+;;   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
+;;   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
+;;   (prettify-symbols-mode)))
 
-;; (after! org-fancy-priorities
-;;   (setq
-;;    org-fancy-priorities-list '((65 . "⁂")
-;;                                (66 . "⁑")
-;;                                (67 . "⁕"))))
+(after! org-fancy-priorities
+  (setq
+   org-fancy-priorities-list '((65 . "⁂")
+                               (66 . "⁑")
+                               (67 . "⁕"))))
 
 (setq org-tags-column -77)
 
@@ -300,10 +300,10 @@
         circe-mode
         help-mode
         gud-mode
-        vterm-mode
-        org-mode))
+        vterm-mode))
+        ;; org-mode))
 
-(map! :desc "complete" "TAB" #'completion-at-point
+(map! ;;:desc "complete" "TAB" #'completion-at-point
       (:map 'corfu-map
        :desc "next" "TAB" #'corfu-next
        :desc "next" "<tab>" #'corfu-next

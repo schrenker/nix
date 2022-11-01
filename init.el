@@ -12,7 +12,7 @@
        modeline                                  ; snazzy, Atom-inspired modeline, plus API
        ophints                                   ; highlight the region an operation acts on
        (popup +defaults +all)                    ; tame sudden yet inevitable temporary windows
-       ;; treemacs                                  ; a project drawer, like neotree but cooler
+       treemacs                                  ; a project drawer, like neotree but cooler
        unicode                                   ; extended unicode support for various languages
        (vc-gutter +diff-hl +pretty)                                 ; vcs diff in the fringe
        vi-tilde-fringe                           ; fringe tildes to mark beyond EOB
@@ -91,6 +91,6 @@
 (after! (doom-packages straight)
   (setq straight--native-comp-available t))
 
-;; (menu-bar-mode -1)
-;; (tool-bar-mode -1)
-;; (scroll-bar-mode -1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)

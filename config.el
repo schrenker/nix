@@ -85,7 +85,7 @@
 
 (setq-default tab-width 4)
 
-(setq  display-line-numbers-type 'visual)
+(setq display-line-numbers-type 'visual)
 
 (setq scroll-margin 5)
 
@@ -139,8 +139,7 @@
 
 (setq org-tags-exclude-from-inheritance '("crypt"
                                           "moc"
-                                          "inbox"
-                                          "wip"))
+                                          "inbox"))
 
 (require 'org-crypt)
 
@@ -268,11 +267,11 @@
   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
   (prettify-symbols-mode)))
 
-(after! org-fancy-priorities
-  (setq
-   org-fancy-priorities-list '((65 . "⁂")
-                               (66 . "⁑")
-                               (67 . "⁕"))))
+;; (after! org-fancy-priorities
+;;   (setq
+;;    org-fancy-priorities-list '((65 . "⁂")
+;;                                (66 . "⁑")
+;;                                (67 . "⁕"))))
 
 (setq org-tags-column -77)
 
@@ -284,9 +283,9 @@
 
 (add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
 
-(map! :map doom-leader-open-map
-      :g "p" 'treemacs
-      :g "P" 'treemacs-find-file)
+;; (map! :map doom-leader-open-map
+;;       :g "p" 'treemacs
+;;       :g "P" 'treemacs-find-file)
 
 (setq +treemacs-git-mode 'deferred)
 
@@ -310,8 +309,8 @@
 
 (setq vterm-always-compile-module t)
 
-(setq vterm-max-scrollback 100000
-      vterm-buffer-name-string "VT %s")
+(setq vterm-max-scrollback 100000)
+      ;; vterm-buffer-name-string "VT: %s")
 
 (map! :after vterm
        :map vterm-mode-map
@@ -320,12 +319,12 @@
        :nvi "M-c" #'evil-yank
        :i   "A-<backspace>" '(lambda () (interactive) (vterm-send-key (kbd "C-w"))))
 
+(remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
+
 (require 'lsp)
 
 (with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'")
-
-  )
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
 
 (setq lsp-disabled-clients '(tfls tfmls))
 

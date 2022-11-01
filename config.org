@@ -88,7 +88,7 @@
        modeline                                  ; snazzy, Atom-inspired modeline, plus API
        ophints                                   ; highlight the region an operation acts on
        (popup +defaults +all)                    ; tame sudden yet inevitable temporary windows
-       ;; treemacs                                  ; a project drawer, like neotree but cooler
+       treemacs                                  ; a project drawer, like neotree but cooler
        unicode                                   ; extended unicode support for various languages
        (vc-gutter +diff-hl +pretty)                                 ; vcs diff in the fringe
        vi-tilde-fringe                           ; fringe tildes to mark beyond EOB
@@ -197,15 +197,18 @@
 
 *** Mac style keyboard shortcuts
 #+begin_src emacs-lisp :tangle config.el
-(map! "M-c" 'kill-ring-save)
-(map! "M-v" 'yank)
-(map! "M-q" 'save-buffers-kill-terminal)
-(map! "M-m" 'suspend-frame)
+(map! "M-c" #'kill-ring-save)
+(map! "M-v" #'yank)
+(map! "M-q" #'save-buffers-kill-terminal)
+(map! "M-m" #'suspend-frame)
+(map! "M-w" #'kill-this-buffer)
 #+end_src
+
+#+RESULTS:
 
 *** Remove word backwards
 #+begin_src emacs-lisp :tangle config.el
-(map! "A-<backspace>" 'doom/delete-backward-word)
+(map! "A-<backspace>" #'doom/delete-backward-word)
 #+end_src
 
 ** UI
@@ -215,9 +218,9 @@
 #+end_src
 *** Disable menu and tool bar
 #+begin_src emacs-lisp :tangle init.el
-;; (menu-bar-mode -1)
-;; (tool-bar-mode -1)
-;; (scroll-bar-mode -1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 #+end_src
 
 *** Show current function in modeline
@@ -354,7 +357,7 @@
 
 *** Relative numbers
 #+begin_src emacs-lisp :tangle config.el
-(setq  display-line-numbers-type 'visual)
+(setq display-line-numbers-type 'visual)
 #+end_src
 
 *** Set scroll margin
@@ -417,8 +420,8 @@
 *** Evil Window Map
 #+begin_src emacs-lisp :tangle config.el
 (map! :map evil-window-map
-      :g "w" 'ace-window
-      :g "p" 'treemacs-select-window)
+      :g "w" #'ace-window
+      :g "p" #'treemacs-select-window)
 #+end_src
 
 *** Enable key-chord and make double tap ';' move cursor to the right in insert mode
@@ -450,8 +453,8 @@
 *** Org-mode-map
 #+begin_src emacs-lisp :tangle config.el
 (map! :map org-mode-map
-      :localleader "$" 'org-decrypt-entry
-      :localleader "a i" 'org-display-inline-images)
+      :localleader "$" #'org-decrypt-entry
+      :localleader "a i" #'org-display-inline-images)
 #+end_src
 
 
@@ -475,8 +478,7 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq org-tags-exclude-from-inheritance '("crypt"
                                           "moc"
-                                          "inbox"
-                                          "wip"))
+                                          "inbox"))
 #+end_src
 
 
@@ -554,8 +556,8 @@
 *** Org roam keybinds
 #+begin_src emacs-lisp :tangle config.el
 (map! :map doom-leader-notes-map
-      :g "r t" 'org-roam-ui-sync-theme
-      :g "r o" 'org-roam-ui-open)
+      :g "r t" #'org-roam-ui-sync-theme
+      :g "r o" #'org-roam-ui-open)
 #+end_src
 
 *** Org-roam-ui
@@ -680,11 +682,11 @@
 
 *** Fancy priorities
 #+begin_src emacs-lisp :tangle config.el
-(after! org-fancy-priorities
-  (setq
-   org-fancy-priorities-list '((65 . "⁂")
-                               (66 . "⁑")
-                               (67 . "⁕"))))
+;; (after! org-fancy-priorities
+;;   (setq
+;;    org-fancy-priorities-list '((65 . "⁂")
+;;                                (66 . "⁑")
+;;                                (67 . "⁕"))))
 #+end_src
 
 *** Move tags to the far right
@@ -699,7 +701,7 @@
 
 *** Visual line mode
 #+begin_src emacs-lisp :tangle config.el
-(add-hook 'org-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook #'visual-line-mode)
 #+end_src
 
 *** Emphasis markers
@@ -720,9 +722,9 @@
 
 ** Treemacs keybindings
 #+begin_src emacs-lisp :tangle config.el
-(map! :map doom-leader-open-map
-      :g "p" 'treemacs
-      :g "P" 'treemacs-find-file)
+;; (map! :map doom-leader-open-map
+;;       :g "p" 'treemacs
+;;       :g "P" 'treemacs-find-file)
 #+end_src
 
 ** Treemacs git mode
@@ -779,14 +781,21 @@
 #+end_src
 
 #+begin_src emacs-lisp :tangle config.el
-(setq vterm-max-scrollback 100000
-      vterm-buffer-name-string "VT %s")
+(setq vterm-max-scrollback 100000)
+      ;; vterm-buffer-name-string "VT: %s")
 #+end_src
 
 #+begin_src emacs-lisp :tangle config.el
 (map! :after vterm
        :map vterm-mode-map
-       :ni "<tab>" #'vterm-send-tab)
+       :ni "<tab>" #'vterm-send-tab
+       :nvi "M-v" #'evil-collection-vterm-paste-after
+       :nvi "M-c" #'evil-yank
+       :i   "A-<backspace>" '(lambda () (interactive) (vterm-send-key (kbd "C-w"))))
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
 #+end_src
 
 * LSP
@@ -796,9 +805,7 @@
 
 #+begin_src emacs-lisp :tangle config.el
 (with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'")
-
-  )
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
 #+end_src
 
 #+begin_src emacs-lisp :tangle config.el

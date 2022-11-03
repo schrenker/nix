@@ -95,8 +95,8 @@
   system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = true;
 
   system.defaults.dock.autohide = true;
-  system.defaults.dock.autohide-delay = "0.75";
-  system.defaults.dock.autohide-time-modifier = "0";
+  system.defaults.dock.autohide-delay = 0.75;
+  system.defaults.dock.autohide-time-modifier = 0.0;
   system.defaults.dock.mineffect = "suck";
   system.defaults.dock.minimize-to-application = true;
   system.defaults.dock.orientation = "left";

@@ -116,4 +116,10 @@
   system.defaults.loginwindow.GuestEnabled = false;
 
   system.defaults.screencapture.location = "~/Pictures/Screenshots";
+
+  system.activationScripts.postActivation.text = ''
+    if [ ! -d /Applications/Sorted.app ]; then
+        mv /Applications/Sorted* /Applications/Sorted.app
+    fi
+  '';
 }

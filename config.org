@@ -22,6 +22,7 @@
   - [[#visual-mode-changes-dont-go-into-clipboard][Visual mode changes don't go into clipboard]]
   - [[#evil-keybinds][Evil keybinds]]
 - [[#org-mode][Org mode]]
+  - [[#update-dynamic-blocks-on-save][Update dynamic blocks on save]]
   - [[#org-mode-keybinds][Org mode keybinds]]
   - [[#set-up-path-for-org-mode][Set up path for org mode]]
   - [[#exclude-certain-tags-from-inheritance][Exclude certain tags from inheritance]]
@@ -445,6 +446,12 @@
 (setq org-startup-folded 'nofold)
 #+end_src
 
+** Update dynamic blocks on save
+ #+begin_src emacs-lisp :tangle config.el
+ (after! org
+   (add-hook 'before-save-hook 'org-update-all-dblocks))
+ #+end_src
+
 ** Org mode keybinds
 
 *** Org-mode-map
@@ -531,14 +538,16 @@
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
                         (?C :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "REVIEW(r)" "|" "DONE(d)" "CANCELLED(c)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "ONHOLD(o)" "REVIEW(r)" "|" "DONE(d)" "DELEGATED(e)" "CANCELLED(c)"))
    org-todo-keyword-faces
-   '(("TODO" :foreground "#8741bb" :weight bold :underline t)
-     ("INPROGRESS" :foreground "#98BE65" :weight bold :underline t)
-     ("WAITING" :foreground "#DA8548" :weight bold :underline t)
-     ("REVIEW" :foreground "#00BFFF" :weight bold :underline t)
-     ("DONE" :foreground "#9FA4BB" :weight bold :underline t )
-     ("CANCELLED" :foreground "#574C58" :weight bold :underline t))))
+   '(("TODO" :foreground "#8741bb" :weight bold :inverse-video t)
+     ("INPROGRESS" :foreground "#98BE65" :weight bold :inverse-video t)
+     ("WAITING" :foreground "#DA8548" :weight bold :inverse-video t)
+     ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t)
+     ("REVIEW" :foreground "#00BFFF" :weight bold :inverse-video t)
+     ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
+     ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
+     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
 
 #+end_src
 
@@ -767,6 +776,11 @@
 
 #+begin_src emacs-lisp :tangle config.el
 (global-corfu-mode)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(setq +lsp-company-backends nil
+      +vertico-company-completion-styles nil)
 #+end_src
 
 * Vterm

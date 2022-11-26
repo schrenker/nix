@@ -123,6 +123,9 @@
 
 (setq org-startup-folded 'nofold)
 
+(after! org
+  (add-hook 'before-save-hook 'org-update-all-dblocks))
+
 (map! :map org-mode-map
       :localleader "$" #'org-decrypt-entry
       :localleader "a i" #'org-display-inline-images)
@@ -166,14 +169,16 @@
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
                         (?C :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "REVIEW(r)" "|" "DONE(d)" "CANCELLED(c)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "ONHOLD(o)" "REVIEW(r)" "|" "DONE(d)" "DELEGATED(e)" "CANCELLED(c)"))
    org-todo-keyword-faces
-   '(("TODO" :foreground "#8741bb" :weight bold :underline t)
-     ("INPROGRESS" :foreground "#98BE65" :weight bold :underline t)
-     ("WAITING" :foreground "#DA8548" :weight bold :underline t)
-     ("REVIEW" :foreground "#00BFFF" :weight bold :underline t)
-     ("DONE" :foreground "#9FA4BB" :weight bold :underline t )
-     ("CANCELLED" :foreground "#574C58" :weight bold :underline t))))
+   '(("TODO" :foreground "#8741bb" :weight bold :inverse-video t)
+     ("INPROGRESS" :foreground "#98BE65" :weight bold :inverse-video t)
+     ("WAITING" :foreground "#DA8548" :weight bold :inverse-video t)
+     ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t)
+     ("REVIEW" :foreground "#00BFFF" :weight bold :inverse-video t)
+     ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
+     ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
+     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
 
 (map! :map doom-leader-notes-map
       :g "r t" #'org-roam-ui-sync-theme
@@ -313,6 +318,9 @@
        :desc "previous" [backtab] #'corfu-previous))
 
 (global-corfu-mode)
+
+(setq +lsp-company-backends nil
+      +vertico-company-completion-styles nil)
 
 (setq vterm-always-compile-module t)
 

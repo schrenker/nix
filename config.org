@@ -9,9 +9,34 @@
 - [[#emacs][Emacs]]
   - [[#personal-information][Personal information]]
   - [[#keybinds][Keybinds]]
-  - [[#ui][UI]]
+  - [[#workspaces][Workspaces]]
+  - [[#disable-menu-and-tool-bar][Disable menu and tool bar]]
+  - [[#show-current-function-in-modeline][Show current function in modeline]]
+  - [[#unpin-doom-themes][Unpin doom themes]]
+  - [[#default-fallback-theme][Default fallback theme]]
+  - [[#daynight-mode-switching-function-based-on-emacs-plus-patch][Day/Night mode switching function (based on emacs-plus patch)]]
+  - [[#set-font][Set font]]
+  - [[#start-emacs-maximized][Start emacs maximized]]
+  - [[#truncate-doom-dashboard][Truncate doom dashboard]]
+  - [[#set-frame-title-and-icon][Set frame title and icon]]
+  - [[#make-window-indicator-more-visible][Make window indicator more visible]]
+  - [[#modeline][Modeline]]
+  - [[#always-make-windows-proportional-after-splitting][Always make windows proportional after splitting]]
+  - [[#truncate-ellipsis][Truncate ellipsis]]
+  - [[#uniquify][Uniquify]]
   - [[#emacsclient][Emacsclient]]
-  - [[#editor][Editor]]
+- [[#centaur-tabs][Centaur Tabs]]
+  - [[#group-tabs-by-projectile-project][Group tabs by projectile project]]
+  - [[#show-tab-index-and-count][Show tab index and count]]
+  - [[#disable-tabs-for-specific-buffers][Disable tabs for specific buffers]]
+  - [[#gray-out-non-focused-buffer-icons][Gray out non focused buffer icons]]
+- [[#editor][Editor]]
+  - [[#enable-autosave][Enable autosave]]
+  - [[#auto-backup-files][Auto backup files]]
+  - [[#set-default-tab-width][Set default tab-width]]
+  - [[#relative-numbers][Relative numbers]]
+  - [[#set-scroll-margin][Set scroll margin]]
+  - [[#disable-final-newline-in-files][Disable final newline in files]]
 - [[#evil][Evil]]
   - [[#set-up-evil-packages][Set up evil packages]]
   - [[#fine-undo][Fine Undo]]
@@ -20,10 +45,14 @@
   - [[#dont-continue-comments-on-oo-creating-empty-lines][Don't continue comments on o/O, creating empty lines]]
   - [[#changed-text-doesnt-go-into-clipboard][Changed text doesn't go into clipboard]]
   - [[#visual-mode-changes-dont-go-into-clipboard][Visual mode changes don't go into clipboard]]
-  - [[#evil-keybinds][Evil keybinds]]
+  - [[#disable-escape-on-jk][Disable escape on "jk"]]
+  - [[#evil-window-map][Evil Window Map]]
+  - [[#enable-key-chord-and-make-double-tap--move-cursor-to-the-right-in-insert-mode][Enable key-chord and make double tap ';' move cursor to the right in insert mode]]
+  - [[#disable-evil-keybindings-for-git-timemachine][Disable evil keybindings for git-timemachine]]
 - [[#org-mode][Org mode]]
   - [[#update-dynamic-blocks-on-save][Update dynamic blocks on save]]
-  - [[#org-mode-keybinds][Org mode keybinds]]
+  - [[#org-mode-map][Org-mode-map]]
+  - [[#set-visual-line-movement-via-gj-and-gk][Set visual line movement via gj and gk]]
   - [[#set-up-path-for-org-mode][Set up path for org mode]]
   - [[#exclude-certain-tags-from-inheritance][Exclude certain tags from inheritance]]
   - [[#set-up-headline-encryption][Set up headline encryption]]
@@ -33,28 +62,43 @@
   - [[#inline-images][Inline images]]
   - [[#log-time-of-done-tasks][Log time of done tasks]]
   - [[#task-status-and-prioritization][Task status and prioritization]]
+  - [[#headlines][Headlines]]
+  - [[#bullet-points][Bullet points]]
+  - [[#added-and-removed][Added and removed]]
+  - [[#fancy-priorities][Fancy priorities]]
+  - [[#move-tags-to-the-far-right][Move tags to the far right]]
+  - [[#enable-word-wrap][Enable word-wrap]]
+  - [[#visual-line-mode][Visual line mode]]
+  - [[#emphasis-markers][Emphasis markers]]
   - [[#roam][Roam]]
   - [[#record-last-modified-date-in-org-mode][Record last modified date in org-mode]]
   - [[#org-capture-templates][Org capture templates]]
   - [[#org-capture-anywhere-macos][Org capture anywhere MacOS]]
-  - [[#org-mode-appearance][Org mode appearance]]
   - [[#org-autolist][Org autolist]]
+  - [[#disable-company-for-org-mode][Disable company for org-mode]]
 - [[#treemacs][Treemacs]]
-  - [[#treemacs-keybindings][Treemacs keybindings]]
   - [[#treemacs-git-mode][Treemacs git mode]]
   - [[#treemacs-modes][Treemacs modes]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
   - [[#set-treemacs-themes][Set treemacs themes]]
-- [[#corfu][Corfu]]
+- [[#company][Company]]
+  - [[#disable-autocommit-of-completion][Disable autocommit of completion]]
+  - [[#tooltips][Tooltips]]
+  - [[#matching][Matching]]
+  - [[#delay][Delay]]
 - [[#vterm][Vterm]]
+  - [[#always-compile-without-confirmation][Always compile without confirmation]]
+  - [[#increase-scrollback-for-vterm][Increase scrollback for vterm]]
+  - [[#vterm-keybindings][Vterm keybindings]]
+  - [[#show-modeline-in-vterm][Show modeline in vterm]]
 - [[#lsp][LSP]]
-- [[#additional-tools][Additional tools]]
-  - [[#flyspell][Flyspell]]
-  - [[#flymake][Flymake]]
-  - [[#cheatsh][Cheat.sh]]
-  - [[#inheritenv][Inheritenv]]
-  - [[#eshell][Eshell]]
-  - [[#dired-evil][Dired evil]]
+  - [[#lsp-server-configuration][LSP server configuration]]
+- [[#flyspell][Flyspell]]
+- [[#flymake][Flymake]]
+- [[#cheatsh][Cheat.sh]]
+- [[#inheritenv][Inheritenv]]
+- [[#eshell][Eshell]]
+- [[#dired-evil][Dired evil]]
 
 * Headers
 #+begin_src emacs-lisp :tangle init.el
@@ -74,9 +118,10 @@
 #+begin_src emacs-lisp :tangle init.el
 (doom! :completion
        (vertico +icons)
+       (company +tng)
 
        :local
-       (corfu +icons +orderless)
+       ;; (corfu +icons +orderless)
 
        :ui
        doom                                      ; what makes DOOM look the way it does
@@ -209,57 +254,33 @@
 (map! "A-<backspace>" #'doom/delete-backward-word)
 #+end_src
 
-** UI
-*** Workspaces
+** Workspaces
 #+begin_src emacs-lisp :tangle config.el
  (setq +workspaces-on-switch-project-behavior 'non-empty)
 #+end_src
-*** Disable menu and tool bar
+** Disable menu and tool bar
 #+begin_src emacs-lisp :tangle init.el
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 #+end_src
 
-*** Show current function in modeline
+** Show current function in modeline
 #+begin_src emacs-lisp :tangle config.el
 (which-function-mode)
 #+end_src
 
-*** Tabs
-**** Group tabs by projectile project
-#+begin_src emacs-lisp :tangle config.el
-(require 'centaur-tabs)
-(centaur-tabs-group-by-projectile-project)
-#+end_src
-
-**** Show tab index and count
-#+begin_src emacs-lisp :tangle config.el
-(setq centaur-tabs-show-count t)
-#+end_src
-
-**** Disable tabs for specific buffers
-#+begin_src emacs-lisp :tangle config.el
-(add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
-(add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
-#+end_src
-
-**** Gray out non focused buffer icons
-#+begin_src emacs-lisp :tangle config.el
-(setq centaur-tabs-gray-out-icons 'buffer)
-#+end_src
-
-*** Unpin doom themes
+** Unpin doom themes
 #+begin_src emacs-lisp :tangle packages.el
 (unpin! doom-themes)
 #+end_src
 
-*** Default fallback theme
+** Default fallback theme
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-theme 'doom-solarized-light)
 #+end_src
 
-*** Day/Night mode switching function (based on emacs-plus patch)
+** Day/Night mode switching function (based on emacs-plus patch)
 #+begin_src emacs-lisp :tangle config.el
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
@@ -273,29 +294,29 @@
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 #+end_src
 
-*** Set font
+** Set font
 #+begin_src emacs-lisp :tangle config.el
 (setq  doom-font (font-spec :family "JetBrains Mono NL" :size 13))
 #+end_src
 
-*** Start emacs maximized
+** Start emacs maximized
 #+begin_src emacs-lisp :tangle config.el
 (setq initial-frame-alist '((fullscreen . maximized)))
 #+end_src
 
-*** Truncate doom dashboard
+** Truncate doom dashboard
 #+begin_src emacs-lisp :tangle config.el
 (setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 1))
 #+end_src
 
-*** Set frame title and icon
+** Set frame title and icon
 #+begin_src emacs-lisp :tangle config.el
 (setq-default
  frame-title-format '("Doom")
  ns-use-proxy-icon nil)
 #+end_src
 
-*** Make window indicator more visible
+** Make window indicator more visible
 #+begin_src emacs-lisp :tangle config.el
 (custom-set-faces!
   '(aw-leading-char-face
@@ -303,24 +324,24 @@
     :weight bold :height 1.5 ))
 #+end_src
 
-*** Modeline
+** Modeline
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-modeline-icon (display-graphic-p)
       doom-modeline-major-mode-icon nil
       doom-modeline-buffer-state-icon t)
 #+end_src
 
-*** Always make windows proportional after splitting
+** Always make windows proportional after splitting
 #+begin_src emacs-lisp :tangle config.el
 (setq-default window-combination-resize t)
 #+end_src
 
-*** Truncate ellipsis
+** Truncate ellipsis
 #+begin_src emacs-lisp :tangle config.el
 (setq-default truncate-string-ellipsis "…")
 #+end_src
 
-*** Uniquify
+** Uniquify
 #+begin_src emacs-lisp :tangle config.el
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
@@ -337,33 +358,57 @@
   (setq persp-emacsclient-init-frame-behaviour-override "main"))
 #+end_src
 
-** Editor
-*** Enable autosave
+* Centaur Tabs
+** Group tabs by projectile project
+#+begin_src emacs-lisp :tangle config.el
+(require 'centaur-tabs)
+(centaur-tabs-group-by-projectile-project)
+#+end_src
+
+** Show tab index and count
+#+begin_src emacs-lisp :tangle config.el
+(setq centaur-tabs-show-count t)
+#+end_src
+
+** Disable tabs for specific buffers
+#+begin_src emacs-lisp :tangle config.el
+(add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
+(add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
+#+end_src
+
+** Gray out non focused buffer icons
+#+begin_src emacs-lisp :tangle config.el
+(setq centaur-tabs-gray-out-icons 'buffer)
+#+end_src
+
+
+* Editor
+** Enable autosave
 #+begin_src emacs-lisp :tangle config.el
 (setq auto-save-default t)
 #+end_src
 
-*** Auto backup files
+** Auto backup files
 #+begin_src emacs-lisp :tangle config.el
 (setq make-backup-files t)
 #+end_src
 
-*** Set default tab-width
+** Set default tab-width
 #+begin_src emacs-lisp :tangle config.el
 (setq-default tab-width 4)
 #+end_src
 
-*** Relative numbers
+** Relative numbers
 #+begin_src emacs-lisp :tangle config.el
 (setq display-line-numbers-type 'visual)
 #+end_src
 
-*** Set scroll margin
+** Set scroll margin
 #+begin_src emacs-lisp :tangle config.el
 (setq scroll-margin 5)
 #+end_src
 
-*** Disable final newline in files
+** Disable final newline in files
 #+begin_src emacs-lisp :tangle config.el
 (setq require-final-newline nil)
 #+end_src
@@ -408,21 +453,19 @@
 (setq evil-kill-on-visual-paste nil)
 #+end_src
 
-
-** Evil keybinds
-*** Disable escape on "jk"
+** Disable escape on "jk"
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-escape-key-sequence nil)
 #+end_src
 
-*** Evil Window Map
+** Evil Window Map
 #+begin_src emacs-lisp :tangle config.el
 (map! :map evil-window-map
       :g "w" #'ace-window
       :g "p" #'treemacs-select-window)
 #+end_src
 
-*** Enable key-chord and make double tap ';' move cursor to the right in insert mode
+** Enable key-chord and make double tap ';' move cursor to the right in insert mode
 #+begin_src emacs-lisp :tangle packages.el
 (package! key-chord)
 #+end_src
@@ -434,7 +477,7 @@
 (key-chord-mode 1)
 #+end_src
 
-*** Disable evil keybindings for git-timemachine
+** Disable evil keybindings for git-timemachine
 #+begin_src emacs-lisp :tangle config.el
 (with-eval-after-load 'git-timemachine
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
@@ -452,9 +495,7 @@
    (add-hook 'before-save-hook 'org-update-all-dblocks))
  #+end_src
 
-** Org mode keybinds
-
-*** Org-mode-map
+** Org-mode-map
 #+begin_src emacs-lisp :tangle config.el
 (map! :map org-mode-map
       :localleader "$" #'org-decrypt-entry
@@ -462,7 +503,7 @@
 #+end_src
 
 
-*** Set visual line movement via gj and gk
+** Set visual line movement via gj and gk
 #+begin_src emacs-lisp :tangle config.el
 (after! org
   (map! :map org-mode-map
@@ -549,6 +590,72 @@
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
 
+#+end_src
+
+** Headlines
+#+begin_src emacs-lisp :tangle config.el
+(setq org-superstar-headline-bullets-list '("⁖"))
+
+(after! org
+  (custom-set-faces!
+    '(org-level-1 :height 1.04 :inherit outline-1)
+    '(org-level-2 :height 1.04 :inherit outline-2)
+    '(org-level-3 :height 1.04 :inherit outline-3)
+    '(org-level-4 :height 1.04 :inherit outline-4)
+    '(org-level-5 :height 1.04 :inherit outline-5)
+    '(org-level-6 :height 1.04 :inherit outline-6)
+    '(org-level-7 :height 1.04 :inherit outline-7)
+    '(org-level-8 :height 1.04 :inherit outline-8)))
+#+end_src
+
+** Bullet points
+#+begin_src emacs-lisp :tangle config.el
+(setq org-superstar-prettify-item-bullets nil)
+
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◆"))))))
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([+]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
+#+end_src
+
+** Added and removed
+#+begin_src emacs-lisp :tangle config.el
+;; (add-hook 'org-mode-hook (lambda ()
+;;   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
+;;   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
+;;   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
+;;   (prettify-symbols-mode)))
+#+end_src
+
+** Fancy priorities
+#+begin_src emacs-lisp :tangle config.el
+(after! org-fancy-priorities
+  (setq
+   org-fancy-priorities-list '((65 . "⁂")
+                               (66 . "⁑")
+                               (67 . "⁕"))))
+#+end_src
+
+** Move tags to the far right
+#+begin_src emacs-lisp :tangle config.el
+(setq org-tags-column -77)
+#+end_src
+
+** Enable word-wrap
+#+begin_src emacs-lisp :tangle config.el
+(add-hook 'org-mode-hook #'+word-wrap-mode)
+#+end_src
+
+** Visual line mode
+#+begin_src emacs-lisp :tangle config.el
+(add-hook 'org-mode-hook #'visual-line-mode)
+#+end_src
+
+** Emphasis markers
+#+begin_src emacs-lisp :tangle config.el
+(setq org-hide-emphasis-markers t)
 #+end_src
 
 ** Roam
@@ -641,74 +748,6 @@
       (delete-frame)))
 #+end_src
 
-** Org mode appearance
-
-*** Headlines
-#+begin_src emacs-lisp :tangle config.el
-(setq org-superstar-headline-bullets-list '("⁖"))
-
-(after! org
-  (custom-set-faces!
-    '(org-level-1 :height 1.04 :inherit outline-1)
-    '(org-level-2 :height 1.04 :inherit outline-2)
-    '(org-level-3 :height 1.04 :inherit outline-3)
-    '(org-level-4 :height 1.04 :inherit outline-4)
-    '(org-level-5 :height 1.04 :inherit outline-5)
-    '(org-level-6 :height 1.04 :inherit outline-6)
-    '(org-level-7 :height 1.04 :inherit outline-7)
-    '(org-level-8 :height 1.04 :inherit outline-8)))
-#+end_src
-
-*** Bullet points
-#+begin_src emacs-lisp :tangle config.el
-(setq org-superstar-prettify-item-bullets nil)
-
-(font-lock-add-keywords 'org-mode
-                        '(("^ *\\([-]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◆"))))))
-(font-lock-add-keywords 'org-mode
-                        '(("^ *\\([+]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
-#+end_src
-
-*** Checkboxes
-#+begin_src emacs-lisp :tangle config.el
-;; (add-hook 'org-mode-hook (lambda ()
-;;   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
-;;   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
-;;   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
-;;   (prettify-symbols-mode)))
-#+end_src
-
-*** Fancy priorities
-#+begin_src emacs-lisp :tangle config.el
-(after! org-fancy-priorities
-  (setq
-   org-fancy-priorities-list '((65 . "⁂")
-                               (66 . "⁑")
-                               (67 . "⁕"))))
-#+end_src
-
-*** Move tags to the far right
-#+begin_src emacs-lisp :tangle config.el
-(setq org-tags-column -77)
-#+end_src
-
-*** Enable word-wrap
-#+begin_src emacs-lisp :tangle config.el
-(add-hook 'org-mode-hook #'+word-wrap-mode)
-#+end_src
-
-*** Visual line mode
-#+begin_src emacs-lisp :tangle config.el
-(add-hook 'org-mode-hook #'visual-line-mode)
-#+end_src
-
-*** Emphasis markers
-#+begin_src emacs-lisp :tangle config.el
-(setq org-hide-emphasis-markers t)
-#+end_src
-
 ** Org autolist
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-autolist)
@@ -718,14 +757,13 @@
 (add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
 #+end_src
 
-* Treemacs
-
-** Treemacs keybindings
+** Disable company for org-mode
 #+begin_src emacs-lisp :tangle config.el
-;; (map! :map doom-leader-open-map
-;;       :g "p" 'treemacs
-;;       :g "P" 'treemacs-find-file)
+(setq company-global-modes '(not org-mode))
+(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 #+end_src
+
+* Treemacs
 
 ** Treemacs git mode
 #+begin_src emacs-lisp :tangle config.el
@@ -750,49 +788,78 @@
 (setq  doom-themes-treemacs-theme "doom-colors")
 #+end_src
 
-* Corfu
+# * Corfu
+# #+begin_src emacs-lisp :tangle config.el
+# (setq corfu-preview-current 'insert
+#       corfu-preselect-first nil ;; Disable candidate preselection
+#       corfu-excluded-modes
+#       '(erc-mode
+#         circe-mode
+#         help-mode
+#         gud-mode
+#         vterm-mode))
+#         ;; org-mode))
+# #+end_src
+
+# #+begin_src emacs-lisp :tangle config.el
+#     (map! ;;:desc "complete" "TAB" #'completion-at-point
+#           (:map 'corfu-map
+#            :desc "next" "TAB" #'corfu-next
+#            :desc "next" "<tab>" #'corfu-next
+#            :desc "next" [tab] #'corfu-next
+#            :desc "previous" "S-TAB" #'corfu-previous
+#            :desc "previous" "<backtab>"  #'corfu-previous
+#            :desc "previous" [backtab] #'corfu-previous))
+# #+end_src
+
+# #+begin_src emacs-lisp :tangle config.el
+# (global-corfu-mode)
+# #+end_src
+
+# #+begin_src emacs-lisp :tangle config.el
+# (setq +lsp-company-backends nil
+#       +vertico-company-completion-styles nil)
+# #+end_src
+
+* Company
+
+** Disable autocommit of completion
 #+begin_src emacs-lisp :tangle config.el
-(setq corfu-preview-current 'insert
-      corfu-preselect-first nil ;; Disable candidate preselection
-      corfu-excluded-modes
-      '(erc-mode
-        circe-mode
-        help-mode
-        gud-mode
-        vterm-mode))
-        ;; org-mode))
+(setq company-auto-complete nil)
 #+end_src
 
+** Tooltips
 #+begin_src emacs-lisp :tangle config.el
-    (map! ;;:desc "complete" "TAB" #'completion-at-point
-          (:map 'corfu-map
-           :desc "next" "TAB" #'corfu-next
-           :desc "next" "<tab>" #'corfu-next
-           :desc "next" [tab] #'corfu-next
-           :desc "previous" "S-TAB" #'corfu-previous
-           :desc "previous" "<backtab>"  #'corfu-previous
-           :desc "previous" [backtab] #'corfu-previous))
+(setq company-tooltip-align-annotations t
+      company-tooltip-minimum (- scroll-margin 1)
+      company-tooltip-flip-when-above t)
 #+end_src
 
+** Matching
 #+begin_src emacs-lisp :tangle config.el
-(global-corfu-mode)
+(setq company-minimum-prefix-length 2
+      company-require-match nil)
 #+end_src
 
+** Delay
 #+begin_src emacs-lisp :tangle config.el
-(setq +lsp-company-backends nil
-      +vertico-company-completion-styles nil)
+(setq company-idle-delay 0)
 #+end_src
+
 
 * Vterm
+** Always compile without confirmation
 #+begin_src emacs-lisp :tangle config.el
 (setq vterm-always-compile-module t)
 #+end_src
 
+** Increase scrollback for vterm
 #+begin_src emacs-lisp :tangle config.el
 (setq vterm-max-scrollback 100000)
       ;; vterm-buffer-name-string "VT: %s")
 #+end_src
 
+** Vterm keybindings
 #+begin_src emacs-lisp :tangle config.el
 (map! :after vterm
        :map vterm-mode-map
@@ -802,6 +869,7 @@
        :i   "A-<backspace>" '(lambda () (interactive) (vterm-send-key (kbd "C-w"))))
 #+end_src
 
+** Show modeline in vterm
 #+begin_src emacs-lisp :tangle config.el
 (remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
 #+end_src
@@ -817,10 +885,6 @@
 #+end_src
 
 #+begin_src emacs-lisp :tangle config.el
-(setq lsp-disabled-clients '(tfls tfmls))
-#+end_src
-
-#+begin_src emacs-lisp :tangle config.el
 (after! lsp-ui
   (setq lsp-ui-sideline-show-diagnostics t
         lsp-headerline-breadcrumb-enable t
@@ -830,6 +894,13 @@
         lsp-ui-doc-position "Bottom"
         lsp-ui-doc-delay 1
         lsp-ui-doc-show-with-cursor t))
+#+end_src
+
+** LSP server configuration
+
+*** Blacklist lsp clients
+#+begin_src emacs-lisp :tangle config.el
+(setq lsp-disabled-clients '(tfls tfmls))
 #+end_src
 
 *** nix
@@ -848,15 +919,14 @@
 ;; (add-hook 'terraform-mode-hook #'lsp-deferred)
 #+end_src
 
-* Additional tools
 
-** Flyspell
+* Flyspell
 #+begin_src emacs-lisp :tangle config.el
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
 #+end_src
 
-** Flymake
+* Flymake
 #+begin_src emacs-lisp :tangle config.el
 (add-hook! prog-mode #'flymake-mode)
 
@@ -864,12 +934,12 @@
   (setq lsp-diagnostics-provider :flymake))
 #+end_src
 
-** Cheat.sh
+* Cheat.sh
 #+begin_src emacs-lisp :tangle packages.el
 (package! cheat-sh)
 #+end_src
 
-** Inheritenv
+* Inheritenv
 #+begin_src emacs-lisp :tangle packages.el
 (package! inheritenv)
 #+end_src
@@ -879,12 +949,12 @@
 (inheritenv-add-advice #'with-temp-buffer)
 #+end_src
 
-** Eshell
+* Eshell
 #+begin_src emacs-lisp :tangle config.el
 (setq eshell-buffer-name "eshell")
 #+end_src
 
-** Dired evil
+* Dired evil
 #+begin_src emacs-lisp :tangle config.el
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory

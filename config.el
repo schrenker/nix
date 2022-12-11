@@ -22,16 +22,6 @@
 
 (which-function-mode)
 
-(require 'centaur-tabs)
-(centaur-tabs-group-by-projectile-project)
-
-(setq centaur-tabs-show-count t)
-
-(add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
-(add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
-
-(setq centaur-tabs-gray-out-icons 'buffer)
-
 (setq doom-theme 'doom-solarized-light)
 
 (defun my/apply-theme (appearance)
@@ -78,6 +68,16 @@
 
 (after! persp-mode
   (setq persp-emacsclient-init-frame-behaviour-override "main"))
+
+(require 'centaur-tabs)
+(centaur-tabs-group-by-projectile-project)
+
+(setq centaur-tabs-show-count t)
+
+(add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
+(add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
+
+(setq centaur-tabs-gray-out-icons 'buffer)
 
 (setq auto-save-default t)
 
@@ -180,6 +180,48 @@
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
 
+(setq org-superstar-headline-bullets-list '("⁖"))
+
+(after! org
+  (custom-set-faces!
+    '(org-level-1 :height 1.04 :inherit outline-1)
+    '(org-level-2 :height 1.04 :inherit outline-2)
+    '(org-level-3 :height 1.04 :inherit outline-3)
+    '(org-level-4 :height 1.04 :inherit outline-4)
+    '(org-level-5 :height 1.04 :inherit outline-5)
+    '(org-level-6 :height 1.04 :inherit outline-6)
+    '(org-level-7 :height 1.04 :inherit outline-7)
+    '(org-level-8 :height 1.04 :inherit outline-8)))
+
+(setq org-superstar-prettify-item-bullets nil)
+
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◆"))))))
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([+]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
+
+;; (add-hook 'org-mode-hook (lambda ()
+;;   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
+;;   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
+;;   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
+;;   (prettify-symbols-mode)))
+
+(after! org-fancy-priorities
+  (setq
+   org-fancy-priorities-list '((65 . "⁂")
+                               (66 . "⁑")
+                               (67 . "⁕"))))
+
+(setq org-tags-column -77)
+
+(add-hook 'org-mode-hook #'+word-wrap-mode)
+
+(add-hook 'org-mode-hook #'visual-line-mode)
+
+(setq org-hide-emphasis-markers t)
+
 (map! :map doom-leader-notes-map
       :g "r t" #'org-roam-ui-sync-theme
       :g "r o" #'org-roam-ui-open)
@@ -241,53 +283,10 @@
   (if (equal "capture" (frame-parameter nil 'name))
       (delete-frame)))
 
-(setq org-superstar-headline-bullets-list '("⁖"))
-
-(after! org
-  (custom-set-faces!
-    '(org-level-1 :height 1.04 :inherit outline-1)
-    '(org-level-2 :height 1.04 :inherit outline-2)
-    '(org-level-3 :height 1.04 :inherit outline-3)
-    '(org-level-4 :height 1.04 :inherit outline-4)
-    '(org-level-5 :height 1.04 :inherit outline-5)
-    '(org-level-6 :height 1.04 :inherit outline-6)
-    '(org-level-7 :height 1.04 :inherit outline-7)
-    '(org-level-8 :height 1.04 :inherit outline-8)))
-
-(setq org-superstar-prettify-item-bullets nil)
-
-(font-lock-add-keywords 'org-mode
-                        '(("^ *\\([-]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◆"))))))
-(font-lock-add-keywords 'org-mode
-                        '(("^ *\\([+]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
-
-;; (add-hook 'org-mode-hook (lambda ()
-;;   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
-;;   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
-;;   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
-;;   (prettify-symbols-mode)))
-
-(after! org-fancy-priorities
-  (setq
-   org-fancy-priorities-list '((65 . "⁂")
-                               (66 . "⁑")
-                               (67 . "⁕"))))
-
-(setq org-tags-column -77)
-
-(add-hook 'org-mode-hook #'+word-wrap-mode)
-
-(add-hook 'org-mode-hook #'visual-line-mode)
-
-(setq org-hide-emphasis-markers t)
-
 (add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
 
-;; (map! :map doom-leader-open-map
-;;       :g "p" 'treemacs
-;;       :g "P" 'treemacs-find-file)
+(setq company-global-modes '(not org-mode))
+(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
 
 (setq +treemacs-git-mode 'deferred)
 
@@ -298,29 +297,16 @@
 
 (setq  doom-themes-treemacs-theme "doom-colors")
 
-(setq corfu-preview-current 'insert
-      corfu-preselect-first nil ;; Disable candidate preselection
-      corfu-excluded-modes
-      '(erc-mode
-        circe-mode
-        help-mode
-        gud-mode
-        vterm-mode))
-        ;; org-mode))
+(setq company-auto-complete nil)
 
-(map! ;;:desc "complete" "TAB" #'completion-at-point
-      (:map 'corfu-map
-       :desc "next" "TAB" #'corfu-next
-       :desc "next" "<tab>" #'corfu-next
-       :desc "next" [tab] #'corfu-next
-       :desc "previous" "S-TAB" #'corfu-previous
-       :desc "previous" "<backtab>"  #'corfu-previous
-       :desc "previous" [backtab] #'corfu-previous))
+(setq company-tooltip-align-annotations t
+      company-tooltip-minimum (- scroll-margin 1)
+      company-tooltip-flip-when-above t)
 
-(global-corfu-mode)
+(setq company-minimum-prefix-length 2
+      company-require-match nil)
 
-(setq +lsp-company-backends nil
-      +vertico-company-completion-styles nil)
+(setq company-idle-delay 0)
 
 (setq vterm-always-compile-module t)
 
@@ -341,8 +327,6 @@
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
 
-(setq lsp-disabled-clients '(tfls tfmls))
-
 (after! lsp-ui
   (setq lsp-ui-sideline-show-diagnostics t
         lsp-headerline-breadcrumb-enable t
@@ -352,6 +336,8 @@
         lsp-ui-doc-position "Bottom"
         lsp-ui-doc-delay 1
         lsp-ui-doc-show-with-cursor t))
+
+(setq lsp-disabled-clients '(tfls tfmls))
 
 (add-hook 'nix-mode-hook #'lsp!)
 

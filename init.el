@@ -2,9 +2,10 @@
 
 (doom! :completion
        (vertico +icons)
+       (company +tng)
 
        :local
-       (corfu +icons +orderless)
+       ;; (corfu +icons +orderless)
 
        :ui
        doom                                      ; what makes DOOM look the way it does

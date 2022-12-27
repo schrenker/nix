@@ -137,7 +137,8 @@
 
 (setq org-directory "/Users/sebastian/Library/Mobile Documents/com~apple~CloudDocs/brain"
       org-roam-directory org-directory
-      org-default-notes-file (concat org-directory "/!capture.org")
+      org-archive-location "archive/%s_archive::"
+      org-default-notes-file (concat org-directory "/20221222131538-personal.org")
       +org-capture-notes-file org-default-notes-file)
 
 (setq org-tags-exclude-from-inheritance '("crypt"
@@ -362,6 +363,10 @@
 
 (setq eshell-buffer-name "eshell")
 
+(add-hook! eshell-mode (hide-mode-line-mode -1))
+
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
+
+(load! "work.el")

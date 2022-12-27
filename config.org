@@ -98,7 +98,9 @@
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
 - [[#eshell][Eshell]]
+  - [[#show-modeline-in-eshell][Show modeline in eshell]]
 - [[#dired-evil][Dired evil]]
+- [[#load-hidden-work-config][Load hidden work config]]
 
 * Headers
 #+begin_src emacs-lisp :tangle init.el
@@ -156,6 +158,7 @@
 
        :term
        vterm                                     ; the best terminal emulation in Emacs
+       eshell
 
        :checkers
        syntax                                    ; tasing you for every semicolon you forget
@@ -515,7 +518,8 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq org-directory "/Users/sebastian/Library/Mobile Documents/com~apple~CloudDocs/brain"
       org-roam-directory org-directory
-      org-default-notes-file (concat org-directory "/!capture.org")
+      org-archive-location "archive/%s_archive::"
+      org-default-notes-file (concat org-directory "/20221222131538-personal.org")
       +org-capture-notes-file org-default-notes-file)
 #+end_src
 
@@ -954,9 +958,20 @@
 (setq eshell-buffer-name "eshell")
 #+end_src
 
+** Show modeline in eshell
+#+begin_src emacs-lisp :tangle config.el
+(add-hook! eshell-mode (hide-mode-line-mode -1))
+#+end_src
+
 * Dired evil
 #+begin_src emacs-lisp :tangle config.el
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
+#+end_src
+
+* Load hidden work config
+- This is overlay of settings I use at work. As it contains some sensitive info, it remains encrypted.
+#+begin_src emacs-lisp :tangle config.el
+(load! "work.el")
 #+end_src

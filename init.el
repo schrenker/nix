@@ -40,6 +40,7 @@
 
        :term
        vterm                                     ; the best terminal emulation in Emacs
+       eshell
 
        :checkers
        syntax                                    ; tasing you for every semicolon you forget

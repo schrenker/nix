@@ -993,5 +993,5 @@
 * Load hidden work config
 - This is overlay of settings I use at work. As it contains some sensitive info, it remains encrypted.
 #+begin_src emacs-lisp :tangle config.el
-(load! "work.el")
+(if (file-exists-p "work.el") (load! "work.el"))
 #+end_src

@@ -369,4 +369,4 @@
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
 
-(load! "work.el")
+(if (file-exists-p "work.el") (load! "work.el"))

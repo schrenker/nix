@@ -35,7 +35,12 @@
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
+(unless (display-graphic-p)
+  (solaire-global-mode -1))
+
 (setq  doom-font (font-spec :family "JetBrains Mono NL" :size 13))
+
+(setq fancy-splash-image "~/.config/doom/banner.png")
 
 (setq initial-frame-alist '((fullscreen . maximized)))
 
@@ -48,7 +53,7 @@
 (custom-set-faces!
   '(aw-leading-char-face
     :foreground "red"
-    :weight bold :height 1.5 ))
+    :weight bold :height 2 ))
 
 (setq doom-modeline-icon (display-graphic-p)
       doom-modeline-major-mode-icon nil
@@ -352,11 +357,6 @@
 
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
-
-(add-hook! prog-mode #'flymake-mode)
-
-(after! lsp-mode
-  (setq lsp-diagnostics-provider :flymake))
 
 (require 'inheritenv)
 (inheritenv-add-advice #'with-temp-buffer)

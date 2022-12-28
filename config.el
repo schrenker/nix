@@ -259,7 +259,7 @@
         '(
           ("n" "Note" entry (file+headline org-default-notes-file "Notes")
            "** %U\n%i%?" :empty-lines 1)
-          ("t" "Task" entry (file+headline org-default-notes-file "Tasks")
+          ("t" "Task" entry (file+headline org-default-notes-file "Tasks" "Backlog")
            "** TODO %?" :empty-lines 1)
           )))
 

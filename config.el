@@ -46,9 +46,12 @@
 
 (setq fancy-splash-image "~/.config/doom/banner.png")
 
+(setq fancy-splash-image "~/.config/doom/banner.png")
+
 (setq initial-frame-alist '((fullscreen . maximized)))
 
-(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 1))
+(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-shortmenu)
+(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
 
 (setq-default
  frame-title-format '("Doom")
@@ -374,4 +377,4 @@
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
 
-(if (file-exists-p "work.el") (load! "work.el"))
+(load "~/.config/doom/work.el" t t)

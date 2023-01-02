@@ -18,6 +18,7 @@
   - [[#disable-solaire-mode-in-terminal][Disable solaire-mode in terminal]]
   - [[#set-font][Set font]]
   - [[#set-dashboard-image][Set dashboard image]]
+  - [[#set-dashboard-image-1][Set dashboard image]]
   - [[#start-emacs-maximized][Start emacs maximized]]
   - [[#truncate-doom-dashboard][Truncate doom dashboard]]
   - [[#set-frame-title-and-icon][Set frame title and icon]]
@@ -325,6 +326,11 @@
 (setq fancy-splash-image "~/.config/doom/banner.png")
 #+end_src
 
+** Set dashboard image
+#+begin_src emacs-lisp :tangle config.el
+(setq fancy-splash-image "~/.config/doom/banner.png")
+#+end_src
+
 ** Start emacs maximized
 #+begin_src emacs-lisp :tangle config.el
 (setq initial-frame-alist '((fullscreen . maximized)))
@@ -332,7 +338,8 @@
 
 ** Truncate doom dashboard
 #+begin_src emacs-lisp :tangle config.el
-(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 1))
+(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-shortmenu)
+(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
 #+end_src
 
 ** Set frame title and icon
@@ -990,5 +997,5 @@
 * Load hidden work config
 - This is overlay of settings I use at work. As it contains some sensitive info, it remains encrypted.
 #+begin_src emacs-lisp :tangle config.el
-(if (file-exists-p "work.el") (load! "work.el"))
+(load "~/.config/doom/work.el" t t)
 #+end_src

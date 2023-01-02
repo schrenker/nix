@@ -48,7 +48,6 @@
        vterm                                     ; the best terminal emulation in Emacs
 
        :checkers
-       grammar
        (spell +flyspell +everywhere)
        (syntax +childframe)                                    ; tasing you for every semicolon you forget
 

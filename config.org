@@ -167,7 +167,6 @@
        vterm                                     ; the best terminal emulation in Emacs
 
        :checkers
-       grammar
        (spell +flyspell +everywhere)
        (syntax +childframe)                                    ; tasing you for every semicolon you forget
 
@@ -314,7 +313,11 @@
 
 ** Set font
 #+begin_src emacs-lisp :tangle config.el
-(setq  doom-font (font-spec :family "JetBrains Mono NL" :size 13))
+(setq doom-font (font-spec :family "JetBrains Mono NL" :size 13)
+      doom-big-font (font-spec :family "JetBrains Mono NL" :size 26)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 24)
+      doom-unicode-font (font-spec :family "JuliaMono")
+      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 #+end_src
 
 ** Set dashboard image
@@ -899,8 +902,10 @@
 #+end_src
 
 * LSP
+
 #+begin_src emacs-lisp :tangle config.el
 (require 'lsp)
+(require 'lsp-ui)
 #+end_src
 
 #+begin_src emacs-lisp :tangle config.el
@@ -913,10 +918,10 @@
   (setq lsp-ui-sideline-show-diagnostics t
         lsp-headerline-breadcrumb-enable t
         lsp-ui-sideline-show-code-actions t
-        lsp-ui-sideline-show-hover t
+        ;; lsp-ui-sideline-show-hover t
         lsp-ui-doc-enable t
-        lsp-ui-doc-position "Bottom"
-        lsp-ui-doc-delay 1
+        lsp-ui-doc-position "Top"
+        ;; lsp-ui-doc-delay 1
         lsp-ui-doc-show-with-cursor t))
 #+end_src
 
@@ -949,14 +954,6 @@
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
 #+end_src
-
-# * Flymake
-# #+begin_src emacs-lisp :tangle config.el
-# (add-hook! prog-mode #'flymake-mode)
-
-# (after! lsp-mode
-#   (setq lsp-diagnostics-provider :flymake))
-# #+end_src
 
 * Cheat.sh
 #+begin_src emacs-lisp :tangle packages.el

@@ -38,7 +38,11 @@
 (unless (display-graphic-p)
   (solaire-global-mode -1))
 
-(setq  doom-font (font-spec :family "JetBrains Mono NL" :size 13))
+(setq doom-font (font-spec :family "JetBrains Mono NL" :size 13)
+      doom-big-font (font-spec :family "JetBrains Mono NL" :size 26)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 24)
+      doom-unicode-font (font-spec :family "JuliaMono")
+      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 
 (setq fancy-splash-image "~/.config/doom/banner.png")
 
@@ -329,6 +333,7 @@
 (remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
 
 (require 'lsp)
+(require 'lsp-ui)
 
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
@@ -337,10 +342,10 @@
   (setq lsp-ui-sideline-show-diagnostics t
         lsp-headerline-breadcrumb-enable t
         lsp-ui-sideline-show-code-actions t
-        lsp-ui-sideline-show-hover t
+        ;; lsp-ui-sideline-show-hover t
         lsp-ui-doc-enable t
-        lsp-ui-doc-position "Bottom"
-        lsp-ui-doc-delay 1
+        lsp-ui-doc-position "Top"
+        ;; lsp-ui-doc-delay 1
         lsp-ui-doc-show-with-cursor t))
 
 (setq lsp-disabled-clients '(tfls tfmls))

@@ -99,10 +99,10 @@
 - [[#flyspell][Flyspell]]
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
-- [[#eshell][Eshell]]
-  - [[#show-modeline-in-eshell][Show modeline in eshell]]
 - [[#dired-evil][Dired evil]]
-- [[#load-hidden-work-config][Load hidden work config]]
+- [[#additional-config][Additional config]]
+  - [[#load-wsl-config-override][Load WSL config override]]
+  - [[#additional-tweaks-to-personal-info-and-org-mode-for-my-work][Additional tweaks to personal info and org mode for my work]]
 
 * Headers
 #+begin_src emacs-lisp :tangle init.el
@@ -164,7 +164,6 @@
        vc                                        ; version-control and Emacs, sitting in a tree
 
        :term
-       eshell
        vterm                                     ; the best terminal emulation in Emacs
 
        :checkers
@@ -316,7 +315,7 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-font (font-spec :family "JetBrains Mono NL" :size 13)
       doom-big-font (font-spec :family "JetBrains Mono NL" :size 26)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 24)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 14)
       doom-unicode-font (font-spec :family "JuliaMono")
       doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 #+end_src
@@ -977,15 +976,15 @@
 (inheritenv-add-advice #'with-temp-buffer)
 #+end_src
 
-* Eshell
-#+begin_src emacs-lisp :tangle config.el
-(setq eshell-buffer-name "eshell")
-#+end_src
+# * Eshell
+# #+begin_src emacs-lisp :tangle config.el
+# (setq eshell-buffer-name "eshell")
+# #+end_src
 
-** Show modeline in eshell
-#+begin_src emacs-lisp :tangle config.el
-(add-hook! eshell-mode (hide-mode-line-mode -1))
-#+end_src
+# ** Show modeline in eshell
+# #+begin_src emacs-lisp :tangle config.el
+# (add-hook! eshell-mode (hide-mode-line-mode -1))
+# #+end_src
 
 * Dired evil
 #+begin_src emacs-lisp :tangle config.el
@@ -994,8 +993,29 @@
       :n "l" #'dired-find-alternate-file)
 #+end_src
 
-* Load hidden work config
-- This is overlay of settings I use at work. As it contains some sensitive info, it remains encrypted.
+* Additional config
+
+** Load WSL config override
+#+begin_src emacs-lisp :tangle config.el
+(unless IS-MAC
+#+end_src
+
+*** Start emacs non-maximized
+#+begin_src emacs-lisp :tangle config.el
+        (setq initial-frame-alist '((top . 1) (left . 1) (width . 120) (height . 40)))
+#+end_src
+
+*** Unset problematic keybinds
+#+begin_src emacs-lisp :tangle config.el
+        (map! "M-m" nil)
+#+end_src
+
+*** Fin
+#+begin_src emacs-lisp :tangle config.el
+        )
+#+end_src
+
+** Additional tweaks to personal info and org mode for my work
 #+begin_src emacs-lisp :tangle config.el
 (load "~/.config/doom/work.el" t t)
 #+end_src

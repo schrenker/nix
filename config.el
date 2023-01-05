@@ -40,7 +40,7 @@
 
 (setq doom-font (font-spec :family "JetBrains Mono NL" :size 13)
       doom-big-font (font-spec :family "JetBrains Mono NL" :size 26)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 24)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 14)
       doom-unicode-font (font-spec :family "JuliaMono")
       doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 
@@ -369,12 +369,16 @@
 (require 'inheritenv)
 (inheritenv-add-advice #'with-temp-buffer)
 
-(setq eshell-buffer-name "eshell")
-
-(add-hook! eshell-mode (hide-mode-line-mode -1))
-
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
+
+(unless IS-MAC
+
+(setq initial-frame-alist '((top . 1) (left . 1) (width . 120) (height . 40)))
+
+(map! "M-m" nil)
+
+)
 
 (load "~/.config/doom/work.el" t t)

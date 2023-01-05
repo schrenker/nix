@@ -44,7 +44,6 @@
        vc                                        ; version-control and Emacs, sitting in a tree
 
        :term
-       eshell
        vterm                                     ; the best terminal emulation in Emacs
 
        :checkers

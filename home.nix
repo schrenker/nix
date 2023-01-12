@@ -19,11 +19,14 @@ in
     git-crypt
     gnupg
     go-task
+    kind
     jq
     neofetch
     nix-direnv
     nodejs
     pinentry_mac
+    podman
+    podman-compose
     ripgrep
     tmux
     wget
@@ -43,7 +46,6 @@ in
       nQ = "networkQuality";
       fixproj = "rm ~/.config/emacs/.local/cache/treemacs-persist";
       docker = "podman";
-      gc = "gcloud";
     };
 
     plugins = [

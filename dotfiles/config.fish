@@ -12,7 +12,7 @@ end
 
 fish_add_path /opt/homebrew/sbin
 fish_add_path /opt/homebrew/bin
-fish_add_path ~/.config/emacs/bin
+fish_add_path ~/.config/doom/emacs/bin
 
 set -gx LESSHISTFILE -
 set -gx GOPATH ~/.local/go

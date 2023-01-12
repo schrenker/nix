@@ -16,6 +16,8 @@
   environment.shells = with pkgs; [ bashInteractive fish zsh ];
   # first time requires 'chsh -s /run/current-system/sw/bin/fish' after that to set up fish
 
+  environment.variables.EDITOR = "vi";
+
   # backwards compatibility, please read the changelog before changing
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
@@ -34,17 +36,22 @@
     "editorconfig"
     "gcc"
     "pngpaste"
+    "svn"
   ];
   homebrew.casks = [
     "alt-tab"
     "bartender"
     "cloudflare-warp"
     "crossover"
+    "font-ibm-plex-mono"
     "font-jetbrains-mono"
+    "font-juliamono"
+    "font-overpass"
     "hazeover"
     "karabiner-elements"
     "logitech-options"
     "lulu"
+    "netspot"
     "numi"
     "raspberry-pi-imager"
     "raycast"
@@ -61,27 +68,28 @@
     "homebrew/cask-fonts"
     "PlayCover/playcover"
   ];
-  homebrew.cleanup = "zap";
+  homebrew.onActivation.cleanup = "zap";
+  homebrew.onActivation.upgrade = true;
   homebrew.extraConfig = ''
     brew "emacs-plus", args: ["with-imagemagick", "with-no-frame-refocus", "with-native-comp", "with-nobu417-big-sur-icon", "with-xwidgets"]
   '';
   homebrew.masApps = {
-    "Amphetamine " = 937984704;
-    "Bitwarden " = 1352778147;
-    "DuckDuckGo Privacy for Safari " = 1482920575;
-    "Equinox " = 1591510203;
-    "Flow " = 1423210932;
-    "Hush " = 1544743900;
-    "ImageFinder for Safari " = 1514863337;
-    "Microsoft Excel " = 462058435;
-    "Microsoft PowerPoint " = 462062816;
-    "Microsoft Remote Desktop " = 1295203466;
-    "Microsoft Word " = 462054704;
-    "Noir " = 1592917505;
-    "Sorted " = 1306893526;
-    "SponsorBlock for YouTube - Skip Sponsorships " = 1573461917;
-    "uBlacklist for Safari " = 1547912640;
-    "Wipr " = 1320666476;
+    "Amphetamine" = 937984704;
+    "Bitwarden" = 1352778147;
+    "DuckDuckGo Privacy for Safari" = 1482920575;
+    "Equinox" = 1591510203;
+    "Flow" = 1423210932;
+    "Hush" = 1544743900;
+    "ImageFinder for Safari" = 1514863337;
+    # "Microsoft Excel " = 462058435;
+    # "Microsoft PowerPoint " = 462062816;
+    "Microsoft Remote Desktop" = 1295203466;
+    # "Microsoft Word " = 462054704;
+    "Noir" = 1592917505;
+    "Sorted" = 1306893526;
+    "SponsorBlock for YouTube - Skip Sponsorships" = 1573461917;
+    "uBlacklist for Safari" = 1547912640;
+    "Wipr" = 1320666476;
   };
 
   fonts.fontDir.enable = true;
@@ -92,7 +100,7 @@
   system.defaults.finder.AppleShowAllExtensions = true;
 
   system.defaults.NSGlobalDomain."com.apple.mouse.tapBehavior" = 1;
-  system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = true;
+  system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false;
 
   system.defaults.dock.autohide = true;
   system.defaults.dock.autohide-delay = 0.75;
@@ -116,10 +124,14 @@
   system.defaults.loginwindow.GuestEnabled = false;
 
   system.defaults.screencapture.location = "~/Pictures/Screenshots";
-
+  system.activationScripts.preActivation.text = ''
+    rm -f /etc/shells
+  '';
   system.activationScripts.postActivation.text = ''
     if [ ! -d /Applications/Sorted.app ]; then
         mv /Applications/Sorted* /Applications/Sorted.app
     fi
   '';
+
+  security.pam.enableSudoTouchIdAuth = true;
 }

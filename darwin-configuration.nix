@@ -36,6 +36,8 @@
     "editorconfig"
     "gcc"
     "pngpaste"
+    "podman"
+    "podman-compose"
     "svn"
   ];
   homebrew.casks = [
@@ -53,6 +55,7 @@
     "lulu"
     "netspot"
     "numi"
+    "podman-desktop"
     "raspberry-pi-imager"
     "raycast"
     "synologyassistant"

@@ -20,13 +20,13 @@ in
     gnupg
     go-task
     kind
+    kubectl
+    kubectx
     jq
     neofetch
     nix-direnv
     nodejs
     pinentry_mac
-    podman
-    podman-compose
     ripgrep
     tmux
     wget
@@ -46,6 +46,9 @@ in
       nQ = "networkQuality";
       fixproj = "rm ~/.config/emacs/.local/cache/treemacs-persist";
       docker = "podman";
+      k = "kubectl";
+      kx = "kubectx";
+      kns = "kubens";
     };
 
     plugins = [

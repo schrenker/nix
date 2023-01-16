@@ -373,6 +373,10 @@
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
 
+(when (modulep! :completion corfu)
+    (setq lsp-completion-provider :none)
+    (add-hook 'lsp-mode-hook #'lsp-completion-mode))
+
 (unless IS-MAC
 
 (setq initial-frame-alist '((top . 1) (left . 1) (width . 120) (height . 40)))

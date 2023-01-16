@@ -1,11 +1,11 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
 (doom! :completion
-       (company +childframe +tng)
+       ;; (company +childframe +tng)
        (vertico +icons)
 
        :local
-       ;; (corfu +icons +orderless)
+       (corfu +icons +tng)
 
        :ui
        doom                                      ; what makes DOOM look the way it does

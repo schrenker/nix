@@ -100,6 +100,7 @@
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
 - [[#dired-evil][Dired evil]]
+- [[#corfu][Corfu]]
 - [[#additional-config][Additional config]]
   - [[#load-wsl-config-override][Load WSL config override]]
   - [[#additional-tweaks-to-personal-info-and-org-mode-for-my-work][Additional tweaks to personal info and org mode for my work]]
@@ -121,11 +122,11 @@
 * Doom
 #+begin_src emacs-lisp :tangle init.el
 (doom! :completion
-       (company +childframe +tng)
+       ;; (company +childframe +tng)
        (vertico +icons)
 
        :local
-       ;; (corfu +icons +orderless)
+       (corfu +icons +tng)
 
        :ui
        doom                                      ; what makes DOOM look the way it does
@@ -991,6 +992,13 @@
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
+#+end_src
+
+* Corfu
+#+begin_src emacs-lisp :tangle config.el
+(when (modulep! :completion corfu)
+    (setq lsp-completion-provider :none)
+    (add-hook 'lsp-mode-hook #'lsp-completion-mode))
 #+end_src
 
 * Additional config

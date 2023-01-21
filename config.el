@@ -308,18 +308,31 @@
 (require 'treemacs-all-the-icons)
 (treemacs-load-theme "all-the-icons")
 
-(setq  doom-themes-treemacs-theme "doom-colors")
+(setq doom-themes-treemacs-theme "doom-colors")
 
-(setq company-auto-complete nil)
+(setq corfu-preview-current 'insert
+      corfu-preselect 'prompt ;; Disable candidate preselection
+      corfu-excluded-modes
+      '(erc-mode
+        circe-mode
+        help-mode
+        gud-mode
+        vterm-mode))
+        ;; org-mode))
 
-(setq company-tooltip-align-annotations t
-      company-tooltip-minimum (- scroll-margin 1)
-      company-tooltip-flip-when-above t)
+(map! ;;:desc "complete" "TAB" #'completion-at-point
+      (:map 'corfu-map
+       :desc "next" "TAB" #'corfu-next
+       :desc "next" "<tab>" #'corfu-next
+       :desc "next" [tab] #'corfu-next
+       :desc "previous" "S-TAB" #'corfu-previous
+       :desc "previous" "<backtab>"  #'corfu-previous
+       :desc "previous" [backtab] #'corfu-previous))
 
-(setq company-minimum-prefix-length 2
-      company-require-match nil)
+(global-corfu-mode)
 
-(setq company-idle-delay 0)
+(setq +lsp-company-backends nil
+      +vertico-company-completion-styles nil)
 
 (setq vterm-always-compile-module t)
 
@@ -335,34 +348,6 @@
 
 (remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
 
-(require 'lsp)
-(require 'lsp-ui)
-
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
-
-(after! lsp-ui
-  (setq lsp-ui-sideline-show-diagnostics t
-        lsp-headerline-breadcrumb-enable t
-        lsp-ui-sideline-show-code-actions t
-        ;; lsp-ui-sideline-show-hover t
-        lsp-ui-doc-enable t
-        lsp-ui-doc-position "Top"
-        ;; lsp-ui-doc-delay 1
-        lsp-ui-doc-show-with-cursor t))
-
-(setq lsp-disabled-clients '(tfls tfmls))
-
-(add-hook 'nix-mode-hook #'lsp!)
-
-(lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
-                  :major-modes '(terraform-mode)
-                  :priority 10
-                  :server-id 'terraform-ls))
-
-;; (add-hook 'terraform-mode-hook #'lsp-deferred)
-
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
 
@@ -373,16 +358,10 @@
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
 
-(when (modulep! :completion corfu)
-    (setq lsp-completion-provider :none)
-    (add-hook 'lsp-mode-hook #'lsp-completion-mode))
-
 (unless IS-MAC
-
-(setq initial-frame-alist '((top . 1) (left . 1) (width . 120) (height . 40)))
-
-(map! "M-m" nil)
-
-)
+  ;;Start emacs non-maximized
+  (setq initial-frame-alist '((top . 1) (left . 1) (width . 120) (height . 40)))
+  ;;Unset problematic keybinds
+  (map! "M-m" nil))
 
 (load "~/.config/doom/work.el" t t)

@@ -51,7 +51,7 @@ derivative.")
   (add-to-list 'completion-styles 'initials t)
   (setq corfu-cycle t
         corfu-separator (when +corfu-want-multi-component ?\s)
-        corfu-preselect t
+        corfu-preselect 'prompt
         corfu-count 16
         corfu-max-width 120
         corfu-preview-current 'insert

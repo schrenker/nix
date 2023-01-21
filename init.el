@@ -52,13 +52,13 @@
 
        :tools
        ansible
-       (debugger +lsp)
+       ;; (debugger +lsp)
        direnv
        (docker +lsp)
        editorconfig
        (eval +overlay)                           ; run code, run (also, repls)
        lookup                                    ; navigate your code and its documentation
-       (lsp +peek)                               ; M-x vscode
+       (lsp +eglot)                               ; M-x vscode
        (magit +forge)                                     ; a git porcelain for Emacs
        pdf                                       ; pdf enhancements
        terraform                                 ; infrastructure as code

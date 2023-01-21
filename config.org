@@ -84,23 +84,16 @@
   - [[#treemacs-modes][Treemacs modes]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
   - [[#set-treemacs-themes][Set treemacs themes]]
-- [[#company][Company]]
-  - [[#disable-autocommit-of-completion][Disable autocommit of completion]]
-  - [[#tooltips][Tooltips]]
-  - [[#matching][Matching]]
-  - [[#delay][Delay]]
+- [[#corfu][Corfu]]
 - [[#vterm][Vterm]]
   - [[#always-compile-without-confirmation][Always compile without confirmation]]
   - [[#increase-scrollback-for-vterm][Increase scrollback for vterm]]
   - [[#vterm-keybindings][Vterm keybindings]]
   - [[#show-modeline-in-vterm][Show modeline in vterm]]
-- [[#lsp][LSP]]
-  - [[#lsp-server-configuration][LSP server configuration]]
 - [[#flyspell][Flyspell]]
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
 - [[#dired-evil][Dired evil]]
-- [[#corfu][Corfu]]
 - [[#additional-config][Additional config]]
   - [[#load-wsl-config-override][Load WSL config override]]
   - [[#additional-tweaks-to-personal-info-and-org-mode-for-my-work][Additional tweaks to personal info and org mode for my work]]
@@ -173,13 +166,13 @@
 
        :tools
        ansible
-       (debugger +lsp)
+       ;; (debugger +lsp)
        direnv
        (docker +lsp)
        editorconfig
        (eval +overlay)                           ; run code, run (also, repls)
        lookup                                    ; navigate your code and its documentation
-       (lsp +peek)                               ; M-x vscode
+       (lsp +eglot)                               ; M-x vscode
        (magit +forge)                                     ; a git porcelain for Emacs
        pdf                                       ; pdf enhancements
        terraform                                 ; infrastructure as code
@@ -819,67 +812,41 @@
 (require 'treemacs-all-the-icons)
 (treemacs-load-theme "all-the-icons")
 
-(setq  doom-themes-treemacs-theme "doom-colors")
+(setq doom-themes-treemacs-theme "doom-colors")
 #+end_src
 
-# * Corfu
-# #+begin_src emacs-lisp :tangle config.el
-# (setq corfu-preview-current 'insert
-#       corfu-preselect-first nil ;; Disable candidate preselection
-#       corfu-excluded-modes
-#       '(erc-mode
-#         circe-mode
-#         help-mode
-#         gud-mode
-#         vterm-mode))
-#         ;; org-mode))
-# #+end_src
-
-# #+begin_src emacs-lisp :tangle config.el
-#     (map! ;;:desc "complete" "TAB" #'completion-at-point
-#           (:map 'corfu-map
-#            :desc "next" "TAB" #'corfu-next
-#            :desc "next" "<tab>" #'corfu-next
-#            :desc "next" [tab] #'corfu-next
-#            :desc "previous" "S-TAB" #'corfu-previous
-#            :desc "previous" "<backtab>"  #'corfu-previous
-#            :desc "previous" [backtab] #'corfu-previous))
-# #+end_src
-
-# #+begin_src emacs-lisp :tangle config.el
-# (global-corfu-mode)
-# #+end_src
-
-# #+begin_src emacs-lisp :tangle config.el
-# (setq +lsp-company-backends nil
-#       +vertico-company-completion-styles nil)
-# #+end_src
-
-* Company
-
-** Disable autocommit of completion
+* Corfu
 #+begin_src emacs-lisp :tangle config.el
-(setq company-auto-complete nil)
+(setq corfu-preview-current 'insert
+      corfu-preselect 'prompt ;; Disable candidate preselection
+      corfu-excluded-modes
+      '(erc-mode
+        circe-mode
+        help-mode
+        gud-mode
+        vterm-mode))
+        ;; org-mode))
 #+end_src
 
-** Tooltips
 #+begin_src emacs-lisp :tangle config.el
-(setq company-tooltip-align-annotations t
-      company-tooltip-minimum (- scroll-margin 1)
-      company-tooltip-flip-when-above t)
+    (map! ;;:desc "complete" "TAB" #'completion-at-point
+          (:map 'corfu-map
+           :desc "next" "TAB" #'corfu-next
+           :desc "next" "<tab>" #'corfu-next
+           :desc "next" [tab] #'corfu-next
+           :desc "previous" "S-TAB" #'corfu-previous
+           :desc "previous" "<backtab>"  #'corfu-previous
+           :desc "previous" [backtab] #'corfu-previous))
 #+end_src
 
-** Matching
 #+begin_src emacs-lisp :tangle config.el
-(setq company-minimum-prefix-length 2
-      company-require-match nil)
+(global-corfu-mode)
 #+end_src
 
-** Delay
 #+begin_src emacs-lisp :tangle config.el
-(setq company-idle-delay 0)
+(setq +lsp-company-backends nil
+      +vertico-company-completion-styles nil)
 #+end_src
-
 
 * Vterm
 ** Always compile without confirmation
@@ -908,54 +875,6 @@
 (remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
 #+end_src
 
-* LSP
-
-#+begin_src emacs-lisp :tangle config.el
-(require 'lsp)
-(require 'lsp-ui)
-#+end_src
-
-#+begin_src emacs-lisp :tangle config.el
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.go\\'"))
-#+end_src
-
-#+begin_src emacs-lisp :tangle config.el
-(after! lsp-ui
-  (setq lsp-ui-sideline-show-diagnostics t
-        lsp-headerline-breadcrumb-enable t
-        lsp-ui-sideline-show-code-actions t
-        ;; lsp-ui-sideline-show-hover t
-        lsp-ui-doc-enable t
-        lsp-ui-doc-position "Top"
-        ;; lsp-ui-doc-delay 1
-        lsp-ui-doc-show-with-cursor t))
-#+end_src
-
-** LSP server configuration
-
-*** Blacklist lsp clients
-#+begin_src emacs-lisp :tangle config.el
-(setq lsp-disabled-clients '(tfls tfmls))
-#+end_src
-
-*** nix
-#+begin_src emacs-lisp :tangle config.el
-(add-hook 'nix-mode-hook #'lsp!)
-#+end_src
-
-*** Terraform
-#+begin_src emacs-lisp :tangle config.el
-(lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
-                  :major-modes '(terraform-mode)
-                  :priority 10
-                  :server-id 'terraform-ls))
-
-;; (add-hook 'terraform-mode-hook #'lsp-deferred)
-#+end_src
-
-
 * Flyspell
 #+begin_src emacs-lisp :tangle config.el
 (after! flyspell
@@ -977,16 +896,6 @@
 (inheritenv-add-advice #'with-temp-buffer)
 #+end_src
 
-# * Eshell
-# #+begin_src emacs-lisp :tangle config.el
-# (setq eshell-buffer-name "eshell")
-# #+end_src
-
-# ** Show modeline in eshell
-# #+begin_src emacs-lisp :tangle config.el
-# (add-hook! eshell-mode (hide-mode-line-mode -1))
-# #+end_src
-
 * Dired evil
 #+begin_src emacs-lisp :tangle config.el
 (map! :map dired-mode-map
@@ -994,33 +903,15 @@
       :n "l" #'dired-find-alternate-file)
 #+end_src
 
-* Corfu
-#+begin_src emacs-lisp :tangle config.el
-(when (modulep! :completion corfu)
-    (setq lsp-completion-provider :none)
-    (add-hook 'lsp-mode-hook #'lsp-completion-mode))
-#+end_src
-
 * Additional config
 
 ** Load WSL config override
 #+begin_src emacs-lisp :tangle config.el
 (unless IS-MAC
-#+end_src
-
-*** Start emacs non-maximized
-#+begin_src emacs-lisp :tangle config.el
-        (setq initial-frame-alist '((top . 1) (left . 1) (width . 120) (height . 40)))
-#+end_src
-
-*** Unset problematic keybinds
-#+begin_src emacs-lisp :tangle config.el
-        (map! "M-m" nil)
-#+end_src
-
-*** Fin
-#+begin_src emacs-lisp :tangle config.el
-        )
+  ;;Start emacs non-maximized
+  (setq initial-frame-alist '((top . 1) (left . 1) (width . 120) (height . 40)))
+  ;;Unset problematic keybinds
+  (map! "M-m" nil))
 #+end_src
 
 ** Additional tweaks to personal info and org mode for my work

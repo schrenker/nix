@@ -60,7 +60,11 @@
 (custom-set-faces!
   '(aw-leading-char-face
     :foreground "red"
-    :weight bold :height 2 ))
+    :weight bold
+    :height 2.5))
+(ace-window-posframe-mode 1)
+
+(setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
 
 (setq doom-modeline-icon (display-graphic-p)
       doom-modeline-major-mode-icon nil

@@ -22,7 +22,7 @@
   - [[#start-emacs-maximized][Start emacs maximized]]
   - [[#truncate-doom-dashboard][Truncate doom dashboard]]
   - [[#set-frame-title-and-icon][Set frame title and icon]]
-  - [[#make-window-indicator-more-visible][Make window indicator more visible]]
+  - [[#ace-window][Ace window]]
   - [[#modeline][Modeline]]
   - [[#always-make-windows-proportional-after-splitting][Always make windows proportional after splitting]]
   - [[#truncate-ellipsis][Truncate ellipsis]]
@@ -342,13 +342,28 @@
  ns-use-proxy-icon nil)
 #+end_src
 
-** Make window indicator more visible
+** Ace window
+
+*** Unpin ace window
+#+begin_src emacs-lisp :tangle packages.el
+(package! ace-window :pin "77115afc1b0b9f633084cf7479c767988106c196")
+#+end_src
+
+*** Make window indicator more visible
 #+begin_src emacs-lisp :tangle config.el
 (custom-set-faces!
   '(aw-leading-char-face
     :foreground "red"
-    :weight bold :height 2 ))
+    :weight bold
+    :height 2.5))
+(ace-window-posframe-mode 1)
 #+end_src
+
+*** Set aw keys to homerow
+#+begin_src emacs-lisp :tangle config.el
+(setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+#+end_src
+
 
 ** Modeline
 #+begin_src emacs-lisp :tangle config.el

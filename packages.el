@@ -3,6 +3,8 @@
 
 (unpin! doom-themes)
 
+(package! ace-window :pin "77115afc1b0b9f633084cf7479c767988106c196")
+
 (package! evil-commentary)
 (package! evil-snipe :disable t)
 

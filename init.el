@@ -81,7 +81,7 @@
        rest
        (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
        (web +lsp +tree-sitter)
-       yaml                                      ; JSON, but readable
+       (yaml +lsp)                                      ; JSON, but readable
 
        :app
        calendar
@@ -100,7 +100,3 @@
 (setq native-comp-deferred-compilation nil)
 (after! (doom-packages straight)
   (setq straight--native-comp-available t))
-
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)

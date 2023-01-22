@@ -85,6 +85,9 @@
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
   - [[#set-treemacs-themes][Set treemacs themes]]
 - [[#corfu][Corfu]]
+  - [[#tng-keymap][TNG keymap]]
+  - [[#global-corfu-mode][Global corfu mode]]
+  - [[#remove-company-remnants][Remove company remnants]]
 - [[#vterm][Vterm]]
   - [[#always-compile-without-confirmation][Always compile without confirmation]]
   - [[#increase-scrollback-for-vterm][Increase scrollback for vterm]]
@@ -93,7 +96,8 @@
 - [[#flyspell][Flyspell]]
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
-- [[#dired-evil][Dired evil]]
+- [[#dired][Dired]]
+- [[#ox-confluence][ox-confluence]]
 - [[#additional-config][Additional config]]
   - [[#load-wsl-config-override][Load WSL config override]]
   - [[#additional-tweaks-to-personal-info-and-org-mode-for-my-work][Additional tweaks to personal info and org mode for my work]]
@@ -195,7 +199,7 @@
        rest
        (sh +lsp +fish +powershell)               ; she sells {ba,z,fi}sh shells on the C xor
        (web +lsp +tree-sitter)
-       yaml                                      ; JSON, but readable
+       (yaml +lsp)                                      ; JSON, but readable
 
        :app
        calendar
@@ -845,21 +849,24 @@
         ;; org-mode))
 #+end_src
 
+** TNG keymap
 #+begin_src emacs-lisp :tangle config.el
     (map! ;;:desc "complete" "TAB" #'completion-at-point
-          (:map 'corfu-map
-           :desc "next" "TAB" #'corfu-next
-           :desc "next" "<tab>" #'corfu-next
-           :desc "next" [tab] #'corfu-next
-           :desc "previous" "S-TAB" #'corfu-previous
-           :desc "previous" "<backtab>"  #'corfu-previous
-           :desc "previous" [backtab] #'corfu-previous))
+     :map 'corfu-map
+     :desc "next" "TAB" #'corfu-next
+     :desc "next" "<tab>" #'corfu-next
+     :desc "next" [tab] #'corfu-next
+     :desc "previous" "S-TAB" #'corfu-previous
+     :desc "previous" "<backtab>"  #'corfu-previous
+     :desc "previous" [backtab] #'corfu-previous)
 #+end_src
 
+** Global corfu mode
 #+begin_src emacs-lisp :tangle config.el
 (global-corfu-mode)
 #+end_src
 
+** Remove company remnants
 #+begin_src emacs-lisp :tangle config.el
 (setq +lsp-company-backends nil
       +vertico-company-completion-styles nil)
@@ -913,11 +920,16 @@
 (inheritenv-add-advice #'with-temp-buffer)
 #+end_src
 
-* Dired evil
+* Dired
 #+begin_src emacs-lisp :tangle config.el
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
+#+end_src
+
+* ox-confluence
+#+begin_src emacs-lisp :tangle packages.el
+(package! ox-confluence :recipe (:host github :repo "nan0scho1ar/ox-confluence-modern" :files ("*.el")))
 #+end_src
 
 * Additional config

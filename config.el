@@ -330,13 +330,13 @@
         ;; org-mode))
 
 (map! ;;:desc "complete" "TAB" #'completion-at-point
-      (:map 'corfu-map
-       :desc "next" "TAB" #'corfu-next
-       :desc "next" "<tab>" #'corfu-next
-       :desc "next" [tab] #'corfu-next
-       :desc "previous" "S-TAB" #'corfu-previous
-       :desc "previous" "<backtab>"  #'corfu-previous
-       :desc "previous" [backtab] #'corfu-previous))
+ :map 'corfu-map
+ :desc "next" "TAB" #'corfu-next
+ :desc "next" "<tab>" #'corfu-next
+ :desc "next" [tab] #'corfu-next
+ :desc "previous" "S-TAB" #'corfu-previous
+ :desc "previous" "<backtab>"  #'corfu-previous
+ :desc "previous" [backtab] #'corfu-previous)
 
 (global-corfu-mode)
 

@@ -20,6 +20,11 @@
 
 (setq +workspaces-on-switch-project-behavior 'non-empty)
 
+(add-hook! 'doom-first-buffer-hook
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
+
 (which-function-mode)
 
 (setq doom-theme 'doom-solarized-light)

@@ -263,11 +263,13 @@
 #+begin_src emacs-lisp :tangle config.el
  (setq +workspaces-on-switch-project-behavior 'non-empty)
 #+end_src
+
 ** Disable menu and tool bar
-#+begin_src emacs-lisp :tangle init.el
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+#+begin_src emacs-lisp :tangle config.el
+(add-hook! 'doom-first-buffer-hook
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
 #+end_src
 
 ** Show current function in modeline

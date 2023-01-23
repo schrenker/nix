@@ -45,11 +45,11 @@
 
 (setq doom-font (font-spec :family "JetBrains Mono NL" :size 13)
       doom-big-font (font-spec :family "JetBrains Mono NL" :size 26)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 14)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 13)
       doom-unicode-font (font-spec :family "JuliaMono")
       doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 
-(setq fancy-splash-image "~/.config/doom/banner.png")
+(setq doom-themes-treemacs-enable-variable-pitch nil)
 
 (setq fancy-splash-image "~/.config/doom/banner.png")
 

@@ -18,7 +18,6 @@
   - [[#disable-solaire-mode-in-terminal][Disable solaire-mode in terminal]]
   - [[#set-font][Set font]]
   - [[#set-dashboard-image][Set dashboard image]]
-  - [[#set-dashboard-image-1][Set dashboard image]]
   - [[#start-emacs-maximized][Start emacs maximized]]
   - [[#truncate-doom-dashboard][Truncate doom dashboard]]
   - [[#set-frame-title-and-icon][Set frame title and icon]]
@@ -315,14 +314,14 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-font (font-spec :family "JetBrains Mono NL" :size 13)
       doom-big-font (font-spec :family "JetBrains Mono NL" :size 26)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 14)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 13)
       doom-unicode-font (font-spec :family "JuliaMono")
       doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 #+end_src
 
-** Set dashboard image
+*** Treemacs
 #+begin_src emacs-lisp :tangle config.el
-(setq fancy-splash-image "~/.config/doom/banner.png")
+(setq doom-themes-treemacs-enable-variable-pitch nil)
 #+end_src
 
 ** Set dashboard image

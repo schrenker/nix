@@ -64,9 +64,9 @@
   - [[#inline-images][Inline images]]
   - [[#log-time-of-done-tasks][Log time of done tasks]]
   - [[#task-status-and-prioritization][Task status and prioritization]]
+  - [[#drawer-for-state-changes][Drawer for state changes]]
   - [[#headlines][Headlines]]
   - [[#bullet-points][Bullet points]]
-  - [[#added-and-removed][Added and removed]]
   - [[#fancy-priorities][Fancy priorities]]
   - [[#move-tags-to-the-far-right][Move tags to the far right]]
   - [[#enable-word-wrap][Enable word-wrap]]
@@ -626,7 +626,7 @@
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
                         (?C :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "BLOCKED(b)" "ONHOLD(o)" "REVIEW(r)" "|" "DONE(d)" "DELEGATED(e)" "CANCELLED(c)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@)" "REVIEW(r!)" "|" "DONE(d@/!)" "DELEGATED(e@/!)" "CANCELLED(c@/!)"))
    org-todo-keyword-faces
    '(("TODO" :foreground "#8741bb" :weight bold :inverse-video t)
      ("INPROGRESS" :foreground "#98BE65" :weight bold :inverse-video t)
@@ -637,6 +637,12 @@
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
 
+#+end_src
+
+** Drawer for state changes
+#+begin_src emacs-lisp :tangle config.el
+(setq org-log-into-drawer "LOGBOOK"
+      org-log-state-notes-into-drawer "LOGBOOK")
 #+end_src
 
 ** Headlines
@@ -667,15 +673,6 @@
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 #+end_src
 
-** Added and removed
-#+begin_src emacs-lisp :tangle config.el
-;; (add-hook 'org-mode-hook (lambda ()
-;;   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
-;;   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
-;;   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
-;;   (prettify-symbols-mode)))
-#+end_src
-
 ** Fancy priorities
 #+begin_src emacs-lisp :tangle config.el
 (after! org-fancy-priorities
@@ -687,7 +684,8 @@
 
 ** Move tags to the far right
 #+begin_src emacs-lisp :tangle config.el
-(setq org-tags-column -77)
+(after! org
+  (setq org-tags-column -77))
 #+end_src
 
 ** Enable word-wrap

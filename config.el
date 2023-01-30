@@ -191,7 +191,7 @@
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
                         (?C :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "BLOCKED(b)" "ONHOLD(o)" "REVIEW(r)" "|" "DONE(d)" "DELEGATED(e)" "CANCELLED(c)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@)" "REVIEW(r!)" "|" "DONE(d@/!)" "DELEGATED(e@/!)" "CANCELLED(c@/!)"))
    org-todo-keyword-faces
    '(("TODO" :foreground "#8741bb" :weight bold :inverse-video t)
      ("INPROGRESS" :foreground "#98BE65" :weight bold :inverse-video t)
@@ -201,6 +201,9 @@
      ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
+
+(setq org-log-into-drawer "LOGBOOK"
+      org-log-state-notes-into-drawer "LOGBOOK")
 
 (setq org-superstar-headline-bullets-list '("⁖"))
 
@@ -224,19 +227,14 @@
                         '(("^ *\\([+]\\) "
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 
-;; (add-hook 'org-mode-hook (lambda ()
-;;   (push '("[#A]" . "⁂" ) prettify-symbols-alist)
-;;   (push '("[#B]" . "⁑" ) prettify-symbols-alist)
-;;   (push '("[#C]" . "⁕" ) prettify-symbols-alist)
-;;   (prettify-symbols-mode)))
-
 (after! org-fancy-priorities
   (setq
    org-fancy-priorities-list '((65 . "⁂")
                                (66 . "⁑")
                                (67 . "⁕"))))
 
-(setq org-tags-column -77)
+(after! org
+  (setq org-tags-column -77))
 
 (add-hook 'org-mode-hook #'+word-wrap-mode)
 

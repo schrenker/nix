@@ -191,7 +191,7 @@
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
                         (?C :foreground "#51AFEF" :weight normal))
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@)" "REVIEW(r!)" "|" "DONE(d@/!)" "DELEGATED(e@/!)" "CANCELLED(c@/!)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DONE(d/@)" "DELEGATED(e@/@)" "CANCELLED(c@/@)"))
    org-todo-keyword-faces
    '(("TODO" :foreground "#8741bb" :weight bold :inverse-video t)
      ("INPROGRESS" :foreground "#98BE65" :weight bold :inverse-video t)

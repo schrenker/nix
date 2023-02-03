@@ -156,7 +156,7 @@
         :nv "gj" #'evil-next-visual-line
         :nv "gk" #'evil-previous-visual-line))
 
-(setq org-directory "/Users/sebastian/Library/Mobile Documents/com~apple~CloudDocs/brain"
+(setq org-directory "/Users/sebastian/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/brain"
       org-roam-directory org-directory
       org-archive-location "archive/%s_archive::"
       org-default-notes-file (concat org-directory "/20221222131538-personal.org")

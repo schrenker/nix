@@ -191,6 +191,7 @@
        emacs-lisp                               ; drown in parentheses
        graphql
        (go +lsp)
+       (javascript +lsp +tree-sitter)
        (json +lsp +tree-sitter)                 ; At least it ain't XML
        (python +lsp +pyright +pyenv)            ; beautiful is better than ugly
        (nix +lsp)

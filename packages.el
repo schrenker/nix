@@ -28,3 +28,5 @@
 (package! inheritenv)
 
 (package! ox-confluence :recipe (:host github :repo "nan0scho1ar/ox-confluence-modern" :files ("*.el")))
+
+(package! kele)

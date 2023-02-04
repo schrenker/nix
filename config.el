@@ -63,12 +63,21 @@
  frame-title-format '("Doom")
  ns-use-proxy-icon nil)
 
+(defun fail-silently-advice (func &rest args)
+  (ignore-errors
+    (apply func args)))
+
+(advice-add 'ace-window-posframe-enable :around #'fail-silently-advice)
+
+(require 'posframe)
+
 (custom-set-faces!
   '(aw-leading-char-face
     :foreground "red"
     :weight bold
     :height 2.5))
-(ace-window-posframe-mode 1)
+(after! posframe
+(ace-window-posframe-mode 1))
 
 (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
 
@@ -329,7 +338,7 @@
         ;; org-mode))
 
 (map! ;;:desc "complete" "TAB" #'completion-at-point
- :map 'corfu-map
+ :map corfu-map
  :desc "next" "TAB" #'corfu-next
  :desc "next" "<tab>" #'corfu-next
  :desc "next" [tab] #'corfu-next

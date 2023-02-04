@@ -36,6 +36,7 @@
              (load-theme 'doom-solarized-light t))
     ('dark (setq doom-theme 'doom-solarized-dark)
              (load-theme 'doom-solarized-dark t)))
+  (centaur-tabs-init-tabsets-store)
   (org-roam-ui-sync-theme))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)

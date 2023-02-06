@@ -24,9 +24,12 @@
   - [[#ace-window][Ace window]]
   - [[#modeline][Modeline]]
   - [[#always-make-windows-proportional-after-splitting][Always make windows proportional after splitting]]
+  - [[#stretch-cursor-to-glyph-size][Stretch cursor to glyph size]]
   - [[#truncate-ellipsis][Truncate ellipsis]]
   - [[#uniquify][Uniquify]]
   - [[#emacsclient][Emacsclient]]
+  - [[#global-subword-mode][Global subword mode]]
+  - [[#delete-files-to-trash][Delete files to trash]]
 - [[#centaur-tabs][Centaur Tabs]]
   - [[#group-tabs-by-projectile-project][Group tabs by projectile project]]
   - [[#show-tab-index-and-count][Show tab index and count]]
@@ -43,14 +46,18 @@
   - [[#set-up-evil-packages][Set up evil packages]]
   - [[#fine-undo][Fine Undo]]
   - [[#split-windows-so-that-rightdown-is-focused-after-the-split][Split windows so that right/down is focused after the split]]
+  - [[#show-buffer-prompt-upon-window-split][Show buffer prompt upon window split]]
   - [[#line-up-y-behavior-to-other-operators][Line up Y behavior to other operators]]
   - [[#dont-continue-comments-on-oo-creating-empty-lines][Don't continue comments on o/O, creating empty lines]]
   - [[#changed-text-doesnt-go-into-clipboard][Changed text doesn't go into clipboard]]
   - [[#visual-mode-changes-dont-go-into-clipboard][Visual mode changes don't go into clipboard]]
+  - [[#substitute-global-by-default][Substitute global by default]]
   - [[#disable-escape-on-jk][Disable escape on "jk"]]
   - [[#evil-window-map][Evil Window Map]]
   - [[#enable-key-chord-and-make-double-tap--move-cursor-to-the-right-in-insert-mode][Enable key-chord and make double tap ';' move cursor to the right in insert mode]]
   - [[#disable-evil-keybindings-for-git-timemachine][Disable evil keybindings for git-timemachine]]
+- [[#magit][Magit]]
+  - [[#smerge-repeatedly-thanks-tecosaur][Smerge repeatedly (thanks tecosaur)]]
 - [[#org-mode][Org mode]]
   - [[#update-dynamic-blocks-on-save][Update dynamic blocks on save]]
   - [[#org-mode-map][Org-mode-map]]
@@ -67,11 +74,13 @@
   - [[#drawer-for-state-changes][Drawer for state changes]]
   - [[#headlines][Headlines]]
   - [[#bullet-points][Bullet points]]
+  - [[#demote-bullet-points][Demote bullet points]]
   - [[#fancy-priorities][Fancy priorities]]
   - [[#move-tags-to-the-far-right][Move tags to the far right]]
   - [[#enable-word-wrap][Enable word-wrap]]
   - [[#visual-line-mode][Visual line mode]]
   - [[#emphasis-markers][Emphasis markers]]
+  - [[#agenda-holidays][Agenda holidays]]
   - [[#roam][Roam]]
   - [[#record-last-modified-date-in-org-mode][Record last modified date in org-mode]]
   - [[#org-capture-templates][Org capture templates]]
@@ -99,6 +108,7 @@
 - [[#confluence][Confluence]]
 - [[#kubernetes][Kubernetes]]
   - [[#kele][Kele]]
+- [[#open-very-large-files-effortlessly-thanks-tecosaur][Open very large files effortlessly (thanks Tecosaur)]]
 - [[#additional-config][Additional config]]
   - [[#load-wsl-config-override][Load WSL config override]]
   - [[#additional-tweaks-to-personal-info-and-org-mode-for-my-work][Additional tweaks to personal info and org mode for my work]]
@@ -398,6 +408,11 @@
 (setq-default window-combination-resize t)
 #+end_src
 
+** Stretch cursor to glyph size
+#+begin_src emacs-lisp :tangle config.el
+(setq-default x-stretch-cursor t)
+#+end_src
+
 ** Truncate ellipsis
 #+begin_src emacs-lisp :tangle config.el
 (setq-default truncate-string-ellipsis "…")
@@ -418,6 +433,16 @@
 #+begin_src emacs-lisp :tangle config.el
 (after! persp-mode
   (setq persp-emacsclient-init-frame-behaviour-override "main"))
+#+end_src
+
+** Global subword mode
+#+begin_src emacs-lisp :tangle config.el
+(global-subword-mode 1)
+#+end_src
+
+** Delete files to trash
+#+begin_src emacs-lisp :tangle config.el
+(setq-default delete-by-moving-to-trash t)
 #+end_src
 
 * Centaur Tabs
@@ -493,6 +518,13 @@
       evil-split-window-below t)
 #+end_src
 
+** Show buffer prompt upon window split
+#+begin_src emacs-lisp :tangle config.el
+(defadvice! prompt-for-buffer (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (consult-project-buffer))
+#+end_src
+
 ** Line up Y behavior to other operators
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-want-Y-yank-to-eol t)
@@ -513,6 +545,11 @@
 ** Visual mode changes don't go into clipboard
 #+begin_src emacs-lisp :tangle config.el
 (setq evil-kill-on-visual-paste nil)
+#+end_src
+
+** Substitute global by default
+#+begin_src emacs-lisp :tangle config.el
+(setq evil-ex-substitute-global t)
 #+end_src
 
 ** Disable escape on "jk"
@@ -544,6 +581,38 @@
 (with-eval-after-load 'git-timemachine
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+#+end_src
+
+* Magit
+** Smerge repeatedly (thanks tecosaur)
+#+begin_src emacs-lisp :tangle config.el
+(defun smerge-repeatedly ()
+  "Perform smerge actions again and again"
+  (interactive)
+  (smerge-mode 1)
+  (smerge-transient))
+(after! transient
+  (transient-define-prefix smerge-transient ()
+    [["Move"
+      ("n" "next" (lambda () (interactive) (ignore-errors (smerge-next)) (smerge-repeatedly)))
+      ("p" "previous" (lambda () (interactive) (ignore-errors (smerge-prev)) (smerge-repeatedly)))]
+     ["Keep"
+      ("b" "base" (lambda () (interactive) (ignore-errors (smerge-keep-base)) (smerge-repeatedly)))
+      ("u" "upper" (lambda () (interactive) (ignore-errors (smerge-keep-upper)) (smerge-repeatedly)))
+      ("l" "lower" (lambda () (interactive) (ignore-errors (smerge-keep-lower)) (smerge-repeatedly)))
+      ("a" "all" (lambda () (interactive) (ignore-errors (smerge-keep-all)) (smerge-repeatedly)))
+      ("RET" "current" (lambda () (interactive) (ignore-errors (smerge-keep-current)) (smerge-repeatedly)))]
+     ["Diff"
+      ("<" "upper/base" (lambda () (interactive) (ignore-errors (smerge-diff-base-upper)) (smerge-repeatedly)))
+      ("=" "upper/lower" (lambda () (interactive) (ignore-errors (smerge-diff-upper-lower)) (smerge-repeatedly)))
+      (">" "base/lower" (lambda () (interactive) (ignore-errors (smerge-diff-base-lower)) (smerge-repeatedly)))
+      ("R" "refine" (lambda () (interactive) (ignore-errors (smerge-refine)) (smerge-repeatedly)))
+      ("E" "ediff" (lambda () (interactive) (ignore-errors (smerge-ediff)) (smerge-repeatedly)))]
+     ["Other"
+      ("c" "combine" (lambda () (interactive) (ignore-errors (smerge-combine-with-next)) (smerge-repeatedly)))
+      ("r" "resolve" (lambda () (interactive) (ignore-errors (smerge-resolve)) (smerge-repeatedly)))
+      ("k" "kill current" (lambda () (interactive) (ignore-errors (smerge-kill-current)) (smerge-repeatedly)))
+      ("q" "quit" (lambda () (interactive) (smerge-auto-leave)))]]))
 #+end_src
 
 * Org mode
@@ -689,6 +758,11 @@
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 #+end_src
 
+** Demote bullet points
+#+begin_src emacs-lisp :tangle config.el
+(setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "-") ("1." . "a.")))
+#+end_src
+
 ** Fancy priorities
 #+begin_src emacs-lisp :tangle config.el
 (after! org-fancy-priorities
@@ -717,6 +791,33 @@
 ** Emphasis markers
 #+begin_src emacs-lisp :tangle config.el
 (setq org-hide-emphasis-markers t)
+#+end_src
+
+** Agenda holidays
+#+begin_src emacs-lisp :tangle packages.el
+(package! polish-holidays :recipe (:host github :repo "mikolajb/emacs-polish-holidays"))
+(package! german-holidays)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(require 'polish-holidays)
+(require 'german-holidays)
+
+  (use-package! holidays
+    :after org-agenda
+    :config
+    (setq calendar-holidays
+          (append '((holiday-fixed 1 1 "New Year's Day")
+                    (holiday-fixed 2 14 "Valentine's Day")
+                    (holiday-fixed 4 1 "April Fools' Day")
+                    (holiday-fixed 10 31 "Halloween")
+                    (holiday-easter-etc)
+                    (holiday-fixed 12 25 "Christmas")
+                    (solar-equinoxes-solstices))
+                  ustawowo-wolne-od-pracy
+                  czas-letni
+                  swieta-panstwowe-pozostałe-święta
+                  holiday-german-holidays)))
 #+end_src
 
 ** Roam
@@ -949,6 +1050,81 @@
 ** Kele
 #+begin_src emacs-lisp :tangle packages.el
 (package! kele)
+#+end_src
+
+* Open very large files effortlessly (thanks Tecosaur)
+#+begin_src emacs-lisp :tangle packages.el
+(package! vlf :recipe (:host github :repo "emacs-straight/vlf" :files ("*.el")) :pin "cacdb359f8c37c6e7e4c7937462b632d22462130")
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(use-package! vlf-setup
+  :defer-incrementally vlf-tune vlf-base vlf-write
+  vlf-search vlf-occur vlf-follow vlf-ediff vlf
+  :commands vlf vlf-mode
+  :init
+  (defadvice! +files--ask-about-large-file-vlf (size op-type filename offer-raw)
+  "Like `files--ask-user-about-large-file', but with support for `vlf'."
+  :override #'files--ask-user-about-large-file
+  (if (eq vlf-application 'dont-ask)
+      (progn (vlf filename) (error ""))
+    (let ((prompt (format "File %s is large (%s), really %s?"
+                          (file-name-nondirectory filename)
+                          (funcall byte-count-to-string-function size) op-type)))
+      (if (not offer-raw)
+          (if (y-or-n-p prompt) nil 'abort)
+        (let ((choice
+               (car
+                (read-multiple-choice
+                 prompt '((?y "yes")
+                          (?n "no")
+                          (?l "literally")
+                          (?v "vlf"))
+                 (files--ask-user-about-large-file-help-text
+                  op-type (funcall byte-count-to-string-function size))))))
+          (cond ((eq choice ?y) nil)
+                ((eq choice ?l) 'raw)
+                ((eq choice ?v)
+                 (vlf filename)
+                 (error ""))
+                (t 'abort)))))))
+  :config
+  (advice-remove 'abort-if-file-too-large #'ad-Advice-abort-if-file-too-large)
+  (defvar-local +vlf-cumulative-linenum '((0 . 0))
+  "An alist keeping track of the cumulative line number.")
+
+(defun +vlf-update-linum ()
+  "Update the line number offset."
+  (let ((linenum-offset (alist-get vlf-start-pos +vlf-cumulative-linenum)))
+    (setq display-line-numbers-offset (or linenum-offset 0))
+    (when (and linenum-offset (not (assq vlf-end-pos +vlf-cumulative-linenum)))
+      (push (cons vlf-end-pos (+ linenum-offset
+                                 (count-lines (point-min) (point-max))))
+            +vlf-cumulative-linenum))))
+
+(add-hook 'vlf-after-chunk-update-hook #'+vlf-update-linum)
+
+;; Since this only works with absolute line numbers, let's make sure we use them.
+(add-hook! 'vlf-mode-hook (setq-local display-line-numbers t))
+
+(defun +vlf-next-chunk-or-start ()
+  (if (= vlf-file-size vlf-end-pos)
+      (vlf-jump-to-chunk 1)
+    (vlf-next-batch 1))
+  (goto-char (point-min)))
+
+(defun +vlf-last-chunk-or-end ()
+  (if (= 0 vlf-start-pos)
+      (vlf-end-of-file)
+    (vlf-prev-batch 1))
+  (goto-char (point-max)))
+
+(defun +vlf-isearch-wrap ()
+  (if isearch-forward
+      (+vlf-next-chunk-or-start)
+    (+vlf-last-chunk-or-end)))
+
+(add-hook! 'vlf-mode-hook (setq-local isearch-wrap-function #'+vlf-isearch-wrap)))
 #+end_src
 
 * Additional config

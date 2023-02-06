@@ -14,6 +14,9 @@
 
 (package! org-appear :recipe (:host github :repo "awth13/org-appear"))
 
+(package! polish-holidays :recipe (:host github :repo "mikolajb/emacs-polish-holidays"))
+(package! german-holidays)
+
 (unpin! org-roam)
 (package! org-roam-ui)
 
@@ -30,3 +33,5 @@
 (package! ox-confluence :recipe (:host github :repo "nan0scho1ar/ox-confluence-modern" :files ("*.el")))
 
 (package! kele)
+
+(package! vlf :recipe (:host github :repo "emacs-straight/vlf" :files ("*.el")) :pin "cacdb359f8c37c6e7e4c7937462b632d22462130")

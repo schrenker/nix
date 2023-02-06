@@ -87,6 +87,8 @@
 
 (setq-default window-combination-resize t)
 
+(setq-default x-stretch-cursor t)
+
 (setq-default truncate-string-ellipsis "…")
 
 (require 'uniquify)
@@ -99,6 +101,10 @@
 
 (after! persp-mode
   (setq persp-emacsclient-init-frame-behaviour-override "main"))
+
+(global-subword-mode 1)
+
+(setq-default delete-by-moving-to-trash t)
 
 (require 'centaur-tabs)
 (centaur-tabs-group-by-projectile-project)
@@ -127,6 +133,10 @@
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
 
+(defadvice! prompt-for-buffer (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (consult-project-buffer))
+
 (setq evil-want-Y-yank-to-eol t)
 
 (setq +evil-want-o/O-to-continue-comments nil)
@@ -136,6 +146,8 @@
 (advice-add 'evil-change :around 'schrenker/evil-change)
 
 (setq evil-kill-on-visual-paste nil)
+
+(setq evil-ex-substitute-global t)
 
 (setq evil-escape-key-sequence nil)
 
@@ -151,6 +163,34 @@
 (with-eval-after-load 'git-timemachine
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+
+(defun smerge-repeatedly ()
+  "Perform smerge actions again and again"
+  (interactive)
+  (smerge-mode 1)
+  (smerge-transient))
+(after! transient
+  (transient-define-prefix smerge-transient ()
+    [["Move"
+      ("n" "next" (lambda () (interactive) (ignore-errors (smerge-next)) (smerge-repeatedly)))
+      ("p" "previous" (lambda () (interactive) (ignore-errors (smerge-prev)) (smerge-repeatedly)))]
+     ["Keep"
+      ("b" "base" (lambda () (interactive) (ignore-errors (smerge-keep-base)) (smerge-repeatedly)))
+      ("u" "upper" (lambda () (interactive) (ignore-errors (smerge-keep-upper)) (smerge-repeatedly)))
+      ("l" "lower" (lambda () (interactive) (ignore-errors (smerge-keep-lower)) (smerge-repeatedly)))
+      ("a" "all" (lambda () (interactive) (ignore-errors (smerge-keep-all)) (smerge-repeatedly)))
+      ("RET" "current" (lambda () (interactive) (ignore-errors (smerge-keep-current)) (smerge-repeatedly)))]
+     ["Diff"
+      ("<" "upper/base" (lambda () (interactive) (ignore-errors (smerge-diff-base-upper)) (smerge-repeatedly)))
+      ("=" "upper/lower" (lambda () (interactive) (ignore-errors (smerge-diff-upper-lower)) (smerge-repeatedly)))
+      (">" "base/lower" (lambda () (interactive) (ignore-errors (smerge-diff-base-lower)) (smerge-repeatedly)))
+      ("R" "refine" (lambda () (interactive) (ignore-errors (smerge-refine)) (smerge-repeatedly)))
+      ("E" "ediff" (lambda () (interactive) (ignore-errors (smerge-ediff)) (smerge-repeatedly)))]
+     ["Other"
+      ("c" "combine" (lambda () (interactive) (ignore-errors (smerge-combine-with-next)) (smerge-repeatedly)))
+      ("r" "resolve" (lambda () (interactive) (ignore-errors (smerge-resolve)) (smerge-repeatedly)))
+      ("k" "kill current" (lambda () (interactive) (ignore-errors (smerge-kill-current)) (smerge-repeatedly)))
+      ("q" "quit" (lambda () (interactive) (smerge-auto-leave)))]]))
 
 (setq org-startup-folded 'nofold)
 
@@ -237,6 +277,8 @@
                         '(("^ *\\([+]\\) "
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 
+(setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "-") ("1." . "a.")))
+
 (after! org-fancy-priorities
   (setq
    org-fancy-priorities-list '((65 . "⁂")
@@ -251,6 +293,25 @@
 (add-hook 'org-mode-hook #'visual-line-mode)
 
 (setq org-hide-emphasis-markers t)
+
+(require 'polish-holidays)
+(require 'german-holidays)
+
+  (use-package! holidays
+    :after org-agenda
+    :config
+    (setq calendar-holidays
+          (append '((holiday-fixed 1 1 "New Year's Day")
+                    (holiday-fixed 2 14 "Valentine's Day")
+                    (holiday-fixed 4 1 "April Fools' Day")
+                    (holiday-fixed 10 31 "Halloween")
+                    (holiday-easter-etc)
+                    (holiday-fixed 12 25 "Christmas")
+                    (solar-equinoxes-solstices))
+                  ustawowo-wolne-od-pracy
+                  czas-letni
+                  swieta-panstwowe-pozostałe-święta
+                  holiday-german-holidays)))
 
 (map! :map doom-leader-notes-map
       :g "r t" #'org-roam-ui-sync-theme
@@ -374,6 +435,74 @@
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
+
+(use-package! vlf-setup
+  :defer-incrementally vlf-tune vlf-base vlf-write
+  vlf-search vlf-occur vlf-follow vlf-ediff vlf
+  :commands vlf vlf-mode
+  :init
+  (defadvice! +files--ask-about-large-file-vlf (size op-type filename offer-raw)
+  "Like `files--ask-user-about-large-file', but with support for `vlf'."
+  :override #'files--ask-user-about-large-file
+  (if (eq vlf-application 'dont-ask)
+      (progn (vlf filename) (error ""))
+    (let ((prompt (format "File %s is large (%s), really %s?"
+                          (file-name-nondirectory filename)
+                          (funcall byte-count-to-string-function size) op-type)))
+      (if (not offer-raw)
+          (if (y-or-n-p prompt) nil 'abort)
+        (let ((choice
+               (car
+                (read-multiple-choice
+                 prompt '((?y "yes")
+                          (?n "no")
+                          (?l "literally")
+                          (?v "vlf"))
+                 (files--ask-user-about-large-file-help-text
+                  op-type (funcall byte-count-to-string-function size))))))
+          (cond ((eq choice ?y) nil)
+                ((eq choice ?l) 'raw)
+                ((eq choice ?v)
+                 (vlf filename)
+                 (error ""))
+                (t 'abort)))))))
+  :config
+  (advice-remove 'abort-if-file-too-large #'ad-Advice-abort-if-file-too-large)
+  (defvar-local +vlf-cumulative-linenum '((0 . 0))
+  "An alist keeping track of the cumulative line number.")
+
+(defun +vlf-update-linum ()
+  "Update the line number offset."
+  (let ((linenum-offset (alist-get vlf-start-pos +vlf-cumulative-linenum)))
+    (setq display-line-numbers-offset (or linenum-offset 0))
+    (when (and linenum-offset (not (assq vlf-end-pos +vlf-cumulative-linenum)))
+      (push (cons vlf-end-pos (+ linenum-offset
+                                 (count-lines (point-min) (point-max))))
+            +vlf-cumulative-linenum))))
+
+(add-hook 'vlf-after-chunk-update-hook #'+vlf-update-linum)
+
+;; Since this only works with absolute line numbers, let's make sure we use them.
+(add-hook! 'vlf-mode-hook (setq-local display-line-numbers t))
+
+(defun +vlf-next-chunk-or-start ()
+  (if (= vlf-file-size vlf-end-pos)
+      (vlf-jump-to-chunk 1)
+    (vlf-next-batch 1))
+  (goto-char (point-min)))
+
+(defun +vlf-last-chunk-or-end ()
+  (if (= 0 vlf-start-pos)
+      (vlf-end-of-file)
+    (vlf-prev-batch 1))
+  (goto-char (point-max)))
+
+(defun +vlf-isearch-wrap ()
+  (if isearch-forward
+      (+vlf-next-chunk-or-start)
+    (+vlf-last-chunk-or-end)))
+
+(add-hook! 'vlf-mode-hook (setq-local isearch-wrap-function #'+vlf-isearch-wrap)))
 
 (unless IS-MAC
   ;;Start emacs non-maximized

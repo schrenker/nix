@@ -3,6 +3,7 @@
 
 (package! corfu :recipe (:files ("*.el" "extensions/*.el")))
 (package! cape)
+(unpin! compat)
 (package! dabbrev)
 (when (modulep! +icons)
   (package! kind-icon))

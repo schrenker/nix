@@ -344,7 +344,7 @@
         '(
           ("n" "Note" entry (file+headline org-default-notes-file "Notes")
            "** %U\n%i%?" :empty-lines 1)
-          ("t" "Task" entry (file+headline org-default-notes-file "Tasks" "Backlog")
+          ("t" "Task" entry (file+olp org-default-notes-file "Tasks" "Backlog")
            "** TODO %?" :empty-lines 1)
           )))
 
@@ -435,6 +435,14 @@
 (map! :map dired-mode-map
       :n "h" #'dired-up-directory
       :n "l" #'dired-find-alternate-file)
+
+(setq x509-openssl-cmd "/opt/homebrew/Cellar/openssl@3/3.0.5/bin/openssl" )
+
+(add-hook! 'yaml-mode-hook
+  (prism-whitespace-mode 1))
+
+(add-hook! 'json-mode-hook
+  (prism-mode 1))
 
 (use-package! vlf-setup
   :defer-incrementally vlf-tune vlf-base vlf-write

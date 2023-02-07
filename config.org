@@ -105,9 +105,11 @@
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
 - [[#dired][Dired]]
+- [[#x509-mode][x509 mode]]
 - [[#confluence][Confluence]]
 - [[#kubernetes][Kubernetes]]
   - [[#kele][Kele]]
+- [[#prism][Prism]]
 - [[#open-very-large-files-effortlessly-thanks-tecosaur][Open very large files effortlessly (thanks Tecosaur)]]
 - [[#additional-config][Additional config]]
   - [[#load-wsl-config-override][Load WSL config override]]
@@ -872,7 +874,7 @@
         '(
           ("n" "Note" entry (file+headline org-default-notes-file "Notes")
            "** %U\n%i%?" :empty-lines 1)
-          ("t" "Task" entry (file+headline org-default-notes-file "Tasks" "Backlog")
+          ("t" "Task" entry (file+olp org-default-notes-file "Tasks" "Backlog")
            "** TODO %?" :empty-lines 1)
           )))
 #+end_src
@@ -1041,6 +1043,15 @@
       :n "l" #'dired-find-alternate-file)
 #+end_src
 
+* x509 mode
+#+begin_src emacs-lisp :tangle packages.el
+(package! x509-mode)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(setq x509-openssl-cmd "/opt/homebrew/Cellar/openssl@3/3.0.5/bin/openssl" )
+#+end_src
+
 * Confluence
 #+begin_src emacs-lisp :tangle packages.el
 (package! ox-confluence :recipe (:host github :repo "nan0scho1ar/ox-confluence-modern" :files ("*.el")))
@@ -1050,6 +1061,19 @@
 ** Kele
 #+begin_src emacs-lisp :tangle packages.el
 (package! kele)
+#+end_src
+
+* Prism
+#+begin_src emacs-lisp :tangle packages.el
+(package! prism :recipe (:host github :repo "alphapapa/prism.el"))
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(add-hook! 'yaml-mode-hook
+  (prism-whitespace-mode 1))
+
+(add-hook! 'json-mode-hook
+  (prism-mode 1))
 #+end_src
 
 * Open very large files effortlessly (thanks Tecosaur)

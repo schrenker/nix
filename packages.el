@@ -30,8 +30,12 @@
 
 (package! inheritenv)
 
+(package! x509-mode)
+
 (package! ox-confluence :recipe (:host github :repo "nan0scho1ar/ox-confluence-modern" :files ("*.el")))
 
 (package! kele)
+
+(package! prism :recipe (:host github :repo "alphapapa/prism.el"))
 
 (package! vlf :recipe (:host github :repo "emacs-straight/vlf" :files ("*.el")) :pin "cacdb359f8c37c6e7e4c7937462b632d22462130")

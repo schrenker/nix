@@ -231,6 +231,25 @@
 
 (setq org-log-done 'time)
 
+(require 'projectile)
+
+(setq async-shell-command-buffer 'new-buffer)
+
+(defvar brain-sync-last-run nil)
+
+(defun schrenker/synchronize-brain ()
+  (when (string-equal (projectile-project-name) "brain")
+    (let ((current-time (float-time (current-time))))
+      (when (or (not brain-sync-last-run)
+                (> (- current-time brain-sync-last-run) 3600))
+        (setq brain-sync-last-run current-time)
+        (progn
+          (message "Synchonized brain.")
+          (async-shell-command "./sync.sh"))))))
+
+;; (add-hook! 'projectile-after-switch-project-hook #'schrenker/synchronize-brain)
+(add-hook! 'treemacs-switch-workspace-hook #'schrenker/synchronize-brain)
+
 (after! org
   (setq
    org-crypt-disable-auto-save t

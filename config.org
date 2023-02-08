@@ -70,6 +70,7 @@
   - [[#org-appear][Org appear]]
   - [[#inline-images][Inline images]]
   - [[#log-time-of-done-tasks][Log time of done tasks]]
+  - [[#synchronize-brain][Synchronize brain]]
   - [[#task-status-and-prioritization][Task status and prioritization]]
   - [[#drawer-for-state-changes][Drawer for state changes]]
   - [[#headlines][Headlines]]
@@ -700,6 +701,28 @@
 (setq org-log-done 'time)
 #+end_src
 
+
+** Synchronize brain
+#+begin_src emacs-lisp :tangle config.el
+(require 'projectile)
+
+(setq async-shell-command-buffer 'new-buffer)
+
+(defvar brain-sync-last-run nil)
+
+(defun schrenker/synchronize-brain ()
+  (when (string-equal (projectile-project-name) "brain")
+    (let ((current-time (float-time (current-time))))
+      (when (or (not brain-sync-last-run)
+                (> (- current-time brain-sync-last-run) 3600))
+        (setq brain-sync-last-run current-time)
+        (progn
+          (message "Synchonized brain.")
+          (async-shell-command "./sync.sh"))))))
+
+;; (add-hook! 'projectile-after-switch-project-hook #'schrenker/synchronize-brain)
+(add-hook! 'treemacs-switch-workspace-hook #'schrenker/synchronize-brain)
+#+end_src
 
 ** Task status and prioritization
 #+begin_src emacs-lisp :tangle config.el

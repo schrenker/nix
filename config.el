@@ -28,14 +28,45 @@
 (which-function-mode)
 
 (setq doom-theme 'doom-solarized-light)
+(after! prism
+  (prism-set-colors
+    :desaturations '(0)
+    :lightens '(0)
+    :colors (list
+             (doom-color 'blue)
+             (doom-color 'violet)
+             (doom-color 'yellow)
+             (doom-color 'cyan)
+             (doom-color 'dark-blue)
+             (doom-color 'green))))
 
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
     ('light (setq doom-theme 'doom-solarized-light)
-             (load-theme 'doom-solarized-light t))
+            (load-theme 'doom-solarized-light t)
+            (prism-set-colors
+              :desaturations '(0)
+              :lightens '(0)
+              :colors (list
+                       (doom-color 'blue)
+                       (doom-color 'violet)
+                       (doom-color 'yellow)
+                       (doom-color 'cyan)
+                       (doom-color 'dark-blue)
+                       (doom-color 'green))))
     ('dark (setq doom-theme 'doom-solarized-dark)
-             (load-theme 'doom-solarized-dark t)))
+           (load-theme 'doom-solarized-dark t)
+           (prism-set-colors
+             :desaturations '(0)
+             :lightens '(0)
+             :colors (list
+                      (doom-color 'blue)
+                      (doom-color 'violet)
+                      (doom-color 'yellow)
+                      (doom-color 'cyan)
+                      (doom-color 'dark-blue)
+                      (doom-color 'green)))))
   (centaur-tabs-init-tabsets-store)
   (org-roam-ui-sync-theme))
 
@@ -273,8 +304,7 @@
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
 
-(setq org-log-into-drawer "LOGBOOK"
-      org-log-state-notes-into-drawer "LOGBOOK")
+(setq org-log-into-drawer "LOGBOOK")
 
 (setq org-superstar-headline-bullets-list '("⁖"))
 
@@ -459,11 +489,17 @@
 
 (setq x509-openssl-cmd "/opt/homebrew/Cellar/openssl@3/3.0.5/bin/openssl" )
 
+(setq prism-comments nil) ; non-nil distorts colours
+;; (setq prism-pares t)
+
 (add-hook! 'yaml-mode-hook
   (prism-whitespace-mode 1))
 
-(add-hook! 'json-mode-hook
+(add-hook! 'json-mode-hook 'prog-mode-hook
   (prism-mode 1))
+
+
+(fset 'rainbow-delimiters-mode #'prism-mode)
 
 (use-package! vlf-setup
   :defer-incrementally vlf-tune vlf-base vlf-write

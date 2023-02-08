@@ -304,6 +304,17 @@
 ** Default fallback theme
 #+begin_src emacs-lisp :tangle config.el
 (setq doom-theme 'doom-solarized-light)
+(after! prism
+  (prism-set-colors
+    :desaturations '(0)
+    :lightens '(0)
+    :colors (list
+             (doom-color 'blue)
+             (doom-color 'violet)
+             (doom-color 'yellow)
+             (doom-color 'cyan)
+             (doom-color 'dark-blue)
+             (doom-color 'green))))
 #+end_src
 
 ** Day/Night mode switching function (based on emacs-plus patch)
@@ -312,9 +323,29 @@
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
     ('light (setq doom-theme 'doom-solarized-light)
-             (load-theme 'doom-solarized-light t))
+            (load-theme 'doom-solarized-light t)
+            (prism-set-colors
+              :desaturations '(0)
+              :lightens '(0)
+              :colors (list
+                       (doom-color 'blue)
+                       (doom-color 'violet)
+                       (doom-color 'yellow)
+                       (doom-color 'cyan)
+                       (doom-color 'dark-blue)
+                       (doom-color 'green))))
     ('dark (setq doom-theme 'doom-solarized-dark)
-             (load-theme 'doom-solarized-dark t)))
+           (load-theme 'doom-solarized-dark t)
+           (prism-set-colors
+             :desaturations '(0)
+             :lightens '(0)
+             :colors (list
+                      (doom-color 'blue)
+                      (doom-color 'violet)
+                      (doom-color 'yellow)
+                      (doom-color 'cyan)
+                      (doom-color 'dark-blue)
+                      (doom-color 'green)))))
   (centaur-tabs-init-tabsets-store)
   (org-roam-ui-sync-theme))
 
@@ -753,8 +784,7 @@
 
 ** Drawer for state changes
 #+begin_src emacs-lisp :tangle config.el
-(setq org-log-into-drawer "LOGBOOK"
-      org-log-state-notes-into-drawer "LOGBOOK")
+(setq org-log-into-drawer "LOGBOOK")
 #+end_src
 
 ** Headlines
@@ -1090,15 +1120,21 @@
 
 * Prism
 #+begin_src emacs-lisp :tangle packages.el
-(package! prism :recipe (:host github :repo "alphapapa/prism.el"))
+(package! prism)
 #+end_src
 
 #+begin_src emacs-lisp :tangle config.el
+(setq prism-comments nil) ; non-nil distorts colours
+;; (setq prism-pares t)
+
 (add-hook! 'yaml-mode-hook
   (prism-whitespace-mode 1))
 
-(add-hook! 'json-mode-hook
+(add-hook! 'json-mode-hook 'prog-mode-hook
   (prism-mode 1))
+
+
+(fset 'rainbow-delimiters-mode #'prism-mode)
 #+end_src
 
 * Open very large files effortlessly (thanks Tecosaur)

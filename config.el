@@ -232,6 +232,7 @@
 (setq org-log-done 'time)
 
 (require 'projectile)
+(require 'magit)
 
 (setq async-shell-command-buffer 'new-buffer)
 
@@ -244,10 +245,11 @@
                 (> (- current-time brain-sync-last-run) 3600))
         (setq brain-sync-last-run current-time)
         (progn
-          (message "Synchonized brain.")
-          (async-shell-command "./sync.sh"))))))
+          (message "Synchonizing brain.")
+          (magit-call-git "pull" "--autostash" "--rebase")
+          (magit-call-git "push")
+          (message "Brain synchronized."))))))
 
-;; (add-hook! 'projectile-after-switch-project-hook #'schrenker/synchronize-brain)
 (add-hook! 'treemacs-switch-workspace-hook #'schrenker/synchronize-brain)
 
 (after! org

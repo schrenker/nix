@@ -1,8 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; (require 'profiler)
-;; (profiler-start 'cpu)
-
 (setq  user-full-name "Sebastian Zawadzki"
        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu"))
 
@@ -28,45 +25,14 @@
 (which-function-mode)
 
 (setq doom-theme 'doom-solarized-light)
-(after! prism
-  (prism-set-colors
-    :desaturations '(0)
-    :lightens '(0)
-    :colors (list
-             (doom-color 'blue)
-             (doom-color 'violet)
-             (doom-color 'yellow)
-             (doom-color 'cyan)
-             (doom-color 'dark-blue)
-             (doom-color 'green))))
 
 (defun my/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
     ('light (setq doom-theme 'doom-solarized-light)
-            (load-theme 'doom-solarized-light t)
-            (prism-set-colors
-              :desaturations '(0)
-              :lightens '(0)
-              :colors (list
-                       (doom-color 'blue)
-                       (doom-color 'violet)
-                       (doom-color 'yellow)
-                       (doom-color 'cyan)
-                       (doom-color 'dark-blue)
-                       (doom-color 'green))))
+            (load-theme 'doom-solarized-light t))
     ('dark (setq doom-theme 'doom-solarized-dark)
-           (load-theme 'doom-solarized-dark t)
-           (prism-set-colors
-             :desaturations '(0)
-             :lightens '(0)
-             :colors (list
-                      (doom-color 'blue)
-                      (doom-color 'violet)
-                      (doom-color 'yellow)
-                      (doom-color 'cyan)
-                      (doom-color 'dark-blue)
-                      (doom-color 'green)))))
+           (load-theme 'doom-solarized-dark t)))
   (centaur-tabs-init-tabsets-store)
   (org-roam-ui-sync-theme))
 
@@ -126,7 +92,7 @@
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-separator "/")
 (setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
-(setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers;       uniquify-ignore-buffers-re "^\\*")
+(setq uniquify-ignore-buffers-re "^\\*")
 (after! persp-mode
   (setq-hook! 'persp-mode-hook uniquify-buffer-name-style 'forward))
 
@@ -447,7 +413,6 @@
         help-mode
         gud-mode
         vterm-mode))
-        ;; org-mode))
 
 (map! ;;:desc "complete" "TAB" #'completion-at-point
  :map corfu-map
@@ -466,7 +431,6 @@
 (setq vterm-always-compile-module t)
 
 (setq vterm-max-scrollback 100000)
-      ;; vterm-buffer-name-string "VT: %s")
 
 (map! :after vterm
        :map vterm-mode-map
@@ -489,17 +453,42 @@
 
 (setq x509-openssl-cmd "/opt/homebrew/Cellar/openssl@3/3.0.5/bin/openssl" )
 
-(setq prism-comments nil) ; non-nil distorts colours
-;; (setq prism-pares t)
-
-(add-hook! 'yaml-mode-hook
-  (prism-whitespace-mode 1))
+(setq prism-comments nil
+      prism-whitespace-mode-indents '((python-mode . python-indent-offset)
+                                      (haskell-mode . haskell-indentation-left-offset)
+                                      (yaml-mode . 2)
+                                      (t . 4)))
 
 (add-hook! 'json-mode-hook 'prog-mode-hook
   (prism-mode 1))
 
+(add-hook! 'yaml-mode-hook 'sh-mode
+  (prism-whitespace-mode 1))
+
+
 
 (fset 'rainbow-delimiters-mode #'prism-mode)
+
+(use-package! prism
+  :commands prism-mode
+  :init
+  (defun schrenker/prism-add-prog-mode-hook ()
+    "Add `prism-mode' to `prog-mode-hook'."
+    (add-hook! 'prog-mode-hook 'prism-mode))
+  (add-hook! 'doom-init-ui-hook 'schrenker/prism-add-prog-mode-hook)
+  :config
+  (after! doom-themes
+    (setq prism-num-faces 6)
+    (prism-set-colors
+      :desaturations '(0) ; do not change---may lower the contrast ratio
+      :lightens '(0)      ; same
+      :colors (list
+               (doom-color 'blue)
+               (doom-color 'violet)
+               (doom-color 'yellow)
+               (doom-color 'cyan)
+               (doom-color 'dark-blue)
+               (doom-color 'green)))))
 
 (use-package! vlf-setup
   :defer-incrementally vlf-tune vlf-base vlf-write

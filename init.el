@@ -1,7 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
 (doom! :completion
-       ;; (company +childframe +tng)
        (vertico +icons)
 
        :local
@@ -52,7 +51,6 @@
 
        :tools
        ansible
-                                                ;; (debugger +lsp)
        direnv
        (docker +lsp)
        editorconfig

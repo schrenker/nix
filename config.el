@@ -453,32 +453,26 @@
 
 (setq x509-openssl-cmd "/opt/homebrew/Cellar/openssl@3/3.0.5/bin/openssl" )
 
-(setq prism-comments nil
-      prism-whitespace-mode-indents '((python-mode . python-indent-offset)
-                                      (haskell-mode . haskell-indentation-left-offset)
-                                      (yaml-mode . 2)
-                                      (t . 4)))
-
-(add-hook! 'json-mode-hook 'prog-mode-hook
-  (prism-mode 1))
-
-(add-hook! 'yaml-mode-hook 'sh-mode
-  (prism-whitespace-mode 1))
-
-
-
 (fset 'rainbow-delimiters-mode #'prism-mode)
 
 (use-package! prism
   :commands prism-mode
   :init
-  (defun schrenker/prism-add-prog-mode-hook ()
-    "Add `prism-mode' to `prog-mode-hook'."
-    (add-hook! 'prog-mode-hook 'prism-mode))
-  (add-hook! 'doom-init-ui-hook 'schrenker/prism-add-prog-mode-hook)
+  (add-hook! '(json-mode-hook prog-mode-hook)
+    (unless (derived-mode-p 'sh-mode 'python-mode)
+      (prism-mode 1)))
+
+  (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook)
+    (prism-whitespace-mode 1))
+
   :config
   (after! doom-themes
-    (setq prism-num-faces 6)
+    (setq ;;prism-comments nil
+          ;; prism-num-faces 5
+          prism-whitespace-mode-indents '((python-mode . python-indent-offset)
+                                          (haskell-mode . haskell-indentation-left-offset)
+                                          (yaml-mode . 2)
+                                          (t . 4)))
     (prism-set-colors
       :desaturations '(0) ; do not change---may lower the contrast ratio
       :lightens '(0)      ; same
@@ -487,7 +481,7 @@
                (doom-color 'violet)
                (doom-color 'yellow)
                (doom-color 'cyan)
-               (doom-color 'dark-blue)
+               ;; (doom-color 'dark-blue)
                (doom-color 'green)))))
 
 (use-package! vlf-setup

@@ -455,6 +455,18 @@
 
 (fset 'rainbow-delimiters-mode #'prism-mode)
 
+(defun schrenker/prism-set-colors ()
+    (prism-set-colors
+      :desaturations '(0) ; do not change---may lower the contrast ratio
+      :lightens '(0)      ; same
+      :colors (list
+               (doom-color 'blue)
+               (doom-color 'violet)
+               (doom-color 'yellow)
+               (doom-color 'cyan)
+               (doom-color 'green)))
+    (message "Prism colors set."))
+
 (use-package! prism
   :commands prism-mode
   :init
@@ -465,24 +477,18 @@
   (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook)
     (prism-whitespace-mode 1))
 
+
+
   :config
   (after! doom-themes
     (setq ;;prism-comments nil
-          ;; prism-num-faces 5
-          prism-whitespace-mode-indents '((python-mode . python-indent-offset)
-                                          (haskell-mode . haskell-indentation-left-offset)
-                                          (yaml-mode . 2)
-                                          (t . 4)))
-    (prism-set-colors
-      :desaturations '(0) ; do not change---may lower the contrast ratio
-      :lightens '(0)      ; same
-      :colors (list
-               (doom-color 'blue)
-               (doom-color 'violet)
-               (doom-color 'yellow)
-               (doom-color 'cyan)
-               ;; (doom-color 'dark-blue)
-               (doom-color 'green)))))
+     ;; prism-num-faces 5
+     prism-whitespace-mode-indents '((python-mode . python-indent-offset)
+                                     (haskell-mode . haskell-indentation-left-offset)
+                                     (yaml-mode . 2)
+                                     (t . 4)))
+    (schrenker/prism-set-colors)
+    (add-hook! '(prog-mode-hook doom-load-theme-hook) (schrenker/prism-set-colors))))
 
 (use-package! vlf-setup
   :defer-incrementally vlf-tune vlf-base vlf-write

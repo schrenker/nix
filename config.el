@@ -192,7 +192,19 @@
 (setq org-startup-folded 'nofold)
 
 (after! org
-  (add-hook 'before-save-hook 'org-update-all-dblocks))
+  (add-hook 'before-save-hook
+            (lambda ()
+              (unless (and (boundp 'org-capture-mode) org-capture-mode)
+                (org-update-all-dblocks)))))
+
+  ;; (add-hook 'org-capture-after-finalize-hook
+  ;;           (lambda ()
+  ;;             (when (buffer-file-name)
+  ;;               (let ((file (buffer-file-name)))
+  ;;                 (when (eq (current-buffer) (marker-buffer org-capture-last-stored-marker))
+  ;;                   (with-current-buffer (find-file-noselect file)
+  ;;                     (org-update-all-dblocks)
+  ;;                     (save-buffer))))))))
 
 (map! :map org-mode-map
       :localleader "$" #'org-decrypt-entry
@@ -474,7 +486,8 @@
     (unless (derived-mode-p 'sh-mode 'python-mode)
       (prism-mode 1)))
 
-  (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook)
+  ;; (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook fish-mode-hook)
+  (add-hook! '(sh-mode-hook python-mode-hook fish-mode-hook)
     (prism-whitespace-mode 1))
 
 
@@ -488,7 +501,7 @@
                                      (yaml-mode . 2)
                                      (t . 4)))
     (schrenker/prism-set-colors)
-    (add-hook! '(prog-mode-hook doom-load-theme-hook) (schrenker/prism-set-colors))))
+    (add-hook! '(prog-mode-hook doom-load-theme-hook ns-system-appearance-change-functions) (schrenker/prism-set-colors))))
 
 (use-package! vlf-setup
   :defer-incrementally vlf-tune vlf-base vlf-write

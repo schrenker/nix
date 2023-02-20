@@ -1124,7 +1124,8 @@
      ;; prism-num-faces 5
      prism-whitespace-mode-indents '((python-mode . python-indent-offset)
                                      (haskell-mode . haskell-indentation-left-offset)
-                                     (yaml-mode . 2)
+                                     (yaml-mode . yaml-indent)
+                                     (sh-mode . sh-basic-offset)
                                      (t . 4)))
     (schrenker/prism-set-colors)
     (add-hook! '(prog-mode-hook doom-load-theme-hook ns-system-appearance-change-functions) (schrenker/prism-set-colors))))

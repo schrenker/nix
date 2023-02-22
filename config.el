@@ -419,6 +419,7 @@
 
 (setq corfu-preview-current 'insert
       corfu-preselect 'prompt ;; Disable candidate preselection
+      corfu-on-exact-match nil
       corfu-excluded-modes
       '(erc-mode
         circe-mode

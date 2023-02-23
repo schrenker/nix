@@ -15,7 +15,7 @@
 
 (map! "A-<backspace>" #'doom/delete-backward-word)
 
-(setq +workspaces-on-switch-project-behavior 'non-empty)
+ (setq +workspaces-on-switch-project-behavior 'non-empty)
 
 (add-hook! 'doom-first-buffer-hook
   (menu-bar-mode -1)
@@ -427,14 +427,14 @@
         gud-mode
         vterm-mode))
 
-(map! ;;:desc "complete" "TAB" #'completion-at-point
- :map corfu-map
- :desc "next" "TAB" #'corfu-next
- :desc "next" "<tab>" #'corfu-next
- :desc "next" [tab] #'corfu-next
- :desc "previous" "S-TAB" #'corfu-previous
- :desc "previous" "<backtab>"  #'corfu-previous
- :desc "previous" [backtab] #'corfu-previous)
+    (map! ;;:desc "complete" "TAB" #'completion-at-point
+     :map corfu-map
+     :desc "next" "TAB" #'corfu-next
+     :desc "next" "<tab>" #'corfu-next
+     :desc "next" [tab] #'corfu-next
+     :desc "previous" "S-TAB" #'corfu-previous
+     :desc "previous" "<backtab>"  #'corfu-previous
+     :desc "previous" [backtab] #'corfu-previous)
 
 (global-corfu-mode)
 

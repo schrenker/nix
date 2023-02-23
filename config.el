@@ -407,6 +407,8 @@
 
 (setq +treemacs-git-mode 'deferred)
 
+(set-popup-rule! "^ \\*Treemacs-Scoped-Buffer-Perspective [^*]*\\*" :ignore t)
+
 (setq treemacs-follow-mode t)
 
 (require 'treemacs-all-the-icons)

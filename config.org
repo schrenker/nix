@@ -88,6 +88,7 @@
   - [[#org-autolist][Org autolist]]
 - [[#treemacs][Treemacs]]
   - [[#treemacs-git-mode][Treemacs git mode]]
+  - [[#treemacs-popup-rule][Treemacs popup rule]]
   - [[#treemacs-modes][Treemacs modes]]
   - [[#pull-all-the-icons-for-treemacs][Pull all the icons for treemacs]]
   - [[#set-treemacs-themes][Set treemacs themes]]
@@ -950,6 +951,11 @@
 ** Treemacs git mode
 #+begin_src elisp :tangle config.el
 (setq +treemacs-git-mode 'deferred)
+#+end_src
+
+** Treemacs popup rule
+#+begin_src elisp :tangle config.el
+(set-popup-rule! "^ \\*Treemacs-Scoped-Buffer-Perspective [^*]*\\*" :ignore t)
 #+end_src
 
 ** Treemacs modes

@@ -110,6 +110,7 @@
 - [[#confluence][Confluence]]
 - [[#kubernetes][Kubernetes]]
   - [[#kele][Kele]]
+- [[#yasnippets][Yasnippets]]
 - [[#prism][Prism]]
 - [[#open-very-large-files-effortlessly-thanks-tecosaur][Open very large files effortlessly (thanks Tecosaur)]]
 - [[#additional-config][Additional config]]
@@ -614,22 +615,13 @@
 #+end_src
 
 ** Update dynamic blocks on save
- #+begin_src elisp :tangle config.el
+#+begin_src elisp :tangle config.el
 (after! org
   (add-hook 'before-save-hook
             (lambda ()
               (unless (and (boundp 'org-capture-mode) org-capture-mode)
                 (org-update-all-dblocks)))))
-
-  ;; (add-hook 'org-capture-after-finalize-hook
-  ;;           (lambda ()
-  ;;             (when (buffer-file-name)
-  ;;               (let ((file (buffer-file-name)))
-  ;;                 (when (eq (current-buffer) (marker-buffer org-capture-last-stored-marker))
-  ;;                   (with-current-buffer (find-file-noselect file)
-  ;;                     (org-update-all-dblocks)
-  ;;                     (save-buffer))))))))
- #+end_src
+#+end_src
 
 ** Org-mode-map
 #+begin_src elisp :tangle config.el
@@ -787,7 +779,7 @@
 
 ** Demote bullet points
 #+begin_src elisp :tangle config.el
-(setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "-") ("1." . "a.")))
+(setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a.")))
 #+end_src
 
 ** Fancy priorities
@@ -886,10 +878,10 @@
 #+begin_src elisp :tangle config.el
 (after! org
   (setq time-stamp-active t
-    time-stamp-start "#\\+modified: [ \t]*"
-    time-stamp-end "$"
-    time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
-(add-hook 'before-save-hook 'time-stamp))
+        time-stamp-start "#\\+modified: [ \t]*"
+        time-stamp-end "$"
+        time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
+  (add-hook 'before-save-hook 'time-stamp))
 #+end_src
 
 ** Org capture templates
@@ -981,7 +973,6 @@
 (setq corfu-preview-current 'insert
       corfu-preselect 'prompt ;; Disable candidate preselection
       corfu-on-exact-match nil
-      corfu-separator ?\s
       corfu-excluded-modes
       '(erc-mode
         circe-mode
@@ -1014,19 +1005,16 @@
 #+end_src
 
 ** Orderless
-#+begin_src elisp :tangle packages.el
-(package! orderless)
-#+end_src
-
 #+begin_src elisp :tangle config.el
-(setq completion-styles '(orderless basic)
-      completion-category-defaults nil
-      completion-category-overrides '((file (styles basic partial-completion)))
-      orderless-matching-styles '(orderless-literal
-                                  orderless-regexp
-                                  orderless-prefixes
-                                  orderless-initialism)
-      orderless-component-separator ?\s)
+(after! corfu
+  (require 'orderless)
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion)))
+        orderless-matching-styles '(orderless-literal
+                                    orderless-regexp
+                                    orderless-prefixes
+                                    orderless-initialism)))
 #+end_src
 
 * Vterm
@@ -1101,6 +1089,14 @@
 ** Kele
 #+begin_src elisp :tangle packages.el
 (package! kele)
+#+end_src
+
+* Yasnippets
+- disable globally, enable locally
+#+begin_src elisp :tangle config.el
+(yas-global-mode -1)
+(yas-reload-all)
+(add-hook! 'org-mode-hook (yas-minor-mode))
 #+end_src
 
 * Prism

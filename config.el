@@ -15,7 +15,7 @@
 
 (map! "A-<backspace>" #'doom/delete-backward-word)
 
- (setq +workspaces-on-switch-project-behavior 'non-empty)
+(setq +workspaces-on-switch-project-behavior 'non-empty)
 
 (add-hook! 'doom-first-buffer-hook
   (menu-bar-mode -1)
@@ -197,15 +197,6 @@
               (unless (and (boundp 'org-capture-mode) org-capture-mode)
                 (org-update-all-dblocks)))))
 
-  ;; (add-hook 'org-capture-after-finalize-hook
-  ;;           (lambda ()
-  ;;             (when (buffer-file-name)
-  ;;               (let ((file (buffer-file-name)))
-  ;;                 (when (eq (current-buffer) (marker-buffer org-capture-last-stored-marker))
-  ;;                   (with-current-buffer (find-file-noselect file)
-  ;;                     (org-update-all-dblocks)
-  ;;                     (save-buffer))))))))
-
 (map! :map org-mode-map
       :localleader "$" #'org-decrypt-entry
       :localleader "a i" #'org-display-inline-images)
@@ -306,7 +297,7 @@
                         '(("^ *\\([+]\\) "
                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "◇"))))))
 
-(setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "-") ("1." . "a.")))
+(setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a.")))
 
 (after! org-fancy-priorities
   (setq
@@ -363,10 +354,10 @@
 
 (after! org
   (setq time-stamp-active t
-    time-stamp-start "#\\+modified: [ \t]*"
-    time-stamp-end "$"
-    time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
-(add-hook 'before-save-hook 'time-stamp))
+        time-stamp-start "#\\+modified: [ \t]*"
+        time-stamp-end "$"
+        time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
+  (add-hook 'before-save-hook 'time-stamp))
 
 (after! org
   (setq org-capture-templates
@@ -419,7 +410,6 @@
 (setq corfu-preview-current 'insert
       corfu-preselect 'prompt ;; Disable candidate preselection
       corfu-on-exact-match nil
-      corfu-separator ?\s
       corfu-excluded-modes
       '(erc-mode
         circe-mode
@@ -427,28 +417,29 @@
         gud-mode
         vterm-mode))
 
-    (map! ;;:desc "complete" "TAB" #'completion-at-point
-     :map corfu-map
-     :desc "next" "TAB" #'corfu-next
-     :desc "next" "<tab>" #'corfu-next
-     :desc "next" [tab] #'corfu-next
-     :desc "previous" "S-TAB" #'corfu-previous
-     :desc "previous" "<backtab>"  #'corfu-previous
-     :desc "previous" [backtab] #'corfu-previous)
+(map! ;;:desc "complete" "TAB" #'completion-at-point
+ :map corfu-map
+ :desc "next" "TAB" #'corfu-next
+ :desc "next" "<tab>" #'corfu-next
+ :desc "next" [tab] #'corfu-next
+ :desc "previous" "S-TAB" #'corfu-previous
+ :desc "previous" "<backtab>"  #'corfu-previous
+ :desc "previous" [backtab] #'corfu-previous)
 
 (global-corfu-mode)
 
 (setq +lsp-company-backends nil
       +vertico-company-completion-styles nil)
 
-(setq completion-styles '(orderless basic)
-      completion-category-defaults nil
-      completion-category-overrides '((file (styles basic partial-completion)))
-      orderless-matching-styles '(orderless-literal
-                                  orderless-regexp
-                                  orderless-prefixes
-                                  orderless-initialism)
-      orderless-component-separator ?\s)
+(after! corfu
+  (require 'orderless)
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion)))
+        orderless-matching-styles '(orderless-literal
+                                    orderless-regexp
+                                    orderless-prefixes
+                                    orderless-initialism)))
 
 (setq vterm-always-compile-module t)
 
@@ -474,6 +465,10 @@
       :n "l" #'dired-find-alternate-file)
 
 (setq x509-openssl-cmd "/opt/homebrew/Cellar/openssl@3/3.0.5/bin/openssl" )
+
+(yas-global-mode -1)
+(yas-reload-all)
+(add-hook! 'org-mode-hook (yas-minor-mode))
 
 (fset 'rainbow-delimiters-mode #'prism-mode)
 

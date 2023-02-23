@@ -405,9 +405,6 @@
 
 (add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
 
-(setq company-global-modes '(not org-mode))
-(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
-
 (setq +treemacs-git-mode 'deferred)
 
 (setq treemacs-follow-mode t)
@@ -420,6 +417,7 @@
 (setq corfu-preview-current 'insert
       corfu-preselect 'prompt ;; Disable candidate preselection
       corfu-on-exact-match nil
+      corfu-separator ?\s
       corfu-excluded-modes
       '(erc-mode
         circe-mode
@@ -440,6 +438,15 @@
 
 (setq +lsp-company-backends nil
       +vertico-company-completion-styles nil)
+
+(setq completion-styles '(orderless basic)
+      completion-category-defaults nil
+      completion-category-overrides '((file (styles basic partial-completion)))
+      orderless-matching-styles '(orderless-literal
+                                  orderless-regexp
+                                  orderless-prefixes
+                                  orderless-initialism)
+      orderless-component-separator ?\s)
 
 (setq vterm-always-compile-module t)
 
@@ -488,20 +495,19 @@
       (prism-mode 1)))
 
   ;; (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook fish-mode-hook)
-  (add-hook! '(sh-mode-hook python-mode-hook fish-mode-hook)
-    (prism-whitespace-mode 1))
+  ;;   (prism-whitespace-mode 1))
 
 
 
   :config
   (after! doom-themes
-    (setq ;;prism-comments nil
+    (setq prism-comments nil)
      ;; prism-num-faces 5
-     prism-whitespace-mode-indents '((python-mode . python-indent-offset)
-                                     (haskell-mode . haskell-indentation-left-offset)
-                                     (yaml-mode . yaml-indent)
-                                     (sh-mode . sh-basic-offset)
-                                     (t . 4)))
+     ;; prism-whitespace-mode-indents '((python-mode . python-indent-offset)
+     ;;                                 (haskell-mode . haskell-indentation-left-offset)
+     ;;                                 (yaml-mode . yaml-indent)
+     ;;                                 (sh-mode . sh-basic-offset)
+     ;;                                 (t . 4)))
     (schrenker/prism-set-colors)
     (add-hook! '(prog-mode-hook doom-load-theme-hook ns-system-appearance-change-functions) (schrenker/prism-set-colors))))
 

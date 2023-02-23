@@ -26,6 +26,8 @@
 
 (package! treemacs-all-the-icons)
 
+(package! orderless)
+
 (package! cheat-sh)
 
 (package! inheritenv)

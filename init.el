@@ -18,7 +18,7 @@
        ophints                                  ; highlight the region an operation acts on
        (popup +defaults +all)                   ; tame sudden yet inevitable temporary windows
        tabs
-       (treemacs +lsp)                          ; a project drawer, like neotree but cooler
+       treemacs                                 ; a project drawer, like neotree but cooler
        unicode                                  ; extended unicode support for various languages
        (window-select +numbers)                 ; visually switch windows
        workspaces                               ; tab emulation, persistence & separate workspaces

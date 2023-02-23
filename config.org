@@ -86,7 +86,6 @@
   - [[#org-capture-templates][Org capture templates]]
   - [[#org-capture-anywhere-macos][Org capture anywhere MacOS]]
   - [[#org-autolist][Org autolist]]
-  - [[#disable-company-for-org-mode][Disable company for org-mode]]
 - [[#treemacs][Treemacs]]
   - [[#treemacs-git-mode][Treemacs git mode]]
   - [[#treemacs-modes][Treemacs modes]]
@@ -96,6 +95,7 @@
   - [[#tng-keymap][TNG keymap]]
   - [[#global-corfu-mode][Global corfu mode]]
   - [[#remove-company-remnants][Remove company remnants]]
+  - [[#orderless][Orderless]]
 - [[#vterm][Vterm]]
   - [[#always-compile-without-confirmation][Always compile without confirmation]]
   - [[#increase-scrollback-for-vterm][Increase scrollback for vterm]]
@@ -149,7 +149,7 @@
        ophints                                  ; highlight the region an operation acts on
        (popup +defaults +all)                   ; tame sudden yet inevitable temporary windows
        tabs
-       (treemacs +lsp)                          ; a project drawer, like neotree but cooler
+       treemacs                                 ; a project drawer, like neotree but cooler
        unicode                                  ; extended unicode support for various languages
        (window-select +numbers)                 ; visually switch windows
        workspaces                               ; tab emulation, persistence & separate workspaces
@@ -945,12 +945,6 @@
 (add-hook 'org-mode-hook (lambda () (org-autolist-mode)))
 #+end_src
 
-** Disable company for org-mode
-#+begin_src elisp :tangle config.el
-(setq company-global-modes '(not org-mode))
-(add-hook 'org-mode-hook (lambda () ( company-mode -1)))
-#+end_src
-
 * Treemacs
 
 ** Treemacs git mode
@@ -981,6 +975,7 @@
 (setq corfu-preview-current 'insert
       corfu-preselect 'prompt ;; Disable candidate preselection
       corfu-on-exact-match nil
+      corfu-separator ?\s
       corfu-excluded-modes
       '(erc-mode
         circe-mode
@@ -1010,6 +1005,22 @@
 #+begin_src elisp :tangle config.el
 (setq +lsp-company-backends nil
       +vertico-company-completion-styles nil)
+#+end_src
+
+** Orderless
+#+begin_src elisp :tangle packages.el
+(package! orderless)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(setq completion-styles '(orderless basic)
+      completion-category-defaults nil
+      completion-category-overrides '((file (styles basic partial-completion)))
+      orderless-matching-styles '(orderless-literal
+                                  orderless-regexp
+                                  orderless-prefixes
+                                  orderless-initialism)
+      orderless-component-separator ?\s)
 #+end_src
 
 * Vterm
@@ -1114,20 +1125,19 @@
       (prism-mode 1)))
 
   ;; (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook fish-mode-hook)
-  (add-hook! '(sh-mode-hook python-mode-hook fish-mode-hook)
-    (prism-whitespace-mode 1))
+  ;;   (prism-whitespace-mode 1))
 
 
 
   :config
   (after! doom-themes
-    (setq ;;prism-comments nil
+    (setq prism-comments nil)
      ;; prism-num-faces 5
-     prism-whitespace-mode-indents '((python-mode . python-indent-offset)
-                                     (haskell-mode . haskell-indentation-left-offset)
-                                     (yaml-mode . yaml-indent)
-                                     (sh-mode . sh-basic-offset)
-                                     (t . 4)))
+     ;; prism-whitespace-mode-indents '((python-mode . python-indent-offset)
+     ;;                                 (haskell-mode . haskell-indentation-left-offset)
+     ;;                                 (yaml-mode . yaml-indent)
+     ;;                                 (sh-mode . sh-basic-offset)
+     ;;                                 (t . 4)))
     (schrenker/prism-set-colors)
     (add-hook! '(prog-mode-hook doom-load-theme-hook ns-system-appearance-change-functions) (schrenker/prism-set-colors))))
 

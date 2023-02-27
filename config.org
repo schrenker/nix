@@ -1051,7 +1051,8 @@
 
 #+begin_src emacs-lisp :tangle config.el
 (map! :map doom-leader-open-map
-      :g "T" #'multi-vterm-project)
+      :g "t" #'multi-vterm-project
+      :g "T" #'multi-vterm-dedicated-toggle)
 #+end_src
 
 * Flyspell

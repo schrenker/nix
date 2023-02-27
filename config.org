@@ -102,6 +102,7 @@
   - [[#increase-scrollback-for-vterm][Increase scrollback for vterm]]
   - [[#vterm-keybindings][Vterm keybindings]]
   - [[#show-modeline-in-vterm][Show modeline in vterm]]
+  - [[#multi-vterm][Multi-vterm]]
 - [[#flyspell][Flyspell]]
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
@@ -1041,6 +1042,16 @@
 ** Show modeline in vterm
 #+begin_src elisp :tangle config.el
 (remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
+#+end_src
+
+** Multi-vterm
+#+begin_src emacs-lisp :tangle packages.el
+(package! multi-vterm)
+#+end_src
+
+#+begin_src emacs-lisp :tangle config.el
+(map! :map doom-leader-open-map
+      :g "T" #'multi-vterm-project)
 #+end_src
 
 * Flyspell

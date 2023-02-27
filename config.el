@@ -454,6 +454,9 @@
 
 (remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
 
+(map! :map doom-leader-open-map
+      :g "T" #'multi-vterm-project)
+
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))
 

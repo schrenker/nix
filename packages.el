@@ -26,6 +26,8 @@
 
 (package! treemacs-all-the-icons)
 
+(package! multi-vterm)
+
 (package! cheat-sh)
 
 (package! inheritenv)

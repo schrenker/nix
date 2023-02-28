@@ -43,7 +43,7 @@
        vc                                       ; version-control and Emacs, sitting in a tree
 
        :term
-       vterm                                    ; the best terminal emulation in Emacs
+       eshell
 
        :checkers
        (spell +flyspell +everywhere)
@@ -88,13 +88,6 @@
        :config
        (default +bindings +smartparens)
        literate)
-
-(after! comp
-  (mapc (doom-partial #'add-to-list 'native-comp-deferred-compilation-deny-list)
-        (list "/emacs-jupyter.*\\.el\\'"
-              "/evil-collection-vterm\\.el\\'"
-              "/vterm\\.el\\'"
-              "/with-editor\\.el\\'")))
 
 (setq native-comp-deferred-compilation nil)
 (after! (doom-packages straight)

@@ -3,7 +3,6 @@
 * Table of Contents :TOC:
 - [[#headers][Headers]]
 - [[#doom][Doom]]
-  - [[#vterm-endless-compilation-fix][Vterm endless compilation fix]]
   - [[#natively-compile-on-doom-sync][Natively compile on doom sync]]
 - [[#emacs][Emacs]]
   - [[#personal-information][Personal information]]
@@ -55,6 +54,7 @@
   - [[#evil-window-map][Evil Window Map]]
   - [[#enable-key-chord-and-make-double-tap--move-cursor-to-the-right-in-insert-mode][Enable key-chord and make double tap ';' move cursor to the right in insert mode]]
   - [[#disable-evil-keybindings-for-git-timemachine][Disable evil keybindings for git-timemachine]]
+- [[#eshell][Eshell]]
 - [[#magit][Magit]]
   - [[#smerge-repeatedly-thanks-tecosaur][Smerge repeatedly (thanks tecosaur)]]
 - [[#org-mode][Org mode]]
@@ -97,12 +97,7 @@
   - [[#global-corfu-mode][Global corfu mode]]
   - [[#remove-company-remnants][Remove company remnants]]
   - [[#orderless][Orderless]]
-- [[#vterm][Vterm]]
-  - [[#always-compile-without-confirmation][Always compile without confirmation]]
-  - [[#increase-scrollback-for-vterm][Increase scrollback for vterm]]
-  - [[#vterm-keybindings][Vterm keybindings]]
-  - [[#show-modeline-in-vterm][Show modeline in vterm]]
-  - [[#multi-vterm][Multi-vterm]]
+- [[#eat][Eat]]
 - [[#flyspell][Flyspell]]
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
@@ -177,7 +172,7 @@
        vc                                       ; version-control and Emacs, sitting in a tree
 
        :term
-       vterm                                    ; the best terminal emulation in Emacs
+       eshell
 
        :checkers
        (spell +flyspell +everywhere)
@@ -222,16 +217,6 @@
        :config
        (default +bindings +smartparens)
        literate)
-#+end_src
-
-** Vterm endless compilation fix
-#+begin_src elisp :tangle init.el
-(after! comp
-  (mapc (doom-partial #'add-to-list 'native-comp-deferred-compilation-deny-list)
-        (list "/emacs-jupyter.*\\.el\\'"
-              "/evil-collection-vterm\\.el\\'"
-              "/vterm\\.el\\'"
-              "/with-editor\\.el\\'")))
 #+end_src
 
 ** Natively compile on doom sync
@@ -576,6 +561,14 @@
 (with-eval-after-load 'git-timemachine
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+#+end_src
+
+* Eshell
+#+begin_src emacs-lisp :tangle config.el
+(remove-hook! 'eshell-mode-hook #'hide-mode-line-mode)
+(add-hook! 'eshell-mode-hook
+  (unless (s-contains? "popup" (buffer-name))
+    (rename-buffer (concat "Esh:" (projectile-project-name)) t)))
 #+end_src
 
 * Magit
@@ -978,8 +971,7 @@
       '(erc-mode
         circe-mode
         help-mode
-        gud-mode
-        vterm-mode))
+        gud-mode))
 #+end_src
 
 ** TNG keymap
@@ -1018,41 +1010,20 @@
                                     orderless-initialism)))
 #+end_src
 
-* Vterm
-** Always compile without confirmation
-#+begin_src elisp :tangle config.el
-(setq vterm-always-compile-module t)
-#+end_src
-
-** Increase scrollback for vterm
-#+begin_src elisp :tangle config.el
-(setq vterm-max-scrollback 100000)
-#+end_src
-
-** Vterm keybindings
-#+begin_src elisp :tangle config.el
-(map! :after vterm
-       :map vterm-mode-map
-       :ni "<tab>" #'vterm-send-tab
-       :nvi "M-v" #'evil-collection-vterm-paste-after
-       :nvi "M-c" #'evil-yank
-       :i   "A-<backspace>" '(lambda () (interactive) (vterm-send-key (kbd "C-w"))))
-#+end_src
-
-** Show modeline in vterm
-#+begin_src elisp :tangle config.el
-(remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
-#+end_src
-
-** Multi-vterm
+* Eat
 #+begin_src emacs-lisp :tangle packages.el
-(package! multi-vterm)
+(package! eat :recipe (:host codeberg
+                       :repo "akib/emacs-eat"
+                       :files ("*.el" ("term" "term/*.el") "*.texi"
+                               "*.ti" ("terminfo/e" "terminfo/e/*")
+                               ("terminfo/65" "terminfo/65/*")
+                               ("integration" "integration/*")
+                               (:exclude ".dir-locals.el" "*-tests.el"))))
 #+end_src
 
-#+begin_src emacs-lisp :tangle config.el
-(map! :map doom-leader-open-map
-      :g "t" #'multi-vterm-project
-      :g "T" #'multi-vterm-dedicated-toggle)
+#+begin_src emacs-lisp :tangle yes
+;; For `eat-eshell-mode'.
+(add-hook 'eshell-load-hook #'eat-eshell-mode)
 #+end_src
 
 * Flyspell

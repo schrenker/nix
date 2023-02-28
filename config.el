@@ -161,6 +161,11 @@
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
+(remove-hook! 'eshell-mode-hook #'hide-mode-line-mode)
+(add-hook! 'eshell-mode-hook
+  (unless (s-contains? "popup" (buffer-name))
+    (rename-buffer (concat "Esh:" (projectile-project-name)) t)))
+
 (defun smerge-repeatedly ()
   "Perform smerge actions again and again"
   (interactive)
@@ -414,8 +419,7 @@
       '(erc-mode
         circe-mode
         help-mode
-        gud-mode
-        vterm-mode))
+        gud-mode))
 
 (map! ;;:desc "complete" "TAB" #'completion-at-point
  :map corfu-map
@@ -441,22 +445,8 @@
                                     orderless-prefixes
                                     orderless-initialism)))
 
-(setq vterm-always-compile-module t)
-
-(setq vterm-max-scrollback 100000)
-
-(map! :after vterm
-       :map vterm-mode-map
-       :ni "<tab>" #'vterm-send-tab
-       :nvi "M-v" #'evil-collection-vterm-paste-after
-       :nvi "M-c" #'evil-yank
-       :i   "A-<backspace>" '(lambda () (interactive) (vterm-send-key (kbd "C-w"))))
-
-(remove-hook 'vterm-mode-hook #'hide-mode-line-mode)
-
-(map! :map doom-leader-open-map
-      :g "t" #'multi-vterm-project
-      :g "T" #'multi-vterm-dedicated-toggle)
+;; For `eat-eshell-mode'.
+(add-hook 'eshell-load-hook #'eat-eshell-mode)
 
 (after! flyspell
   (setq flyspell-lazy-idle-seconds 2))

@@ -59,6 +59,7 @@
   - [[#smerge-repeatedly-thanks-tecosaur][Smerge repeatedly (thanks tecosaur)]]
 - [[#org-mode][Org mode]]
   - [[#update-dynamic-blocks-on-save][Update dynamic blocks on save]]
+  - [[#format-org-mode-buffer-on-save][Format org mode buffer on save]]
   - [[#org-mode-map][Org-mode-map]]
   - [[#set-visual-line-movement-via-gj-and-gk][Set visual line movement via gj and gk]]
   - [[#set-up-path-for-org-mode][Set up path for org mode]]
@@ -69,7 +70,6 @@
   - [[#org-appear][Org appear]]
   - [[#inline-images][Inline images]]
   - [[#log-time-of-done-tasks][Log time of done tasks]]
-  - [[#synchronize-brain][Synchronize brain]]
   - [[#task-status-and-prioritization][Task status and prioritization]]
   - [[#drawer-for-state-changes][Drawer for state changes]]
   - [[#headlines][Headlines]]
@@ -134,6 +134,7 @@
 
        :local
        (corfu +icons +tng)
+       org-format
 
        :ui
        doom                                     ; what makes DOOM look the way it does
@@ -227,6 +228,7 @@
 #+end_src
 
 * Emacs
+
 ** Personal information
 #+begin_src elisp :tangle config.el
 (setq  user-full-name "Sebastian Zawadzki"
@@ -234,6 +236,7 @@
 #+end_src
 
 ** Keybinds
+
 *** Mac specific keybindings
 #+begin_src elisp :tangle config.el
 (cond (IS-MAC
@@ -375,7 +378,6 @@
 (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
 #+end_src
 
-
 ** Modeline
 #+begin_src elisp :tangle config.el
 (setq doom-modeline-icon (display-graphic-p)
@@ -426,6 +428,7 @@
 #+end_src
 
 * Centaur Tabs
+
 ** Group tabs by projectile project
 #+begin_src elisp :tangle config.el
 (require 'centaur-tabs)
@@ -448,8 +451,8 @@
 (setq centaur-tabs-gray-out-icons 'buffer)
 #+end_src
 
-
 * Editor
+
 ** Enable autosave
 #+begin_src elisp :tangle config.el
 (setq auto-save-default t)
@@ -481,6 +484,7 @@
 #+end_src
 
 * Evil
+
 ** Set up evil packages
 #+begin_src elisp :tangle packages.el
 (package! evil-commentary)
@@ -572,6 +576,7 @@
 #+end_src
 
 * Magit
+
 ** Smerge repeatedly (thanks tecosaur)
 #+begin_src elisp :tangle config.el
 (defun smerge-repeatedly ()
@@ -617,13 +622,17 @@
                 (org-update-all-dblocks)))))
 #+end_src
 
+** Format org mode buffer on save
+#+begin_src elisp :tangle config.el
+(add-hook! 'org-mode-hook (org-format-on-save-mode 1))
+#+end_src
+
 ** Org-mode-map
 #+begin_src elisp :tangle config.el
 (map! :map org-mode-map
       :localleader "$" #'org-decrypt-entry
       :localleader "a i" #'org-display-inline-images)
 #+end_src
-
 
 ** Set visual line movement via gj and gk
 #+begin_src elisp :tangle config.el
@@ -635,7 +644,7 @@
 
 ** Set up path for org mode
 #+begin_src elisp :tangle config.el
-(setq org-directory "/Users/sebastian/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/brain"
+(setq org-directory "~/org"
       org-roam-directory org-directory
       org-archive-location "archive/%s_archive::"
       org-default-notes-file (concat org-directory "/20221222131538-personal.org")
@@ -648,7 +657,6 @@
                                           "moc"
                                           "inbox"))
 #+end_src
-
 
 ** Set up headline encryption
 #+begin_src elisp :tangle config.el
@@ -689,29 +697,29 @@
 (setq org-log-done 'time)
 #+end_src
 
-** Synchronize brain
-#+begin_src elisp :tangle config.el
-(require 'projectile)
-(require 'magit)
+# ** Synchronize brain
+# #+begin_src elisp :tangle config.el
+# (require 'projectile)
+# (require 'magit)
 
-(setq async-shell-command-buffer 'new-buffer)
+# (setq async-shell-command-buffer 'new-buffer)
 
-(defvar brain-sync-last-run nil)
+# (defvar brain-sync-last-run nil)
 
-(defun schrenker/synchronize-brain ()
-  (when (string-equal (projectile-project-name) "brain")
-    (let ((current-time (float-time (current-time))))
-      (when (or (not brain-sync-last-run)
-                (> (- current-time brain-sync-last-run) 3600))
-        (setq brain-sync-last-run current-time)
-        (progn
-          (message "Synchonizing brain.")
-          (magit-call-git "pull" "--autostash" "--rebase")
-          (magit-call-git "push")
-          (message "Brain synchronized."))))))
+# (defun schrenker/synchronize-brain ()
+#   (when (string-equal (projectile-project-name) "brain")
+#     (let ((current-time (float-time (current-time))))
+#       (when (or (not brain-sync-last-run)
+#                 (> (- current-time brain-sync-last-run) 3600))
+#         (setq brain-sync-last-run current-time)
+#         (progn
+#           (message "Synchonizing brain.")
+#           (magit-call-git "pull" "--autostash" "--rebase")
+#           (magit-call-git "push")
+#           (message "Brain synchronized."))))))
 
-(add-hook! 'treemacs-switch-workspace-hook #'schrenker/synchronize-brain)
-#+end_src
+# (add-hook! 'treemacs-switch-workspace-hook #'schrenker/synchronize-brain)
+# #+end_src
 
 ** Task status and prioritization
 #+begin_src elisp :tangle config.el
@@ -1069,6 +1077,7 @@
 #+end_src
 
 * Kubernetes
+
 ** Kele
 #+begin_src elisp :tangle packages.el
 (package! kele)

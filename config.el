@@ -202,6 +202,8 @@
               (unless (and (boundp 'org-capture-mode) org-capture-mode)
                 (org-update-all-dblocks)))))
 
+(add-hook! 'org-mode-hook (org-format-on-save-mode 1))
+
 (map! :map org-mode-map
       :localleader "$" #'org-decrypt-entry
       :localleader "a i" #'org-display-inline-images)
@@ -211,7 +213,7 @@
         :nv "gj" #'evil-next-visual-line
         :nv "gk" #'evil-previous-visual-line))
 
-(setq org-directory "/Users/sebastian/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/brain"
+(setq org-directory "~/org"
       org-roam-directory org-directory
       org-archive-location "archive/%s_archive::"
       org-default-notes-file (concat org-directory "/20221222131538-personal.org")
@@ -235,27 +237,6 @@
       org-image-actual-width nil)
 
 (setq org-log-done 'time)
-
-(require 'projectile)
-(require 'magit)
-
-(setq async-shell-command-buffer 'new-buffer)
-
-(defvar brain-sync-last-run nil)
-
-(defun schrenker/synchronize-brain ()
-  (when (string-equal (projectile-project-name) "brain")
-    (let ((current-time (float-time (current-time))))
-      (when (or (not brain-sync-last-run)
-                (> (- current-time brain-sync-last-run) 3600))
-        (setq brain-sync-last-run current-time)
-        (progn
-          (message "Synchonizing brain.")
-          (magit-call-git "pull" "--autostash" "--rebase")
-          (magit-call-git "push")
-          (message "Brain synchronized."))))))
-
-(add-hook! 'treemacs-switch-workspace-hook #'schrenker/synchronize-brain)
 
 (after! org
   (setq

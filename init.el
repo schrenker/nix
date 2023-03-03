@@ -5,6 +5,7 @@
 
        :local
        (corfu +icons +tng)
+       org-format
 
        :ui
        doom                                     ; what makes DOOM look the way it does

@@ -348,9 +348,9 @@
 (after! org
   (setq org-capture-templates
         '(
-          ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+          ("p" "Personal Note" entry (file+headline org-default-notes-file "Notes")
            "** %U\n%i%?" :empty-lines 1)
-          ("t" "Task" entry (file+olp org-default-notes-file "Tasks" "Backlog")
+          ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog")
            "** TODO %?" :empty-lines 1)
           )))
 
@@ -444,44 +444,6 @@
 (yas-global-mode -1)
 (yas-reload-all)
 (add-hook! 'org-mode-hook (yas-minor-mode))
-
-(fset 'rainbow-delimiters-mode #'prism-mode)
-
-(defun schrenker/prism-set-colors ()
-    (prism-set-colors
-      :desaturations '(0) ; do not change---may lower the contrast ratio
-      :lightens '(0)      ; same
-      :colors (list
-               (doom-color 'blue)
-               (doom-color 'violet)
-               (doom-color 'yellow)
-               (doom-color 'cyan)
-               (doom-color 'green)))
-    (message "Prism colors set."))
-
-(use-package! prism
-  :commands prism-mode
-  :init
-  (add-hook! '(json-mode-hook prog-mode-hook)
-    (unless (derived-mode-p 'sh-mode 'python-mode)
-      (prism-mode 1)))
-
-  ;; (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook fish-mode-hook)
-  ;;   (prism-whitespace-mode 1))
-
-
-
-  :config
-  (after! doom-themes
-    (setq prism-comments nil)
-     ;; prism-num-faces 5
-     ;; prism-whitespace-mode-indents '((python-mode . python-indent-offset)
-     ;;                                 (haskell-mode . haskell-indentation-left-offset)
-     ;;                                 (yaml-mode . yaml-indent)
-     ;;                                 (sh-mode . sh-basic-offset)
-     ;;                                 (t . 4)))
-    (schrenker/prism-set-colors)
-    (add-hook! '(prog-mode-hook doom-load-theme-hook ns-system-appearance-change-functions) (schrenker/prism-set-colors))))
 
 (use-package! vlf-setup
   :defer-incrementally vlf-tune vlf-base vlf-write

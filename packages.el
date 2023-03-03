@@ -44,6 +44,4 @@
 
 (package! kele)
 
-(package! prism)
-
 (package! vlf :recipe (:host github :repo "emacs-straight/vlf" :files ("*.el")) :pin "cacdb359f8c37c6e7e4c7937462b632d22462130")

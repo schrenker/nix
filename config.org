@@ -107,7 +107,6 @@
 - [[#kubernetes][Kubernetes]]
   - [[#kele][Kele]]
 - [[#yasnippets][Yasnippets]]
-- [[#prism][Prism]]
 - [[#open-very-large-files-effortlessly-thanks-tecosaur][Open very large files effortlessly (thanks Tecosaur)]]
 - [[#additional-config][Additional config]]
   - [[#load-wsl-config-override][Load WSL config override]]
@@ -697,30 +696,6 @@
 (setq org-log-done 'time)
 #+end_src
 
-# ** Synchronize brain
-# #+begin_src elisp :tangle config.el
-# (require 'projectile)
-# (require 'magit)
-
-# (setq async-shell-command-buffer 'new-buffer)
-
-# (defvar brain-sync-last-run nil)
-
-# (defun schrenker/synchronize-brain ()
-#   (when (string-equal (projectile-project-name) "brain")
-#     (let ((current-time (float-time (current-time))))
-#       (when (or (not brain-sync-last-run)
-#                 (> (- current-time brain-sync-last-run) 3600))
-#         (setq brain-sync-last-run current-time)
-#         (progn
-#           (message "Synchonizing brain.")
-#           (magit-call-git "pull" "--autostash" "--rebase")
-#           (magit-call-git "push")
-#           (message "Brain synchronized."))))))
-
-# (add-hook! 'treemacs-switch-workspace-hook #'schrenker/synchronize-brain)
-# #+end_src
-
 ** Task status and prioritization
 #+begin_src elisp :tangle config.el
 (after! org
@@ -891,9 +866,9 @@
 (after! org
   (setq org-capture-templates
         '(
-          ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+          ("p" "Personal Note" entry (file+headline org-default-notes-file "Notes")
            "** %U\n%i%?" :empty-lines 1)
-          ("t" "Task" entry (file+olp org-default-notes-file "Tasks" "Backlog")
+          ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog")
            "** TODO %?" :empty-lines 1)
           )))
 #+end_src
@@ -1091,51 +1066,51 @@
 (add-hook! 'org-mode-hook (yas-minor-mode))
 #+end_src
 
-* Prism
-#+begin_src elisp :tangle packages.el
-(package! prism)
-#+end_src
+# * Prism
+# #+begin_src elisp :tangle packages.el
+# (package! prism)
+# #+end_src
 
-#+begin_src elisp :tangle config.el
-(fset 'rainbow-delimiters-mode #'prism-mode)
+# #+begin_src elisp :tangle config.el
+# (fset 'rainbow-delimiters-mode #'prism-mode)
 
-(defun schrenker/prism-set-colors ()
-    (prism-set-colors
-      :desaturations '(0) ; do not change---may lower the contrast ratio
-      :lightens '(0)      ; same
-      :colors (list
-               (doom-color 'blue)
-               (doom-color 'violet)
-               (doom-color 'yellow)
-               (doom-color 'cyan)
-               (doom-color 'green)))
-    (message "Prism colors set."))
+# (defun schrenker/prism-set-colors ()
+#     (prism-set-colors
+#       :desaturations '(0) ; do not change---may lower the contrast ratio
+#       :lightens '(0)      ; same
+#       :colors (list
+#                (doom-color 'blue)
+#                (doom-color 'violet)
+#                (doom-color 'yellow)
+#                (doom-color 'cyan)
+#                (doom-color 'green)))
+#     (message "Prism colors set."))
 
-(use-package! prism
-  :commands prism-mode
-  :init
-  (add-hook! '(json-mode-hook prog-mode-hook)
-    (unless (derived-mode-p 'sh-mode 'python-mode)
-      (prism-mode 1)))
+# (use-package! prism
+#   :commands prism-mode
+#   :init
+#   (add-hook! '(json-mode-hook prog-mode-hook)
+#     (unless (derived-mode-p 'sh-mode 'python-mode)
+#       (prism-mode 1)))
 
-  ;; (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook fish-mode-hook)
-  ;;   (prism-whitespace-mode 1))
+#   ;; (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook fish-mode-hook)
+#   ;;   (prism-whitespace-mode 1))
 
 
 
-  :config
-  (after! doom-themes
-    (setq prism-comments nil)
-     ;; prism-num-faces 5
-     ;; prism-whitespace-mode-indents '((python-mode . python-indent-offset)
-     ;;                                 (haskell-mode . haskell-indentation-left-offset)
-     ;;                                 (yaml-mode . yaml-indent)
-     ;;                                 (sh-mode . sh-basic-offset)
-     ;;                                 (t . 4)))
-    (schrenker/prism-set-colors)
-    (add-hook! '(prog-mode-hook doom-load-theme-hook ns-system-appearance-change-functions) (schrenker/prism-set-colors))))
+#   :config
+#   (after! doom-themes
+#     (setq prism-comments nil)
+#      ;; prism-num-faces 5
+#      ;; prism-whitespace-mode-indents '((python-mode . python-indent-offset)
+#      ;;                                 (haskell-mode . haskell-indentation-left-offset)
+#      ;;                                 (yaml-mode . yaml-indent)
+#      ;;                                 (sh-mode . sh-basic-offset)
+#      ;;                                 (t . 4)))
+#     (schrenker/prism-set-colors)
+#     (add-hook! '(prog-mode-hook doom-load-theme-hook ns-system-appearance-change-functions) (schrenker/prism-set-colors))))
 
-#+end_src
+# #+end_src
 
 * Open very large files effortlessly (thanks Tecosaur)
 #+begin_src elisp :tangle packages.el

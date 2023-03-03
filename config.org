@@ -207,7 +207,7 @@
        (nix +lsp)
        (org +pretty +present +dragndrop +roam2) ; organize your plain life in plain text
        rest
-       scheme
+       (scheme +guile)
        (sh +lsp +fish +powershell)              ; she sells {ba,z,fi}sh shells on the C xor
        (web +lsp +tree-sitter)
        (yaml +lsp)                              ; JSON, but readable
@@ -1008,6 +1008,7 @@
 #+end_src
 
 #+begin_src emacs-lisp :tangle yes
+(setq eat-term-name "xterm-256color")
 ;; For `eat-eshell-mode'.
 (add-hook 'eshell-load-hook #'eat-eshell-mode)
 #+end_src

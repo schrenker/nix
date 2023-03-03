@@ -428,6 +428,7 @@
                                     orderless-prefixes
                                     orderless-initialism)))
 
+(setq eat-term-name "xterm-256color")
 ;; For `eat-eshell-mode'.
 (add-hook 'eshell-load-hook #'eat-eshell-mode)
 

@@ -1203,5 +1203,5 @@
 
 ** Additional tweaks to personal info and org mode for my work
 #+begin_src elisp :tangle config.el
-(load "~/.config/doom/work.el" t t)
+(load "~/.config/doom/secret/work.el" t t)
 #+end_src

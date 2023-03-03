@@ -521,4 +521,4 @@
   ;;Unset problematic keybinds
   (map! "M-m" nil))
 
-(load "~/.config/doom/work.el" t t)
+(load "~/.config/doom/secret/work.el" t t)

@@ -165,6 +165,8 @@
 (add-hook! 'eshell-mode-hook
   (unless (s-contains? "popup" (buffer-name))
     (rename-buffer (concat "Esh:" (projectile-project-name)) t)))
+;;Fix for doom/reload problem
+(advice-add 'eshell-did-you-mean-output-filter :around #'fail-silently-advice)
 
 (defun smerge-repeatedly ()
   "Perform smerge actions again and again"

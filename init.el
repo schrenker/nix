@@ -79,6 +79,7 @@
        (nix +lsp)
        (org +pretty +present +dragndrop +roam2) ; organize your plain life in plain text
        rest
+       scheme
        (sh +lsp +fish +powershell)              ; she sells {ba,z,fi}sh shells on the C xor
        (web +lsp +tree-sitter)
        (yaml +lsp)                              ; JSON, but readable

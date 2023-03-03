@@ -207,6 +207,7 @@
        (nix +lsp)
        (org +pretty +present +dragndrop +roam2) ; organize your plain life in plain text
        rest
+       scheme
        (sh +lsp +fish +powershell)              ; she sells {ba,z,fi}sh shells on the C xor
        (web +lsp +tree-sitter)
        (yaml +lsp)                              ; JSON, but readable
@@ -572,6 +573,8 @@
 (add-hook! 'eshell-mode-hook
   (unless (s-contains? "popup" (buffer-name))
     (rename-buffer (concat "Esh:" (projectile-project-name)) t)))
+;;Fix for doom/reload problem
+(advice-add 'eshell-did-you-mean-output-filter :around #'fail-silently-advice)
 #+end_src
 
 * Magit

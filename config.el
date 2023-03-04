@@ -167,6 +167,7 @@
     (rename-buffer (concat "Esh:" (projectile-project-name)) t)))
 ;;Fix for doom/reload problem
 (advice-add 'eshell-did-you-mean-output-filter :around #'fail-silently-advice)
+(setq bash-completion-enabled nil)
 
 (defun smerge-repeatedly ()
   "Perform smerge actions again and again"

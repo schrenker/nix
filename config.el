@@ -108,8 +108,10 @@
 
 (setq centaur-tabs-show-count t)
 
-(add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
-(add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
+(add-hook! '(ibuffer-mode-hook
+             org-agenda-mode-hook
+             dired-mode-hook
+             ranger-mode-hook) #'centaur-tabs-local-mode)
 
 (setq centaur-tabs-gray-out-icons 'buffer)
 
@@ -124,6 +126,11 @@
 (setq scroll-margin 5)
 
 (setq require-final-newline nil)
+
+(ranger-override-dired-mode t)
+(setq ranger-show-hidden t
+      ranger-hide-cursor t
+      ranger-excluded-extensions '("mkv" "iso" "mp4" "bin" "exe" "msi"))
 
 (setq evil-want-fine-undo t)
 

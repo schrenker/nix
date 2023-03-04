@@ -40,6 +40,7 @@
   - [[#relative-numbers][Relative numbers]]
   - [[#set-scroll-margin][Set scroll margin]]
   - [[#disable-final-newline-in-files][Disable final newline in files]]
+- [[#ranger][Ranger]]
 - [[#evil][Evil]]
   - [[#set-up-evil-packages][Set up evil packages]]
   - [[#fine-undo][Fine Undo]]
@@ -442,8 +443,10 @@
 
 ** Disable tabs for specific buffers
 #+begin_src elisp :tangle config.el
-(add-hook 'ibuffer-mode-hook 'centaur-tabs-local-mode)
-(add-hook 'org-agenda-mode-hook 'centaur-tabs-local-mode)
+(add-hook! '(ibuffer-mode-hook
+             org-agenda-mode-hook
+             dired-mode-hook
+             ranger-mode-hook) #'centaur-tabs-local-mode)
 #+end_src
 
 ** Gray out non focused buffer icons
@@ -481,6 +484,14 @@
 ** Disable final newline in files
 #+begin_src elisp :tangle config.el
 (setq require-final-newline nil)
+#+end_src
+
+* Ranger
+#+begin_src elisp :tangle config.el
+(ranger-override-dired-mode t)
+(setq ranger-show-hidden t
+      ranger-hide-cursor t
+      ranger-excluded-extensions '("mkv" "iso" "mp4" "bin" "exe" "msi"))
 #+end_src
 
 * Evil

@@ -78,6 +78,8 @@
 
 (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
 
+(add-hook! 'helpful-mode-hook (emojify-mode -1))
+
 (setq doom-modeline-icon (display-graphic-p)
       doom-modeline-major-mode-icon nil
       doom-modeline-buffer-state-icon t)
@@ -130,7 +132,15 @@
 (ranger-override-dired-mode t)
 (setq ranger-show-hidden t
       ranger-hide-cursor t
+      ranger-cleanup-eagerly t
+      ranger-persistent-sort t
+      ranger-width-preview 0.6
+      ranger-width-parents 0.2
+      ranger-max-parent-width 0.4
       ranger-excluded-extensions '("mkv" "iso" "mp4" "bin" "exe" "msi"))
+(map! :map doom-leader-open-map
+      :g "h" #'deer
+      :g "H" #'ranger)
 
 (setq evil-want-fine-undo t)
 
@@ -445,10 +455,6 @@
 
 (require 'inheritenv)
 (inheritenv-add-advice #'with-temp-buffer)
-
-(map! :map dired-mode-map
-      :n "h" #'dired-up-directory
-      :n "l" #'dired-find-alternate-file)
 
 (setq x509-openssl-cmd "/opt/homebrew/Cellar/openssl@3/3.0.5/bin/openssl" )
 

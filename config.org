@@ -20,6 +20,7 @@
   - [[#truncate-doom-dashboard][Truncate doom dashboard]]
   - [[#set-frame-title-and-icon][Set frame title and icon]]
   - [[#ace-window][Ace window]]
+  - [[#disable-emoji-mode-in-helpful-mode][Disable emoji-mode in helpful mode]]
   - [[#modeline][Modeline]]
   - [[#always-make-windows-proportional-after-splitting][Always make windows proportional after splitting]]
   - [[#stretch-cursor-to-glyph-size][Stretch cursor to glyph size]]
@@ -102,7 +103,6 @@
 - [[#flyspell][Flyspell]]
 - [[#cheatsh][Cheat.sh]]
 - [[#inheritenv][Inheritenv]]
-- [[#dired][Dired]]
 - [[#x509-mode][x509 mode]]
 - [[#confluence][Confluence]]
 - [[#kubernetes][Kubernetes]]
@@ -379,6 +379,11 @@
 (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
 #+end_src
 
+** Disable emoji-mode in helpful mode
+#+begin_src elisp :tangle config.el
+(add-hook! 'helpful-mode-hook (emojify-mode -1))
+#+end_src
+
 ** Modeline
 #+begin_src elisp :tangle config.el
 (setq doom-modeline-icon (display-graphic-p)
@@ -491,7 +496,15 @@
 (ranger-override-dired-mode t)
 (setq ranger-show-hidden t
       ranger-hide-cursor t
+      ranger-cleanup-eagerly t
+      ranger-persistent-sort t
+      ranger-width-preview 0.6
+      ranger-width-parents 0.2
+      ranger-max-parent-width 0.4
       ranger-excluded-extensions '("mkv" "iso" "mp4" "bin" "exe" "msi"))
+(map! :map doom-leader-open-map
+      :g "h" #'deer
+      :g "H" #'ranger)
 #+end_src
 
 * Evil
@@ -1046,12 +1059,12 @@
 (inheritenv-add-advice #'with-temp-buffer)
 #+end_src
 
-* Dired
-#+begin_src elisp :tangle config.el
-(map! :map dired-mode-map
-      :n "h" #'dired-up-directory
-      :n "l" #'dired-find-alternate-file)
-#+end_src
+# * Dired
+# #+begin_src elisp :tangle config.el
+# (map! :map dired-mode-map
+#       :n "h" #'dired-up-directory
+#       :n "l" #'dired-find-alternate-file)
+# #+end_src
 
 * x509 mode
 #+begin_src elisp :tangle packages.el

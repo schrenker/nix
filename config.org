@@ -1,5 +1,7 @@
 #+TITLE: Literate doom Emacs config
 
+*This configuration file is a mess, and awaits complete restructuring*
+
 * Table of Contents :TOC:
 - [[#headers][Headers]]
 - [[#doom][Doom]]
@@ -340,7 +342,7 @@
 
 ** Set frame title and icon
 #+begin_src elisp :tangle config.el
-(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename "::%f" ":|:[%b]")))
+(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))
 #+end_src
 

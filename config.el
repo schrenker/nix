@@ -56,7 +56,7 @@
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-shortmenu)
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
 
-(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename "::%f" ":|:[%b]")))
+(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))
 
 (defun fail-silently-advice (func &rest args)

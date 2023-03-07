@@ -56,9 +56,8 @@
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-shortmenu)
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
 
-(setq-default
- frame-title-format '("Doom")
- ns-use-proxy-icon nil)
+(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename "::%f" ":|:[%b]")))
+      ns-use-proxy-icon (display-graphic-p))
 
 (defun fail-silently-advice (func &rest args)
   (ignore-errors
@@ -81,7 +80,7 @@
 (add-hook! 'helpful-mode-hook (emojify-mode -1))
 
 (setq doom-modeline-icon (display-graphic-p)
-      doom-modeline-major-mode-icon nil
+      doom-modeline-major-mode-icon (display-graphic-p)
       doom-modeline-buffer-state-icon t)
 
 (setq-default window-combination-resize t)

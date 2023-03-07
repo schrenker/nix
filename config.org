@@ -340,9 +340,8 @@
 
 ** Set frame title and icon
 #+begin_src elisp :tangle config.el
-(setq-default
- frame-title-format '("Doom")
- ns-use-proxy-icon nil)
+(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename "::%f" ":|:[%b]")))
+      ns-use-proxy-icon (display-graphic-p))
 #+end_src
 
 ** Ace window
@@ -387,7 +386,7 @@
 ** Modeline
 #+begin_src elisp :tangle config.el
 (setq doom-modeline-icon (display-graphic-p)
-      doom-modeline-major-mode-icon nil
+      doom-modeline-major-mode-icon (display-graphic-p)
       doom-modeline-buffer-state-icon t)
 #+end_src
 

@@ -141,41 +141,7 @@
       :g "h" #'deer
       :g "H" #'ranger)
 
-(setq evil-want-fine-undo t)
-
-(setq evil-vsplit-window-right t
-      evil-split-window-below t)
-
-(defadvice! prompt-for-buffer (&rest _)
-  :after '(evil-window-split evil-window-vsplit)
-  (consult-project-buffer))
-
-(setq evil-want-Y-yank-to-eol t)
-
-(setq +evil-want-o/O-to-continue-comments nil)
-
-(defun schrenker/evil-change (orig-fn beg end &optional type _ &rest args)
-    (apply orig-fn beg end type ?_ args))
-(advice-add 'evil-change :around 'schrenker/evil-change)
-
-(setq evil-kill-on-visual-paste nil)
-
-(setq evil-ex-substitute-global t)
-
-(setq evil-escape-key-sequence nil)
-
-(map! :map evil-window-map
-      :g "w" #'ace-window
-      :g "p" #'treemacs-select-window)
-
-(require 'key-chord)
-
-(key-chord-define evil-insert-state-map ";;" 'right-char)
-(key-chord-mode 1)
-
-(with-eval-after-load 'git-timemachine
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+(setq meow-use-clipboard t)
 
 (remove-hook! 'eshell-mode-hook #'hide-mode-line-mode)
 (add-hook! 'eshell-mode-hook

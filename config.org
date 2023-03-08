@@ -44,20 +44,7 @@
   - [[#set-scroll-margin][Set scroll margin]]
   - [[#disable-final-newline-in-files][Disable final newline in files]]
 - [[#ranger][Ranger]]
-- [[#evil][Evil]]
-  - [[#set-up-evil-packages][Set up evil packages]]
-  - [[#fine-undo][Fine Undo]]
-  - [[#split-windows-so-that-rightdown-is-focused-after-the-split][Split windows so that right/down is focused after the split]]
-  - [[#show-buffer-prompt-upon-window-split][Show buffer prompt upon window split]]
-  - [[#line-up-y-behavior-to-other-operators][Line up Y behavior to other operators]]
-  - [[#dont-continue-comments-on-oo-creating-empty-lines][Don't continue comments on o/O, creating empty lines]]
-  - [[#changed-text-doesnt-go-into-clipboard][Changed text doesn't go into clipboard]]
-  - [[#visual-mode-changes-dont-go-into-clipboard][Visual mode changes don't go into clipboard]]
-  - [[#substitute-global-by-default][Substitute global by default]]
-  - [[#disable-escape-on-jk][Disable escape on "jk"]]
-  - [[#evil-window-map][Evil Window Map]]
-  - [[#enable-key-chord-and-make-double-tap--move-cursor-to-the-right-in-insert-mode][Enable key-chord and make double tap ';' move cursor to the right in insert mode]]
-  - [[#disable-evil-keybindings-for-git-timemachine][Disable evil keybindings for git-timemachine]]
+- [[#meow][Meow]]
 - [[#eshell][Eshell]]
 - [[#magit][Magit]]
   - [[#smerge-repeatedly-thanks-tecosaur][Smerge repeatedly (thanks tecosaur)]]
@@ -159,7 +146,8 @@
        zen
 
        :editor
-       (evil +everywhere)                       ; come to the dark side, we have cookies
+       (meow +dvorak +override +leader)
+       ;; (evil +everywhere)                       ; come to the dark side, we have cookies
        file-templates                           ; auto-snippets for empty files
        fold                                     ; (nigh) universal code folding
        (format +onsave)                         ; automated prettiness
@@ -508,88 +496,97 @@
       :g "H" #'ranger)
 #+end_src
 
-* Evil
+# * Evil
 
-** Set up evil packages
-#+begin_src elisp :tangle packages.el
-(package! evil-commentary)
-(package! evil-snipe :disable t)
+# ** Set up evil packages
+# #+begin_src elisp :tangle packages.el
+# (package! evil-commentary)
+# (package! evil-snipe :disable t)
+# #+end_src
+
+# ** Fine Undo
+# #+begin_src elisp :tangle config.el
+# (setq evil-want-fine-undo t)
+# #+end_src
+
+# ** Split windows so that right/down is focused after the split
+# #+begin_src elisp :tangle config.el
+# (setq evil-vsplit-window-right t
+#       evil-split-window-below t)
+# #+end_src
+
+# ** Show buffer prompt upon window split
+# #+begin_src elisp :tangle config.el
+# (defadvice! prompt-for-buffer (&rest _)
+#   :after '(evil-window-split evil-window-vsplit)
+#   (consult-project-buffer))
+# #+end_src
+
+# ** Line up Y behavior to other operators
+# #+begin_src elisp :tangle config.el
+# (setq evil-want-Y-yank-to-eol t)
+# #+end_src
+
+# ** Don't continue comments on o/O, creating empty lines
+# #+begin_src elisp :tangle config.el
+# (setq +evil-want-o/O-to-continue-comments nil)
+# #+end_src
+
+# ** Changed text doesn't go into clipboard
+# #+begin_src elisp :tangle config.el
+# (defun schrenker/evil-change (orig-fn beg end &optional type _ &rest args)
+#     (apply orig-fn beg end type ?_ args))
+# (advice-add 'evil-change :around 'schrenker/evil-change)
+# #+end_src
+
+# ** Visual mode changes don't go into clipboard
+# #+begin_src elisp :tangle config.el
+# (setq evil-kill-on-visual-paste nil)
+# #+end_src
+
+# ** Substitute global by default
+# #+begin_src elisp :tangle config.el
+# (setq evil-ex-substitute-global t)
+# #+end_src
+
+# ** Disable escape on "jk"
+# #+begin_src elisp :tangle config.el
+# (setq evil-escape-key-sequence nil)
+# #+end_src
+
+# ** Evil Window Map
+# #+begin_src elisp :tangle config.el
+# (map! :map evil-window-map
+#       :g "w" #'ace-window
+#       :g "p" #'treemacs-select-window)
+# #+end_src
+
+# ** Enable key-chord and make double tap ';' move cursor to the right in insert mode
+# #+begin_src elisp :tangle packages.el
+# (package! key-chord)
+# #+end_src
+
+# #+begin_src elisp :tangle config.el
+# (require 'key-chord)
+
+# (key-chord-define evil-insert-state-map ";;" 'right-char)
+# (key-chord-mode 1)
+# #+end_src
+
+# ** Disable evil keybindings for git-timemachine
+# #+begin_src elisp :tangle config.el
+# (with-eval-after-load 'git-timemachine
+#   (evil-make-overriding-map git-timemachine-mode-map 'normal)
+#   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+# #+end_src
+
+* Meow
+#+begin_src emacs-lisp :tangle packages.el
+(unpin! meow)
 #+end_src
 
-** Fine Undo
-#+begin_src elisp :tangle config.el
-(setq evil-want-fine-undo t)
-#+end_src
-
-** Split windows so that right/down is focused after the split
-#+begin_src elisp :tangle config.el
-(setq evil-vsplit-window-right t
-      evil-split-window-below t)
-#+end_src
-
-** Show buffer prompt upon window split
-#+begin_src elisp :tangle config.el
-(defadvice! prompt-for-buffer (&rest _)
-  :after '(evil-window-split evil-window-vsplit)
-  (consult-project-buffer))
-#+end_src
-
-** Line up Y behavior to other operators
-#+begin_src elisp :tangle config.el
-(setq evil-want-Y-yank-to-eol t)
-#+end_src
-
-** Don't continue comments on o/O, creating empty lines
-#+begin_src elisp :tangle config.el
-(setq +evil-want-o/O-to-continue-comments nil)
-#+end_src
-
-** Changed text doesn't go into clipboard
-#+begin_src elisp :tangle config.el
-(defun schrenker/evil-change (orig-fn beg end &optional type _ &rest args)
-    (apply orig-fn beg end type ?_ args))
-(advice-add 'evil-change :around 'schrenker/evil-change)
-#+end_src
-
-** Visual mode changes don't go into clipboard
-#+begin_src elisp :tangle config.el
-(setq evil-kill-on-visual-paste nil)
-#+end_src
-
-** Substitute global by default
-#+begin_src elisp :tangle config.el
-(setq evil-ex-substitute-global t)
-#+end_src
-
-** Disable escape on "jk"
-#+begin_src elisp :tangle config.el
-(setq evil-escape-key-sequence nil)
-#+end_src
-
-** Evil Window Map
-#+begin_src elisp :tangle config.el
-(map! :map evil-window-map
-      :g "w" #'ace-window
-      :g "p" #'treemacs-select-window)
-#+end_src
-
-** Enable key-chord and make double tap ';' move cursor to the right in insert mode
-#+begin_src elisp :tangle packages.el
-(package! key-chord)
-#+end_src
-
-#+begin_src elisp :tangle config.el
-(require 'key-chord)
-
-(key-chord-define evil-insert-state-map ";;" 'right-char)
-(key-chord-mode 1)
-#+end_src
-
-** Disable evil keybindings for git-timemachine
-#+begin_src elisp :tangle config.el
-(with-eval-after-load 'git-timemachine
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+#+begin_src emacs-lisp :tangle config.el
+(setq meow-use-clipboard t)
 #+end_src
 
 * Eshell

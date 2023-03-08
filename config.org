@@ -43,7 +43,6 @@
   - [[#relative-numbers][Relative numbers]]
   - [[#set-scroll-margin][Set scroll margin]]
   - [[#disable-final-newline-in-files][Disable final newline in files]]
-- [[#ranger][Ranger]]
 - [[#meow][Meow]]
 - [[#eshell][Eshell]]
 - [[#magit][Magit]]
@@ -51,6 +50,7 @@
 - [[#org-mode][Org mode]]
   - [[#update-dynamic-blocks-on-save][Update dynamic blocks on save]]
   - [[#format-org-mode-buffer-on-save][Format org mode buffer on save]]
+  - [[#org-follow-links][Org-follow links]]
   - [[#org-mode-map][Org-mode-map]]
   - [[#set-visual-line-movement-via-gj-and-gk][Set visual line movement via gj and gk]]
   - [[#set-up-path-for-org-mode][Set up path for org mode]]
@@ -146,7 +146,7 @@
        zen
 
        :editor
-       (meow +dvorak +override +leader)
+       (meow +dvorak +override)
        ;; (evil +everywhere)                       ; come to the dark side, we have cookies
        file-templates                           ; auto-snippets for empty files
        fold                                     ; (nigh) universal code folding
@@ -156,7 +156,7 @@
        word-wrap
 
        :emacs
-       (dired +icons +ranger)                   ; making dired pretty [functional] directory editor
+       (dired +icons +dirvish)                   ; making dired pretty [functional] directory editor
        electric                                 ; smarter, keyword-based electric-indent
        (ibuffer +icons)                         ; interactive buffer management
        (undo +tree)                             ; persistent, smarter undo for your inevitable mistakes
@@ -480,21 +480,21 @@
 (setq require-final-newline nil)
 #+end_src
 
-* Ranger
-#+begin_src elisp :tangle config.el
-(ranger-override-dired-mode t)
-(setq ranger-show-hidden t
-      ranger-hide-cursor t
-      ranger-cleanup-eagerly t
-      ranger-persistent-sort t
-      ranger-width-preview 0.6
-      ranger-width-parents 0.2
-      ranger-max-parent-width 0.4
-      ranger-excluded-extensions '("mkv" "iso" "mp4" "bin" "exe" "msi"))
-(map! :map doom-leader-open-map
-      :g "h" #'deer
-      :g "H" #'ranger)
-#+end_src
+# * Ranger
+# #+begin_src elisp :tangle config.el
+# (ranger-override-dired-mode t)
+# (setq ranger-show-hidden t
+#       ranger-hide-cursor t
+#       ranger-cleanup-eagerly t
+#       ranger-persistent-sort t
+#       ranger-width-preview 0.6
+#       ranger-width-parents 0.2
+#       ranger-max-parent-width 0.4
+#       ranger-excluded-extensions '("mkv" "iso" "mp4" "bin" "exe" "msi"))
+# (map! :map doom-leader-open-map
+#       :g "h" #'deer
+#       :g "H" #'ranger)
+# #+end_src
 
 # * Evil
 
@@ -586,7 +586,9 @@
 #+end_src
 
 #+begin_src emacs-lisp :tangle config.el
-(setq meow-use-clipboard t)
+(setq meow-use-clipboard t
+      meow-use-cursor-position-hack t
+      meow-expand-exclude-mode-list nil)
 #+end_src
 
 * Eshell
@@ -650,6 +652,11 @@
 ** Format org mode buffer on save
 #+begin_src elisp :tangle config.el
 (add-hook! 'org-mode-hook (org-format-on-save-mode 1))
+#+end_src
+
+** Org-follow links
+#+begin_src elisp :tangle config.el
+(setq org-return-follows-link t)
 #+end_src
 
 ** Org-mode-map
@@ -960,13 +967,13 @@
 
 ** Pull all the icons for treemacs
 #+begin_src elisp :tangle packages.el
-(package! treemacs-all-the-icons)
+(package! treemacs-devicons :recipe (:host github :repo "rainstormstudio/treemacs-devicons"))
 #+end_src
 
 ** Set treemacs themes
 #+begin_src elisp :tangle config.el
 (require 'treemacs-all-the-icons)
-(treemacs-load-theme "all-the-icons")
+(treemacs-load-theme "devicons")
 
 (setq doom-themes-treemacs-theme "doom-colors")
 #+end_src

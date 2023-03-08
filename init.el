@@ -28,7 +28,7 @@
        zen
 
        :editor
-       (meow +dvorak +override +leader)
+       (meow +dvorak +override)
        ;; (evil +everywhere)                       ; come to the dark side, we have cookies
        file-templates                           ; auto-snippets for empty files
        fold                                     ; (nigh) universal code folding
@@ -38,7 +38,7 @@
        word-wrap
 
        :emacs
-       (dired +icons +ranger)                   ; making dired pretty [functional] directory editor
+       (dired +icons +dirvish)                   ; making dired pretty [functional] directory editor
        electric                                 ; smarter, keyword-based electric-indent
        (ibuffer +icons)                         ; interactive buffer management
        (undo +tree)                             ; persistent, smarter undo for your inevitable mistakes

@@ -128,20 +128,9 @@
 
 (setq require-final-newline nil)
 
-(ranger-override-dired-mode t)
-(setq ranger-show-hidden t
-      ranger-hide-cursor t
-      ranger-cleanup-eagerly t
-      ranger-persistent-sort t
-      ranger-width-preview 0.6
-      ranger-width-parents 0.2
-      ranger-max-parent-width 0.4
-      ranger-excluded-extensions '("mkv" "iso" "mp4" "bin" "exe" "msi"))
-(map! :map doom-leader-open-map
-      :g "h" #'deer
-      :g "H" #'ranger)
-
-(setq meow-use-clipboard t)
+(setq meow-use-clipboard t
+      meow-use-cursor-position-hack t
+      meow-expand-exclude-mode-list nil)
 
 (remove-hook! 'eshell-mode-hook #'hide-mode-line-mode)
 (add-hook! 'eshell-mode-hook
@@ -188,6 +177,8 @@
                 (org-update-all-dblocks)))))
 
 (add-hook! 'org-mode-hook (org-format-on-save-mode 1))
+
+(setq org-return-follows-link t)
 
 (map! :map org-mode-map
       :localleader "$" #'org-decrypt-entry
@@ -374,7 +365,7 @@
 (setq treemacs-follow-mode t)
 
 (require 'treemacs-all-the-icons)
-(treemacs-load-theme "all-the-icons")
+(treemacs-load-theme "devicons")
 
 (setq doom-themes-treemacs-theme "doom-colors")
 

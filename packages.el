@@ -21,7 +21,7 @@
 
 (package! org-autolist)
 
-(package! treemacs-all-the-icons)
+(package! treemacs-devicons :recipe (:host github :repo "rainstormstudio/treemacs-devicons"))
 
 (package! eat :recipe (:host codeberg
                        :repo "akib/emacs-eat"

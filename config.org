@@ -241,7 +241,7 @@
 (map! "M-v" #'yank)
 (map! "M-q" #'save-buffers-kill-terminal)
 (map! "M-m" #'suspend-frame)
-(map! "M-w" #'kill-this-buffer)
+;(map! "M-w" #'kill-this-buffer)
 #+end_src
 
 *** Remove word backwards
@@ -480,106 +480,6 @@
 (setq require-final-newline nil)
 #+end_src
 
-# * Ranger
-# #+begin_src elisp :tangle config.el
-# (ranger-override-dired-mode t)
-# (setq ranger-show-hidden t
-#       ranger-hide-cursor t
-#       ranger-cleanup-eagerly t
-#       ranger-persistent-sort t
-#       ranger-width-preview 0.6
-#       ranger-width-parents 0.2
-#       ranger-max-parent-width 0.4
-#       ranger-excluded-extensions '("mkv" "iso" "mp4" "bin" "exe" "msi"))
-# (map! :map doom-leader-open-map
-#       :g "h" #'deer
-#       :g "H" #'ranger)
-# #+end_src
-
-# * Evil
-
-# ** Set up evil packages
-# #+begin_src elisp :tangle packages.el
-# (package! evil-commentary)
-# (package! evil-snipe :disable t)
-# #+end_src
-
-# ** Fine Undo
-# #+begin_src elisp :tangle config.el
-# (setq evil-want-fine-undo t)
-# #+end_src
-
-# ** Split windows so that right/down is focused after the split
-# #+begin_src elisp :tangle config.el
-# (setq evil-vsplit-window-right t
-#       evil-split-window-below t)
-# #+end_src
-
-# ** Show buffer prompt upon window split
-# #+begin_src elisp :tangle config.el
-# (defadvice! prompt-for-buffer (&rest _)
-#   :after '(evil-window-split evil-window-vsplit)
-#   (consult-project-buffer))
-# #+end_src
-
-# ** Line up Y behavior to other operators
-# #+begin_src elisp :tangle config.el
-# (setq evil-want-Y-yank-to-eol t)
-# #+end_src
-
-# ** Don't continue comments on o/O, creating empty lines
-# #+begin_src elisp :tangle config.el
-# (setq +evil-want-o/O-to-continue-comments nil)
-# #+end_src
-
-# ** Changed text doesn't go into clipboard
-# #+begin_src elisp :tangle config.el
-# (defun schrenker/evil-change (orig-fn beg end &optional type _ &rest args)
-#     (apply orig-fn beg end type ?_ args))
-# (advice-add 'evil-change :around 'schrenker/evil-change)
-# #+end_src
-
-# ** Visual mode changes don't go into clipboard
-# #+begin_src elisp :tangle config.el
-# (setq evil-kill-on-visual-paste nil)
-# #+end_src
-
-# ** Substitute global by default
-# #+begin_src elisp :tangle config.el
-# (setq evil-ex-substitute-global t)
-# #+end_src
-
-# ** Disable escape on "jk"
-# #+begin_src elisp :tangle config.el
-# (setq evil-escape-key-sequence nil)
-# #+end_src
-
-# ** Evil Window Map
-# #+begin_src elisp :tangle config.el
-# (map! :map evil-window-map
-#       :g "w" #'ace-window
-#       :g "p" #'treemacs-select-window)
-# #+end_src
-
-# ** Enable key-chord and make double tap ';' move cursor to the right in insert mode
-# #+begin_src elisp :tangle packages.el
-# (package! key-chord)
-# #+end_src
-
-# #+begin_src elisp :tangle config.el
-# (require 'key-chord)
-
-# (key-chord-define evil-insert-state-map ";;" 'right-char)
-# (key-chord-mode 1)
-# #+end_src
-
-# ** Disable evil keybindings for git-timemachine
-# #+begin_src elisp :tangle config.el
-# (with-eval-after-load 'git-timemachine
-#   (evil-make-overriding-map git-timemachine-mode-map 'normal)
-#   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
-# #+end_src
-
 * Meow
 #+begin_src emacs-lisp :tangle packages.el
 (unpin! meow)
@@ -588,7 +488,62 @@
 #+begin_src emacs-lisp :tangle config.el
 (setq meow-use-clipboard t
       meow-use-cursor-position-hack t
-      meow-expand-exclude-mode-list nil)
+      meow-expand-exclude-mode-list nil
+      meow-use-enhanced-selection-effect t)
+
+(defun meow-vi-A ()
+  (interactive)
+  (funcall-interactively (meow-line))
+  (funcall-interactively (meow-insert)))
+
+(meow-normal-define-key
+ '("%" . meow-block)
+ '("<" . meow-beginning-of-thing)
+ '(">" . meow-end-of-thing)
+ '("a" . meow-append)
+ '("A" . ignore)
+ '("b" . meow-back-word)
+ '("B" . meow-back-symbol)
+ '("c" . meow-change)
+ '("d" . meow-delete)
+ '("D" . meow-backward-delete)
+ '("e" . meow-line)
+ '("E" . meow-goto-line)
+ '("f" . meow-find)
+ '("g" . meow-cancel-selection)
+ '("G" . meow-grab)
+ '("h" . meow-left)
+ '("H" . meow-left-expand)
+ '("i" . meow-insert)
+ '("I" . meow-insert-at-begin)
+ '("j" . meow-join)
+ '("k" . meow-kill)
+ '("l" . meow-till)
+ '("m" . meow-mark-word)
+ '("M" . meow-mark-symbol)
+ '("n" . meow-next)
+ '("N" . meow-next-expand)
+ '("o" . meow-open-below)
+ '("O" . meow-open-above)
+ '("p" . meow-prev)
+ '("P" . meow-prev-expand)
+ '("q" . ignore)
+ '("Q" . meow-quit)
+ '("r" . meow-replace)
+ '("R" . meow-swap-grab)
+ '("s" . meow-search)
+ '("t" . meow-right)
+ '("T" . meow-right-expand)
+ '("u" . meow-undo)
+ '("U" . meow-undo-in-selection)
+ '("v" . meow-visit)
+ '("w" . meow-next-word)
+ '("W" . meow-next-symbol)
+ '("x" . meow-save)
+ '("X" . meow-sync-grab)
+ '("y" . meow-yank)
+ '("z" . meow-pop-selection))
+
 #+end_src
 
 * Eshell
@@ -968,6 +923,7 @@
 ** Pull all the icons for treemacs
 #+begin_src elisp :tangle packages.el
 (package! treemacs-devicons :recipe (:host github :repo "rainstormstudio/treemacs-devicons"))
+(package! treemacs-all-the-icons)
 #+end_src
 
 ** Set treemacs themes

@@ -491,17 +491,24 @@
       meow-expand-exclude-mode-list nil
       meow-use-enhanced-selection-effect t)
 
-(defun meow-vi-A ()
+(defun schrenker/meow-append-to-end-of-line ()
+  "Go to the end of the line and enter insert mode."
   (interactive)
-  (funcall-interactively (meow-line))
-  (funcall-interactively (meow-insert)))
+  (call-interactively #'meow-line)
+  (call-interactively #'meow-append))
+
+(defun schrenker/meow-insert-at-beginning-of-line ()
+  "Go to the end of the line and enter insert mode."
+  (interactive)
+  (call-interactively #'meow-join)
+  (call-interactively #'meow-append))
 
 (meow-normal-define-key
  '("%" . meow-block)
  '("<" . meow-beginning-of-thing)
  '(">" . meow-end-of-thing)
  '("a" . meow-append)
- '("A" . ignore)
+ '("A" . schrenker/meow-append-to-end-of-line)
  '("b" . meow-back-word)
  '("B" . meow-back-symbol)
  '("c" . meow-change)
@@ -515,7 +522,7 @@
  '("h" . meow-left)
  '("H" . meow-left-expand)
  '("i" . meow-insert)
- '("I" . meow-insert-at-begin)
+ '("I" . schrenker/meow-insert-at-beginning-of-line)
  '("j" . meow-join)
  '("k" . meow-kill)
  '("l" . meow-till)
@@ -1020,13 +1027,6 @@
 (inheritenv-add-advice #'with-temp-buffer)
 #+end_src
 
-# * Dired
-# #+begin_src elisp :tangle config.el
-# (map! :map dired-mode-map
-#       :n "h" #'dired-up-directory
-#       :n "l" #'dired-find-alternate-file)
-# #+end_src
-
 * x509 mode
 #+begin_src elisp :tangle packages.el
 (package! x509-mode)
@@ -1055,52 +1055,6 @@
 (yas-reload-all)
 (add-hook! 'org-mode-hook (yas-minor-mode))
 #+end_src
-
-# * Prism
-# #+begin_src elisp :tangle packages.el
-# (package! prism)
-# #+end_src
-
-# #+begin_src elisp :tangle config.el
-# (fset 'rainbow-delimiters-mode #'prism-mode)
-
-# (defun schrenker/prism-set-colors ()
-#     (prism-set-colors
-#       :desaturations '(0) ; do not change---may lower the contrast ratio
-#       :lightens '(0)      ; same
-#       :colors (list
-#                (doom-color 'blue)
-#                (doom-color 'violet)
-#                (doom-color 'yellow)
-#                (doom-color 'cyan)
-#                (doom-color 'green)))
-#     (message "Prism colors set."))
-
-# (use-package! prism
-#   :commands prism-mode
-#   :init
-#   (add-hook! '(json-mode-hook prog-mode-hook)
-#     (unless (derived-mode-p 'sh-mode 'python-mode)
-#       (prism-mode 1)))
-
-#   ;; (add-hook! '(yaml-mode-hook sh-mode-hook python-mode-hook fish-mode-hook)
-#   ;;   (prism-whitespace-mode 1))
-
-
-
-#   :config
-#   (after! doom-themes
-#     (setq prism-comments nil)
-#      ;; prism-num-faces 5
-#      ;; prism-whitespace-mode-indents '((python-mode . python-indent-offset)
-#      ;;                                 (haskell-mode . haskell-indentation-left-offset)
-#      ;;                                 (yaml-mode . yaml-indent)
-#      ;;                                 (sh-mode . sh-basic-offset)
-#      ;;                                 (t . 4)))
-#     (schrenker/prism-set-colors)
-#     (add-hook! '(prog-mode-hook doom-load-theme-hook ns-system-appearance-change-functions) (schrenker/prism-set-colors))))
-
-# #+end_src
 
 * Open very large files effortlessly (thanks Tecosaur)
 #+begin_src elisp :tangle packages.el

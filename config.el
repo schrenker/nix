@@ -133,17 +133,24 @@
       meow-expand-exclude-mode-list nil
       meow-use-enhanced-selection-effect t)
 
-(defun meow-vi-A ()
+(defun schrenker/meow-append-to-end-of-line ()
+  "Go to the end of the line and enter insert mode."
   (interactive)
-  (funcall-interactively (meow-line))
-  (funcall-interactively (meow-insert)))
+  (call-interactively #'meow-line)
+  (call-interactively #'meow-append))
+
+(defun schrenker/meow-insert-at-beginning-of-line ()
+  "Go to the end of the line and enter insert mode."
+  (interactive)
+  (call-interactively #'meow-join)
+  (call-interactively #'meow-append))
 
 (meow-normal-define-key
  '("%" . meow-block)
  '("<" . meow-beginning-of-thing)
  '(">" . meow-end-of-thing)
  '("a" . meow-append)
- '("A" . ignore)
+ '("A" . schrenker/meow-append-to-end-of-line)
  '("b" . meow-back-word)
  '("B" . meow-back-symbol)
  '("c" . meow-change)
@@ -157,7 +164,7 @@
  '("h" . meow-left)
  '("H" . meow-left-expand)
  '("i" . meow-insert)
- '("I" . meow-insert-at-begin)
+ '("I" . schrenker/meow-insert-at-beginning-of-line)
  '("j" . meow-join)
  '("k" . meow-kill)
  '("l" . meow-till)

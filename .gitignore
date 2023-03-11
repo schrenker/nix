@@ -2,6 +2,12 @@
 .idea
 *.log
 tmp/
+*.swp
 
 custom.el
 emacs/
+vanilla/elpaca
+vanilla/eln-cache
+vanilla/history
+vanilla/auto-save-list
+*.el~

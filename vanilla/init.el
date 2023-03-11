@@ -186,8 +186,7 @@
   ;; (setq vertico-resize t)
 
   ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  (setq vertico-cycle t)
-  )
+  (setq vertico-cycle t))
 
 ;; ;; A few more useful configurations...
 (use-package emacs
@@ -252,4 +251,21 @@
     ('dark (load-theme 'modus-vivendi-tinted t))))
 
 (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
+
+(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
+      ns-use-proxy-icon (display-graphic-p))
+
+(use-package eat
+	:elpaca (eat
+		       :host "codeberg"
+		       :repo "akib/emacs-eat"
+           :files ("*.el" ("term" "term/*.el") "*.texi"
+            "*.ti" ("terminfo/e" "terminfo/e/*")
+            ("terminfo/65" "terminfo/65/*")
+            ("integration" "integration/*")
+            (:exclude ".dir-locals.el" "*-tests.el")))
+	:config
+	(setq eat-term-name "xterm-256color")
+	;; For `eat-eshell-mode'.
+	(add-hook 'eshell-load-hook #'eat-eshell-mode))
 

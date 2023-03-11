@@ -65,6 +65,7 @@
 
 (elpaca-wait)
 
+
 (defun schrenker/meow-append-to-end-of-line ()
   "Go to the end of the line and enter insert mode."
   (interactive)
@@ -163,6 +164,8 @@
    '("y" . meow-yank)
    '("z" . meow-pop-selection))
 
+	(add-hook 'server-after-make-frame-hook (meow-global-mode 1))	
+
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t
         meow-expand-exclude-mode-list nil
@@ -237,7 +240,8 @@
   :config
   (which-key-mode))
 
+(use-package magit)
+
 (elpaca-process-queues)
 
-(add-hook 'server-after-make-frame-hook (meow-global-mode 1))
 	  

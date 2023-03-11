@@ -240,8 +240,16 @@
   :config
   (which-key-mode))
 
-(use-package magit)
+(use-package magit
+  :bind ("C-c g g" . magit))
 
 (elpaca-process-queues)
 
-	  
+(defun schrenker/apply-theme (appearance)
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase appearance
+    ('light (load-theme 'modus-operandi-tinted t))
+    ('dark (load-theme 'modus-vivendi-tinted t))))
+
+(add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
+

@@ -238,3 +238,6 @@
   (which-key-mode))
 
 (elpaca-process-queues)
+
+(add-hook 'server-after-make-frame-hook (meow-global-mode 1))
+	  

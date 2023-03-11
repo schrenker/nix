@@ -174,16 +174,16 @@
   (vertico-mode)
 
   ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
+  (setq vertico-scroll-margin 3)
 
   ;; Show more candidates
-  ;; (setq vertico-count 20)
+  (setq vertico-count 15)
 
   ;; Grow and shrink the Vertico minibuffer
   ;; (setq vertico-resize t)
 
   ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
+  (setq vertico-cycle t)
   )
 
 ;; ;; A few more useful configurations...

@@ -11,9 +11,10 @@
       require-final-newline t
       mac-command-modifier 'meta
       mac-option-modifier 'alt
-			mac-right-option-modifier 'nil
+      mac-right-option-modifier nil
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
+			custom-file (concat user-emacs-directory "custom.el")
       initial-frame-alist '((fullscreen . maximized)))
 
 (menu-bar-mode -1)
@@ -252,10 +253,13 @@
 (defun schrenker/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
-    ('light (load-theme 'modus-operandi-tinted t))
-    ('dark (load-theme 'modus-vivendi-tinted t))))
+    ('light (load-theme 'solarized-selenized-light t))
+    ('dark (load-theme 'solarized-selenized-dark t))))
+
 
 (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
+
+(schrenker/apply-theme ns-system-appearance)
 
 (setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))

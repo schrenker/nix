@@ -30,6 +30,8 @@
 (prefer-coding-system 'utf-8)
 
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
+(global-set-key (kbd "C-c w u") 'winner-undo)
+(global-set-key (kbd "C-c w r") 'winner-redo)
 
 (defvar elpaca-installer-version 0.2)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -171,7 +173,9 @@
    '("y" . meow-yank)
    '("z" . meow-pop-selection))
 
-	(add-hook 'server-after-make-frame-hook (meow-global-mode 1))	
+	(add-hook 'server-after-make-frame-hook (meow-global-mode 1))
+	(add-hook 'elpaca-ui-mode-hook (meow-motion-mode 1))
+	
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t
@@ -447,7 +451,87 @@
 	                   (?v aw-split-window-vert "Split Vert Window")
 	                   (?z aw-split-window-horz "Split Horz Window")
 	                   (?K delete-other-windows "Delete Other Windows")
-	                   (?? aw-show-dispatch-help))))	
+	                   (?? aw-show-dispatch-help))))
 
+(use-package perject
+  :after savehist
+  :init
+   (add-to-list 'savehist-additional-variables 'perject--previous-collections)
+  ;; Make perject load the collections that were previously open.
+  ;; This requires configuring `savehist' (see next code block).
+  (setq perject-load-at-startup 'previous)
+
+  (perject-mode 1)
+  :bind
+  (:map perject-mode-map
+		("C-<tab> TAB s" . perject-switch)
+		("C-<tab> TAB n" . perject-next-project)
+		("C-<tab> TAB p" . perject-previous-project)
+		("C-<tab> TAB N" . perject-next-collection)
+		("C-<tab> TAB P" . perject-previous-collection)
+		("C-<tab> TAB f" . perject-create-new-frame)
+		("C-<tab> TAB a" . perject-add-buffer-to-project)
+		("C-<tab> TAB d" . perject-remove-buffer-from-project)
+		("C-<tab> TAB r" . perject-open-close-or-reload)
+		("C-<tab> TAB R" . perject-rename)
+		("C-<tab> TAB S" . perject-sort)
+		("C-<tab> TAB x" . perject-save)
+		("C-<tab> TAB k" . perject-delete)))
+
+(use-package perject-consult
+	:elpaca
+	(perject-consult
+	 :host "github.com"
+	 :repo "overideal/perject"
+	 :main "perject-consult.el")
+  :after (perject consult)
+  :config
+  ;; Hide the list of all buffers by default and set narrowing to all buffers to space.
+  (consult-customize consult--source-buffer :hidden t :narrow 32)
+  (consult-customize consult--source-hidden-buffer :narrow ?h)
+  (add-to-list 'consult-buffer-sources 'perject-consult--source-collection-buffer)
+  (add-to-list 'consult-buffer-sources 'perject-consult--source-project-buffer))
+
+(use-package perject-ibuffer
+	:elpaca
+	(perject-ibuffer
+	 :host "github.com"
+	 :repo "overideal/perject"
+	 :main "perject-ibuffer.el")
+  :after perject
+  :init
+  ;; By default restrict ibuffer to the buffers of the current project.
+  (add-hook 'ibuffer-hook #'perject-ibuffer-enable-filter-by-project)
+  :bind
+  (:map ibuffer-mode-map
+				("<insert>" . perject-ibuffer-add-to-project)
+				("<delete>" . perject-ibuffer-remove-from-project)
+				("<next>" . perject-ibuffer-print-buffer-projects)
+				("/ y" . ibuffer-filter-by-collection)
+				("/ u" . ibuffer-filter-by-project)))
+
+(use-package perject-tab
+		:elpaca
+	(perject-tab
+	 :host "github.com"
+	 :repo "overideal/perject"
+	 :main "perject-tab.el")
+  :after perject
+  :init
+  (perject-tab-mode 1)
+  :bind
+  (:map perject-tab-mode-map
+		("C-<tab> s" . perject-tab-recent)
+		("C-<tab> D" . perject-tab-previous)
+		("C-<tab> d" . perject-tab-next)
+		("C-<tab> f" . perject-tab-set)
+		("C-<tab> F" . perject-tab-cycle-state)
+		("C-<tab> x" . perject-tab-create)
+		("C-<tab> X" . perject-tab-delete)
+		("C-<tab> c" . perject-tab-reset)
+		("C-<tab> v" . perject-tab-increment-index)
+		("C-<tab> V" . perject-tab-decrement-index)))
+
+(use-package solarized-theme)
 
 (elpaca-process-queues)

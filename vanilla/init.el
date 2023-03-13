@@ -1,46 +1,13 @@
 ;;; vanilla/init.el -*- lexical-binding: t; -*-
 
-(when (eq system-type 'darwin) (customize-set-variable 'native-comp-driver-options '("-Wl,-w")))
-
-(setq package-enable-at-startup nil)
-
-(setq auto-save-default t
-      tab-width 2
-      display-line-numbers-type 'visual
-      scroll-margin 5
-      require-final-newline t
-      mac-command-modifier 'meta
-      mac-option-modifier 'alt
-      mac-right-option-modifier nil
-      user-full-name "Sebastian Zawadzki"
-      user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
-      custom-file (concat user-emacs-directory "custom.el")
-      initial-frame-alist '((fullscreen . maximized)))
-
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-
-(savehist-mode 1)
-(which-function-mode 1)
-(winner-mode 1)
-
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-
-(global-set-key (kbd "<A-backspace>") 'backward-kill-word)
-(global-set-key (kbd "C-c w u") 'winner-undo)
-(global-set-key (kbd "C-c w r") 'winner-redo)
-
 (defvar elpaca-installer-version 0.2)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                       :ref nil
-                       :files (:defaults (:exclude "extensions"))
-                       :build (:not elpaca--activate-package)))
+															:ref nil
+															:files (:defaults (:exclude "extensions"))
+															:build (:not elpaca--activate-package)))
 (when-let ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
            (build (expand-file-name "elpaca/" elpaca-builds-directory))
            (order (cdr elpaca-order))
@@ -67,13 +34,44 @@
 
 ;; Install use-package support
 (elpaca elpaca-use-package
-        ;; Enable :elpaca use-package keyword.
-        (elpaca-use-package-mode)
-        ;; Assume :elpaca t unless otherwise specified.
-        (setq elpaca-use-package-by-default t))
+  ;; Enable :elpaca use-package keyword.
+  (elpaca-use-package-mode)
+  ;; Assume :elpaca t unless otherwise specified.
+  (setq elpaca-use-package-by-default t))
 
 (elpaca-wait)
+(setq-default indent-tabs-mode nil)
 
+(setq auto-save-default t
+      tab-width 2
+      display-line-numbers-type 'visual
+      scroll-margin 5
+			scroll-step 1
+      require-final-newline t
+      mac-command-modifier 'meta
+      mac-option-modifier 'alt
+      mac-right-option-modifier nil
+      user-full-name "Sebastian Zawadzki"
+      user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
+      custom-file (concat user-emacs-directory "custom.el")
+      initial-frame-alist '((fullscreen . maximized)))
+
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+
+(savehist-mode 1)
+(which-function-mode 1)
+(winner-mode 1)
+(pixel-scroll-mode 1)
+
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+(global-set-key (kbd "<A-backspace>") 'backward-kill-word)
+(global-set-key (kbd "C-c w u") 'winner-undo)
+(global-set-key (kbd "C-c w r") 'winner-redo)
 
 (defun schrenker/meow-append-to-end-of-line ()
   "Go to the end of the line and enter insert mode."
@@ -247,7 +245,7 @@
 (use-package marginalia
   ;; Either bind `marginalia-cycle' globally or only in the minibuffer
   :bind (:map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
+							("M-A" . marginalia-cycle))
 
   ;; The :init configuration is always executed (Not lazy!)
   :init
@@ -263,32 +261,33 @@
 (use-package magit
   :bind ("C-c g g" . magit))
 
+(use-package solaire-mode
+	:config
+	(solaire-global-mode +1))
+
 (if (eq system-type 'darwin)
     (progn
-(use-package solarized-theme
-  :demand t)
-
-(defun schrenker/apply-theme (appearance)
-  (mapc #'disable-theme custom-enabled-themes)
-  (pcase appearance
-    ('light (load-theme 'solarized-selenized-light t))
-    ('dark (load-theme 'solarized-selenized-dark t))))
+			(defun schrenker/apply-theme (appearance)
+				(mapc #'disable-theme custom-enabled-themes)
+				(pcase appearance
+					('light (load-theme 'modus-operandi-tinted t))
+					('dark (load-theme 'modus-vivendi-tinted t))))
       (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
       (schrenker/apply-theme ns-system-appearance))
-  (load-theme 'modus-operandi t))
+  (load-theme 'modus-operandi-tinted t))
 
 (setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))
 
 (use-package eat
   :elpaca (eat
-	   :host "codeberg.org"
-	   :repo "akib/emacs-eat"
+					 :host "codeberg.org"
+					 :repo "akib/emacs-eat"
            :files ("*.el" ("term" "term/*.el") "*.texi"
-            "*.ti" ("terminfo/e" "terminfo/e/*")
-            ("terminfo/65" "terminfo/65/*")
-            ("integration" "integration/*")
-            (:exclude ".dir-locals.el" "*-tests.el")))
+									 "*.ti" ("terminfo/e" "terminfo/e/*")
+									 ("terminfo/65" "terminfo/65/*")
+									 ("integration" "integration/*")
+									 (:exclude ".dir-locals.el" "*-tests.el")))
 	:config
 	(setq eat-term-name "xterm-256color")
 	;; For `eat-eshell-mode'.
@@ -451,50 +450,50 @@
   :bind ("M-o" . ace-window)
   :config
   (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s)
-	aw-dispatch-always t
-	aw-dispatch-alist'((?k aw-delete-window "Delete Window")
-	                   (?m aw-swap-window "Swap Windows")
-	                   (?M aw-move-window "Move Window")
-	                   (?x aw-copy-window "Copy Window")
-	                   (?b aw-switch-buffer-in-window "Select Buffer")
-	                   (?\M-o aw-flip-window)
-	                   (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
-	                   (?w aw-split-window-fair "Split Fair Window")
-	                   (?v aw-split-window-vert "Split Vert Window")
-	                   (?z aw-split-window-horz "Split Horz Window")
-	                   (?K delete-other-windows "Delete Other Windows")
-	                   (?? aw-show-dispatch-help))))
+				aw-dispatch-always t
+				aw-dispatch-alist'((?k aw-delete-window "Delete Window")
+													 (?m aw-swap-window "Swap Windows")
+													 (?M aw-move-window "Move Window")
+													 (?x aw-copy-window "Copy Window")
+													 (?b aw-switch-buffer-in-window "Select Buffer")
+													 (?\M-o aw-flip-window)
+													 (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
+													 (?w aw-split-window-fair "Split Fair Window")
+													 (?v aw-split-window-vert "Split Vert Window")
+													 (?z aw-split-window-horz "Split Horz Window")
+													 (?K delete-other-windows "Delete Other Windows")
+													 (?? aw-show-dispatch-help))))
 
 (use-package perject
   :after savehist
   :init
-   (add-to-list 'savehist-additional-variables 'perject--previous-collections)
+  (add-to-list 'savehist-additional-variables 'perject--previous-collections)
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
-   (setq perject-load-at-startup 'previous
-				 perject-save-frames nil
-				 perject-load-at-startup nil
-				 perject-save-frames nil
-				 perject-frame-title-format nil
-				 perject-switch-to-new-collection t
-				 perject-save-on-exit 'all)
-	 
+  (setq perject-load-at-startup 'previous
+				perject-save-frames nil
+				perject-load-at-startup nil
+				perject-save-frames nil
+				perject-frame-title-format nil
+				perject-switch-to-new-collection t
+				perject-save-on-exit 'all)
+	
   (perject-mode 1)
   :bind
   (:map perject-mode-map
-		("C-<tab> TAB s" . perject-switch)
-		("C-<tab> TAB n" . perject-next-project)
-		("C-<tab> TAB p" . perject-previous-project)
-		("C-<tab> TAB N" . perject-next-collection)
-		("C-<tab> TAB P" . perject-previous-collection)
-		("C-<tab> TAB f" . perject-create-new-frame)
-		("C-<tab> TAB a" . perject-add-buffer-to-project)
-		("C-<tab> TAB d" . perject-remove-buffer-from-project)
-		("C-<tab> TAB r" . perject-open-close-or-reload)
-		("C-<tab> TAB R" . perject-rename)
-		("C-<tab> TAB S" . perject-sort)
-		("C-<tab> TAB x" . perject-save)
-		("C-<tab> TAB k" . perject-delete)))
+				("C-<tab> TAB s" . perject-switch)
+				("C-<tab> TAB n" . perject-next-project)
+				("C-<tab> TAB p" . perject-previous-project)
+				("C-<tab> TAB N" . perject-next-collection)
+				("C-<tab> TAB P" . perject-previous-collection)
+				("C-<tab> TAB f" . perject-create-new-frame)
+				("C-<tab> TAB a" . perject-add-buffer-to-project)
+				("C-<tab> TAB d" . perject-remove-buffer-from-project)
+				("C-<tab> TAB r" . perject-open-close-or-reload)
+				("C-<tab> TAB R" . perject-rename)
+				("C-<tab> TAB S" . perject-sort)
+				("C-<tab> TAB x" . perject-save)
+				("C-<tab> TAB k" . perject-delete)))
 
 (use-package perject-consult
 	:elpaca
@@ -529,7 +528,7 @@
 				("/ u" . ibuffer-filter-by-project)))
 
 (use-package perject-tab
-		:elpaca
+	:elpaca
 	(perject-tab
 	 :host "github.com"
 	 :repo "overideal/perject"
@@ -539,16 +538,16 @@
   (perject-tab-mode 1)
   :bind
   (:map perject-tab-mode-map
-		("C-<tab> s" . perject-tab-recent)
-		("C-<tab> D" . perject-tab-previous)
-		("C-<tab> d" . perject-tab-next)
-		("C-<tab> f" . perject-tab-set)
-		("C-<tab> F" . perject-tab-cycle-state)
-		("C-<tab> x" . perject-tab-create)
-		("C-<tab> X" . perject-tab-delete)
-		("C-<tab> c" . perject-tab-reset)
-		("C-<tab> v" . perject-tab-increment-index)
-		("C-<tab> V" . perject-tab-decrement-index)))
+				("C-<tab> s" . perject-tab-recent)
+				("C-<tab> D" . perject-tab-previous)
+				("C-<tab> d" . perject-tab-next)
+				("C-<tab> f" . perject-tab-set)
+				("C-<tab> F" . perject-tab-cycle-state)
+				("C-<tab> x" . perject-tab-create)
+				("C-<tab> X" . perject-tab-delete)
+				("C-<tab> c" . perject-tab-reset)
+				("C-<tab> v" . perject-tab-increment-index)
+				("C-<tab> V" . perject-tab-decrement-index)))
 
 (use-package org
   :elpaca nil
@@ -616,7 +615,7 @@
 	 :host "github.com"
 	 :repo "nan0scho1ar/ox-confluence-modern"
 	 :files ("*.el")
-	:after org))
+	 :after org))
 
 
 (elpaca-process-queues)

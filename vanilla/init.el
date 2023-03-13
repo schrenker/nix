@@ -481,19 +481,19 @@
   (perject-mode 1)
   :bind
   (:map perject-mode-map
-				("C-<tab> TAB s" . perject-switch)
-				("C-<tab> TAB n" . perject-next-project)
-				("C-<tab> TAB p" . perject-previous-project)
-				("C-<tab> TAB N" . perject-next-collection)
-				("C-<tab> TAB P" . perject-previous-collection)
-				("C-<tab> TAB f" . perject-create-new-frame)
-				("C-<tab> TAB a" . perject-add-buffer-to-project)
-				("C-<tab> TAB d" . perject-remove-buffer-from-project)
-				("C-<tab> TAB r" . perject-open-close-or-reload)
-				("C-<tab> TAB R" . perject-rename)
-				("C-<tab> TAB S" . perject-sort)
-				("C-<tab> TAB x" . perject-save)
-				("C-<tab> TAB k" . perject-delete)))
+				("C-<tab> C-<tab> s" . perject-switch)
+				("C-<tab> C-<tab> n" . perject-next-project)
+				("C-<tab> C-<tab> p" . perject-previous-project)
+				("C-<tab> C-<tab> N" . perject-next-collection)
+				("C-<tab> C-<tab> P" . perject-previous-collection)
+				("C-<tab> C-<tab> f" . perject-create-new-frame)
+				("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
+				("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
+				("C-<tab> C-<tab> r" . perject-open-close-or-reload)
+				("C-<tab> C-<tab> R" . perject-rename)
+				("C-<tab> C-<tab> S" . perject-sort)
+				("C-<tab> C-<tab> x" . perject-save)
+				("C-<tab> C-<tab> k" . perject-delete)))
 
 (use-package perject-consult
 	:elpaca

@@ -471,8 +471,14 @@
    (add-to-list 'savehist-additional-variables 'perject--previous-collections)
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
-  (setq perject-load-at-startup 'previous)
-
+   (setq perject-load-at-startup 'previous
+				 perject-save-frames nil
+				 perject-load-at-startup nil
+				 perject-save-frames nil
+				 perject-frame-title-format nil
+				 perject-switch-to-new-collection t
+				 perject-save-on-exit 'all)
+	 
   (perject-mode 1)
   :bind
   (:map perject-mode-map

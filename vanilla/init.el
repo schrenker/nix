@@ -14,7 +14,7 @@
       mac-right-option-modifier nil
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
-			custom-file (concat user-emacs-directory "custom.el")
+      custom-file (concat user-emacs-directory "custom.el")
       initial-frame-alist '((fullscreen . maximized)))
 
 (menu-bar-mode -1)
@@ -82,10 +82,17 @@
   (call-interactively #'meow-append))
 
 (defun schrenker/meow-insert-at-beginning-of-line ()
-  "Go to the end of the line and enter insert mode."
+  "Go to the beginnig of the line and enter insert mode."
   (interactive)
   (call-interactively #'meow-join)
   (call-interactively #'meow-append))
+
+(defun schrenker/meow-join-below ()
+	"Join line below to current line"
+	(interactive)
+	(call-interactively #'meow-next)
+	(call-interactively #'meow-join)
+	(call-interactively #'meow-kill))
 
 (use-package meow
   :init
@@ -146,6 +153,7 @@
    '("I" . schrenker/meow-insert-at-beginning-of-line)
    '("i" . meow-insert)
    '("j" . meow-join)
+	 '("J" . schrenker/meow-join-below)
    '("k" . meow-kill)
    '("l" . meow-till)
    '("m" . meow-mark-word)
@@ -171,7 +179,9 @@
    '("x" . meow-save)
    '("X" . meow-sync-grab)
    '("y" . meow-yank)
-   '("z" . meow-pop-selection))
+   '("z" . meow-pop-selection)
+	 '("<escape>" . meow-cancel-selection))
+
 
 	(add-hook 'server-after-make-frame-hook (meow-global-mode 1))
 	(add-hook 'elpaca-ui-mode-hook (meow-motion-mode 1))
@@ -253,17 +263,19 @@
 (use-package magit
   :bind ("C-c g g" . magit))
 
+(if (eq system-type 'darwin)
+    (progn
+(use-package solarized-theme
+  :demand t)
 
 (defun schrenker/apply-theme (appearance)
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
     ('light (load-theme 'solarized-selenized-light t))
     ('dark (load-theme 'solarized-selenized-dark t))))
-
-
-(add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
-
-(schrenker/apply-theme ns-system-appearance)
+      (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
+      (schrenker/apply-theme ns-system-appearance))
+  (load-theme 'modus-operandi t))
 
 (setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))
@@ -532,6 +544,73 @@
 		("C-<tab> v" . perject-tab-increment-index)
 		("C-<tab> V" . perject-tab-decrement-index)))
 
-(use-package solarized-theme)
+(use-package org
+  :elpaca nil
+  :config
+  (setq
+   org-crypt-disable-auto-save t
+   org-log-into-drawer "LOGBOOK"
+   org-log-done 'time
+	 org-tags-exclude-from-inheritance '("crypt"
+                                       "moc"
+                                       "inbox")
+	 org-tags-column -77
+   org-directory "~/org"
+   org-roam-directory org-directory
+   org-archive-location "archive/%s_archive::"
+   org-default-notes-file (concat org-directory "/20221222131538-personal.org")
+   org-crypt-disable-auto-save t
+   org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu")
+   org-priority-highest '?A
+   org-priority-lowest  '?C
+   org-priority-default '?C
+   org-priority-start-cycle-with-default t
+   org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
+                        (?B :foreground "#ECBE7B" :weight normal)
+                        (?C :foreground "#51AFEF" :weight normal))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DONE(d/@)" "DELEGATED(e@/@)" "CANCELLED(c@/@)"))
+   org-todo-keyword-faces
+   '(("TODO" :foreground "#8741bb" :weight bold :inverse-video t)
+     ("INPROGRESS" :foreground "#98BE65" :weight bold :inverse-video t)
+     ("BLOCKED" :foreground "#DA8548" :weight bold :inverse-video t)
+     ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t)
+     ("REVIEW" :foreground "#00BFFF" :weight bold :inverse-video t)
+     ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
+     ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
+     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t)))
+  )
+
+(use-package org-roam
+  :ensure t
+	:after org
+  :config
+	(setq org-roam-capture-templates '(("d" "default" plain "%?"
+                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
+                                      :immediate-finish t))
+				org-roam-directory (file-truename "~/org"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
+
+(use-package markdown-mode)
+
+(use-package ox-confluence
+	:elpaca
+	(ox-confluence
+	 :host "github.com"
+	 :repo "nan0scho1ar/ox-confluence-modern"
+	 :files ("*.el")
+	:after org))
+
 
 (elpaca-process-queues)

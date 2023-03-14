@@ -614,8 +614,7 @@
 	(ox-confluence
 	 :host "github.com"
 	 :repo "nan0scho1ar/ox-confluence-modern"
-	 :files ("*.el")
-	 :after org))
+	 :files ("*.el")))
 
 
 (elpaca-process-queues)

@@ -92,6 +92,12 @@
 	(call-interactively #'meow-join)
 	(call-interactively #'meow-kill))
 
+(defun schrenker/meow-smart-append ()
+  (interactive)
+  (if (eolp)
+      (call-interactively #'meow-insert)
+    (call-interactively #'meow-append)))
+
 (use-package meow
   :init
   (meow-global-mode 1)
@@ -132,7 +138,7 @@
    '("'" . repeat)
    '("<" . meow-beginning-of-thing)
    '(">" . meow-end-of-thing)
-   '("a" . meow-append)
+   '("a" . schrenker/meow-smart-append)
    '("A" . schrenker/meow-append-to-end-of-line)
    '("o" . meow-open-below)
    '("b" . meow-back-word)

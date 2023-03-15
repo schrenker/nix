@@ -1,6 +1,8 @@
 ;;; vanilla/early-init.el -*- lexical-binding: t; -*-
 
-(setq package-enable-at-startup nil)
+
+(setq package-enable-at-startup nil
+      user-emacs-directory "~/.cache/emacs")
 
 (when (eq system-type 'darwin) (customize-set-variable 'native-comp-driver-options '("-Wl,-w")))
 

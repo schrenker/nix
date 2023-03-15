@@ -46,14 +46,13 @@
       tab-width 2
       display-line-numbers-type 'visual
       scroll-margin 5
-			scroll-step 1
+      scroll-step 1
       require-final-newline t
       mac-command-modifier 'meta
       mac-option-modifier 'alt
       mac-right-option-modifier nil
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
-      custom-file (concat user-emacs-directory "custom.el")
       initial-frame-alist '((fullscreen . maximized)))
 
 (menu-bar-mode -1)

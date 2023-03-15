@@ -275,18 +275,15 @@
 (use-package magit
   :bind ("C-c g g" . magit))
 
-(use-package modus-themes
-  :elpaca nil
-  :init
-  (setq modus-themes-bold-constructs t
-        modus-themes-italic-constructs t
-        modus-themes-mixed-fonts t
-        modus-themes-org-blocks 'tinted-background
-        org-fontify-whole-block-delimiter-line t
-        modus-themes-common-palette-overrides modus-themes-preset-overrides-intense
-        modus-themes-common-palette-overrides '((underline-link border)
-                                                (underline-link-visited border)
-                                                (underline-link-symbolic border))))
+(setq modus-themes-bold-constructs t
+      modus-themes-italic-constructs t
+      modus-themes-mixed-fonts t
+      modus-themes-org-blocks 'tinted-background
+      org-fontify-whole-block-delimiter-line t
+      modus-themes-common-palette-overrides modus-themes-preset-overrides-intense
+      modus-themes-common-palette-overrides '((underline-link border)
+                                              (underline-link-visited border)
+                                              (underline-link-symbolic border)))
 
 (use-package solaire-mode
   :config

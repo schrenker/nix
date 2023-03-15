@@ -169,6 +169,7 @@
    '("j" . meow-join)
    '("J" . schrenker/meow-join-below)
    '("k" . meow-kill)
+   '("K" . helpful-at-point)
    '("l" . meow-till)
    '("m" . meow-mark-word)
    '("M" . meow-mark-symbol)
@@ -276,6 +277,14 @@
 
 (use-package magit
   :bind ("C-c g g" . magit))
+
+(use-package helpful
+  :config
+  (global-set-key (kbd "C-h f") #'helpful-callable)
+  (global-set-key (kbd "C-h v") #'helpful-variable)
+  (global-set-key (kbd "C-h k") #'helpful-key)
+  (global-set-key (kbd "C-h x") #'helpful-command)
+  (global-set-key (kbd "C-h F") #'helpful-function))
 
 (setq modus-themes-bold-constructs t
       modus-themes-italic-constructs t

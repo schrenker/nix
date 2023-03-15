@@ -81,6 +81,8 @@
 (global-set-key (kbd "C-c w u") 'winner-undo)
 (global-set-key (kbd "C-c w r") 'winner-redo)
 
+(unbind-key (kbd "M-v"))
+
 (defun schrenker/meow-append-to-end-of-line ()
   "Go to the end of the line and enter insert mode."
   (interactive)
@@ -279,11 +281,24 @@
       modus-themes-italic-constructs t
       modus-themes-mixed-fonts t
       modus-themes-org-blocks 'tinted-background
+      modus-themes-mode-line '(accented borderless padded)
       org-fontify-whole-block-delimiter-line t
-      modus-themes-common-palette-overrides modus-themes-preset-overrides-intense
-      modus-themes-common-palette-overrides '((underline-link border)
-                                              (underline-link-visited border)
-                                              (underline-link-symbolic border)))
+      modus-themes-common-palette-overrides `(
+        ;; From the section "Make the mode line borderless"
+        (border-mode-line-active bg-mode-line-active)
+        (border-mode-line-inactive bg-mode-line-inactive)
+
+        ;; From the section "Make matching parenthesis more or less intense"
+        (bg-paren-match bg-magenta-intense)
+        (underline-paren-match fg-main)
+
+                                        ;tet
+        (fringe bg-blue-nuanced)        
+
+        ;; And expand the preset here.  Note that the ,@ works because
+        ;; we use the backtick for this list, instead of a straight
+        ;; quote.
+        ,@modus-themes-preset-overrides-faint))
 
 (use-package solaire-mode
   :config
@@ -338,6 +353,44 @@
   ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 
   :config
+
+  (defun embark-which-key-indicator ()
+    "An embark indicator that displays keymaps using which-key.
+The which-key help message will show the type and value of the
+current target followed by an ellipsis if there are further
+targets."
+    (lambda (&optional keymap targets prefix)
+      (if (null keymap)
+          (which-key--hide-popup-ignore-command)
+        (which-key--show-keymap
+         (if (eq (plist-get (car targets) :type) 'embark-become)
+             "Become"
+           (format "Act on %s '%s'%s"
+                   (plist-get (car targets) :type)
+                   (embark--truncate-target (plist-get (car targets) :target))
+                   (if (cdr targets) "…" "")))
+         (if prefix
+             (pcase (lookup-key keymap prefix 'accept-default)
+               ((and (pred keymapp) km) km)
+               (_ (key-binding prefix 'accept-default)))
+           keymap)
+         nil nil t (lambda (binding)
+                     (not (string-suffix-p "-argument" (cdr binding))))))))
+
+  (setq embark-indicators
+        '(embark-which-key-indicator
+          embark-highlight-indicator
+          embark-isearch-highlight-indicator))
+
+  (defun embark-hide-which-key-indicator (fn &rest args)
+    "Hide the which-key indicator immediately when using the completing-read prompter."
+    (which-key--hide-popup-ignore-command)
+    (let ((embark-indicators
+           (remq #'embark-which-key-indicator embark-indicators)))
+      (apply fn args)))
+
+  (advice-add #'embark-completing-read-prompter
+              :around #'embark-hide-which-key-indicator)
 
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
@@ -397,9 +450,6 @@
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
-         ((underline-link border)
-          (underline-link-visited border)
-          (underline-link-symbolic border))
          ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
          ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
          ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch

@@ -64,6 +64,7 @@
 (which-function-mode 1)
 (winner-mode 1)
 (pixel-scroll-mode 1)
+(global-display-line-numbers-mode 1)
 
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
@@ -177,7 +178,7 @@
    '("T" . meow-right-expand)
    '("u" . meow-undo)
    '("U" . meow-undo-in-selection)
-   '("v" . meow-visit)
+   '("/" . meow-visit)
    '("w" . meow-next-word)
    '("W" . meow-next-symbol)
    '("x" . meow-save)
@@ -456,7 +457,6 @@
   :bind ("M-o" . ace-window)
   :config
   (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s)
-				aw-dispatch-always t
 				aw-dispatch-alist'((?k aw-delete-window "Delete Window")
 													 (?m aw-swap-window "Swap Windows")
 													 (?M aw-move-window "Move Window")
@@ -588,8 +588,7 @@
      ("REVIEW" :foreground "#00BFFF" :weight bold :inverse-video t)
      ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
-     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t)))
-  )
+     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
 
 (use-package org-roam
   :ensure t
@@ -622,5 +621,5 @@
 	 :repo "nan0scho1ar/ox-confluence-modern"
 	 :files ("*.el")))
 
-
 (elpaca-process-queues)
+

@@ -344,8 +344,6 @@
 
 
 (use-package embark
-  :ensure t
-
   :bind
   (("M-." . embark-act)         ;; pick some comfortable binding
    ("C-." . embark-dwim)        ;; good alternative: M-.
@@ -409,7 +407,6 @@ targets."
 
 ;; ;; Consult users will also want the embark-consult package.
 (use-package embark-consult
-  :ensure t ; only need to install it, embark loads it after consult if found
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -670,7 +667,6 @@ targets."
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
 
 (use-package org-roam
-  :ensure t
   :after org
   :config
   (setq org-roam-capture-templates '(("d" "default" plain "%?"

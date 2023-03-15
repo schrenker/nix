@@ -5,9 +5,9 @@
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-															:ref nil
-															:files (:defaults (:exclude "extensions"))
-															:build (:not elpaca--activate-package)))
+			      :ref nil
+			      :files (:defaults (:exclude "extensions"))
+			      :build (:not elpaca--activate-package)))
 (when-let ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
            (build (expand-file-name "elpaca/" elpaca-builds-directory))
            (order (cdr elpaca-order))
@@ -46,15 +46,23 @@
       tab-width 2
       display-line-numbers-type 'visual
       scroll-margin 5
+      backup-by-copying t      ; don't clobber symlinks
+      backup-directory-alist '(("." . (concat user-emacs-directory ".local/backups/"))    ; don't litter my fs tree
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t       ; use versioned backups
       scroll-step 1
+      savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
+      savehist-file (concat user-emacs-directory ".local/cache/history")
       require-final-newline t
       mac-command-modifier 'meta
       mac-option-modifier 'alt
       mac-right-option-modifier nil
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
-      initial-frame-alist '((fullscreen . maximized)))
-
+      initial-frame-alist '((fullscreen . maximized))))
+ 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -86,11 +94,11 @@
   (call-interactively #'meow-append))
 
 (defun schrenker/meow-join-below ()
-	"Join line below to current line"
-	(interactive)
-	(call-interactively #'meow-next)
-	(call-interactively #'meow-join)
-	(call-interactively #'meow-kill))
+  "Join line below to current line"
+  (interactive)
+  (call-interactively #'meow-next)
+  (call-interactively #'meow-join)
+  (call-interactively #'meow-kill))
 
 (defun schrenker/meow-smart-append ()
   (interactive)
@@ -157,7 +165,7 @@
    '("I" . schrenker/meow-insert-at-beginning-of-line)
    '("i" . meow-insert)
    '("j" . meow-join)
-	 '("J" . schrenker/meow-join-below)
+   '("J" . schrenker/meow-join-below)
    '("k" . meow-kill)
    '("l" . meow-till)
    '("m" . meow-mark-word)
@@ -184,12 +192,12 @@
    '("X" . meow-sync-grab)
    '("y" . meow-yank)
    '("z" . meow-pop-selection)
-	 '("<escape>" . meow-cancel-selection))
+   '("<escape>" . meow-cancel-selection))
 
 
-	(add-hook 'server-after-make-frame-hook (meow-global-mode 1))
-	(add-hook 'elpaca-ui-mode-hook (meow-motion-mode 1))
-	
+  (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
+  (add-hook 'elpaca-ui-mode-hook (meow-motion-mode 1))
+  
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t
@@ -251,7 +259,7 @@
 (use-package marginalia
   ;; Either bind `marginalia-cycle' globally or only in the minibuffer
   :bind (:map minibuffer-local-map
-							("M-A" . marginalia-cycle))
+	      ("M-A" . marginalia-cycle))
 
   ;; The :init configuration is always executed (Not lazy!)
   :init
@@ -267,17 +275,30 @@
 (use-package magit
   :bind ("C-c g g" . magit))
 
+(use-package modus-themes
+  :elpaca nil
+  :init
+  (setq modus-themes-bold-constructs t
+        modus-themes-italic-constructs t
+        modus-themes-mixed-fonts t
+        modus-themes-org-blocks 'tinted-background
+        org-fontify-whole-block-delimiter-line t
+        modus-themes-common-palette-overrides modus-themes-preset-overrides-intense
+        modus-themes-common-palette-overrides '((underline-link border)
+                                                (underline-link-visited border)
+                                                (underline-link-symbolic border))))
+
 (use-package solaire-mode
-	:config
-	(solaire-global-mode +1))
+  :config
+  (solaire-global-mode +1))
 
 (if (eq system-type 'darwin)
     (progn
-			(defun schrenker/apply-theme (appearance)
-				(mapc #'disable-theme custom-enabled-themes)
-				(pcase appearance
-					('light (load-theme 'modus-operandi-tinted t))
-					('dark (load-theme 'modus-vivendi-tinted t))))
+      (defun schrenker/apply-theme (appearance)
+	(mapc #'disable-theme custom-enabled-themes)
+	(pcase appearance
+	  ('light (load-theme 'modus-operandi-tinted t))
+	  ('dark (load-theme 'modus-vivendi-tinted t))))
       (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
       (schrenker/apply-theme ns-system-appearance))
   (load-theme 'modus-operandi-tinted t))
@@ -287,17 +308,17 @@
 
 (use-package eat
   :elpaca (eat
-					 :host "codeberg.org"
-					 :repo "akib/emacs-eat"
+	   :host "codeberg.org"
+	   :repo "akib/emacs-eat"
            :files ("*.el" ("term" "term/*.el") "*.texi"
-									 "*.ti" ("terminfo/e" "terminfo/e/*")
-									 ("terminfo/65" "terminfo/65/*")
-									 ("integration" "integration/*")
-									 (:exclude ".dir-locals.el" "*-tests.el")))
-	:config
-	(setq eat-term-name "xterm-256color")
-	;; For `eat-eshell-mode'.
-	(add-hook 'eshell-load-hook #'eat-eshell-mode))
+		   "*.ti" ("terminfo/e" "terminfo/e/*")
+		   ("terminfo/65" "terminfo/65/*")
+		   ("integration" "integration/*")
+		   (:exclude ".dir-locals.el" "*-tests.el")))
+  :config
+  (setq eat-term-name "xterm-256color")
+  ;; For `eat-eshell-mode'.
+  (add-hook 'eshell-load-hook #'eat-eshell-mode))
 
 
 
@@ -379,6 +400,9 @@
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
+         ((underline-link border)
+          (underline-link-visited border)
+          (underline-link-symbolic border))
          ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
          ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
          ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
@@ -456,18 +480,18 @@
   :bind ("M-o" . ace-window)
   :config
   (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s)
-				aw-dispatch-alist'((?k aw-delete-window "Delete Window")
-													 (?m aw-swap-window "Swap Windows")
-													 (?M aw-move-window "Move Window")
-													 (?x aw-copy-window "Copy Window")
-													 (?b aw-switch-buffer-in-window "Select Buffer")
-													 (?\M-o aw-flip-window)
-													 (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
-													 (?w aw-split-window-fair "Split Fair Window")
-													 (?v aw-split-window-vert "Split Vert Window")
-													 (?z aw-split-window-horz "Split Horz Window")
-													 (?K delete-other-windows "Delete Other Windows")
-													 (?? aw-show-dispatch-help))))
+	aw-dispatch-alist'((?k aw-delete-window "Delete Window")
+			   (?m aw-swap-window "Swap Windows")
+			   (?M aw-move-window "Move Window")
+			   (?x aw-copy-window "Copy Window")
+			   (?b aw-switch-buffer-in-window "Select Buffer")
+			   (?\M-o aw-flip-window)
+			   (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
+			   (?w aw-split-window-fair "Split Fair Window")
+			   (?v aw-split-window-vert "Split Vert Window")
+			   (?z aw-split-window-horz "Split Horz Window")
+			   (?K delete-other-windows "Delete Other Windows")
+			   (?? aw-show-dispatch-help))))
 
 (use-package perject
   :after savehist
@@ -476,36 +500,36 @@
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
   (setq perject-load-at-startup 'previous
-				perject-save-frames nil
-				perject-load-at-startup nil
-				perject-save-frames nil
-				perject-frame-title-format nil
-				perject-switch-to-new-collection t
-				perject-save-on-exit 'all)
-	
+	perject-save-frames nil
+	perject-load-at-startup nil
+	perject-save-frames nil
+	perject-frame-title-format nil
+	perject-switch-to-new-collection t
+	perject-save-on-exit 'all)
+  
   (perject-mode 1)
   :bind
   (:map perject-mode-map
-				("C-<tab> C-<tab> s" . perject-switch)
-				("C-<tab> C-<tab> n" . perject-next-project)
-				("C-<tab> C-<tab> p" . perject-previous-project)
-				("C-<tab> C-<tab> N" . perject-next-collection)
-				("C-<tab> C-<tab> P" . perject-previous-collection)
-				("C-<tab> C-<tab> f" . perject-create-new-frame)
-				("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
-				("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
-				("C-<tab> C-<tab> r" . perject-open-close-or-reload)
-				("C-<tab> C-<tab> R" . perject-rename)
-				("C-<tab> C-<tab> S" . perject-sort)
-				("C-<tab> C-<tab> x" . perject-save)
-				("C-<tab> C-<tab> k" . perject-delete)))
+	("C-<tab> C-<tab> s" . perject-switch)
+	("C-<tab> C-<tab> n" . perject-next-project)
+	("C-<tab> C-<tab> p" . perject-previous-project)
+	("C-<tab> C-<tab> N" . perject-next-collection)
+	("C-<tab> C-<tab> P" . perject-previous-collection)
+	("C-<tab> C-<tab> f" . perject-create-new-frame)
+	("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
+	("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
+	("C-<tab> C-<tab> r" . perject-open-close-or-reload)
+	("C-<tab> C-<tab> R" . perject-rename)
+	("C-<tab> C-<tab> S" . perject-sort)
+	("C-<tab> C-<tab> x" . perject-save)
+	("C-<tab> C-<tab> k" . perject-delete)))
 
 (use-package perject-consult
-	:elpaca
-	(perject-consult
-	 :host "github.com"
-	 :repo "overideal/perject"
-	 :main "perject-consult.el")
+  :elpaca
+  (perject-consult
+   :host "github.com"
+   :repo "overideal/perject"
+   :main "perject-consult.el")
   :after (perject consult)
   :config
   ;; Hide the list of all buffers by default and set narrowing to all buffers to space.
@@ -515,44 +539,44 @@
   (add-to-list 'consult-buffer-sources 'perject-consult--source-project-buffer))
 
 (use-package perject-ibuffer
-	:elpaca
-	(perject-ibuffer
-	 :host "github.com"
-	 :repo "overideal/perject"
-	 :main "perject-ibuffer.el")
+  :elpaca
+  (perject-ibuffer
+   :host "github.com"
+   :repo "overideal/perject"
+   :main "perject-ibuffer.el")
   :after perject
   :init
   ;; By default restrict ibuffer to the buffers of the current project.
   (add-hook 'ibuffer-hook #'perject-ibuffer-enable-filter-by-project)
   :bind
   (:map ibuffer-mode-map
-				("<insert>" . perject-ibuffer-add-to-project)
-				("<delete>" . perject-ibuffer-remove-from-project)
-				("<next>" . perject-ibuffer-print-buffer-projects)
-				("/ y" . ibuffer-filter-by-collection)
-				("/ u" . ibuffer-filter-by-project)))
+	("<insert>" . perject-ibuffer-add-to-project)
+	("<delete>" . perject-ibuffer-remove-from-project)
+	("<next>" . perject-ibuffer-print-buffer-projects)
+	("/ y" . ibuffer-filter-by-collection)
+	("/ u" . ibuffer-filter-by-project)))
 
 (use-package perject-tab
-	:elpaca
-	(perject-tab
-	 :host "github.com"
-	 :repo "overideal/perject"
-	 :main "perject-tab.el")
+  :elpaca
+  (perject-tab
+   :host "github.com"
+   :repo "overideal/perject"
+   :main "perject-tab.el")
   :after perject
   :init
   (perject-tab-mode 1)
   :bind
   (:map perject-tab-mode-map
-				("C-<tab> s" . perject-tab-recent)
-				("C-<tab> D" . perject-tab-previous)
-				("C-<tab> d" . perject-tab-next)
-				("C-<tab> f" . perject-tab-set)
-				("C-<tab> F" . perject-tab-cycle-state)
-				("C-<tab> x" . perject-tab-create)
-				("C-<tab> X" . perject-tab-delete)
-				("C-<tab> c" . perject-tab-reset)
-				("C-<tab> v" . perject-tab-increment-index)
-				("C-<tab> V" . perject-tab-decrement-index)))
+	("C-<tab> s" . perject-tab-recent)
+	("C-<tab> D" . perject-tab-previous)
+	("C-<tab> d" . perject-tab-next)
+	("C-<tab> f" . perject-tab-set)
+	("C-<tab> F" . perject-tab-cycle-state)
+	("C-<tab> x" . perject-tab-create)
+	("C-<tab> X" . perject-tab-delete)
+	("C-<tab> c" . perject-tab-reset)
+	("C-<tab> v" . perject-tab-increment-index)
+	("C-<tab> V" . perject-tab-decrement-index)))
 
 (use-package org
   :elpaca nil
@@ -561,10 +585,10 @@
    org-crypt-disable-auto-save t
    org-log-into-drawer "LOGBOOK"
    org-log-done 'time
-	 org-tags-exclude-from-inheritance '("crypt"
+   org-tags-exclude-from-inheritance '("crypt"
                                        "moc"
                                        "inbox")
-	 org-tags-column -77
+   org-tags-column -77
    org-directory "~/org"
    org-roam-directory org-directory
    org-archive-location "archive/%s_archive::"
@@ -591,12 +615,12 @@
 
 (use-package org-roam
   :ensure t
-	:after org
+  :after org
   :config
-	(setq org-roam-capture-templates '(("d" "default" plain "%?"
+  (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
                                       :immediate-finish t))
-				org-roam-directory (file-truename "~/org"))
+	org-roam-directory (file-truename "~/org"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
@@ -606,7 +630,8 @@
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag))
+        org-roam-db-location (concat user-emacs-directory ".local/org-roam.db"))
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
@@ -614,11 +639,13 @@
 (use-package markdown-mode)
 
 (use-package ox-confluence
-	:elpaca
-	(ox-confluence
-	 :host "github.com"
-	 :repo "nan0scho1ar/ox-confluence-modern"
-	 :files ("*.el")))
+  :elpaca
+  (ox-confluence
+   :host "github.com"
+   :repo "nan0scho1ar/ox-confluence-modern"
+   :files ("*.el")))
 
 (elpaca-process-queues)
+
+
 

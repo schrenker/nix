@@ -206,10 +206,6 @@
 
   (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
   (add-hook 'elpaca-ui-mode-hook (meow-motion-mode 1))
-  
-  (meow-thing-register 'squotes
-                       '(pair (\"'\") (\"'\"))
-                       '(pair (\"'\") (\"'\")))
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t
@@ -225,8 +221,7 @@
                                 (?p . paragraph)
                                 (?l . line)
                                 (?d . defun)
-                                (?. . sentence)
-                                (?q . squotes))))
+                                (?. . sentence))))
 
 ;; Enable vertico
 (use-package vertico
@@ -582,25 +577,20 @@ targets."
   :bind
   (:map perject-mode-map
         ("C-<tab> C-<tab> c" . perject-create)
-	("C-<tab> C-<tab> r" . perject-rename)
-	("C-<tab> C-<tab> R" . perject-rename-collection)
-	("C-<tab> C-<tab> f" . perject-create-new-frame)
+	      ("C-<tab> C-<tab> r" . perject-rename)
+	      ("C-<tab> C-<tab> R" . perject-rename-collection)
+	      ("C-<tab> C-<tab> f" . perject-create-new-frame)
         ("C-<tab> C-<tab> K" . perject-delete)
         ("C-<tab> C-<tab> E" . perject-open-close-or-reload)
         ("C-<tab> C-<tab> s" . perject-sort)
-	("C-<tab> C-<tab> n" . perject-next-project)
-	("C-<tab> C-<tab> p" . perject-previous-project)
-	("C-<tab> C-<tab> N" . perject-next-collection)
-	("C-<tab> C-<tab> P" . perject-previous-collection)
-
-        
-	("C-<tab> C-<tab> s" . perject-switch)
-	("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
-	("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
-	("C-<tab> C-<tab> r" . perject-open-close-or-reload)
-	("C-<tab> C-<tab> S" . perject-sort)
-	("C-<tab> C-<tab> x" . perject-save)
-	("C-<tab> C-<tab> k" . perject-delete)))
+	      ("C-<tab> C-<tab> n" . perject-next-project)
+	      ("C-<tab> C-<tab> p" . perject-previous-project)
+	      ("C-<tab> C-<tab> N" . perject-next-collection)
+	      ("C-<tab> C-<tab> P" . perject-previous-collection)
+	      ("C-<tab> C-<tab> TAB" . perject-switch)
+	      ("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
+	      ("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
+	      ("C-<tab> C-<tab> w" . perject-save)))
 
 (use-package perject-consult
   :elpaca
@@ -628,8 +618,8 @@ targets."
   (add-hook 'ibuffer-hook #'perject-ibuffer-enable-filter-by-project)
   :bind
   (:map ibuffer-mode-map
-	("<insert>" . perject-ibuffer-add-to-project)
-	("<delete>" . perject-ibuffer-remove-from-project)
+	("a" . perject-ibuffer-add-to-project)
+	("K" . perject-ibuffer-remove-from-project)
 	("<next>" . perject-ibuffer-print-buffer-projects)
 	("/ y" . ibuffer-filter-by-collection)
 	("/ u" . ibuffer-filter-by-project)))

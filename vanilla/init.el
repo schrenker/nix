@@ -44,6 +44,7 @@
 (setq-default indent-tabs-mode nil)
 
 (setq auto-save-default t
+      inhibit-startup-screen t
       tab-width 2
       display-line-numbers-type 'visual
       scroll-margin 5
@@ -82,8 +83,10 @@
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
 (global-set-key (kbd "C-c w u") 'winner-undo)
 (global-set-key (kbd "C-c w r") 'winner-redo)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (unbind-key (kbd "M-v"))
+(unbind-key (kbd "M-r"))
 
 (defun schrenker/meow-append-to-end-of-line ()
   "Go to the end of the line and enter insert mode."
@@ -144,6 +147,7 @@
    '("8" . meow-expand-8)
    '("9" . meow-expand-9)
    '("-" . negative-argument)
+   '("#" . universal-argument)
    '(";" . meow-reverse)
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
@@ -203,11 +207,26 @@
   (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
   (add-hook 'elpaca-ui-mode-hook (meow-motion-mode 1))
   
+  (meow-thing-register 'squotes
+                       '(pair (\"'\") (\"'\"))
+                       '(pair (\"'\") (\"'\")))
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t
         meow-expand-exclude-mode-list nil
-        meow-use-enhanced-selection-effect t))
+        meow-use-enhanced-selection-effect t
+        meow-char-thing-table '((?r . round)
+                                (?s . square)
+                                (?c . curly)
+                                (?S . string)
+                                (?o . symbol)
+                                (?w . window)
+                                (?b . buffer)
+                                (?p . paragraph)
+                                (?l . line)
+                                (?d . defun)
+                                (?. . sentence)
+                                (?q . squotes))))
 
 ;; Enable vertico
 (use-package vertico
@@ -224,7 +243,7 @@
   ;; (setq vertico-resize t)
 
   ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  (setq vertico-cycle t))
+  (setq vertico-cycle nil))
 
 ;; ;; A few more useful configurations...
 (use-package emacs
@@ -288,28 +307,27 @@
   (global-set-key (kbd "C-h x") #'helpful-command)
   (global-set-key (kbd "C-h F") #'helpful-function))
 
-(setq modus-themes-bold-constructs t
-      modus-themes-italic-constructs t
-      modus-themes-mixed-fonts t
-      modus-themes-org-blocks 'tinted-background
-      modus-themes-mode-line '(accented borderless padded)
-      org-fontify-whole-block-delimiter-line t
-      modus-themes-common-palette-overrides `(
-                                              ;; From the section "Make the mode line borderless"
-                                              (border-mode-line-active bg-mode-line-active)
-                                              (border-mode-line-inactive bg-mode-line-inactive)
+(use-package modus-themes
+  :config
+  (setq modus-themes-bold-constructs t
+        modus-themes-italic-constructs t
+        modus-themes-mixed-fonts t
+        modus-themes-org-blocks 'tinted-background
+        modus-themes-mode-line '(accented borderless padded)
+        org-fontify-whole-block-delimiter-line t
+        modus-themes-common-palette-overrides `(
+                                                ;; From the section "Make the mode line borderless"
+                                                (border-mode-line-active bg-mode-line-active)
+                                                (border-mode-line-inactive bg-mode-line-inactive)
+                                                ;; From the section "Make matching parenthesis more or less intense"
+                                                (bg-paren-match bg-magenta-intense)
+                                                (underline-paren-match fg-main)
 
-                                              ;; From the section "Make matching parenthesis more or less intense"
-                                              (bg-paren-match bg-magenta-intense)
-                                              (underline-paren-match fg-main)
-
-                                        ;tet
-                                              (fringe bg-blue-nuanced)        
-
-                                              ;; And expand the preset here.  Note that the ,@ works because
-                                              ;; we use the backtick for this list, instead of a straight
-                                              ;; quote.
-                                              ,@modus-themes-preset-overrides-faint))
+                                                (fringe bg-blue-nuanced)        
+                                                ;; And expand the preset here.  Note that the ,@ works because
+                                                ;; we use the backtick for this list, instead of a straight
+                                                ;; quote.
+                                                ,@modus-themes-preset-overrides-faint)))
 
 (use-package solaire-mode
   :config
@@ -430,9 +448,9 @@ targets."
          ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
          ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
          ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-         ("C-M-#" . consult-register)
+         ("M-r l" . consult-register-load)
+         ("M-r s" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("M-r r" . consult-register)
          ;; Other custom bindings
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings (goto-map)
@@ -554,9 +572,7 @@ targets."
   (add-to-list 'savehist-additional-variables 'perject--previous-collections)
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
-  (setq perject-load-at-startup 'previous
-	perject-save-frames nil
-	perject-load-at-startup nil
+  (setq perject-load-at-startup nil
 	perject-save-frames nil
 	perject-frame-title-format nil
 	perject-switch-to-new-collection t
@@ -565,16 +581,23 @@ targets."
   (perject-mode 1)
   :bind
   (:map perject-mode-map
-	("C-<tab> C-<tab> s" . perject-switch)
+        ("C-<tab> C-<tab> c" . perject-create)
+	("C-<tab> C-<tab> r" . perject-rename)
+	("C-<tab> C-<tab> R" . perject-rename-collection)
+	("C-<tab> C-<tab> f" . perject-create-new-frame)
+        ("C-<tab> C-<tab> K" . perject-delete)
+        ("C-<tab> C-<tab> E" . perject-open-close-or-reload)
+        ("C-<tab> C-<tab> s" . perject-sort)
 	("C-<tab> C-<tab> n" . perject-next-project)
 	("C-<tab> C-<tab> p" . perject-previous-project)
 	("C-<tab> C-<tab> N" . perject-next-collection)
 	("C-<tab> C-<tab> P" . perject-previous-collection)
-	("C-<tab> C-<tab> f" . perject-create-new-frame)
+
+        
+	("C-<tab> C-<tab> s" . perject-switch)
 	("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
 	("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
 	("C-<tab> C-<tab> r" . perject-open-close-or-reload)
-	("C-<tab> C-<tab> R" . perject-rename)
 	("C-<tab> C-<tab> S" . perject-sort)
 	("C-<tab> C-<tab> x" . perject-save)
 	("C-<tab> C-<tab> k" . perject-delete)))
@@ -697,5 +720,8 @@ targets."
    :host "github.com"
    :repo "nan0scho1ar/ox-confluence-modern"
    :files ("*.el")))
+
+(use-package nix-mode
+  :mode "\\.nix\\'")
 
 (elpaca-process-queues)

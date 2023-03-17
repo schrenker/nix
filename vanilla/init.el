@@ -356,6 +356,11 @@
   ;; For `eat-eshell-mode'.
   (add-hook 'eshell-load-hook #'eat-eshell-mode))
 
+(use-package inheritenv
+  :config
+  (inheritenv-add-advice #'with-temp-buffer))
+
+
 
 
 (use-package embark
@@ -648,7 +653,16 @@ targets."
 
 (use-package org
   :elpaca nil
+  :init
+  (setq time-stamp-active t
+        time-stamp-start "#\\+modified: [ \t]*"
+        time-stamp-end "$"
+        time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
+  (add-hook 'before-save-hook 'time-stamp)
   :config
+  (require 'org-crypt)
+  (require 'org-agenda)
+  (require 'org-capture)
   (setq
    org-crypt-disable-auto-save t
    org-log-into-drawer "LOGBOOK"
@@ -656,8 +670,11 @@ targets."
    org-tags-exclude-from-inheritance '("crypt"
                                        "moc"
                                        "inbox")
+   org-crypt-disable-auto-save t
+   org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu")
    org-tags-column -77
    org-directory "~/org"
+   org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a."))
    org-roam-directory org-directory
    org-archive-location "archive/%s_archive::"
    org-default-notes-file (concat org-directory "/20221222131538-personal.org")
@@ -666,6 +683,7 @@ targets."
    org-priority-highest '?A
    org-priority-lowest  '?C
    org-priority-default '?C
+   org-hide-emphasis-markers t
    org-priority-start-cycle-with-default t
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
                         (?B :foreground "#ECBE7B" :weight normal)
@@ -679,7 +697,10 @@ targets."
      ("REVIEW" :foreground "#00BFFF" :weight bold :inverse-video t)
      ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
-     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))))
+     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t)))
+  org-capture-templates
+  '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
+    ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
 
 (use-package org-roam
   :after org
@@ -701,6 +722,35 @@ targets."
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
+
+(use-package org-kanban)
+
+(use-package org-appear
+  :elpaca (org-appear
+           :host "github.com"
+           :repo "awth13/org-appear")
+  :config
+  (add-hook 'org-mode-hook 'org-appear-mode))
+
+
+(use-package holidays
+  :after org-agenda
+  :config
+  (require 'polish-holidays)
+  (require 'german-holidays)
+  (setq calendar-holidays
+        (append '((holiday-fixed 1 1 "New Year's Day")
+                  (holiday-fixed 2 14 "Valentine's Day")
+                  (holiday-fixed 4 1 "April Fools' Day")
+                  (holiday-fixed 10 31 "Halloween")
+                  (holiday-easter-etc)
+                  (holiday-fixed 12 25 "Christmas")
+                  (solar-equinoxes-solstices))
+                ustawowo-wolne-od-pracy
+                czas-letni
+                swieta-panstwowe-pozostałe-święta
+                holiday-german-holidays)))
+
 
 (use-package markdown-mode)
 

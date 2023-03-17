@@ -549,9 +549,12 @@ targets."
   ;; (setq consult-project-function nil)
   )
 
+(use-package posframe)
+
 (use-package ace-window
   :bind ("M-o" . ace-window)
   :config
+  (require 'posframe)
   (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s)
 	aw-dispatch-alist'((?k aw-delete-window "Delete Window")
 			   (?m aw-swap-window "Swap Windows")
@@ -564,7 +567,9 @@ targets."
 			   (?v aw-split-window-vert "Split Vert Window")
 			   (?z aw-split-window-horz "Split Horz Window")
 			   (?K delete-other-windows "Delete Other Windows")
-			   (?? aw-show-dispatch-help))))
+			   (?? aw-show-dispatch-help)))
+  (custom-set-faces '(aw-leading-char-face ((t (:foreground "red" :weight bold :height 2.5)))))
+(ace-window-posframe-mode 1))
 
 (use-package perject
   :after savehist

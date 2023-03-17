@@ -759,9 +759,9 @@ targets."
 
 (use-package markdown-mode)
 
-(use-package ox-confluence
+(use-package ox-confluence-modern
   :elpaca
-  (ox-confluence
+  (ox-confluence-modern
    :host "github.com"
    :repo "nan0scho1ar/ox-confluence-modern"
    :files ("*.el")))

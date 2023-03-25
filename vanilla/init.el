@@ -43,7 +43,8 @@
 
 (setq-default indent-tabs-mode nil)
 
-(setq auto-save-default t
+(setq custom-file "/dev/null"
+      auto-save-default t
       inhibit-startup-screen t
       tab-width 2
       display-line-numbers-type 'visual
@@ -81,42 +82,43 @@
 (prefer-coding-system 'utf-8)
 
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
-(global-set-key (kbd "C-c w u") 'winner-undo)
-(global-set-key (kbd "C-c w r") 'winner-redo)
+;; (global-set-key (kbd "C-c w u") 'winner-undo)
+;; (global-set-key (kbd "C-c w r") 'winner-redo)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "M-_") 'undo-redo)
 
 (unbind-key (kbd "M-v"))
 (unbind-key (kbd "M-r"))
-
-(defun schrenker/meow-append-to-end-of-line ()
-  "Go to the end of the line and enter insert mode."
-  (interactive)
-  (call-interactively #'meow-line)
-  (call-interactively #'meow-append))
-
-(defun schrenker/meow-insert-at-beginning-of-line ()
-  "Go to the beginnig of the line and enter insert mode."
-  (interactive)
-  (call-interactively #'meow-join)
-  (call-interactively #'meow-append))
-
-(defun schrenker/meow-join-below ()
-  "Join line below to current line"
-  (interactive)
-  (call-interactively #'meow-next)
-  (call-interactively #'meow-join)
-  (call-interactively #'meow-kill))
-
-(defun schrenker/meow-smart-append ()
-  (interactive)
-  (if (eolp)
-      (call-interactively #'meow-insert)
-    (call-interactively #'meow-append)))
 
 (use-package meow
   :init
   (meow-global-mode 1)
   :config
+  (defun schrenker/meow-append-to-end-of-line ()
+    "Go to the end of the line and enter insert mode."
+    (interactive)
+    (call-interactively #'meow-line)
+    (call-interactively #'meow-append))
+
+  (defun schrenker/meow-insert-at-beginning-of-line ()
+    "Go to the beginnig of the line and enter insert mode."
+    (interactive)
+    (call-interactively #'meow-join)
+    (call-interactively #'meow-append))
+
+  (defun schrenker/meow-join-below ()
+    "Join line below to current line"
+    (interactive)
+    (call-interactively #'meow-next)
+    (call-interactively #'meow-join)
+    (call-interactively #'meow-kill))
+
+  (defun schrenker/meow-smart-append ()
+    (interactive)
+    (if (eolp)
+        (call-interactively #'meow-insert)
+      (call-interactively #'meow-append)))
+
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key)
   (meow-leader-define-key
@@ -149,6 +151,7 @@
    '("-" . negative-argument)
    '("#" . universal-argument)
    '(";" . meow-reverse)
+   '(":" . meow-goto-line)
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
    '("'" . repeat)
@@ -163,7 +166,7 @@
    '("d" . meow-delete)
    '("D" . meow-backward-delete)
    '("e" . meow-line)
-   '("E" . meow-goto-line)
+   '("E" . ignore)
    '("f" . meow-find)
    '("g" . meow-cancel-selection)
    '("G" . meow-grab)
@@ -205,7 +208,7 @@
 
 
   (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
-  (add-hook 'elpaca-ui-mode-hook (meow-motion-mode 1))
+  (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t

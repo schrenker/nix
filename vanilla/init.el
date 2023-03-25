@@ -41,6 +41,11 @@
 
 (elpaca-wait)
 
+(use-package exec-path-from-shell
+  :config
+  (when (or (memq window-system '(mac ns x)) (daemonp))
+    (exec-path-from-shell-initialize)))
+
 (setq-default indent-tabs-mode nil)
 
 (setq custom-file "/dev/null"

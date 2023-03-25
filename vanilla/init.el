@@ -87,13 +87,14 @@
 (prefer-coding-system 'utf-8)
 
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
-;; (global-set-key (kbd "C-c w u") 'winner-undo)
-;; (global-set-key (kbd "C-c w r") 'winner-redo)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "M-_") 'undo-redo)
 
 (unbind-key (kbd "M-v"))
 (unbind-key (kbd "M-r"))
+(unbind-key (kbd "<f1>"))
+(unbind-key (kbd "<f2>"))
+(unbind-key (kbd "<f10>"))
 
 (use-package meow
   :init
@@ -233,10 +234,14 @@
 
 (use-package hydra
   :config
-  (defhydra window (global-map "C-c w")
+  (defhydra hydra-window (global-map "C-c w")
             "Window"
             ("u" winner-undo "undo")
-            ("r" winner-redo "redo")))
+            ("r" winner-redo "redo"))
+  (defhydra hydra-text-scale (global-map "<f1>")
+    "Text Zoom"
+    ("+" text-scale-increase "Zoom In")
+    ("-" text-scale-decrease "Zoom Out")))
 
 ;; Enable vertico
 (use-package vertico

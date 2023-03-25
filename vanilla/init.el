@@ -226,6 +226,13 @@
                                 (?d . defun)
                                 (?. . sentence))))
 
+(use-package hydra
+  :config
+  (defhydra window (global-map "C-c w")
+            "Window"
+            ("u" winner-undo "undo")
+            ("r" winner-redo "redo")))
+
 ;; Enable vertico
 (use-package vertico
   :init
@@ -559,7 +566,7 @@ targets."
 			   (?K delete-other-windows "Delete Other Windows")
 			   (?? aw-show-dispatch-help)))
   (custom-set-faces '(aw-leading-char-face ((t (:foreground "red" :weight bold :height 2.5)))))
-(ace-window-posframe-mode 1))
+  (ace-window-posframe-mode 1))
 
 (use-package perject
   :after savehist

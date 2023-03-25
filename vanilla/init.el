@@ -307,6 +307,42 @@
   ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
 
+(use-package corfu
+  :bind (:map corfu-map
+              ("TAB" . corfu-next)
+              ("<tab>" . corfu-next)
+              ("[tab]" . corfu-next)
+              ("S-TAB" . corfu-previous)
+              ("<backtab>" . corfu-previous)
+              ("[backtab]" . corfu-previous)
+              ("S-SPC" . corfu-insert-separator)
+              ("C-S-n" . corfu-move-to-minibuffer))
+
+  :init
+  ;; Auto-completion settings, must be set before calling `global-corfu-mode'.
+  (setq corfu-auto t
+        corfu-auto-delay 0.1
+        corfu-auto-prefix 3
+        corfu-excluded-modes '(erc-mode
+                               circe-mode
+                               help-mode
+                               gud-mode
+                               vterm-mode))
+  :config
+;  (add-to-list 'completion-styles 'initials t)
+  (setq corfu-cycle t
+        corfu-separator ?\s
+        corfu-preselect 'prompt
+        corfu-count 16
+        corfu-max-width 120
+        corfu-on-exact-match nil
+        corfu-preview-current 'insert
+        corfu-quit-at-boundary 'separator
+        corfu-quit-no-match 'separator
+        tab-always-indent 'complete)
+  (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
+  (global-corfu-mode))
+
 (use-package which-key
   :config
   (which-key-mode))

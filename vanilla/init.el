@@ -792,9 +792,10 @@ targets."
 (use-package holidays
   :elpaca nil
   :after org-agenda
-  :config
+  :init
   (require 'polish-holidays)
   (require 'german-holidays)
+  :config
   (setq calendar-holidays
         (append '((holiday-fixed 1 1 "New Year's Day")
                   (holiday-fixed 2 14 "Valentine's Day")

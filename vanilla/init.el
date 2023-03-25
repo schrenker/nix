@@ -740,8 +740,16 @@ targets."
   :config
   (add-hook 'org-mode-hook 'org-appear-mode))
 
+(use-package polish-holidays
+  :elpaca (polish-holidays
+           :host "github.com"
+           :repo "mikolajb/emacs-polish-holidays"
+           :main "polish-holidays.el"))
+
+(use-package german-holidays)
 
 (use-package holidays
+  :elpaca nil
   :after org-agenda
   :config
   (require 'polish-holidays)

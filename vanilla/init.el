@@ -95,6 +95,8 @@
 (unbind-key (kbd "<f2>"))
 (unbind-key (kbd "<f10>"))
 
+(set-frame-font "JetBrains Mono 13" nil t)
+
 (use-package meow
   :init
   (meow-global-mode 1)

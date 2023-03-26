@@ -333,7 +333,12 @@
                                gud-mode
                                vterm-mode))
   :config
-;  (add-to-list 'completion-styles 'initials t)
+  (defun corfu-move-to-minibuffer ()
+    (interactive)
+    (let ((completion-extra-properties corfu--extra)
+          completion-cycle-threshold completion-cycling)
+      (apply #'consult-completion-in-region completion-in-region--data)))
+                                        ;  (add-to-list 'completion-styles 'initials t)
   (setq corfu-cycle t
         corfu-separator ?\s
         corfu-preselect 'prompt
@@ -346,6 +351,54 @@
         tab-always-indent 'complete)
   (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
   (global-corfu-mode))
+
+(use-package cape
+  :after corfu
+  ;; Bind dedicated completion commands
+  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+  :commands
+  (completion-at-point ;; capf
+   complete-tag       ;; etags
+   cape-dabbrev       ;; or dabbrev-completion
+   cape-history
+   cape-file
+   cape-keyword
+   cape-symbol
+   cape-abbrev
+   cape-ispell
+   cape-line
+   cape-dict
+   cape-sgml
+   cape-rfc1345)
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-history)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  (add-to-list 'completion-at-point-functions #'cape-sgml)
+  (add-to-list 'completion-at-point-functions #'cape-rfc1345)
+  (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  (add-to-list 'completion-at-point-functions #'cape-ispell)
+  (add-to-list 'completion-at-point-functions #'cape-dict)
+  (add-to-list 'completion-at-point-functions #'cape-symbol))
+                                        ;(add-to-list 'completion-at-point-functions #'cape-line))
+
+(use-package kind-icon
+  :commands kind-icon-margin-formatter
+  :init
+  (add-hook 'corfu-margin-formatters #'kind-icon-margin-formatter)
+  :config
+  (setq kind-icon-default-face 'corfu-default
+        kind-icon-blend-background t
+        kind-icon-blend-frac 0.2))
+
+(use-package dabbrev
+  :after corfu
+  :elpaca nil
+  :config
+  (setq dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")
+        read-extended-command-predicate #'command-completion-default-include-p))
 
 (use-package which-key
   :config

@@ -96,7 +96,8 @@
 (unbind-key (kbd "<f2>"))
 (unbind-key (kbd "<f10>"))
 
-(set-frame-font "JetBrains Mono 13" nil t)
+(add-hook 'server-after-make-frame-hook (lambda ()
+                                          (set-frame-font "JetBrains Mono 13" nil t)))
 
 (use-package meow
   :init

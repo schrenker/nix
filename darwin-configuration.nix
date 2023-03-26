@@ -14,7 +14,7 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
   environment.shells = with pkgs; [ bashInteractive fish zsh ];
-  # first time requires 'chsh -s /run/current-system/sw/bin/fish' after that to set up fish
+  # first time requires 'chsh -s /etc/profiles/per-user/sebastian/bin/fish' after that to set up fish
 
   environment.variables.EDITOR = "vi";
 
@@ -45,22 +45,16 @@
     "bartender"
     "cloudflare-warp"
     "crossover"
-    "font-ibm-plex-mono"
     "font-jetbrains-mono"
-    "font-juliamono"
-    "font-overpass"
+    "font-jetbrains-mono-nerd-font"
     "hazeover"
     "karabiner-elements"
     "logitech-options"
     "lulu"
-    "netspot"
     "numi"
-    "podman-desktop"
-    "raspberry-pi-imager"
     "raycast"
+    "syncthing"
     "synologyassistant"
-    "utm"
-    "wireshark"
     "zsa-wally"
   ];
   homebrew.taps = [
@@ -84,10 +78,8 @@
     "Flow" = 1423210932;
     "Hush" = 1544743900;
     "ImageFinder for Safari" = 1514863337;
-    # "Microsoft Excel " = 462058435;
-    # "Microsoft PowerPoint " = 462062816;
     "Microsoft Remote Desktop" = 1295203466;
-    # "Microsoft Word " = 462054704;
+    "Microsoft To Do" = 1274495053;
     "Noir" = 1592917505;
     "Sorted" = 1306893526;
     "SponsorBlock for YouTube - Skip Sponsorships" = 1573461917;
@@ -134,6 +126,8 @@
     if [ ! -d /Applications/Sorted.app ]; then
         mv /Applications/Sorted* /Applications/Sorted.app
     fi
+
+    cp -fav ~/.nixpkgs/dotfiles/beorg-config.org ~/org/init.org
   '';
 
   security.pam.enableSudoTouchIdAuth = true;

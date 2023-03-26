@@ -2,6 +2,7 @@
 let unstable = import <unstable> { config = { allowUnfree = true; }; };
 in
 {
+
   home.stateVersion = "22.05";
   home.username = "sebastian";
   home.homeDirectory = "/Users/sebastian";
@@ -18,15 +19,14 @@ in
     git
     git-crypt
     gnupg
-    go-task
     kind
     kubectl
     kubectx
     jq
-    neofetch
     nix-direnv
     nodejs
     pinentry_mac
+    powershell
     ripgrep
     tmux
     wget
@@ -104,6 +104,7 @@ in
     ".config/iterm2/com.googlecode.iterm2.plist".source =
       config.lib.file.mkOutOfStoreSymlink
         ./dotfiles/iterm2/com.googlecode.iterm2.plist;
+
     "Library/Application Support/iTerm2/Scripts/AutoLaunch/auto_dark_mode.py".source =
       config.lib.file.mkOutOfStoreSymlink ./dotfiles/iterm2/auto_dark_mode.py;
 
@@ -113,4 +114,5 @@ in
     ".ssh/config".source =
       config.lib.file.mkOutOfStoreSymlink ./secrets/ssh_config;
   };
+
 }

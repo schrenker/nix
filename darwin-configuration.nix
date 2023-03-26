@@ -69,12 +69,12 @@
     "homebrew/cask-versions"
     "homebrew/cask-drivers"
     "homebrew/cask-fonts"
-    "PlayCover/playcover"
+    "homebrew/services"
   ];
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
   homebrew.extraConfig = ''
-    brew "emacs-plus", args: ["with-imagemagick", "with-no-frame-refocus", "with-native-comp", "with-nobu417-big-sur-icon", "with-xwidgets"]
+    brew "emacs-plus@30", args: ["with-dbus", "with-mailutils", "with-no-frame-refocus", "with-xwidgets", "with-imagemagick", "with-native-comp", "with-nobu417-big-sur-icon", "with-poll"]
   '';
   homebrew.masApps = {
     "Amphetamine" = 937984704;

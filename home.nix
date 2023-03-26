@@ -42,7 +42,7 @@ in
 
     shellAliases = {
       wget = "wget --hsts-file ~/.config/wget/wget-hsts";
-      vi = "TERM=xterm-new emacsclient -nw";
+      vi = "/opt/homebrew/bin/emacsclient -c -a emacs $argv &>/dev/null";
       nQ = "networkQuality";
       fixproj = "rm ~/.config/emacs/.local/cache/treemacs-persist";
       docker = "podman";

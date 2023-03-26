@@ -887,4 +887,6 @@ targets."
 (use-package nix-mode
   :mode "\\.nix\\'")
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (elpaca-process-queues)

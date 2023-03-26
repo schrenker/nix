@@ -52,6 +52,7 @@
       auto-save-default t
       inhibit-startup-screen t
       tab-width 2
+      load-prefer-newer t
       display-line-numbers-type 'visual
       scroll-margin 5
       backup-by-copying t      ; don't clobber symlinks

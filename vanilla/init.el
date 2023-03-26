@@ -5,9 +5,9 @@
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-			      :ref nil
-			      :files (:defaults (:exclude "extensions"))
-			      :build (:not elpaca--activate-package)))
+                              :ref nil
+                              :files (:defaults (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
 (when-let ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
            (build (expand-file-name "elpaca/" elpaca-builds-directory))
            (order (cdr elpaca-order))
@@ -303,11 +303,10 @@
 (use-package marginalia
   ;; Either bind `marginalia-cycle' globally or only in the minibuffer
   :bind (:map minibuffer-local-map
-	      ("M-A" . marginalia-cycle))
+              ("M-A" . marginalia-cycle))
 
   ;; The :init configuration is always executed (Not lazy!)
   :init
-
   ;; Must be in the :init section of use-package such that the mode gets
   ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
@@ -379,7 +378,7 @@
                                                 (bg-paren-match bg-magenta-intense)
                                                 (underline-paren-match fg-main)
 
-                                                (fringe bg-blue-nuanced)        
+                                                (fringe bg-blue-nuanced)
                                                 ;; And expand the preset here.  Note that the ,@ works because
                                                 ;; we use the backtick for this list, instead of a straight
                                                 ;; quote.
@@ -392,10 +391,10 @@
 (if (eq system-type 'darwin)
     (progn
       (defun schrenker/apply-theme (appearance)
-	(mapc #'disable-theme custom-enabled-themes)
-	(pcase appearance
-	  ('light (load-theme 'modus-operandi-tinted t))
-	  ('dark (load-theme 'modus-vivendi-tinted t))))
+        (mapc #'disable-theme custom-enabled-themes)
+        (pcase appearance
+          ('light (load-theme 'modus-operandi-tinted t))
+          ('dark (load-theme 'modus-vivendi-tinted t))))
       (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
       (schrenker/apply-theme ns-system-appearance))
   (load-theme 'modus-operandi-tinted t))
@@ -405,13 +404,13 @@
 
 (use-package eat
   :elpaca (eat
-	   :host "codeberg.org"
-	   :repo "akib/emacs-eat"
+           :host "codeberg.org"
+           :repo "akib/emacs-eat"
            :files ("*.el" ("term" "term/*.el") "*.texi"
-		   "*.ti" ("terminfo/e" "terminfo/e/*")
-		   ("terminfo/65" "terminfo/65/*")
-		   ("integration" "integration/*")
-		   (:exclude ".dir-locals.el" "*-tests.el")))
+                   "*.ti" ("terminfo/e" "terminfo/e/*")
+                   ("terminfo/65" "terminfo/65/*")
+                   ("integration" "integration/*")
+                   (:exclude ".dir-locals.el" "*-tests.el")))
   :config
   (setq eat-term-name "xterm-256color")
   ;; For `eat-eshell-mode'.
@@ -420,73 +419,6 @@
 (use-package inheritenv
   :config
   (inheritenv-add-advice #'with-temp-buffer))
-
-(use-package embark
-  :bind
-  (("M-." . embark-act)         ;; pick some comfortable binding
-   ("C-." . embark-dwim)        ;; good alternative: M-.
-   ("C-h b" . embark-bindings)) ;; alternative for `describe-bindings'
-
-  :init
-
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-
-  ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
-  ;; strategy, if you want to see the documentation from multiple providers.
-  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
-
-  :config
-
-  (defun embark-which-key-indicator ()
-    "An embark indicator that displays keymaps using which-key.
-The which-key help message will show the type and value of the
-current target followed by an ellipsis if there are further
-targets."
-    (lambda (&optional keymap targets prefix)
-      (if (null keymap)
-          (which-key--hide-popup-ignore-command)
-        (which-key--show-keymap
-         (if (eq (plist-get (car targets) :type) 'embark-become)
-             "Become"
-           (format "Act on %s '%s'%s"
-                   (plist-get (car targets) :type)
-                   (embark--truncate-target (plist-get (car targets) :target))
-                   (if (cdr targets) "…" "")))
-         (if prefix
-             (pcase (lookup-key keymap prefix 'accept-default)
-               ((and (pred keymapp) km) km)
-               (_ (key-binding prefix 'accept-default)))
-           keymap)
-         nil nil t (lambda (binding)
-                     (not (string-suffix-p "-argument" (cdr binding))))))))
-
-  (setq embark-indicators
-        '(embark-which-key-indicator
-          embark-highlight-indicator
-          embark-isearch-highlight-indicator))
-
-  (defun embark-hide-which-key-indicator (fn &rest args)
-    "Hide the which-key indicator immediately when using the completing-read prompter."
-    (which-key--hide-popup-ignore-command)
-    (let ((embark-indicators
-           (remq #'embark-which-key-indicator embark-indicators)))
-      (apply fn args)))
-
-  (advice-add #'embark-completing-read-prompter
-              :around #'embark-hide-which-key-indicator)
-
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
-
-;; ;; Consult users will also want the embark-consult package.
-(use-package embark-consult
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Example configuration for Consult
 (use-package consult
@@ -605,6 +537,73 @@ targets."
   ;;;; 1. project.el (the default)
   (setq consult-project-function   #'consult--default-project-function))
 
+(use-package embark
+  :bind
+  (("M-." . embark-act)         ;; pick some comfortable binding
+   ("C-." . embark-dwim)        ;; good alternative: M-.
+   ("C-h b" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
+  ;; strategy, if you want to see the documentation from multiple providers.
+  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+  :config
+
+  (defun embark-which-key-indicator ()
+    "An embark indicator that displays keymaps using which-key.
+The which-key help message will show the type and value of the
+current target followed by an ellipsis if there are further
+targets."
+    (lambda (&optional keymap targets prefix)
+      (if (null keymap)
+          (which-key--hide-popup-ignore-command)
+        (which-key--show-keymap
+         (if (eq (plist-get (car targets) :type) 'embark-become)
+             "Become"
+           (format "Act on %s '%s'%s"
+                   (plist-get (car targets) :type)
+                   (embark--truncate-target (plist-get (car targets) :target))
+                   (if (cdr targets) "…" "")))
+         (if prefix
+             (pcase (lookup-key keymap prefix 'accept-default)
+               ((and (pred keymapp) km) km)
+               (_ (key-binding prefix 'accept-default)))
+           keymap)
+         nil nil t (lambda (binding)
+                     (not (string-suffix-p "-argument" (cdr binding))))))))
+
+  (setq embark-indicators
+        '(embark-which-key-indicator
+          embark-highlight-indicator
+          embark-isearch-highlight-indicator))
+
+  (defun embark-hide-which-key-indicator (fn &rest args)
+    "Hide the which-key indicator immediately when using the completing-read prompter."
+    (which-key--hide-popup-ignore-command)
+    (let ((embark-indicators
+           (remq #'embark-which-key-indicator embark-indicators)))
+      (apply fn args)))
+
+  (advice-add #'embark-completing-read-prompter
+              :around #'embark-hide-which-key-indicator)
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; ;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
 (use-package posframe)
 
 (use-package ace-window
@@ -612,18 +611,18 @@ targets."
   :config
   (require 'posframe)
   (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s)
-	aw-dispatch-alist'((?k aw-delete-window "Delete Window")
-			   (?m aw-swap-window "Swap Windows")
-			   (?M aw-move-window "Move Window")
-			   (?x aw-copy-window "Copy Window")
-			   (?b aw-switch-buffer-in-window "Select Buffer")
-			   (?\M-o aw-flip-window)
-			   (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
-			   (?w aw-split-window-fair "Split Fair Window")
-			   (?v aw-split-window-vert "Split Vert Window")
-			   (?z aw-split-window-horz "Split Horz Window")
-			   (?K delete-other-windows "Delete Other Windows")
-			   (?? aw-show-dispatch-help)))
+        aw-dispatch-alist'((?k aw-delete-window "Delete Window")
+                           (?m aw-swap-window "Swap Windows")
+                           (?M aw-move-window "Move Window")
+                           (?x aw-copy-window "Copy Window")
+                           (?b aw-switch-buffer-in-window "Select Buffer")
+                           (?\M-o aw-flip-window)
+                           (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
+                           (?w aw-split-window-fair "Split Fair Window")
+                           (?v aw-split-window-vert "Split Vert Window")
+                           (?z aw-split-window-horz "Split Horz Window")
+                           (?K delete-other-windows "Delete Other Windows")
+                           (?? aw-show-dispatch-help)))
   (custom-set-faces '(aw-leading-char-face ((t (:foreground "red" :weight bold :height 2.5)))))
   (ace-window-posframe-mode 1))
 
@@ -639,25 +638,25 @@ targets."
         perject-switch-to-new-collection t
         perject-save-on-exit 'all
         perject-reload-default '(keep nil))
-  
+
   (perject-mode 1)
   :bind
   (:map perject-mode-map
         ("C-<tab> C-<tab> c" . perject-create)
-	      ("C-<tab> C-<tab> r" . perject-rename)
-	      ("C-<tab> C-<tab> R" . perject-rename-collection)
-	      ("C-<tab> C-<tab> f" . perject-create-new-frame)
+        ("C-<tab> C-<tab> r" . perject-rename)
+        ("C-<tab> C-<tab> R" . perject-rename-collection)
+        ("C-<tab> C-<tab> f" . perject-create-new-frame)
         ("C-<tab> C-<tab> K" . perject-delete)
         ("C-<tab> C-<tab> E" . perject-open-close-or-reload)
         ("C-<tab> C-<tab> s" . perject-sort)
-	      ("C-<tab> C-<tab> n" . perject-next-project)
-	      ("C-<tab> C-<tab> p" . perject-previous-project)
-	      ("C-<tab> C-<tab> N" . perject-next-collection)
-	      ("C-<tab> C-<tab> P" . perject-previous-collection)
-	      ("C-<tab> C-<tab> TAB" . perject-switch)
-	      ("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
-	      ("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
-	      ("C-<tab> C-<tab> w" . perject-save)))
+        ("C-<tab> C-<tab> n" . perject-next-project)
+        ("C-<tab> C-<tab> p" . perject-previous-project)
+        ("C-<tab> C-<tab> N" . perject-next-collection)
+        ("C-<tab> C-<tab> P" . perject-previous-collection)
+        ("C-<tab> C-<tab> TAB" . perject-switch)
+        ("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
+        ("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
+        ("C-<tab> C-<tab> w" . perject-save)))
 
 (use-package perject-consult
   :elpaca
@@ -685,11 +684,11 @@ targets."
   (add-hook 'ibuffer-hook #'perject-ibuffer-enable-filter-by-project)
   :bind
   (:map ibuffer-mode-map
-	("a" . perject-ibuffer-add-to-project)
-	("K" . perject-ibuffer-remove-from-project)
-	("<next>" . perject-ibuffer-print-buffer-projects)
-	("/ y" . ibuffer-filter-by-collection)
-	("/ u" . ibuffer-filter-by-project)))
+        ("a" . perject-ibuffer-add-to-project)
+        ("K" . perject-ibuffer-remove-from-project)
+        ("<next>" . perject-ibuffer-print-buffer-projects)
+        ("/ y" . ibuffer-filter-by-collection)
+        ("/ u" . ibuffer-filter-by-project)))
 
 (use-package perject-tab
   :elpaca
@@ -702,16 +701,16 @@ targets."
   (perject-tab-mode 1)
   :bind
   (:map perject-tab-mode-map
-	("C-<tab> s" . perject-tab-recent)
-	("C-<tab> D" . perject-tab-previous)
-	("C-<tab> d" . perject-tab-next)
-	("C-<tab> f" . perject-tab-set)
-	("C-<tab> F" . perject-tab-cycle-state)
-	("C-<tab> x" . perject-tab-create)
-	("C-<tab> X" . perject-tab-delete)
-	("C-<tab> c" . perject-tab-reset)
-	("C-<tab> v" . perject-tab-increment-index)
-	("C-<tab> V" . perject-tab-decrement-index)))
+        ("C-<tab> s" . perject-tab-recent)
+        ("C-<tab> D" . perject-tab-previous)
+        ("C-<tab> d" . perject-tab-next)
+        ("C-<tab> f" . perject-tab-set)
+        ("C-<tab> F" . perject-tab-cycle-state)
+        ("C-<tab> x" . perject-tab-create)
+        ("C-<tab> X" . perject-tab-delete)
+        ("C-<tab> c" . perject-tab-reset)
+        ("C-<tab> v" . perject-tab-increment-index)
+        ("C-<tab> V" . perject-tab-decrement-index)))
 
 (use-package org
   :elpaca nil
@@ -770,7 +769,7 @@ targets."
   (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
                                       :immediate-finish t))
-	org-roam-directory (file-truename "~/org"))
+        org-roam-directory (file-truename "~/org"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)

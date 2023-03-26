@@ -92,7 +92,6 @@
 
 (unbind-key (kbd "M-v"))
 (unbind-key (kbd "M-r"))
-(unbind-key (kbd "<f1>"))
 (unbind-key (kbd "<f2>"))
 (unbind-key (kbd "<f10>"))
 
@@ -241,10 +240,10 @@
 (use-package hydra
   :config
   (defhydra hydra-window (global-map "C-c w")
-            "Window"
-            ("u" winner-undo "undo")
-            ("r" winner-redo "redo"))
-  (defhydra hydra-text-scale (global-map "<f1>")
+    "Window"
+    ("u" winner-undo "undo")
+    ("r" winner-redo "redo"))
+  (defhydra hydra-text-scale (global-map "<f2>")
     "Text Zoom"
     ("+" text-scale-increase "Zoom In")
     ("-" text-scale-decrease "Zoom Out")))

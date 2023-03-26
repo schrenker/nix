@@ -125,6 +125,11 @@
         (call-interactively #'meow-insert)
       (call-interactively #'meow-append)))
 
+  (defun schrenker/meow-true-escape ()
+    (interactive)
+    (call-interactively #'meow-insert-exit)
+    (call-interactively #'corfu-quit))
+
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key)
   (meow-leader-define-key
@@ -212,9 +217,10 @@
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection))
 
-
   (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
+
+  (define-key meow-insert-state-keymap [escape] 'schrenker/meow-true-escape)
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t

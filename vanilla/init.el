@@ -422,27 +422,15 @@
   (global-set-key (kbd "C-h x") #'helpful-command)
   (global-set-key (kbd "C-h F") #'helpful-function))
 
-(use-package modus-themes
-  :config
-  (setq modus-themes-bold-constructs t
-        modus-themes-italic-constructs t
-        modus-themes-mixed-fonts t
-        modus-themes-org-blocks 'tinted-background
-        modus-themes-mode-line '(accented borderless padded)
-        org-fontify-whole-block-delimiter-line t
-        modus-themes-common-palette-overrides `(
-                                                ;; From the section "Make the mode line borderless"
-                                                (border-mode-line-active bg-mode-line-active)
-                                                (border-mode-line-inactive bg-mode-line-inactive)
-                                                ;; From the section "Make matching parenthesis more or less intense"
-                                                (bg-paren-match bg-magenta-intense)
-                                                (underline-paren-match fg-main)
-
-                                                (fringe bg-blue-nuanced)
-                                                ;; And expand the preset here.  Note that the ,@ works because
-                                                ;; we use the backtick for this list, instead of a straight
-                                                ;; quote.
-                                                ,@modus-themes-preset-overrides-faint)))
+(use-package solarized-theme
+  :init
+  (setq solarized-use-more-italic t
+        solarized-scale-org-headlines nil
+        solarized-height-minus-1 1.0
+        solarized-height-plus-1 1.0
+        solarized-height-plus-2 1.0
+        solarized-height-plus-3 1.0
+        solarized-height-plus-4 1.0))
 
 (use-package solaire-mode
   :config
@@ -453,11 +441,11 @@
       (defun schrenker/apply-theme (appearance)
         (mapc #'disable-theme custom-enabled-themes)
         (pcase appearance
-          ('light (load-theme 'modus-operandi-tinted t))
-          ('dark (load-theme 'modus-vivendi-tinted t))))
+          ('light (load-theme 'solarized-light t))
+          ('dark (load-theme 'solarized-dark t))))
       (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
       (schrenker/apply-theme ns-system-appearance))
-  (load-theme 'modus-operandi-tinted t))
+  (load-theme 'solarized-light t))
 
 (setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))

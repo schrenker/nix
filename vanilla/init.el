@@ -97,7 +97,9 @@
 (unbind-key (kbd "<f10>"))
 
 (add-hook 'server-after-make-frame-hook (lambda ()
-                                          (set-frame-font "JetBrains Mono 13" nil t)))
+                                          (if (eq system-type 'gnu/linux)
+                                              (set-frame-font "JetBrains Mono 10" nil t)
+                                            (set-frame-font "JetBrains Mono 13" nil t))))
 
 (use-package meow
   :init
@@ -430,22 +432,23 @@
         solarized-height-plus-1 1.0
         solarized-height-plus-2 1.0
         solarized-height-plus-3 1.0
-        solarized-height-plus-4 1.0))
+        solarized-height-plus-4 1.0)
+  :config
+  (if (eq system-type 'darwin)
+      (progn
+        (defun schrenker/apply-theme (appearance)
+          (mapc #'disable-theme custom-enabled-themes)
+          (pcase appearance
+            ('light (load-theme 'solarized-light t))
+            ('dark (load-theme 'solarized-dark t))))
+        (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
+        (schrenker/apply-theme ns-system-appearance))
+    (load-theme 'solarized-light t)))
 
 (use-package solaire-mode
   :config
   (solaire-global-mode +1))
 
-(if (eq system-type 'darwin)
-    (progn
-      (defun schrenker/apply-theme (appearance)
-        (mapc #'disable-theme custom-enabled-themes)
-        (pcase appearance
-          ('light (load-theme 'solarized-light t))
-          ('dark (load-theme 'solarized-dark t))))
-      (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
-      (schrenker/apply-theme ns-system-appearance))
-  (load-theme 'solarized-light t))
 
 (setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))

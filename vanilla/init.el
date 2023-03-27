@@ -809,10 +809,10 @@ targets."
      ("REVIEW" :foreground "#00BFFF" :weight bold :inverse-video t)
      ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
-     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t)))
+     ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))
   org-capture-templates
   '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
-    ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
+    ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1))))
 
 (use-package org-roam
   :after org

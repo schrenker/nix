@@ -96,6 +96,8 @@
 (unbind-key (kbd "<f2>"))
 (unbind-key (kbd "<f10>"))
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (add-hook 'server-after-make-frame-hook (lambda ()
                                           (if (eq system-type 'gnu/linux)
                                               (set-frame-font "JetBrains Mono 10" nil t)
@@ -846,36 +848,34 @@ targets."
   :config
   (add-hook 'org-mode-hook 'org-appear-mode))
 
+(use-package german-holidays)
+
 (use-package polish-holidays
   :elpaca (polish-holidays
            :host "github.com"
            :repo "mikolajb/emacs-polish-holidays"
            :main "polish-holidays.el"))
 
-(use-package german-holidays)
-
 (use-package holidays
   :elpaca nil
-  :after org-agenda
+  ;; ;; I can't seem to get this thing to load properly. Temporary workaround.
+  ;; :load-path "elpaca/repos/emacs-polish-holidays"
+  :after (org-agenda polish-holidays german-holidays)
   :init
   (require 'polish-holidays)
   (require 'german-holidays)
   :config
-  (setq calendar-holidays
-        (append '((holiday-fixed 1 1 "New Year's Day")
+  (setq calendar-holidays '((holiday-fixed 1 1 "New Year's Day")
                   (holiday-fixed 2 14 "Valentine's Day")
                   (holiday-fixed 4 1 "April Fools' Day")
                   (holiday-fixed 10 31 "Halloween")
                   (holiday-easter-etc)
                   (holiday-fixed 12 25 "Christmas")
-                  (solar-equinoxes-solstices))
+                  (solar-equinoxes-solstices)
                 ustawowo-wolne-od-pracy
                 czas-letni
                 swieta-panstwowe-pozostałe-święta
                 holiday-german-holidays)))
-
-
-(use-package markdown-mode)
 
 (use-package ox-confluence-modern
   :elpaca
@@ -884,9 +884,11 @@ targets."
    :repo "nan0scho1ar/ox-confluence-modern"
    :files ("*.el")))
 
+;; Major modes for text/programming
+(use-package markdown-mode)
+
 (use-package nix-mode
   :mode "\\.nix\\'")
 
-(defalias 'yes-or-no-p 'y-or-n-p)
 
 (elpaca-process-queues)

@@ -257,7 +257,7 @@
     ("r" winner-redo "redo"))
   (defhydra hydra-text-scale (global-map "<f2>")
     "Text Zoom"
-    ("+" text-scale-increase "Zoom In")
+    ("=" text-scale-increase "Zoom In")
     ("-" text-scale-decrease "Zoom Out")))
 
 ;; Enable vertico

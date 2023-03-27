@@ -223,6 +223,7 @@
    '("<escape>" . meow-cancel-selection))
 
   (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
+  ;;sometimes normal or insert mode is present where motion mode should be on. This is the fix.
   (add-hook 'elpaca-ui-mode-hook (lambda ()
                                    (meow-normal-mode -1)
                                    (meow-insert-mode -1)
@@ -428,6 +429,7 @@
   :init
   (setq solarized-use-more-italic t
         solarized-scale-org-headlines nil
+        solarized-use-variable-pitch nil
         solarized-height-minus-1 1.0
         solarized-height-plus-1 1.0
         solarized-height-plus-2 1.0

@@ -137,6 +137,30 @@
     (call-interactively #'meow-insert-exit)
     (call-interactively #'corfu-quit))
 
+  (when (eq system-type 'gnu/linux)
+
+    (defun schrenker/wsl-copy-region-to-clipboard (start end)
+      "Copy region to Windows clipboard."
+      (interactive "r")
+      (call-process-region start end "clip.exe" nil 0))
+
+    (defun schrenker/wsl-clipboard-to-string ()
+      "Return Windows clipboard as string."
+      (let ((coding-system-for-read 'dos))
+        (substring				; remove added trailing \n
+         (shell-command-to-string
+          "powershell.exe -Command Get-Clipboard") 0 -1)))
+
+    (defun schrenker/wsl-paste-from-clipboard (arg)
+      "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"
+      (interactive "P")
+      (let ((clip (wsl-clipboard-to-string)))
+        (insert clip)
+        (if arg (kill-new clip))))
+
+    (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
+    (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
+
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key)
   (meow-leader-define-key

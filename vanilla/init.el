@@ -225,11 +225,16 @@
    '("<escape>" . meow-cancel-selection))
 
   (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
-  ;;sometimes normal or insert mode is present where motion mode should be on. This is the fix.
-  (add-hook 'elpaca-ui-mode-hook (lambda ()
-                                   (meow-normal-mode -1)
-                                   (meow-insert-mode -1)
-                                   (meow-motion-mode 1)))
+
+  ;;force meow motion mode in selected modes
+  (mapc (lambda (hook)
+          (add-hook hook (lambda ()
+                           (meow-normal-mode -1)
+                           (meow-insert-mode -1)
+                           (meow-motion-mode 1))))
+        '(elpaca-ui-mode-hook
+          dired-mode-hook))
+
 
   (define-key meow-insert-state-keymap [escape] 'schrenker/meow-true-escape)
 

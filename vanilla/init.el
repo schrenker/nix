@@ -132,11 +132,6 @@
         (call-interactively #'meow-insert)
       (call-interactively #'meow-append)))
 
-  (defun schrenker/meow-true-escape ()
-    (interactive)
-    (call-interactively #'meow-insert-exit)
-    (call-interactively #'corfu-quit))
-
   (when (eq system-type 'gnu/linux)
 
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
@@ -262,8 +257,7 @@
           elpaca-ui-live-update-mode-hook
           dired-mode-hook))
 
-
-  (define-key meow-insert-state-keymap [escape] 'schrenker/meow-true-escape)
+  (add-hook 'meow-insert-exit-hook 'corfu-quit)
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t

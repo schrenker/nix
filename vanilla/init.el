@@ -855,7 +855,10 @@ targets."
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))
   org-capture-templates
   '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
-    ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1))))
+    ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
 
 (use-package org-roam
   :after org

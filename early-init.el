@@ -1,5 +1,9 @@
 ;;; vanilla/early-init.el -*- lexical-binding: t; -*-
 
+(when (boundp 'native-comp-eln-load-path)
+  (startup-redirect-eln-cache (expand-file-name "eln-cache" user-emacs-directory))
+  (setenv "EMACSNATIVELOADPATH" (expand-file-name "eln-cache" user-emacs-directory)))
+
 (setq package-enable-at-startup nil
       user-emacs-directory "~/.cache/emacs")
 

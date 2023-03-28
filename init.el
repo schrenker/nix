@@ -833,6 +833,7 @@ targets."
    org-priority-highest '?A
    org-priority-lowest  '?C
    org-priority-default '?C
+   org-agenda-files '("~/org/")
    org-hide-emphasis-markers t
    org-priority-start-cycle-with-default t
    org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
@@ -848,9 +849,9 @@ targets."
      ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))
-  org-capture-templates
-  '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
-    ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
+   org-capture-templates
+   '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
+     ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
   (add-hook 'org-mode-hook
             (lambda ()
               (add-hook 'after-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
@@ -930,4 +931,4 @@ targets."
 (elpaca-process-queues)
 
 (when (eq system-type 'gnu/linux)
-  (load "secret/work.el" t t))
+  (add-hook 'elpaca-after-init-hook (lambda () (load "secret/work.el" 'noerror 'nomessage))))

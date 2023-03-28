@@ -258,6 +258,7 @@
                            (meow-insert-mode -1)
                            (meow-motion-mode 1))))
         '(elpaca-ui-mode-hook
+          elpaca-ui-live-update-mode-hook
           dired-mode-hook))
 
 

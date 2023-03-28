@@ -142,7 +142,8 @@
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
       "Copy region to Windows clipboard."
       (interactive "r")
-      (call-process-region start end "clip.exe" nil 0))
+      (call-process-region start end "clip.exe" nil 0)
+      (call-interactively #'meow-cancel-selection))
 
     (defun schrenker/wsl-clipboard-to-string ()
       "Return Windows clipboard as string."
@@ -154,7 +155,7 @@
     (defun schrenker/wsl-paste-from-clipboard (arg)
       "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"
       (interactive "P")
-      (let ((clip (wsl-clipboard-to-string)))
+      (let ((clip (schrenker/wsl-clipboard-to-string)))
         (insert clip)
         (if arg (kill-new clip))))
 

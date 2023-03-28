@@ -355,6 +355,8 @@
   (marginalia-mode))
 
 (use-package corfu
+  :elpaca (corfu :files (:defaults "extensions/*"))
+  :demand t
   :bind (:map corfu-map
               ("TAB" . corfu-next)
               ("<tab>" . corfu-next)
@@ -393,7 +395,13 @@
         corfu-quit-no-match 'separator
         tab-always-indent 'complete)
   (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
-  (global-corfu-mode))
+  (global-corfu-mode)
+  (require 'corfu-history)
+  (corfu-history-mode 1)
+  (add-to-list 'savehist-additional-variables 'corfu-history)
+  (require 'corfu-popupinfo)
+  (setq corfu-popupinfo-delay '(1.0 . 1.0))
+  (corfu-popupinfo-mode 1))
 
 (use-package cape
   :after corfu

@@ -247,7 +247,8 @@
    '("X" . meow-sync-grab)
    '("y" . meow-yank)
    '("z" . meow-pop-selection)
-   '("<escape>" . meow-cancel-selection))
+   '("<escape>" . meow-cancel-selection)
+   '("SPC" . ignore)) ; I don't need keypad
 
   (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
 

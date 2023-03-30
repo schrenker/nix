@@ -928,7 +928,10 @@ targets."
 (use-package nix-mode
   :mode "\\.nix\\'")
 
+(use-package go-mode
+  :mode "\\.go\\'")
+
 (elpaca-process-queues)
 
 (when (eq system-type 'gnu/linux)
-  (add-hook 'elpaca-after-init-hook (lambda () (load "secret/work.el" 'noerror 'nomessage))))
+  (add-hook 'elpaca-after-init-hook (lambda () (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))

@@ -46,17 +46,17 @@
   (when (or (memq window-system '(mac ns x)) (daemonp))
     (exec-path-from-shell-initialize)))
 
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil
+              tab-width 4)
 
 (setq custom-file "/dev/null"
-      auto-save-default t
+      ;auto-save-default nil
+      create-lockfiles nil
       inhibit-startup-screen t
-      tab-width 2
       load-prefer-newer t
       display-line-numbers-type 'visual
       scroll-margin 5
       backup-by-copying t      ; don't clobber symlinks
-      backup-directory-alist '(("." . "~/.cache/emacs/backups/"))
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
@@ -70,6 +70,24 @@
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
       initial-frame-alist '((fullscreen . maximized)))
+
+;; thanks xahlee: http://xahlee.info/emacs/emacs/emacs_set_backup_into_a_directory.html
+;; make backup to a designated dir, mirroring the full path
+(defun schrenker/backup-nested-dir-file-path (Fpath)
+  "Return a new file path and create dirs.
+If the new path's directories does not exist, create them.
+version 2022-06-09"
+  (let* (backupRoot backupFilePath)
+    (setq backupRoot (expand-file-name "backup/" user-emacs-directory))
+    ;; remove Windows driver letter in path, e.g. C:
+    (setq backupFilePath
+          (format "%s%s~" backupRoot (replace-regexp-in-string "^[A-Za-z]:/" "" Fpath)))
+    (make-directory
+     (file-name-directory backupFilePath)
+     (file-name-directory backupFilePath))
+    backupFilePath))
+
+(setq make-backup-file-name-function 'schrenker/backup-nested-dir-file-path)
 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)

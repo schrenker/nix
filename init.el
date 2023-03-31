@@ -1,4 +1,4 @@
-;;; vanilla/init.el -*- lexical-binding: t; -*-
+;;; init.el --- Personal configuration file -*- lexical-binding: t; no-byte-compile: t; -*-
 
 (defvar elpaca-installer-version 0.3)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -162,8 +162,7 @@ version 2022-06-09"
       "Return Windows clipboard as string."
       (let ((coding-system-for-read 'dos))
         (substring				; remove added trailing \n
-         (shell-command-to-string
-          "powershell.exe -Command Get-Clipboard") 0 -1)))
+         (shell-command-to-string "powershell.exe -Command Get-Clipboard") 0 -1)))
 
     (defun schrenker/wsl-paste-from-clipboard (arg)
       "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"

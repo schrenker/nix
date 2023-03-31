@@ -1,4 +1,4 @@
-;;; vanilla/early-init.el -*- lexical-binding: t; -*-
+;;; early-init.el --- Early Init File -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setq package-enable-at-startup nil)
 

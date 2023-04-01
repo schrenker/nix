@@ -261,15 +261,8 @@
    '("<escape>" . meow-cancel-selection)
    '("SPC" . ignore)) ; I don't need keypad
 
-  ;;force meow motion mode in selected modes
-  (mapc (lambda (hook)
-          (add-hook hook (lambda ()
-                           (meow-normal-mode -1)
-                           (meow-insert-mode -1)
-                           (meow-motion-mode 1))))
-        '(elpaca-ui-mode-hook
-          elpaca-ui-live-update-mode-hook
-          dired-mode-hook))
+  (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
+  (add-to-list 'meow-mode-state-list '(dired-mode . motion))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
 

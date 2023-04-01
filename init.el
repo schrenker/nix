@@ -377,7 +377,7 @@
     (let ((completion-extra-properties corfu--extra)
           completion-cycle-threshold completion-cycling)
       (apply #'consult-completion-in-region completion-in-region--data)))
-                                        ;  (add-to-list 'completion-styles 'initials t)
+
   (setq corfu-cycle t
         corfu-separator ?\s
         corfu-preselect 'prompt
@@ -411,7 +411,6 @@
    cape-symbol
    cape-abbrev
    cape-ispell
-   cape-line
    cape-dict
    cape-sgml
    cape-rfc1345)
@@ -427,7 +426,6 @@
   (add-to-list 'completion-at-point-functions #'cape-ispell)
   (add-to-list 'completion-at-point-functions #'cape-dict)
   (add-to-list 'completion-at-point-functions #'cape-symbol))
-                                        ;(add-to-list 'completion-at-point-functions #'cape-line))
 
 (use-package kind-icon
   :commands kind-icon-margin-formatter
@@ -562,10 +560,6 @@
          :map minibuffer-local-map
          ("M-s" . consult-history)                 ;; orig. next-matching-history-element
          ("M-r" . consult-history))                ;; orig. previous-matching-history-element
-
-  ;; Enable automatic preview at point in the *Completions* buffer. This is
-  ;; relevant when you use the default completion UI.
-;  :hook (completion-list-mode . consult-preview-at-point-mode)
 
   ;; The :init configuration is always executed (Not lazy)
   :init
@@ -904,16 +898,16 @@ targets."
   (require 'german-holidays)
   :config
   (setq calendar-holidays '((holiday-fixed 1 1 "New Year's Day")
-                  (holiday-fixed 2 14 "Valentine's Day")
-                  (holiday-fixed 4 1 "April Fools' Day")
-                  (holiday-fixed 10 31 "Halloween")
-                  (holiday-easter-etc)
-                  (holiday-fixed 12 25 "Christmas")
-                  (solar-equinoxes-solstices)
-                ustawowo-wolne-od-pracy
-                czas-letni
-                swieta-panstwowe-pozostałe-święta
-                holiday-german-holidays)))
+                            (holiday-fixed 2 14 "Valentine's Day")
+                            (holiday-fixed 4 1 "April Fools' Day")
+                            (holiday-fixed 10 31 "Halloween")
+                            (holiday-easter-etc)
+                            (holiday-fixed 12 25 "Christmas")
+                            (solar-equinoxes-solstices)
+                            ustawowo-wolne-od-pracy
+                            czas-letni
+                            swieta-panstwowe-pozostałe-święta
+                            holiday-german-holidays)))
 
 (use-package ox-confluence-modern
   :elpaca

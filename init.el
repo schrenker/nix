@@ -41,9 +41,11 @@
 
 (elpaca-wait)
 
+(server-start)
+
 (use-package exec-path-from-shell
   :config
-  (when (or (memq window-system '(mac ns x)) (daemonp))
+  (when (or (memq window-system '(mac ns x)))
     (exec-path-from-shell-initialize)))
 
 (setq-default indent-tabs-mode nil
@@ -99,10 +101,9 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(add-hook 'server-after-make-frame-hook (lambda ()
-                                          (if (eq system-type 'gnu/linux)
-                                              (set-frame-font "JetBrains Mono 10" nil t)
-                                            (set-frame-font "JetBrains Mono 13" nil t))))
+(if (eq system-type 'gnu/linux)
+    (set-frame-font "JetBrains Mono 10" nil t)
+  (set-frame-font "JetBrains Mono 13" nil t))
 
 (use-package meow
   :init
@@ -244,8 +245,6 @@
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection)
    '("SPC" . ignore)) ; I don't need keypad
-
-  (add-hook 'server-after-make-frame-hook (meow-global-mode 1))
 
   ;;force meow motion mode in selected modes
   (mapc (lambda (hook)

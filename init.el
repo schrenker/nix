@@ -832,16 +832,16 @@ targets."
    org-agenda-files '("~/org/")
    org-hide-emphasis-markers t
    org-priority-start-cycle-with-default t
-   org-priority-faces '((?A :foreground "#FF6C6B" :weight normal)
-                        (?B :foreground "#ECBE7B" :weight normal)
-                        (?C :foreground "#51AFEF" :weight normal))
+   org-priority-faces '((?A :foreground "#DC322F" :weight normal)
+                        (?B :foreground "#B58900" :weight normal)
+                        (?C :foreground "#6C71C4" :weight normal))
    org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DONE(d/@)" "DELEGATED(e@/@)" "CANCELLED(c@/@)"))
    org-todo-keyword-faces
-   '(("TODO" :foreground "#8741bb" :weight bold :inverse-video t)
-     ("INPROGRESS" :foreground "#98BE65" :weight bold :inverse-video t)
-     ("BLOCKED" :foreground "#DA8548" :weight bold :inverse-video t)
+   '(("TODO" :foreground "#D33682" :weight bold :inverse-video t)
+     ("INPROGRESS" :foreground "#859900" :weight bold :inverse-video t)
+     ("BLOCKED" :foreground "#CB4B16" :weight bold :inverse-video t)
      ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t)
-     ("REVIEW" :foreground "#00BFFF" :weight bold :inverse-video t)
+     ("REVIEW" :foreground "#268BD2" :weight bold :inverse-video t)
      ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
      ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
      ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))

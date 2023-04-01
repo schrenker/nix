@@ -187,7 +187,8 @@
    '("?" . meow-cheatsheet))
   (meow-motion-overwrite-define-key
    ;; custom keybinding for motion state
-   '("<escape>" . ignore))
+   '("<escape>" . ignore)
+   '("SPC" . ignore))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("1" . meow-expand-1)

@@ -771,7 +771,7 @@ targets."
   (:map ibuffer-mode-map
         ("a" . perject-ibuffer-add-to-project)
         ("K" . perject-ibuffer-remove-from-project)
-        ("<next>" . perject-ibuffer-print-buffer-projects)
+        ("SPC" . perject-ibuffer-print-buffer-projects)
         ("/ y" . ibuffer-filter-by-collection)
         ("/ u" . ibuffer-filter-by-project)))
 
@@ -786,16 +786,16 @@ targets."
   (perject-tab-mode 1)
   :bind
   (:map perject-tab-mode-map
-        ("C-<tab> s" . perject-tab-recent)
-        ("C-<tab> D" . perject-tab-previous)
-        ("C-<tab> d" . perject-tab-next)
-        ("C-<tab> f" . perject-tab-set)
-        ("C-<tab> F" . perject-tab-cycle-state)
-        ("C-<tab> x" . perject-tab-create)
-        ("C-<tab> X" . perject-tab-delete)
-        ("C-<tab> c" . perject-tab-reset)
-        ("C-<tab> v" . perject-tab-increment-index)
-        ("C-<tab> V" . perject-tab-decrement-index)))
+        ("C-<tab> o" . perject-tab-recent)
+        ("C-<tab> p" . perject-tab-previous)
+        ("C-<tab> n" . perject-tab-next)
+        ("C-<tab> S" . perject-tab-set)
+        ("C-<tab> s" . perject-tab-cycle-state)
+        ("C-<tab> t" . perject-tab-create)
+        ("C-<tab> T" . perject-tab-delete)
+        ("C-<tab> r" . perject-tab-reset)
+        ("C-<tab> i" . perject-tab-increment-index)
+        ("C-<tab> I" . perject-tab-decrement-index)))
 
 (use-package org
   :elpaca nil

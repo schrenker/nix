@@ -134,6 +134,18 @@
         (call-interactively #'meow-insert)
       (call-interactively #'meow-append)))
 
+  (defmacro schrenker/call-negative (form)
+  `(let ((current-prefix-arg -1))
+     (call-interactively ,form)))
+
+(defun schrenker/meow-find-backwards ()
+  (interactive)
+  (schrenker/call-negative 'meow-find))
+
+(defun schrenker/meow-till-backwards ()
+  (interactive)
+  (schrenker/call-negative 'meow-till))
+
   (when (eq system-type 'gnu/linux)
 
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
@@ -207,6 +219,7 @@
    '("e" . meow-line)
    '("E" . ignore)
    '("f" . meow-find)
+   '("F" . schrenker/meow-find-backwards)
    '("g" . meow-cancel-selection)
    '("G" . meow-grab)
    '("h" . meow-left)
@@ -219,6 +232,7 @@
    '("k" . meow-kill)
    '("K" . helpful-at-point)
    '("l" . meow-till)
+   '("L" . schrenker/meow-till-backwards)
    '("m" . meow-mark-word)
    '("M" . meow-mark-symbol)
    '("n" . meow-next)

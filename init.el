@@ -65,7 +65,7 @@
       inhibit-startup-screen t
       load-prefer-newer t
       display-line-numbers-type 'visual
-      scroll-margin 1
+      scroll-margin 7
       scroll-conservatively 0
       scroll-up-aggressively 0.01
       scroll-down-aggressively 0.01

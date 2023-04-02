@@ -65,8 +65,11 @@
       inhibit-startup-screen t
       load-prefer-newer t
       display-line-numbers-type 'visual
-      scroll-margin 5
-      scroll-step 1
+      scroll-margin 1
+      scroll-conservatively 0
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01
+      auto-window-vscroll nil
       savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
       require-final-newline t
       mac-command-modifier 'meta

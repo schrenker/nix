@@ -45,6 +45,7 @@
     "bartender"
     "cloudflare-warp"
     "crossover"
+    "emacs-mac"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
     "hazeover"
@@ -58,18 +59,15 @@
     "zsa-wally"
   ];
   homebrew.taps = [
-    "d12frosted/emacs-plus"
     "homebrew/cask"
     "homebrew/cask-versions"
     "homebrew/cask-drivers"
     "homebrew/cask-fonts"
     "homebrew/services"
+    "railwaycat/emacsmacport"
   ];
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
-  homebrew.extraConfig = ''
-    brew "emacs-plus@30", args: ["with-dbus", "with-mailutils", "with-no-frame-refocus", "with-xwidgets", "with-imagemagick", "with-native-comp", "with-nobu417-big-sur-icon", "with-poll"]
-  '';
   homebrew.masApps = {
     "Amphetamine" = 937984704;
     "Bitwarden" = 1352778147;

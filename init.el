@@ -482,18 +482,16 @@
         solarized-height-plus-3 1.0
         solarized-height-plus-4 1.0)
   :config
-  (load-theme 'solarized-light t))
-
-(use-package auto-dark
-  :after solarized-theme
-  :config
-  (setq auto-dark-light-theme 'solarized-light
-        auto-dark-dark-theme 'solarized-dark
-        auto-dark-detection-method (cond
-                                    ((eq system-type 'darwin) 'osascript)
-                                    ((eq system-type 'gnu/linux) 'dbus)
-                                    (t 'powershell)))
-  (auto-dark-mode t))
+  (if (eq system-type 'darwin)
+      (progn
+        (defun schrenker/apply-theme (appearance)
+          (mapc #'disable-theme custom-enabled-themes)
+          (pcase appearance
+            ('light (load-theme 'solarized-light t))
+            ('dark (load-theme 'solarized-dark t))))
+        (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
+        (schrenker/apply-theme ns-system-appearance))
+    (load-theme 'solarized-light t)))
 
 (use-package solaire-mode
   :config

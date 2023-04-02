@@ -1,5 +1,7 @@
 ;;; init.el --- Personal configuration file -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(setq gc-cons-threshold (* 1024 1024 200))
+
 (defvar elpaca-installer-version 0.3)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))

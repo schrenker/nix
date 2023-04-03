@@ -266,6 +266,7 @@
 
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
+  (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
 

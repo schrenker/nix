@@ -67,6 +67,7 @@
       scroll-conservatively 0
       scroll-up-aggressively 0.01
       scroll-down-aggressively 0.01
+      sentence-end-double-space nil
       auto-window-vscroll nil
       savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
       require-final-newline t

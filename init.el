@@ -490,7 +490,8 @@
           (mapc #'disable-theme custom-enabled-themes)
           (pcase appearance
             ('light (load-theme 'solarized-light t))
-            ('dark (load-theme 'solarized-dark t))))
+            ('dark (load-theme 'solarized-dark t)))
+          (kind-icon-reset-cache))
         (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
         (schrenker/apply-theme ns-system-appearance))
     (load-theme 'solarized-light t)))

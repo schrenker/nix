@@ -495,6 +495,7 @@
   :config
   (solaire-global-mode +1))
 
+(use-package all-the-icons)
 
 (setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))
@@ -927,6 +928,44 @@ targets."
    :host "github.com"
    :repo "nan0scho1ar/ox-confluence-modern"
    :files ("*.el")))
+
+(use-package dirvish
+  :init
+  (dirvish-override-dired-mode)
+  :config
+  ;; (dirvish-peek-mode) ; Preview files in minibuffer
+  (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
+  (setq dirvish-mode-line-format '(:left (path symlink sort index free-space) :right (omit yank))
+        dirvish-attributes '(all-the-icons file-time file-size collapse subtree-state vc-state git-msg)
+        dirvish-path-separators '("~" "/" "/")
+        delete-by-moving-to-trash t
+        dirvish-use-header-line nil
+        dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
+  (custom-set-faces '(dired-header ((t (:weight bold :background "unspecified" :foreground "#268bd2")))))
+  :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
+  (("C-c f" . dirvish-fd)
+   ("C-c o o" . dirvish-dwim)
+   ("C-c o O" . dirvish)
+   ("C-c o t" . dirvish-side)
+
+   :map dirvish-mode-map ; Dirvish inherits `dired-mode-map'
+   ("a"   . dirvish-quick-access)
+   ("f"   . dirvish-file-info-menu)
+   ("y"   . dirvish-yank-menu)
+   ("N"   . dirvish-narrow)
+   ("^"   . dirvish-history-last)
+   ("h"   . dirvish-history-jump) ; remapped `describe-mode'
+   ("s"   . dirvish-quicksort)    ; remapped `dired-sort-toggle-or-edit'
+   ("v"   . dirvish-vc-menu)      ; remapped `dired-view-file'
+   ("TAB" . dirvish-subtree-toggle)
+   ("M-f" . dirvish-history-go-forward)
+   ("M-b" . dirvish-history-go-backward)
+   ("M-l" . dirvish-ls-switches-menu)
+   ("M-m" . dirvish-mark-menu)
+   ("M-t" . dirvish-layout-toggle)
+   ("M-s" . dirvish-setup-menu)
+   ("M-e" . dirvish-emerge-menu)
+   ("M-j" . dirvish-fd-jump)))
 
 ;; Major modes for text/programming
 (use-package markdown-mode)

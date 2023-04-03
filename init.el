@@ -62,7 +62,7 @@
       create-lockfiles nil
       inhibit-startup-screen t
       load-prefer-newer t
-      visible-bell t
+      visible-bell (eq system-type 'gnu/linux)
       display-line-numbers-type 'visual
       scroll-margin 7
       scroll-conservatively 0

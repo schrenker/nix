@@ -43,8 +43,6 @@
 
 (elpaca-wait)
 
-(server-start)
-
 (use-package exec-path-from-shell
   :config
   (when (or (memq window-system '(mac ns x)))

@@ -506,9 +506,9 @@
   :hook (ibuffer-mode . all-the-icons-ibuffer-mode))
 
 (use-package all-the-icons-completion
-  :after (marginalia all-the-icons)
-  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+  :after all-the-icons
   :config
+  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-mode-setup)
   (all-the-icons-completion-mode 1))
 
 

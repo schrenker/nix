@@ -524,6 +524,7 @@
 
 ;; Example configuration for Consult
 (use-package consult
+  :demand t
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c M-x" . consult-mode-command)

@@ -70,6 +70,7 @@
       sentence-end-double-space nil
       auto-window-vscroll nil
       savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
+      native-comp-async-report-warnings-errors nil
       require-final-newline t
       mac-command-modifier 'meta
       mac-option-modifier 'alt

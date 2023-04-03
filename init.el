@@ -961,11 +961,11 @@ targets."
   :config
   ;; (dirvish-peek-mode) ; Preview files in minibuffer
   (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
-  (setq dirvish-mode-line-format '(:left (path symlink sort index free-space) :right (omit yank))
+  (setq dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
         dirvish-attributes '(all-the-icons file-time file-size collapse subtree-state vc-state git-msg)
         dirvish-path-separators '("~" "/" "/")
         delete-by-moving-to-trash t
-        dirvish-use-header-line nil
+        ;dirvish-use-header-line nil
         dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
   (custom-set-faces '(dired-header ((t (:weight bold :background "unspecified" :foreground "#268bd2")))))
   :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit

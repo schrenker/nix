@@ -110,6 +110,10 @@
     (set-frame-font "JetBrains Mono 10" nil t)
   (set-frame-font "JetBrains Mono 13" nil t))
 
+(defmacro schrenker/call-negative (form)
+  `(let ((current-prefix-arg -1))
+     (call-interactively ,form)))
+
 (use-package meow
   :init
   (meow-global-mode 1)
@@ -139,17 +143,13 @@
         (call-interactively #'meow-insert)
       (call-interactively #'meow-append)))
 
-  (defmacro schrenker/call-negative (form)
-  `(let ((current-prefix-arg -1))
-     (call-interactively ,form)))
+  (defun schrenker/meow-find-backwards ()
+    (interactive)
+    (schrenker/call-negative 'meow-find))
 
-(defun schrenker/meow-find-backwards ()
-  (interactive)
-  (schrenker/call-negative 'meow-find))
-
-(defun schrenker/meow-till-backwards ()
-  (interactive)
-  (schrenker/call-negative 'meow-till))
+  (defun schrenker/meow-till-backwards ()
+    (interactive)
+    (schrenker/call-negative 'meow-till))
 
   (when (eq system-type 'gnu/linux)
 
@@ -727,6 +727,15 @@ targets."
   :demand t
   :after savehist
   :config
+  (defun schrenker/perject-switch-project-global ()
+    (interactive)
+    (let ((current-prefix-arg '(4))) ;; emulate C-u
+      (call-interactively 'perject-switch)))
+
+  (defun schrenker/perject-switch-collection ()
+    (interactive)
+    (schrenker/call-negative 'perject-switch))
+
   (add-to-list 'savehist-additional-variables 'perject--previous-collections)
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
@@ -751,7 +760,8 @@ targets."
         ("C-<tab> C-<tab> p" . perject-previous-project)
         ("C-<tab> C-<tab> N" . perject-next-collection)
         ("C-<tab> C-<tab> P" . perject-previous-collection)
-        ("C-<tab> C-<tab> TAB" . perject-switch)
+        ("C-<tab> C-<tab> TAB" . schrenker/perject-switch-project-global)
+        ("C-<tab> C-<tab> C-<tab>" . schrenker/perject-switch-collection)
         ("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
         ("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
         ("C-<tab> C-<tab> w" . perject-save)))

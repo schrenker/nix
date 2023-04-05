@@ -1002,6 +1002,10 @@ targets."
    ("M-e" . dirvish-emerge-menu)
    ("M-j" . dirvish-fd-jump)))
 
+(use-package flymake
+  :elpaca nil
+  :hook (prog-mode . flymake-mode))
+
 ;; Major modes for text/programming
 (use-package markdown-mode)
 

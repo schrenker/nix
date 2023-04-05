@@ -448,7 +448,7 @@
   (add-to-list 'completion-at-point-functions #'cape-symbol))
 
 (use-package kind-icon
-  :commands kind-icon-margin-formatter
+  :commands (kind-icon-margin-formatter kind-icon-reset-cache)
   :init
   (add-hook 'corfu-margin-formatters #'kind-icon-margin-formatter)
   :config
@@ -514,7 +514,7 @@
 (use-package all-the-icons-completion
   :after all-the-icons
   :config
-  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-mode-setup)
+  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
   (all-the-icons-completion-mode 1))
 
 

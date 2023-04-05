@@ -964,6 +964,14 @@ targets."
    :repo "nan0scho1ar/ox-confluence-modern"
    :files ("*.el")))
 
+(use-package dired
+  :elpaca nil
+  :init
+  (when (eq system-type 'darwin)
+    (setq dired-use-ls-dired t
+          insert-directory-program "/opt/homebrew/bin/gls"
+          dired-listing-switches "-aBhl --group-directories-first")))
+
 (use-package dirvish
   :init
   (dirvish-override-dired-mode)

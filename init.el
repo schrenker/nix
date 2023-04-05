@@ -1,5 +1,10 @@
 ;;; init.el --- Personal configuration file -*- lexical-binding: t; no-byte-compile: t; -*-
 
+;;; Commentary:
+;; This is my personal configuration file I use at three different environment systems - on macOS, WSL2 (wslg) and msys2.
+
+;;; Code:
+
 (setq gc-cons-threshold (* 1024 1024 200))
 
 (defvar elpaca-installer-version 0.3)
@@ -888,7 +893,10 @@ targets."
   (add-hook 'org-mode-hook (visual-line-mode 1))
   (add-hook 'org-mode-hook
             (lambda ()
-              (add-hook 'after-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
+              (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
+
+(use-package toc-org
+  :hook (org-mode . toc-org-mode))
 
 (use-package org-roam
   :after org

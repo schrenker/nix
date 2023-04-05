@@ -1,0 +1,9 @@
+;; ~/.config/emacs/templates
+
+fundamental-mode ;; Available everywhere
+
+(today (format-time-string "%Y-%m-%d"))
+
+org-mode
+
+(src "#+begin_src " q n> r> n "#+end_src")

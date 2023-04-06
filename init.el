@@ -472,6 +472,7 @@
   :bind ("C-c g g" . magit))
 
 (use-package helpful
+  :demand t
   :config
   (global-set-key (kbd "C-h f") #'helpful-callable)
   (global-set-key (kbd "C-h v") #'helpful-variable)

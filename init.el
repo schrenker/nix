@@ -951,17 +951,20 @@ targets."
         org-modern-block-fringe nil
         org-modern-list nil
         org-modern-todo-faces
-        '(("TODO" :foreground "#D33682" :weight bold :inverse-video t)
-          ("INPROGRESS" :foreground "#859900" :weight bold :inverse-video t)
-          ("BLOCKED" :foreground "#CB4B16" :weight bold :inverse-video t)
-          ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t)
-          ("REVIEW" :foreground "#268BD2" :weight bold :inverse-video t)
-          ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
-          ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
-          ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))
+        '(("TODO" :foreground "#D33682" :weight bold :inverse-video t :height "unspecified")
+          ("INPROGRESS" :foreground "#859900" :weight bold :inverse-video t :height "unspecified")
+          ("BLOCKED" :foreground "#CB4B16" :weight bold :inverse-video t :height "unspecified")
+          ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t :height "unspecified")
+          ("REVIEW" :foreground "#268BD2" :weight bold :inverse-video t :height "unspecified")
+          ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t :height "unspecified")
+          ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t :height "unspecified")
+          ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t :height "unspecified"))
         org-modern-priority-faces '((?A :foreground "#DC322F" :weight bold :inverse-video t)
                                     (?B :foreground "#B58900" :weight bold :inverse-video t)
                                     (?C :foreground "#6C71C4" :weight bold :inverse-video t)))
+
+  (custom-set-faces '(org-modern-tag ((t (:inherit (secondary-selection) :weight bold :foreground "#6c71c4" :inverse-video t)))))
+
   (global-org-modern-mode))
 
 (use-package german-holidays)

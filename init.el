@@ -469,7 +469,12 @@
   (which-key-mode))
 
 (use-package magit
-  :bind ("C-c g g" . magit))
+  :bind ("C-c g g" . magit)
+  :config
+  (transient-append-suffix 'magit-fetch "-p"
+    '("-t" "Fetch all tags" ("-t" "--tags")))
+  (transient-append-suffix 'magit-pull "-r"
+    '("-a" "Autostash" "--autostash")))
 
 (use-package helpful
   :demand t

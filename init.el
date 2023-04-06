@@ -759,12 +759,14 @@ targets."
   (add-to-list 'savehist-additional-variables 'perject--previous-collections)
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
-  (setq perject-load-at-startup 'previous
+  (setq perject-load-at-startup nil
         perject-save-frames nil
         perject-frame-title-format nil
         perject-switch-to-new-collection t
         perject-save-on-exit 'all
-        perject-reload-default '(keep nil))
+        perject-reload-default '(keep t)
+        perject-close-default '(t nil t)
+        perject-delete-default '(nil t nil t))
 
   (perject-mode 1)
   :bind

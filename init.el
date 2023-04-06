@@ -744,6 +744,12 @@ targets."
   (custom-set-faces '(aw-leading-char-face ((t (:foreground "red" :weight bold :height 2.5)))))
   (ace-window-posframe-mode 1))
 
+(use-package popwin
+  :demand t
+  :config
+  (add-to-list 'popwin:special-display-config '(helpful-mode . :stick t))
+  (popwin-mode 1))
+
 (use-package perject
   :demand t
   :after savehist

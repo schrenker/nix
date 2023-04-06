@@ -844,6 +844,7 @@ targets."
 
 (use-package org
   :elpaca nil
+  :bind (("C-c n c" . org-capture))
   :init
   (setq time-stamp-active t
         time-stamp-start "#\\+modified: [ \t]*"
@@ -914,7 +915,7 @@ targets."
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
+         ("C-c n C" . org-roam-capture)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config

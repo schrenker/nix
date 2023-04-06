@@ -747,7 +747,7 @@ targets."
 (use-package popwin
   :demand t
   :config
-  (add-to-list 'popwin:special-display-config '(helpful-mode . :stick t))
+  (add-to-list 'popwin:special-display-config '(helpful-mode :stick t))
   (popwin-mode 1))
 
 (use-package perject

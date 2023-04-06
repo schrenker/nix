@@ -854,6 +854,7 @@ targets."
   (require 'org-crypt)
   (require 'org-agenda)
   (require 'org-capture)
+  (load-file (concat user-emacs-directory "org-format.el"))
   (setq
    org-crypt-disable-auto-save t
    org-log-into-drawer "LOGBOOK"
@@ -894,6 +895,7 @@ targets."
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
   (add-hook 'org-mode-hook (visual-line-mode 1))
+  (add-hook 'org-mode-hook #'org-format-on-save-mode)
   (add-hook 'org-mode-hook
             (lambda ()
               (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
@@ -930,6 +932,29 @@ targets."
            :repo "awth13/org-appear")
   :config
   (add-hook 'org-mode-hook 'org-appear-mode))
+
+(use-package org-modern
+  :after org
+  :config
+  (setq org-modern-hide-stars nil
+        org-modern-table-vertical 2
+        org-modern-table-horizontal 1
+        org-modern-checkbox nil
+        org-modern-block-fringe nil
+        org-modern-list nil
+        org-modern-todo-faces
+        '(("TODO" :foreground "#D33682" :weight bold :inverse-video t)
+          ("INPROGRESS" :foreground "#859900" :weight bold :inverse-video t)
+          ("BLOCKED" :foreground "#CB4B16" :weight bold :inverse-video t)
+          ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t)
+          ("REVIEW" :foreground "#268BD2" :weight bold :inverse-video t)
+          ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
+          ("CANCELLED" :foreground "#574C58" :weight bold :inverse-video t)
+          ("DELEGATED"  :foreground "#6c71c4" :weight bold :inverse-video t))
+        org-modern-priority-faces '((?A :foreground "#DC322F" :weight bold :inverse-video t)
+                                    (?B :foreground "#B58900" :weight bold :inverse-video t)
+                                    (?C :foreground "#6C71C4" :weight bold :inverse-video t)))
+  (global-org-modern-mode))
 
 (use-package german-holidays)
 

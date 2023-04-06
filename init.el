@@ -1100,6 +1100,10 @@ targets."
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
+(use-package eros
+  :config
+  (eros-mode 1))
+
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
   

@@ -117,6 +117,7 @@
   (set-frame-font "JetBrains Mono 13" nil t))
 
 (defmacro schrenker/call-negative (form)
+  "Macro for calling any command with negative argument. FORM in this case is function you want called."
   `(let ((current-prefix-arg -1))
      (call-interactively ,form)))
 

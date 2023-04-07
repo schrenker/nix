@@ -503,7 +503,16 @@
           (pcase appearance
             ('light (load-theme 'solarized-light t))
             ('dark (load-theme 'solarized-dark t)))
-          (kind-icon-reset-cache))
+          (kind-icon-reset-cache)
+          (prism-set-colors
+            :num 16
+            :desaturations '(0 5 10 15) ; may lower the contrast ratio
+            :lightens '(0 -1 -2 -3)      ; same
+            :colors '("#268BD2" ;blue
+                      "#859900" ;green
+                      "#2AA198" ;cyan
+                      "#b58900" ;yellow
+                      )))
         (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
         (schrenker/apply-theme ns-system-appearance))
     (load-theme 'solarized-light t)))
@@ -525,6 +534,7 @@
   (all-the-icons-completion-mode 1))
 
 (use-package prism
+  :commands (prism-set-colors)
   :elpaca (prism
            :host "github.com"
            :repo "alphapapa/prism.el")

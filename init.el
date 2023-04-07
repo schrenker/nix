@@ -913,8 +913,10 @@ targets."
             (lambda ()
               (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
 
-(use-package toc-org
-  :hook (org-mode . toc-org-mode))
+(use-package org-make-toc
+  :hook (org-mode . org-make-toc-mode)
+  :config
+  (setq org-make-toc-link-type-fn 'org-make-toc--link-entry-org))
 
 (use-package org-roam
   :after org

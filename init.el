@@ -524,6 +524,21 @@
   (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
   (all-the-icons-completion-mode 1))
 
+(use-package prism
+  :elpaca (prism
+           :host "github.com"
+           :repo "alphapapa/prism.el")
+  :config
+  (setq prism-comments nil) ; non-nil distorts colours
+  (prism-set-colors
+    :num 16
+    :desaturations '(0 5 10 15) ; may lower the contrast ratio
+    :lightens '(0 -1 -2 -3)      ; same
+    :colors '("#268BD2" ;blue
+              "#859900" ;green
+              "#2AA198" ;cyan
+              "#b58900" ;yellow
+              )))
 
 (setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
       ns-use-proxy-icon (display-graphic-p))

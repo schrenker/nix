@@ -967,12 +967,12 @@ targets."
         org-modern-priority-faces '((?A :foreground "#DC322F" :weight bold :inverse-video t)
                                     (?B :foreground "#B58900" :weight bold :inverse-video t)
                                     (?C :foreground "#6C71C4" :weight bold :inverse-video t)))
-
-  (global-org-modern-mode)
-
-  (set-face-attribute 'org-modern-label nil :height 1.0 :box '(:color "#fdf6e3" :line-width (1 . 0)))
-  (set-face-attribute 'org-modern-todo nil :height 1.0 :weight bold :box '(:color "#fdf6e3" :line-width (1 . 0)))
-  (custom-set-faces '(org-modern-tag ((t (:inherit (secondary-selection) :weight bold :foreground "#6c71c4" :inverse-video t))))))
+  (defun schrenker/setup-org-modern ()
+    (org-modern-mode 1)
+    (set-face-attribute 'org-modern-label nil :height 1.0 :box '(:color "#fdf6e3" :line-width (1 . 0)))
+    (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:color "#fdf6e3" :line-width (1 . 0)))
+    (custom-set-faces '(org-modern-tag ((t (:inherit (secondary-selection) :weight bold :foreground "#6c71c4" :inverse-video t))))))
+  (add-hook 'org-mode-hook #'schrenker/setup-org-modern))
 
 (use-package german-holidays)
 

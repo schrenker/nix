@@ -544,6 +544,7 @@
       ns-use-proxy-icon (display-graphic-p))
 
 (use-package eat
+  :demand t
   :elpaca (eat
            :host "codeberg.org"
            :repo "akib/emacs-eat"
@@ -555,7 +556,8 @@
   :config
   (setq eat-term-name "xterm-256color")
   ;; For `eat-eshell-mode'.
-  (add-hook 'eshell-load-hook #'eat-eshell-mode))
+  (add-hook 'eshell-mode-hook #'eat-eshell-mode)
+  (add-hook 'eshell-mode-hook #'eat-eshell-visual-command-mode))
 
 (use-package inheritenv
   :config

@@ -964,7 +964,7 @@ targets."
    org-capture-templates
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
-  (add-hook 'org-mode-hook (visual-line-mode 1))
+  (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook #'org-format-on-save-mode)
   (add-hook 'org-mode-hook
             (lambda ()

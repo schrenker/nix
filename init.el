@@ -999,7 +999,9 @@ targets."
                                     (?B :foreground "#B58900" :weight bold :inverse-video t)
                                     (?C :foreground "#6C71C4" :weight bold :inverse-video t)))
   (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
-  (custom-set-faces '(org-modern-tag ((t (:inherit (secondary-selection) :weight bold :foreground "#6c71c4" :inverse-video t)))))
+  (set-face-extend 'org-block-begin-line t)
+  (set-face-extend 'org-block-end-line t)
+  (custom-set-faces '(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground "#6c71c4" :inverse-video t)))))
   (advice-add
    'org-modern--update-label-face
    :override

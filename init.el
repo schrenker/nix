@@ -1059,7 +1059,6 @@ targets."
         dirvish-attributes '(all-the-icons file-time file-size collapse subtree-state vc-state git-msg)
         dirvish-path-separators '("~" "/" "/")
         delete-by-moving-to-trash t
-        ;dirvish-use-header-line nil
         dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
   (custom-set-faces '(dired-header ((t (:weight bold :background "unspecified" :foreground "#268bd2")))))
   :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit

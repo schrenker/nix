@@ -900,6 +900,7 @@ targets."
    org-crypt-disable-auto-save t
    org-log-into-drawer "LOGBOOK"
    org-log-done 'time
+   org-insert-heading-respect-content t
    org-tags-exclude-from-inheritance '("crypt"
                                        "moc"
                                        "inbox")

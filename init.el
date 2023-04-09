@@ -538,59 +538,6 @@
               ))
   (add-hook 'emacs-lisp-mode #'prism-mode))
 
-(use-package solarized-theme
-  :init
-  (setq solarized-use-more-italic t
-        solarized-scale-org-headlines nil
-        solarized-use-variable-pitch nil
-        solarized-height-minus-1 1.0
-        solarized-height-plus-1 1.0
-        solarized-height-plus-2 1.0
-        solarized-height-plus-3 1.0
-        solarized-height-plus-4 1.0)
-  :config
-  (if (eq system-type 'darwin)
-      (progn
-        (defun schrenker/apply-theme (appearance)
-          (mapc #'disable-theme custom-enabled-themes)
-          (pcase appearance
-            ('light (load-theme 'solarized-light t)
-                    (set-face-background 'org-block "#eee8d5"))
-            ('dark (load-theme 'solarized-dark t)
-                   (set-face-background 'org-block "#073642")))
-          (kind-icon-reset-cache)
-          (prism-set-colors
-            :num 16
-            :desaturations '(0 5 10 15) ; may lower the contrast ratio
-            :lightens '(0 -1 -2 -3)      ; same
-            :colors '("#268BD2" ;blue
-                      "#859900" ;green
-                      "#2AA198" ;cyan
-                      "#b58900" ;yellow
-                      )))
-        (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
-        (schrenker/apply-theme ns-system-appearance))
-    (load-theme 'solarized-light t)))
-
-(use-package solaire-mode
-  :config
-  (solaire-global-mode +1))
-
-(use-package all-the-icons)
-
-(use-package all-the-icons-ibuffer
-  :after all-the-icons
-  :hook (ibuffer-mode . all-the-icons-ibuffer-mode))
-
-(use-package all-the-icons-completion
-  :after all-the-icons
-  :config
-  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
-  (all-the-icons-completion-mode 1))
-
-
-(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
-      ns-use-proxy-icon (display-graphic-p))
 
 (use-package eat
   :demand t
@@ -1172,6 +1119,59 @@ targets."
   ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
   ;; (global-tempel-abbrev-mode)
   )
+
+(use-package solarized-theme
+  :init
+  (setq solarized-use-more-italic t
+        solarized-scale-org-headlines nil
+        solarized-use-variable-pitch nil
+        solarized-height-minus-1 1.0
+        solarized-height-plus-1 1.0
+        solarized-height-plus-2 1.0
+        solarized-height-plus-3 1.0
+        solarized-height-plus-4 1.0)
+  :config
+  (if (eq system-type 'darwin)
+      (progn
+        (defun schrenker/apply-theme (appearance)
+          (mapc #'disable-theme custom-enabled-themes)
+          (pcase appearance
+            ('light (load-theme 'solarized-light t)
+                    (set-face-background 'org-block "#eee8d5"))
+            ('dark (load-theme 'solarized-dark t)
+                   (set-face-background 'org-block "#073642")))
+          (kind-icon-reset-cache)
+          (prism-set-colors
+            :num 16
+            :desaturations '(0 5 10 15) ; may lower the contrast ratio
+            :lightens '(0 -1 -2 -3)      ; same
+            :colors '("#268BD2" ;blue
+                      "#859900" ;green
+                      "#2AA198" ;cyan
+                      "#b58900" ;yellow
+                      )))
+        (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
+        (schrenker/apply-theme ns-system-appearance))
+    (load-theme 'solarized-light t)))
+
+(use-package solaire-mode
+  :config
+  (solaire-global-mode +1))
+
+(use-package all-the-icons)
+
+(use-package all-the-icons-ibuffer
+  :after all-the-icons
+  :hook (ibuffer-mode . all-the-icons-ibuffer-mode))
+
+(use-package all-the-icons-completion
+  :after all-the-icons
+  :config
+  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
+  (all-the-icons-completion-mode 1))
+
+(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
+      ns-use-proxy-icon (display-graphic-p))
 
 (use-package ligature
   :config

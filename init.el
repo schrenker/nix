@@ -512,6 +512,9 @@
   (transient-append-suffix 'magit-pull "-r"
     '("-a" "Autostash" "--autostash")))
 
+(use-package git-timemachine
+  :commands (git-timemachine))
+
 (use-package helpful
   :demand t
   :config

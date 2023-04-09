@@ -96,6 +96,7 @@
 (global-display-line-numbers-mode 1)
 (electric-pair-mode 1)
 (electric-indent-mode 1)
+(global-prettify-symbols-mode 1)
 
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)

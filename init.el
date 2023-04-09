@@ -882,15 +882,12 @@ targets."
   (require 'org-capture)
   (load-file (concat user-emacs-directory "org-format.el"))
   (setq
-   org-crypt-disable-auto-save t
    org-log-into-drawer "LOGBOOK"
    org-log-done 'time
    org-insert-heading-respect-content t
    org-tags-exclude-from-inheritance '("crypt"
                                        "moc"
                                        "inbox")
-   org-crypt-disable-auto-save t
-   org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu")
    org-tags-column -77
    org-directory "~/org"
    org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a."))

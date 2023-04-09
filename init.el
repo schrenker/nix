@@ -528,7 +528,8 @@
               "#859900" ;green
               "#2AA198" ;cyan
               "#b58900" ;yellow
-              )))
+              ))
+  (add-hook 'emacs-lisp-mode #'prism-mode))
 
 (use-package solarized-theme
   :init

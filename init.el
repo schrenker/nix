@@ -546,8 +546,10 @@
         (defun schrenker/apply-theme (appearance)
           (mapc #'disable-theme custom-enabled-themes)
           (pcase appearance
-            ('light (load-theme 'solarized-light t))
-            ('dark (load-theme 'solarized-dark t)))
+            ('light (load-theme 'solarized-light t)
+                    (set-face-background 'org-block "#eee8d5"))
+            ('dark (load-theme 'solarized-dark t)
+                   (set-face-background 'org-block "#073642")))
           (kind-icon-reset-cache)
           (prism-set-colors
             :num 16
@@ -964,6 +966,13 @@ targets."
    org-capture-templates
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
+  (defadvice org-babel-execute-src-block (around load-language nil activate)
+    "Load language if needed"
+    (let ((language (org-element-property :language (org-element-at-point))))
+      (unless (cdr (assoc (intern language) org-babel-load-languages))
+        (add-to-list 'org-babel-load-languages (cons (intern language) t))
+        (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+      ad-do-it))
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook #'org-format-on-save-mode)
   (add-hook 'org-mode-hook

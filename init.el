@@ -1131,29 +1131,41 @@ targets."
         solarized-height-plus-2 1.0
         solarized-height-plus-3 1.0
         solarized-height-plus-4 1.0)
+  (defun schrenker/solarized-theme-overlay (appearance)
+    (let (bg-main bg-alt fg-main fg-alt fg-emph yellow orange red magenta violet blue cyan green)
+      (setq bg-main (if (eq appearance 'light) "#fdf6e3" "#002b36")
+            bg-alt (if (eq appearance 'light) "#eee8d5" "#073642")
+            fg-main (if (eq appearance 'light) "#657b83" "#839496")
+            fg-alt (if (eq appearance 'light) "#93a1a1" "#586e75")
+            fg-emph (if (eq appearance 'light) "#586e75" "#93a1a1")
+            yellow "#b58900"
+            orange "#cb4b16"
+            red "#dc322f"
+            magenta "#d33682"
+            violet "#6c71c4"
+            blue "#268bd2"
+            cyan "#2aa198"
+            green "#859900")
+      (progn
+        (mapc #'disable-theme custom-enabled-themes)
+        (pcase appearance
+          ('light (load-theme 'solarized-light t))
+          ('dark (load-theme 'solarized-dark t)))
+        (kind-icon-reset-cache)
+        (prism-set-colors
+          :num 16
+          :desaturations '(0 5 10 15)
+          :lightens '(0 -1 -2 -3)
+          :colors (list blue green cyan yellow))
+        (set-face-background 'org-block bg-alt)
+        (set-face-attribute 'org-checkbox nil :box '(:line-width (3 . 1) :color bg-alt) :background bg-alt))))
+
   :config
   (if (eq system-type 'darwin)
       (progn
-        (defun schrenker/apply-theme (appearance)
-          (mapc #'disable-theme custom-enabled-themes)
-          (pcase appearance
-            ('light (load-theme 'solarized-light t)
-                    (set-face-background 'org-block "#eee8d5"))
-            ('dark (load-theme 'solarized-dark t)
-                   (set-face-background 'org-block "#073642")))
-          (kind-icon-reset-cache)
-          (prism-set-colors
-            :num 16
-            :desaturations '(0 5 10 15) ; may lower the contrast ratio
-            :lightens '(0 -1 -2 -3)      ; same
-            :colors '("#268BD2" ;blue
-                      "#859900" ;green
-                      "#2AA198" ;cyan
-                      "#b58900" ;yellow
-                      )))
-        (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-theme)
-        (schrenker/apply-theme ns-system-appearance))
-    (load-theme 'solarized-light t)))
+        (add-hook 'ns-system-appearance-change-functions #'schrenker/solarized-theme-overlay)
+        (schrenker/solarized-theme-overlay ns-system-appearance))
+    (schrenker/solarized-theme-overlay 'light)))
 
 (use-package solaire-mode
   :config

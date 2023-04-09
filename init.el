@@ -121,6 +121,13 @@
   `(let ((current-prefix-arg -1))
      (call-interactively ,form)))
 
+(use-package diminish
+  :config
+  (add-hook 'auto-revert-mode-hook (lambda () (diminish 'auto-revert-mode)))
+  (add-hook 'which-key-mode-hook (lambda () (diminish 'which-key-mode)))
+  (add-hook 'eldoc-mode-hook (lambda () (diminish 'eldoc-mode)))
+  (add-hook 'visual-line-mode-hook (lambda () (diminish 'visual-line-mode))))
+
 (use-package meow
   :init
   (meow-global-mode 1)
@@ -1131,7 +1138,9 @@ targets."
 
 (use-package flymake
   :elpaca nil
-  :hook (prog-mode . flymake-mode))
+  :hook (prog-mode . flymake-mode)
+  :config
+  (setq flymake-mode-line-lighter "FM"))
 
 (use-package tempel
   ;; Require trigger prefix before template name when completing.

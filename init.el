@@ -101,10 +101,29 @@
 (electric-pair-mode 1)
 (electric-indent-mode 1)
 (global-prettify-symbols-mode 1)
+(column-number-mode 1)
 
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+
+(defun schrenker/kill-this-buffer ()
+  (interactive) (kill-buffer (current-buffer)))
+(global-set-key (kbd "C-x k") 'schrenker/kill-this-buffer)
+
+(defun schrenker/split-and-follow-horizontally ()
+  (interactive)
+  (split-window-below)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 2") 'schrenker/split-and-follow-horizontally)
+
+(defun schrenker/split-and-follow-vertically ()
+  (interactive)
+  (split-window-right)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 3") 'schrenker/split-and-follow-vertically)
 
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
 (global-set-key (kbd "C-x C-b") 'ibuffer)

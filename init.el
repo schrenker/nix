@@ -54,6 +54,9 @@
     (exec-path-from-shell-initialize)))
 
 (setq-default indent-tabs-mode nil
+              truncate-string-ellipsis "…"
+              x-stretch-cursor t
+              window-combination-resize t
               tab-width 4)
 
 (setq custom-file "/dev/null"
@@ -919,6 +922,7 @@ targets."
    org-priority-default '?C
    org-agenda-files '("~/org/")
    org-hide-emphasis-markers t
+   org-return-follows-link t
    org-priority-start-cycle-with-default t
    org-priority-faces '((?A :foreground "#DC322F" :weight normal)
                         (?B :foreground "#B58900" :weight normal)
@@ -975,7 +979,9 @@ targets."
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 
-(use-package org-kanban)
+(use-package org-kanban
+  :config
+  (setq org-kanban/layout '("…" . 20)))
 
 (use-package org-appear
   :elpaca (org-appear

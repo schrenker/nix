@@ -777,7 +777,6 @@ targets."
                            (?z aw-split-window-horz "Split Horz Window")
                            (?K delete-other-windows "Delete Other Windows")
                            (?? aw-show-dispatch-help)))
-  (custom-set-faces '(aw-leading-char-face ((t (:foreground "red" :weight bold :height 2.5)))))
   (ace-window-posframe-mode 1))
 
 ;; (use-package popwin
@@ -1006,8 +1005,6 @@ targets."
         org-modern-priority-faces '((?A :foreground "#DC322F" :weight bold :inverse-video t)
                                     (?B :foreground "#B58900" :weight bold :inverse-video t)
                                     (?C :foreground "#6C71C4" :weight bold :inverse-video t)))
-  (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
-  (custom-set-faces '(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground "#6c71c4" :inverse-video t)))))
   (advice-add
    'org-modern--update-label-face
    :override
@@ -1070,7 +1067,7 @@ targets."
         dirvish-path-separators '("~" "/" "/")
         delete-by-moving-to-trash t
         dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
-  (custom-set-faces '(dired-header ((t (:weight bold :background "unspecified" :foreground "#268bd2")))))
+
   :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
   (("C-c f" . dirvish-fd)
    ("C-c o o" . dirvish-dwim)
@@ -1145,6 +1142,7 @@ targets."
         solarized-height-plus-3 1.0
         solarized-height-plus-4 1.0)
   (defun schrenker/solarized-theme-overlay (appearance)
+    ;; Function that is there just to make my life easier. Reapplies all visual updates, and that's it.
     (let (bg-main bg-alt fg-main fg-alt fg-emph yellow orange red magenta violet blue cyan green)
       (setq bg-main (if (eq appearance 'light) "#fdf6e3" "#002b36")
             bg-alt (if (eq appearance 'light) "#eee8d5" "#073642")
@@ -1170,6 +1168,10 @@ targets."
           :desaturations '(0 5 10 15)
           :lightens '(0 -1 -2 -3)
           :colors (list blue green cyan yellow))
+        (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
+        (custom-set-faces `(aw-leading-char-face ((t (:inherit org-modern-label :width expanded :weight bold :background ,magenta :foreground ,bg-main :height 3.0 )))))
+        (custom-set-faces `(dired-header ((t (:weight bold :background "unspecified" :foreground ,blue)))))
+        (custom-set-faces `(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground ,violet :inverse-video t)))))
         (set-face-background 'org-block bg-alt)
         (set-face-extend 'org-block-begin-line t)
         (set-face-extend 'org-block-end-line t)

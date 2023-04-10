@@ -884,6 +884,7 @@ targets."
    org-log-into-drawer "LOGBOOK"
    org-log-done 'time
    org-insert-heading-respect-content t
+   org-fontify-whole-heading-line t
    org-tags-exclude-from-inheritance '("crypt"
                                        "moc"
                                        "inbox")

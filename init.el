@@ -66,6 +66,9 @@
       kept-old-versions 2
       create-lockfiles nil
       inhibit-startup-screen t
+      inhibit-startup-message t
+      initial-scratch-message nil
+      initial-major-mode 'org-mode
       load-prefer-newer t
       visible-bell (eq system-type 'gnu/linux)
       display-line-numbers-type 'visual
@@ -83,6 +86,7 @@
       mac-right-option-modifier nil
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
+      frame-resize-pixelwise t
       initial-frame-alist '((fullscreen . maximized)))
 
 (menu-bar-mode -1)
@@ -531,16 +535,7 @@
            :repo "alphapapa/prism.el")
   :config
   (setq prism-comments nil) ; non-nil distorts colours
-  (prism-set-colors
-    :num 16
-    :desaturations '(0 5 10 15) ; may lower the contrast ratio
-    :lightens '(0 -1 -2 -3)      ; same
-    :colors '("#268BD2" ;blue
-              "#859900" ;green
-              "#2AA198" ;cyan
-              "#b58900" ;yellow
-              ))
-  (add-hook 'emacs-lisp-mode #'prism-mode))
+  (add-hook 'emacs-lisp-mode-hook #'prism-mode))
 
 
 (use-package eat

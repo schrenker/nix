@@ -555,8 +555,7 @@
            :host "github.com"
            :repo "alphapapa/prism.el")
   :config
-  (setq prism-comments nil) ; non-nil distorts colours
-  (add-hook 'emacs-lisp-mode-hook #'prism-mode))
+  (setq prism-comments nil))
 
 
 (use-package eat

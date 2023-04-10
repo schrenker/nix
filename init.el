@@ -1007,8 +1007,6 @@ targets."
                                     (?B :foreground "#B58900" :weight bold :inverse-video t)
                                     (?C :foreground "#6C71C4" :weight bold :inverse-video t)))
   (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
-  (set-face-extend 'org-block-begin-line t)
-  (set-face-extend 'org-block-end-line t)
   (custom-set-faces '(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground "#6c71c4" :inverse-video t)))))
   (advice-add
    'org-modern--update-label-face
@@ -1173,7 +1171,13 @@ targets."
           :lightens '(0 -1 -2 -3)
           :colors (list blue green cyan yellow))
         (set-face-background 'org-block bg-alt)
-        (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt))))
+        (set-face-extend 'org-block-begin-line t)
+        (set-face-extend 'org-block-end-line t)
+        (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt)
+        (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)
+        (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)
+        (set-face-attribute 'org-modern-time-active nil :foreground fg-emph :background bg-main :inverse-video t)
+        (set-face-attribute 'org-modern-time-inactive nil :foreground fg-alt :background bg-main :inverse-video t))))
 
   :config
   (if (eq system-type 'darwin)

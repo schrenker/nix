@@ -1153,7 +1153,7 @@ targets."
           :lightens '(0 -1 -2 -3)
           :colors (list blue green cyan yellow))
         (set-face-background 'org-block bg-alt)
-        (set-face-attribute 'org-checkbox nil :box '(:line-width (3 . 1) :color bg-alt) :background bg-alt))))
+        (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt))))
 
   :config
   (if (eq system-type 'darwin)

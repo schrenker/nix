@@ -60,8 +60,7 @@
               tab-width 4)
 
 (setq custom-file "/dev/null"
-      backup-directory-alist
-      `(("." . ,(concat user-emacs-directory "backup/")))
+      backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
       backup-by-copying t
       version-control t
       delete-old-versions t
@@ -75,7 +74,7 @@
       load-prefer-newer t
       visible-bell (eq system-type 'gnu/linux)
       display-line-numbers-type 'visual
-      scroll-margin 7
+      scroll-margin 5
       scroll-conservatively 0
       scroll-up-aggressively 0.01
       scroll-down-aggressively 0.01
@@ -1178,9 +1177,11 @@ targets."
         (custom-set-faces `(aw-leading-char-face ((t (:inherit org-modern-label :width expanded :weight bold :background ,magenta :foreground ,bg-main :height 3.0 )))))
         (custom-set-faces `(dired-header ((t (:weight bold :background "unspecified" :foreground ,blue)))))
         (custom-set-faces `(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground ,violet :inverse-video t)))))
+        (custom-set-faces `(org-modern-statistics ((t (:inherit org-modern-label :weight bold :background ,bg-alt :foreground ,green)))))
         (set-face-background 'org-block bg-alt)
         (set-face-extend 'org-block-begin-line t)
         (set-face-extend 'org-block-end-line t)
+        (set-face-attribute 'link nil :foreground cyan :slant 'italic )
         (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt)
         (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)
         (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)

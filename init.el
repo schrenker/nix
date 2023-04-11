@@ -199,10 +199,16 @@
       (call-process-region start end "clip.exe" nil 0)
       (call-interactively #'meow-cancel-selection))
 
+    (defun schrenker/wsl-kill-region-to-clipboard (start end)
+      "Copy region to Windows clipboard."
+      (interactive "r")
+      (call-process-region start end "clip.exe" nil 0)
+      (call-interactively #'kill-region))
+
     (defun schrenker/wsl-clipboard-to-string ()
       "Return Windows clipboard as string."
       (let ((coding-system-for-read 'dos))
-        (substring				; remove added trailing \n
+        (substring              ; remove added trailing \n
          (shell-command-to-string "powershell.exe -Command Get-Clipboard") 0 -1)))
 
     (defun schrenker/wsl-paste-from-clipboard (arg)
@@ -213,6 +219,7 @@
         (if arg (kill-new clip))))
 
     (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
+    (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
     (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
 
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)

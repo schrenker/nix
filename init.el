@@ -1162,13 +1162,21 @@ targets."
             fg-alt (if (eq appearance 'light) "#93a1a1" "#586e75")
             fg-emph (if (eq appearance 'light) "#586e75" "#93a1a1")
             yellow "#b58900"
+            yellow-bg (if (eq appearance 'light) "#f8e8c6" "#273532")
             orange "#cb4b16"
+            orange-bg (if (eq appearance 'light) "#fedfc5" "#2b2d2e")
             red "#dc322f"
+            red-bg (if (eq appearance 'light) "#ffdec8" "#2d2c31")
             magenta "#d33682"
+            magenta-bg (if (eq appearance 'light) "#fdded7" "#272d3c")
             violet "#6c71c4"
+            violet-bg (if (eq appearance 'light) "#ebe4e2" "#0c3144")
             blue "#268bd2"
+            blue-bg (if (eq appearance 'light) "#e7e8e4" "#003547")
             cyan "#2aa198"
-            green "#859900")
+            cyan-bg (if (eq appearance 'light) "#e4ecda" "#013841")
+            green "#859900"
+            green-bg (if (eq appearance 'light) "#efeac7" "#1d3732"))
       (progn
         (mapc #'disable-theme custom-enabled-themes)
         (pcase appearance
@@ -1180,6 +1188,14 @@ targets."
           :desaturations '(0 5 10 15)
           :lightens '(0 -1 -2 -3)
           :colors (list blue green cyan yellow))
+        (set-face-attribute 'org-level-1 nil :background orange-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-2 nil :background green-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-3 nil :background blue-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-4 nil :background yellow-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-5 nil :background cyan-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-6 nil :background green-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-7 nil :background red-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-8 nil :background blue-bg :extend t :height 1.1)
         (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
         (custom-set-faces `(aw-leading-char-face ((t (:inherit org-modern-label :width expanded :weight bold :background ,magenta :foreground ,bg-main :height 3.0 )))))
         (custom-set-faces `(dired-header ((t (:weight bold :background "unspecified" :foreground ,blue)))))

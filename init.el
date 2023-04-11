@@ -1240,7 +1240,10 @@ targets."
   (global-ligature-mode t))
 
 (use-package eros
+  :after embark
   :config
+  (advice-add 'embark-pp-eval-defun :override #'eros-eval-defun)
+  (advice-add 'pp-eval-expression :override #'eros-eval-defun)
   (eros-mode 1))
 
 ;; Major modes for text/programming

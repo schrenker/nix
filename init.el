@@ -954,6 +954,7 @@ targets."
       ad-do-it))
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook #'org-format-on-save-mode)
+  (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
   (add-hook 'org-mode-hook
             (lambda ()
               (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
@@ -986,7 +987,7 @@ targets."
 
 (use-package org-kanban
   :config
-  (setq org-kanban/layout '("…" . 20)))
+  (setq org-kanban/layout '("…" . 15)))
 
 (use-package org-appear
   :elpaca (org-appear

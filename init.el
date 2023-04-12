@@ -906,6 +906,7 @@ targets."
   (require 'org-agenda)
   (require 'org-capture)
   (load-file (concat user-emacs-directory "org-format.el"))
+  (setf epa-pinentry-mode 'loopback)
   (setq
    org-log-into-drawer "LOGBOOK"
    org-log-done 'time
@@ -1000,8 +1001,8 @@ targets."
   :after org
   :config
   (setq org-modern-hide-stars nil
-        org-modern-table-vertical 2
-        org-modern-table-horizontal 1
+        org-modern-table nil
+        org-modern-star nil
         org-modern-checkbox nil
         org-modern-block-fringe nil
         org-modern-list nil
@@ -1277,4 +1278,4 @@ targets."
 (elpaca-process-queues)
 
 (when (eq system-type 'gnu/linux)
-  (add-hook 'elpaca-after-init-hook (lambda () (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
+  (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))

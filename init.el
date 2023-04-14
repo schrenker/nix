@@ -957,16 +957,21 @@ targets."
         (add-to-list 'org-babel-load-languages (cons (intern language) t))
         (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
       ad-do-it))
-(defun org-restore-archived-entry ()
-  "Restore an entry that has been archived.
+  (defun schrenker/org-unarchive ()
+    "Restore an entry that has been archived.
 This function restores the entry to its original location, and
 removes the ARCHIVE_TIME, ARCHIVE_FILE, ARCHIVE_OLPATH,
 ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
-  (interactive)
-  (let ((orig-file (org-entry-get-with-inheritance "ARCHIVE_FILE"))
-        (orig-path (org-entry-get-with-inheritance "ARCHIVE_OLPATH")))
-    (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
-
+    (interactive)
+    (let ((orig-file (org-entry-get-with-inheritance "ARCHIVE_FILE"))
+          (orig-path (org-entry-get-with-inheritance "ARCHIVE_OLPATH")))
+      (org-delete-property "ARCHIVE_FILE")
+      (org-delete-property "ARCHIVE_OLPATH")
+      (org-delete-property "ARCHIVE_TIME")
+      (org-delete-property "ARCHIVE_CATEGORY")
+      (org-delete-property "ARCHIVE_TODO")
+      (org-delete-property "ARCHIVE_ITAGS")
+      (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook #'org-format-on-save-mode)

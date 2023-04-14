@@ -910,6 +910,9 @@ targets."
   (setq
    org-log-into-drawer "LOGBOOK"
    org-log-done 'time
+   org-refile-use-outline-path 'file
+   org-outline-path-complete-in-steps nil
+   org-refile-targets `((,(directory-files-recursively org-directory "[a-z0-9]*.org$") :maxlevel . 4))
    org-insert-heading-respect-content t
    org-fontify-whole-heading-line t
    org-tags-exclude-from-inheritance '("crypt"
@@ -954,6 +957,17 @@ targets."
         (add-to-list 'org-babel-load-languages (cons (intern language) t))
         (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
       ad-do-it))
+(defun org-restore-archived-entry ()
+  "Restore an entry that has been archived.
+This function restores the entry to its original location, and
+removes the ARCHIVE_TIME, ARCHIVE_FILE, ARCHIVE_OLPATH,
+ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
+  (interactive)
+  (let ((orig-file (org-entry-get-with-inheritance "ARCHIVE_FILE"))
+        (orig-path (org-entry-get-with-inheritance "ARCHIVE_OLPATH")))
+    (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
+
+
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook #'org-format-on-save-mode)
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))

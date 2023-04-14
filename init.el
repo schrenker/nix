@@ -826,7 +826,7 @@ targets."
         ("C-<tab> C-<tab> R" . perject-rename-collection)
         ("C-<tab> C-<tab> f" . perject-create-new-frame)
         ("C-<tab> C-<tab> K" . perject-delete)
-        ("C-<tab> C-<tab> E" . perject-open-close-or-reload)
+        ("C-<tab> C-<tab> e" . perject-open-close-or-reload)
         ("C-<tab> C-<tab> s" . perject-sort)
         ("C-<tab> C-<tab> n" . perject-next-project)
         ("C-<tab> C-<tab> p" . perject-previous-project)
@@ -1138,8 +1138,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; :custom
   ;; (tempel-trigger-prefix "<")
 
-  :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
-         ("M-*" . tempel-insert))
+  :bind (:map tempel-map
+         ("M-n" . tempel-next)
+         ("M-p" . tempel-previous))
 
   :init
   ;; Setup completion at point

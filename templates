@@ -6,4 +6,4 @@ fundamental-mode ;; Available everywhere
 
 org-mode
 
-(src "#+begin_src " q n> r> n "#+end_src")
+(src "#+begin_src " (p "LANG") n> r> q n "#+end_src" :post (org-edit-src-code))

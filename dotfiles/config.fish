@@ -1,5 +1,7 @@
 #!/usr/bin/env fish
 
+set -g __nixos_path_original $PATH
+
 ulimit -n 1024
 
 function fish_title
@@ -21,5 +23,6 @@ if [ "$INSIDE_EMACS" = vterm ]
         tput clear
     end
 end
+
 
 direnv hook fish | source

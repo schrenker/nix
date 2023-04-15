@@ -833,7 +833,7 @@ targets."
         ("C-<tab> C-<tab> N" . perject-next-collection)
         ("C-<tab> C-<tab> P" . perject-previous-collection)
         ("C-<tab> C-<tab> TAB" . schrenker/perject-switch-project-global)
-        ("C-<tab> C-<tab> C-<tab>" . schrenker/perject-switch-collection)
+        ("C-<tab> C-<tab> C-<tab>" . perject-switch)
         ("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
         ("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
         ("C-<tab> C-<tab> w" . perject-save)))

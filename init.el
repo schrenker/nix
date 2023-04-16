@@ -815,27 +815,8 @@ targets."
   ;:bind ("M-o" . ace-window)
   :config
   (require 'posframe)
-  (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s)
-        ;; aw-dispatch-alist';; ((?k aw-delete-window "Delete Window")
-                          ;;  (?m aw-swap-window "Swap Windows")
-                          ;;  (?M aw-move-window "Move Window")
-                          ;;  (?x aw-copy-window "Copy Window")
-                          ;;  (?b aw-switch-buffer-in-window "Select Buffer")
-                          ;;  (?\M-o aw-flip-window)
-                          ;;  (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
-                          ;;  (?w aw-split-window-fair "Split Fair Window")
-                          ;;  (?v aw-split-window-vert "Split Vert Window")
-                          ;;  (?z aw-split-window-horz "Split Horz Window")
-                          ;;  (?K delete-other-windows "Delete Other Windows")
-                          ;;  (?? aw-show-dispatch-help))
-        )
+  (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
   (ace-window-posframe-mode 1))
-
-;; (use-package popwin
-;;   :demand t
-;;   :config
-;;   ;; (add-to-list 'popwin:special-display-config '(helpful-mode :stick t))
-;;   (popwin-mode 1))
 
 (use-package perject
   :demand t

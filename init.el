@@ -348,21 +348,28 @@
   (defhydra hydra-uictl
     (:hint nil)
     "
-   ^Movement^^       ^Layout^          ^Sizing^        ^Un/Redo^     ^Misc^
-╭───────────────────────────────────────────────────────────────────────────────────╯
-      ^_P_^          [_o_] flip        [_=_] balance   [_u_] undo    [_b_] buffers
-      ^^↑^^          [_O_] select      [_m_] maximize  [_r_] redo    [_+_] zoom in
-  _H_ ←   → _T_      [_2_] split down   ^ ^             ^ ^          [_-_] zoom out
-      ^^↓^^          [_3_] split right
-      ^_N_^          [_s_] swap
-     ^^   ^^         [_d_] win delete
-     ^^   ^^         [_D_] aw delete
-     ^^   ^^         [_X_] single
+
+   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Misc^
+╭────────────────────────────────────────────────────────────────────────────────────────
+      ^_P_^        [_o_] flip           [_=_] balance       [_u_] undo    [_b_] buffers
+      ^^↑^^        [_O_] select         [_m_] maximize      [_r_] redo    [_+_] zoom in
+  _H_ ←   → _T_    [_2_] split down     [_M-p_] vShrink     ^ ^           [_-_] zoom out
+      ^^↓^^        [_3_] split right    [_M-n_] vEnlarge
+      ^_N_^        [_s_] swap           [_M-h_] hShrink
+     ^^   ^^       [_d_] win delete     [_M-t_] hEnlarge
+     ^^   ^^       [_D_] aw delete
+     ^^   ^^       [_X_] single
+ ────────────────────────────────────────────────────────────────────────────────────────╯
+
 "
     ("P" windmove-up)
     ("N" windmove-down)
     ("H" windmove-left)
     ("T" windmove-right)
+    ("M-p" shrink-window)
+    ("M-n" enlarge-window)
+    ("M-h" shrink-window-horizontally)
+    ("M-t" enlarge-window-horizontally)
     ("o" aw-flip-window)
     ("O" ace-select-window)
     ("2" schrenker/split-and-follow-horizontally)
@@ -387,7 +394,10 @@
   (hydra-posframe
    :host "github.com"
    :repo "Ladicle/hydra-posframe")
-  :hook (after-init . hydra-posframe-enable))
+  :hook (after-init . hydra-posframe-enable)
+  :config
+  (require 'posframe)
+  (setq hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center))
 
 ;; Enable vertico
 (use-package vertico

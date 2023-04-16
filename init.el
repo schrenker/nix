@@ -344,24 +344,50 @@
 (use-package hydra
   :after ace-window
   :config
-  (defhydra hydra-window (global-map "M-o")
-    "Window"
-    ("=" balance-windows "Balance windows")
-    ("2" schrenker/split-and-follow-vertically "Split down")
-    ("3" schrenker/split-and-follow-horizontally "Split right")
-    ("P" windmove-up "Move windown up")
-    ("N" windmove-down "Move window down")
-    ("H" windmove-left "Move window left")
-    ("T" windmove-right "Move window right")
-    ("m" maximize-window "Maximize window")
-    ("o" aw-flip-window "Switch window")
-    ("u" winner-undo "Winner undo")
-    ("r" winner-redo "Winner redo")
-    ("M-o" ace-window "ace-window"))
-  (defhydra hydra-text-scale (global-map "<f2>")
-    "Text Zoom"
-    ("=" text-scale-increase "Zoom In")
-    ("-" text-scale-decrease "Zoom Out")))
+  (setq hydra-is-helpful t)
+  (defhydra hydra-uictl
+    (:hint nil)
+    "
+   ^Movement^^       ^Layout^          ^Sizing^        ^Un/Redo^     ^Misc^
+╭───────────────────────────────────────────────────────────────────────────────────╯
+      ^_P_^          [_o_] flip        [_=_] balance   [_u_] undo    [_b_] buffers
+      ^^↑^^          [_O_] select      [_m_] maximize  [_r_] redo    [_+_] zoom in
+  _H_ ←   → _T_      [_2_] split down   ^ ^             ^ ^          [_-_] zoom out
+      ^^↓^^          [_3_] split right
+      ^_N_^          [_s_] swap
+     ^^   ^^         [_d_] win delete
+     ^^   ^^         [_D_] aw delete
+     ^^   ^^         [_X_] single
+"
+    ("P" windmove-up)
+    ("N" windmove-down)
+    ("H" windmove-left)
+    ("T" windmove-right)
+    ("o" aw-flip-window)
+    ("O" ace-select-window)
+    ("2" schrenker/split-and-follow-horizontally)
+    ("3" schrenker/split-and-follow-vertically)
+    ("s" ace-swap-window)
+    ("d" delete-window)
+    ("D" ace-delete-window)
+    ("X" delete-other-windows)
+    ("=" balance-windows)
+    ("m" maximize-window)
+    ("u" winner-undo)
+    ("r" winner-redo)
+    ("b" consult-buffer)
+    ("+" text-scale-increase)
+    ("-" text-scale-decrease)
+    ("q" nil "cancel"))
+
+  (global-set-key (kbd "M-o") 'hydra-uictl/body))
+
+(use-package hydra-posframe
+  :elpaca
+  (hydra-posframe
+   :host "github.com"
+   :repo "Ladicle/hydra-posframe")
+  :hook (after-init . hydra-posframe-enable))
 
 ;; Enable vertico
 (use-package vertico

@@ -5,7 +5,8 @@
 
 ;;; Code:
 
-(setq gc-cons-threshold (* 1024 1024 200))
+(setq gc-cons-threshold (* 1024 1024 200)
+      gc-cons-percentage 0.6)
 
 (defvar elpaca-installer-version 0.3)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -73,6 +74,7 @@
       inhibit-startup-message t
       initial-scratch-message nil
       initial-major-mode 'org-mode
+      max-lisp-eval-depth 10000
       load-prefer-newer t
       visible-bell (eq system-type 'gnu/linux)
       display-line-numbers-type 'visual
@@ -92,6 +94,8 @@
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
       frame-resize-pixelwise t
       initial-frame-alist '((fullscreen . maximized)))
+
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)

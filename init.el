@@ -569,7 +569,12 @@
         read-extended-command-predicate #'command-completion-default-include-p))
 
 (use-package which-key
+  ;; :diminish t
   :config
+  (setq which-key-sort-order 'which-key-local-then-key-order
+        which-key-add-column-padding 3
+        which-key-max-display-columns 8
+        which-key-show-remaining-keys t)
   (which-key-mode))
 
 (use-package magit

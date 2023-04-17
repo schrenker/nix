@@ -952,7 +952,7 @@ targets."
 
 (use-package org
   :elpaca nil
-  :bind (("C-c n c" . org-capture))
+  :bind (("C-c n n" . org-capture))
   :init
   (setq time-stamp-active t
         time-stamp-start "#\\+modified: [ \t]*"
@@ -1054,7 +1054,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
-         ("C-c n C" . org-roam-capture)
+         ("C-c n N" . org-roam-capture)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config

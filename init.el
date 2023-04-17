@@ -60,6 +60,9 @@
   (when (or (memq window-system '(mac ns x)))
     (exec-path-from-shell-initialize)))
 
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
+
 (setq-default indent-tabs-mode nil
               truncate-string-ellipsis "…"
               x-stretch-cursor t

@@ -357,17 +357,17 @@
     (:hint nil)
     "
 
-   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Misc^
-╭────────────────────────────────────────────────────────────────────────────────────────
-      ^_P_^        [_o_] flip           [_=_] balance       [_u_] undo    [_b_] buffers
-      ^^↑^^        [_O_] select         [_m_] maximize      [_r_] redo    [_+_] zoom in
-  _H_ ←   → _T_    [_2_] split down     [_M-p_] vShrink     ^ ^           [_-_] zoom out
+   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^        ^Misc^
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────
+      ^_P_^        [_o_] flip           [_=_] balance       [_u_] undo    [_,_] cycle    [_b_] buffers
+      ^^↑^^        [_O_] select         [_m_] maximize      [_r_] redo    [_._] show     [_+_] zoom in
+  _H_ ←   → _T_    [_2_] split down     [_M-p_] vShrink     ^ ^           [_'_] type     [_-_] zoom out
       ^^↓^^        [_3_] split right    [_M-n_] vEnlarge
       ^_N_^        [_s_] swap           [_M-h_] hShrink
      ^^   ^^       [_d_] win delete     [_M-t_] hEnlarge
      ^^   ^^       [_D_] aw delete
      ^^   ^^       [_X_] single
- ────────────────────────────────────────────────────────────────────────────────────────╯
+ ────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 
 "
     ("P" windmove-up)
@@ -390,6 +390,9 @@
     ("m" maximize-window)
     ("u" winner-undo)
     ("r" winner-redo)
+    ("," popper-cycle)
+    ("." popper-toggle-latest)
+    ("'" popper-toggle-type)
     ("b" consult-buffer)
     ("+" text-scale-increase)
     ("-" text-scale-decrease)
@@ -835,6 +838,18 @@ targets."
   (require 'posframe)
   (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
   (ace-window-posframe-mode 1))
+
+(use-package popper
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          help-mode
+          helpful-mode
+          compilation-mode))
+  (popper-mode +1)
+  (popper-echo-mode +1))
 
 (use-package perject
   :demand t

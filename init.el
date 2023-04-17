@@ -49,6 +49,10 @@
 
 (elpaca-wait)
 
+(add-hook 'elpaca-after-init-hook (lambda ()
+                                    (when (eq system-type 'gnu/linux)
+                                      (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
+
 (use-package exec-path-from-shell
   :config
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
@@ -1333,5 +1337,3 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (elpaca-process-queues)
 
-(when (eq system-type 'gnu/linux)
-  (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))

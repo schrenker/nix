@@ -852,12 +852,12 @@ targets."
           help-mode
           helpful-mode
           compilation-mode))
-  (popper-mode +1)
-  (popper-echo-mode +1))
+  (popper-mode 1)
+  (popper-echo-mode 1))
 
 (use-package perject
   :demand t
-  :after savehist
+  :after (savehist popper)
   :config
   (defun schrenker/perject-switch-project-global ()
     (interactive)
@@ -879,6 +879,8 @@ targets."
         perject-reload-default '(keep t)
         perject-close-default '(t nil t)
         perject-delete-default '(nil t nil t))
+
+  (setq popper-group-function #'popper-group-by-project)
 
   (perject-mode 1)
   :bind

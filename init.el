@@ -871,7 +871,7 @@ targets."
         perject-save-frames nil
         perject-frame-title-format nil
         perject-switch-to-new-collection t
-        perject-save-on-exit 'recent
+        perject-save-on-exit 'all
         perject-reload-default '(keep t)
         perject-close-default '(t nil t)
         perject-delete-default '(nil t nil t))

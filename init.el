@@ -1345,8 +1345,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package eros
   :after embark
   :config
-  (advice-add 'embark-pp-eval-defun :override #'eros-eval-defun)
-  (advice-add 'pp-eval-expression :override #'eros-eval-defun)
+  ;; (advice-add 'embark-pp-eval-defun :override #'eros-eval-defun)
+  ;; (advice-add 'pp-eval-expression :override #'eros-eval-defun)
   (eros-mode 1))
 
 ;; Major modes for text/programming

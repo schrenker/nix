@@ -578,10 +578,10 @@
   :config
   (require 'transient)
   (defun schrenker/smerge-repeatedly ()
-  "Perform smerge actions again and again"
-  (interactive)
-  (smerge-mode 1)
-  (smerge-transient))
+    "Perform smerge actions again and again"
+    (interactive)
+    (smerge-mode 1)
+    (smerge-transient))
   (transient-define-prefix smerge-transient ()
     [["Move"
       ("n" "next" (lambda () (interactive) (ignore-errors (smerge-next)) (schrenker/smerge-repeatedly)))

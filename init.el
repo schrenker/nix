@@ -642,8 +642,7 @@
   :config
   (setq eat-term-name "xterm-256color")
   ;; For `eat-eshell-mode'.
-  (add-hook 'eshell-mode-hook #'eat-eshell-mode)
-  (add-hook 'eshell-mode-hook #'eat-eshell-visual-command-mode))
+  (add-hook 'eshell-mode-hook #'eat-eshell-mode))
 
 (use-package inheritenv
   :config

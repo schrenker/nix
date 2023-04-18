@@ -326,10 +326,12 @@
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection)
    '("SPC" . ignore)) ; I don't need keypad
-
+  
+  (meow-define-state disable "Disable meow")
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
+  (add-to-list 'meow-mode-state-list '(eat-mode . disable))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
 
@@ -633,21 +635,18 @@
   :config
   (setq prism-comments nil))
 
-
 (use-package eat
-  :demand t
-  :elpaca (eat
-           :host "codeberg.org"
-           :repo "akib/emacs-eat"
-           :files ("*.el" ("term" "term/*.el") "*.texi"
-                   "*.ti" ("terminfo/e" "terminfo/e/*")
-                   ("terminfo/65" "terminfo/65/*")
-                   ("integration" "integration/*")
-                   (:exclude ".dir-locals.el" "*-tests.el")))
+  :elpaca (eat :files ("*.el" ("term" "term/*.el") "*.texi"
+                      "*.ti" ("terminfo/e" "terminfo/e/*")
+                      ("terminfo/65" "terminfo/65/*")
+                      ("integration" "integration/*")
+                      (:exclude ".dir-locals.el" "*-tests.el")))
   :config
-  (setq eat-term-name "xterm-256color")
-  ;; For `eat-eshell-mode'.
-  (add-hook 'eshell-mode-hook #'eat-eshell-mode))
+  ;; (add-hook 'eat-eshell-exec-hook #'eat-eshell-emacs-mode)
+  (add-hook 'eat-exec-hook #'eat-emacs-mode)
+  (with-eval-after-load 'eshell
+    ;; (eat-eshell-mode 1)
+    (eat-eshell-visual-command-mode 1)))
 
 (use-package inheritenv
   :config

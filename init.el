@@ -635,19 +635,6 @@
   :config
   (setq prism-comments nil))
 
-(use-package eat
-  :elpaca (eat :files ("*.el" ("term" "term/*.el") "*.texi"
-                      "*.ti" ("terminfo/e" "terminfo/e/*")
-                      ("terminfo/65" "terminfo/65/*")
-                      ("integration" "integration/*")
-                      (:exclude ".dir-locals.el" "*-tests.el")))
-  :config
-  ;; (add-hook 'eat-eshell-exec-hook #'eat-eshell-emacs-mode)
-  (add-hook 'eat-exec-hook #'eat-emacs-mode)
-  (with-eval-after-load 'eshell
-    ;; (eat-eshell-mode 1)
-    (eat-eshell-visual-command-mode 1)))
-
 (use-package inheritenv
   :config
   (inheritenv-add-advice #'with-temp-buffer))
@@ -1354,9 +1341,20 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; (advice-add 'pp-eval-expression :override #'eros-eval-defun)
   (eros-mode 1))
 
+(use-package vterm
+  :config
+  (setq vterm-max-scrollback 10000)
+  (add-hook 'vterm-mode-hook (lambda ()
+                               (display-line-numbers-mode -1))))
+
+(use-package multi-vterm
+  :bind (("C-c t p" . multi-vterm-project)
+         ("C-c t t" . multi-vterm-dedicated-toggle)
+         ("C-c t T" . multi-vterm-dedicated-select)))
+
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
-  
+
 (use-package markdown-mode
   :mode "\\.md\\'")
 

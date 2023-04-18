@@ -332,6 +332,7 @@
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
   (add-to-list 'meow-mode-state-list '(eat-mode . disable))
+  (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
 
@@ -1342,15 +1343,24 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (eros-mode 1))
 
 (use-package vterm
+  :after meow
   :config
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              (meow-normal-mode -1)
+              (add-hook 'meow-normal-mode-hook
+                            (lambda () (vterm-copy-mode 1)) nil t)))
   (setq vterm-max-scrollback 10000)
   (add-hook 'vterm-mode-hook (lambda ()
                                (display-line-numbers-mode -1))))
 
 (use-package multi-vterm
+  :after vterm
   :bind (("C-c t p" . multi-vterm-project)
          ("C-c t t" . multi-vterm-dedicated-toggle)
-         ("C-c t T" . multi-vterm-dedicated-select)))
+         ("C-c t T" . multi-vterm-dedicated-select))
+  :config
+  (setq multi-vterm-dedicated-window-height-percent 30))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.

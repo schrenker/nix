@@ -360,16 +360,16 @@
     "
 
    ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^        ^Misc^
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────
-      ^_P_^        [_o_] flip           [_=_] balance       [_u_] undo    [_._] show     [_b_] buffers
-      ^^↑^^        [_O_] select         [_m_] maximize      [_r_] redo    [_,_] cycle    [_+_] zoom in
-  _H_ ←   → _T_    [_2_] split down     [_M-p_] vShrink     ^ ^           [_'_] type     [_-_] zoom out
-      ^^↓^^        [_3_] split right    [_M-n_] vEnlarge
-      ^_N_^        [_s_] swap           [_M-h_] hShrink
-     ^^   ^^       [_d_] win delete     [_M-t_] hEnlarge
-     ^^   ^^       [_D_] aw delete
-     ^^   ^^       [_X_] single
- ────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^^
+      ^_P_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show     [_b_] buffers
+      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle    [_B_] ibuffer
+  _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type     [_q_] quit
+      ^^↓^^        [_2_] split down     [_-_]   zoom out
+      ^_N_^        [_3_] split right    [_M-p_] vShrink
+     ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge
+     ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
+     ^^   ^^       [_X_] single         [_M-t_] hEnlarge
+ ^^^^^^^^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────╯
 
 "
     ("P" windmove-up)
@@ -396,9 +396,10 @@
     ("." popper-toggle-latest)
     ("'" popper-toggle-type)
     ("b" consult-buffer)
+    ("B" ibuffer :color blue)
     ("+" text-scale-increase)
     ("-" text-scale-decrease)
-    ("q" nil "cancel"))
+    ("q" nil :color blue))
 
   (global-set-key (kbd "M-o") 'hydra-uictl/body))
 

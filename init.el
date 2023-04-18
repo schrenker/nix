@@ -361,8 +361,8 @@
 
    ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^        ^Misc^
 ╭───────────────────────────────────────────────────────────────────────────────────────────────────────
-      ^_P_^        [_o_] flip           [_=_] balance       [_u_] undo    [_,_] cycle    [_b_] buffers
-      ^^↑^^        [_O_] select         [_m_] maximize      [_r_] redo    [_._] show     [_+_] zoom in
+      ^_P_^        [_o_] flip           [_=_] balance       [_u_] undo    [_._] show     [_b_] buffers
+      ^^↑^^        [_O_] select         [_m_] maximize      [_r_] redo    [_,_] cycle    [_+_] zoom in
   _H_ ←   → _T_    [_2_] split down     [_M-p_] vShrink     ^ ^           [_'_] type     [_-_] zoom out
       ^^↓^^        [_3_] split right    [_M-n_] vEnlarge
       ^_N_^        [_s_] swap           [_M-h_] hShrink

@@ -169,8 +169,6 @@
 ;;   (add-hook 'visual-line-mode-hook (lambda () (diminish 'visual-line-mode))))
 
 (use-package meow
-  :init
-  (meow-global-mode 1)
   :config
   (defun schrenker/meow-append-to-end-of-line ()
     "Go to the end of the line and enter insert mode."
@@ -350,7 +348,8 @@
                                 (?p . paragraph)
                                 (?l . line)
                                 (?d . defun)
-                                (?. . sentence))))
+                                (?. . sentence)))
+  (meow-global-mode 1))
 
 (use-package hydra
   :after ace-window

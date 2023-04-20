@@ -408,7 +408,8 @@
   (hydra-posframe
    :host "github.com"
    :repo "Ladicle/hydra-posframe")
-  :hook (after-init . hydra-posframe-enable)
+  :init
+  (add-hook 'after-init-hook (lambda () (hydra-posframe-mode 1)))
   :config
   (require 'posframe)
   (setq hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center))

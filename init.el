@@ -1343,13 +1343,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
-(use-package eros
-  :after embark
-  :config
-  ;; (advice-add 'embark-pp-eval-defun :override #'eros-eval-defun)
-  ;; (advice-add 'pp-eval-expression :override #'eros-eval-defun)
-  (eros-mode 1))
-
 (use-package vterm
   :after meow
   :config

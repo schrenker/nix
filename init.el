@@ -1373,6 +1373,18 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (setq multi-vterm-dedicated-window-height-percent 30))
 
+(use-package eglot
+  :after cape
+  :elpaca nil
+  :config
+  (defun schrenker/eglot-capf ()
+    (setq-local completion-at-point-functions
+                (list (cape-super-capf
+                       #'eglot-completion-at-point
+                       #'tempel-expand
+                       #'cape-file))))
+  (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
+
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
 

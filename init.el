@@ -1375,6 +1375,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package go-mode
   :mode "\\.go\\'")
 
+(use-package json-mode
+  :mode "\\.json\\'")
+
 (use-package fish-mode
   :mode "\\.fish\\'")
 

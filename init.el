@@ -1356,12 +1356,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package vterm
   :after meow
   :config
-  (add-hook 'vterm-mode-hook
-            (lambda ()
-              (meow-normal-mode -1)
-              (add-hook 'meow-normal-mode-hook
-                            (lambda () (vterm-copy-mode 1)) nil t)))
   (setq vterm-max-scrollback 10000)
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  (add-hook 'vterm-mode-hook (lambda ()
+                               (meow-normal-mode -1)
+                               (add-hook 'meow-normal-mode-hook (lambda () (vterm-copy-mode 1)) nil t)))
   (add-hook 'vterm-mode-hook (lambda ()
                                (display-line-numbers-mode -1))))
 

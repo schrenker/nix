@@ -1392,10 +1392,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :mode "\\.md\\'")
 
 (use-package nix-mode
-  :mode "\\.nix\\'")
+  :mode "\\.nix\\'"
+  :init
+  (add-hook 'nix-mode-hook #'eglot-ensure))
 
 (use-package go-mode
-  :mode "\\.go\\'")
+  :mode "\\.go\\'"
+  :init
+  (add-hook 'go-mode-hook #'eglot-ensure))
 
 (use-package json-mode
   :mode "\\.json\\'")

@@ -997,7 +997,6 @@ targets."
    org-priority-highest '?A
    org-priority-lowest  '?C
    org-priority-default '?C
-   org-agenda-files '("~/org/")
    org-hide-emphasis-markers t
    org-return-follows-link t
    org-priority-start-cycle-with-default t
@@ -1055,11 +1054,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package org-roam
   :after org
-  :config
-  (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
-                                      :immediate-finish t))
-        org-roam-directory (file-truename "~/org"))
+  :demand t
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
@@ -1068,8 +1063,25 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))
+  (defun schrenker/agenda-files-update (&rest _)
+    "Update the value of `org-agenda-files'."
+    (setq org-agenda-files (seq-uniq
+                            (seq-map
+                             #'car
+                             (org-roam-db-query
+                              [:select [nodes:file]
+                                       :from tags
+                                       :left-join nodes
+                                       :on (= tags:node-id nodes:id)
+                                       :where (like tag (quote "%\"agenda\"%"))])))))
+
+  (advice-add 'org-agenda :before #'schrenker/agenda-files-update)
+  (advice-add 'org-todo-list :before #'schrenker/agenda-files-update)
+  (setq org-roam-capture-templates '(("d" "default" plain "%?"
+                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
+                                      :immediate-finish t))
+        org-roam-directory (file-truename "~/org")
+        org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))

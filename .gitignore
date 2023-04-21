@@ -2,6 +2,21 @@
 .idea
 *.log
 tmp/
+*.swp
 
+auto-save-list/
+backup/
+bookmarks
+doom/
+elpaca/
+history
+org-roam.db
+perject/
+transient/
+projects
 custom.el
-emacs/
+.cache/
+#*
+.#*
+/eln-cache/
+/.org-id-locations

@@ -953,7 +953,16 @@ targets."
 
 (use-package org
   :elpaca nil
-  :bind (("C-c n n" . org-capture))
+  :bind (("C-c n n" . org-capture)
+         :map org-mode-map
+         ("M-n" . org-metadown)
+         ("M-N" . org-shiftmetadown)
+         ("M-p" . org-metaup)
+         ("M-P" . org-shiftmetaup)
+         ("M-h" . org-metaleft)
+         ("M-H" . org-shiftmetaleft)
+         ("M-t" . org-metaright)
+         ("M-T" . org-shiftmetaright))
   :init
   (setq time-stamp-active t
         time-stamp-start "#\\+modified: [ \t]*"

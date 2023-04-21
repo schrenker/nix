@@ -333,6 +333,8 @@
   (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
+  (add-hook 'elpaca-ui-mode-hook (lambda () (meow-normal-mode -1)))
+  (add-hook 'elpaca-ui-live-update-mode-hook (lambda () (meow-normal-mode -1)))
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t

@@ -408,11 +408,10 @@
   (hydra-posframe
    :host "github.com"
    :repo "Ladicle/hydra-posframe")
-  :init
-  (add-hook 'after-init-hook (lambda () (hydra-posframe-mode 1)))
   :config
   (require 'posframe)
-  (setq hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center))
+  (setq hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
+  (hydra-posframe-mode 1))
 
 ;; Enable vertico
 (use-package vertico

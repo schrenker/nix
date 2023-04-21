@@ -325,11 +325,9 @@
    '("<escape>" . meow-cancel-selection)
    '("SPC" . ignore)) ; I don't need keypad
   
-  (meow-define-state disable "Disable meow")
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
-  (add-to-list 'meow-mode-state-list '(eat-mode . disable))
   (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)

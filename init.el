@@ -1041,7 +1041,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'org-mode-hook #'org-format-on-save-mode)
+  (add-hook 'org-mode-hook (lambda () (unless (org-roam-capture-p)) #'org-format-on-save-mode))
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
   (add-hook 'org-mode-hook
             (lambda ()

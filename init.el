@@ -1074,12 +1074,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                        :left-join nodes
                                        :on (= tags:node-id nodes:id)
                                        :where (like tag (quote "%\"agenda\"%"))])))))
-
   (advice-add 'org-agenda :before #'schrenker/agenda-files-update)
   (advice-add 'org-todo-list :before #'schrenker/agenda-files-update)
   (setq org-roam-capture-templates '(("d" "default" plain "%?"
                                       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
-                                      :immediate-finish t))
+                                      :immediate-finish t :unnarrowed t))
         org-roam-directory (file-truename "~/org")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))
   (org-roam-db-autosync-mode)

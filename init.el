@@ -1004,7 +1004,7 @@ targets."
    org-priority-faces '((?A :foreground "#DC322F" :weight normal)
                         (?B :foreground "#B58900" :weight normal)
                         (?C :foreground "#6C71C4" :weight normal))
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DONE(d/@)" "DELEGATED(e@/@)" "CANCELLED(c@/@)"))
+   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-todo-keyword-faces
    '(("TODO" :foreground "#D33682" :weight bold :inverse-video t)
      ("INPROGRESS" :foreground "#859900" :weight bold :inverse-video t)

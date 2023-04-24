@@ -143,7 +143,6 @@
 
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "M-_") 'undo-redo)
 
 (unbind-key (kbd "M-v"))
 (unbind-key (kbd "M-r"))
@@ -1392,6 +1391,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                        #'tempel-expand
                        #'cape-file))))
   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
+
+(use-package vundo
+  :bind
+  ("M-_" . vundo))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.

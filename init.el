@@ -1400,6 +1400,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :mode "\\.md\\'")
 
 (use-package nix-mode
+  :after magit-section
   :mode "\\.nix\\'"
   :init
   (add-hook 'nix-mode-hook #'eglot-ensure))

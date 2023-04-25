@@ -1360,6 +1360,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (global-ligature-mode t))
 
 (use-package vterm
+  :if (not (eq system-type 'windows-nt))
   :after meow
   :config
   (setq vterm-max-scrollback 10000)
@@ -1371,6 +1372,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                (display-line-numbers-mode -1))))
 
 (use-package multi-vterm
+  :if (not (eq system-type 'windows-nt))
   :after vterm
   :bind (("C-c t p" . multi-vterm-project)
          ("C-c t t" . multi-vterm-dedicated-toggle)

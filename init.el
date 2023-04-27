@@ -358,16 +358,16 @@
     (:hint nil)
     "
 
-   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^        ^Misc^
+   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^        ^Buffer^
 ╭────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^^
       ^_P_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show     [_b_] buffers
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle    [_B_] ibuffer
-  _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type     [_q_] quit
-      ^^↓^^        [_2_] split down     [_-_]   zoom out
+  _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type     [_S_] scratch
+      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^^^                         [_k_] kill
       ^_N_^        [_3_] split right    [_M-p_] vShrink
      ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
-     ^^   ^^       [_X_] single         [_M-t_] hEnlarge
+     ^^   ^^       [_X_] single         [_M-t_] hEnlarge    ^^^^                         [_q_] quit
  ^^^^^^^^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────╯
 
 "
@@ -389,15 +389,17 @@
     ("X" delete-other-windows)
     ("=" balance-windows)
     ("m" maximize-window)
+    ("+" text-scale-increase)
+    ("-" text-scale-decrease)
     ("u" winner-undo)
     ("r" winner-redo)
-    ("," popper-cycle)
     ("." popper-toggle-latest)
+    ("," popper-cycle)
     ("'" popper-toggle-type)
     ("b" consult-buffer)
     ("B" ibuffer :color blue)
-    ("+" text-scale-increase)
-    ("-" text-scale-decrease)
+    ("S" scratch-buffer)
+    ("k" schrenker/kill-this-buffer)
     ("q" nil :color blue))
 
   (global-set-key (kbd "M-o") 'hydra-uictl/body))

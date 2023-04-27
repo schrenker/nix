@@ -122,10 +122,12 @@
 
 
 (defun schrenker/kill-this-buffer ()
+  "Kill current buffer without confirmation."
   (interactive) (kill-buffer (current-buffer)))
 (global-set-key (kbd "C-x k") 'schrenker/kill-this-buffer)
 
 (defun schrenker/split-and-follow-horizontally ()
+  "Split current window down, and then switch to the newly created window."
   (interactive)
   (split-window-below)
   (balance-windows)
@@ -133,6 +135,7 @@
 (global-set-key (kbd "C-x 2") 'schrenker/split-and-follow-horizontally)
 
 (defun schrenker/split-and-follow-vertically ()
+  "Split current window right, and then switch to the newly created window."
   (interactive)
   (split-window-right)
   (balance-windows)
@@ -851,6 +854,7 @@ targets."
   :after (savehist popper)
   :config
   (defun schrenker/perject-switch-project-global ()
+    "Shows unfiltered list of all collections and projects to switch between them freely"
     (interactive)
     (let ((current-prefix-arg '(4))) ;; emulate C-u
       (call-interactively 'perject-switch)))
@@ -1427,3 +1431,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (global-fish-completion-mode))
 
 (elpaca-process-queues)
+
+(provide 'init)
+;;; init.el ends here.

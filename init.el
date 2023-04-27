@@ -763,6 +763,12 @@
   ;;;; 1. project.el (the default)
   (setq consult-project-function   #'consult--default-project-function))
 
+(use-package consult-dir
+  :bind (("C-x C-d" . consult-dir)
+         :map vertico-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file)))
+
 (use-package embark
   :bind
   (("M-." . embark-act)         ;; pick some comfortable binding
@@ -1043,9 +1049,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'org-mode-hook (lambda () (unless
-                                     (and (fboundp 'org-roam-capture-p) (org-roam-capture-p))
-                                   #'org-format-on-save-mode)))
+  (add-hook 'org-mode-hook (lambda () (ignore-errors (unless (org-roam-capture-p)) #'org-format-on-save-mode)))
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
   (add-hook 'org-mode-hook
             (lambda ()

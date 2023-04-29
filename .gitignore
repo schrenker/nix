@@ -20,3 +20,4 @@ custom.el
 .#*
 /eln-cache/
 /.org-id-locations
+/tramp

@@ -1374,6 +1374,16 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package vterm
   :if (not (eq system-type 'windows-nt))
   :after meow
+  :demand t
+  :init
+  (defun schrenker/CC-out-of-copy-mode ()
+    (interactive)
+    (meow-normal-mode -1)
+    (call-interactively #'schrenker/meow-append-to-end-of-line)
+    (vterm-send "C-c"))
+  :bind
+  (:map vterm-copy-mode-map
+        ("C-c C-c" . schrenker/CC-out-of-copy-mode))
   :config
   (setq vterm-max-scrollback 10000)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)

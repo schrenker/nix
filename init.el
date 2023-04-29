@@ -363,7 +363,7 @@
       ^_P_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show     [_b_] buffers
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle    [_B_] ibuffer
   _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type     [_S_] scratch
-      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^^^                         [_k_] kill
+      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_t_] vterm    [_k_] kill
       ^_N_^        [_3_] split right    [_M-p_] vShrink
      ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
@@ -396,6 +396,7 @@
     ("." popper-toggle-latest)
     ("," popper-cycle)
     ("'" popper-toggle-type)
+    ("t" multi-vterm-dedicated-toggle)
     ("b" consult-buffer)
     ("B" ibuffer :color blue)
     ("S" scratch-buffer)

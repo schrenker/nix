@@ -777,6 +777,12 @@
    ("C-h b" . embark-bindings)) ;; alternative for `describe-bindings'
 
   :init
+  (defun schrenker/org-cycle-checkbox ()
+    (interactive)
+    (if (org-at-item-checkbox-p)
+        (if (org-list-at-regexp-after-bullet-p "\\(\\[[ ]\\]\\)[ \t]+")
+              (org-toggle-checkbox '(16))
+          (org-toggle-checkbox))))
 
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -787,6 +793,8 @@
   ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 
   :config
+
+  (keymap-set embark-org-item-map "RET" #'schrenker/org-cycle-checkbox)
 
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.

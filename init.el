@@ -1040,6 +1040,10 @@ targets."
         (add-to-list 'org-babel-load-languages (cons (intern language) t))
         (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
       ad-do-it))
+
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t)
+                                 (shell . t)))
   (defun schrenker/org-unarchive ()
     "Restore an entry that has been archived.
 This function restores the entry to its original location, and
@@ -1453,6 +1457,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :if (executable-find "fish")
   :config
   (global-fish-completion-mode))
+
+(use-package bash-completion)
+
+(use-package sh-script
+  :elpaca nil)
+
+
 
 (elpaca-process-queues)
 

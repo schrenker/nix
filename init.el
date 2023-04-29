@@ -502,6 +502,8 @@
                                gud-mode
                                vterm-mode))
   :config
+  (unbind-key (kbd "M-n") 'corfu-map)
+  (unbind-key (kbd "M-p") 'corfu-map)
   (defun corfu-move-to-minibuffer ()
     (interactive)
     (let ((completion-extra-properties corfu--extra)

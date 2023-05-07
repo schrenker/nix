@@ -348,6 +348,12 @@
                                 (?. . sentence)))
   (meow-global-mode 1))
 
+(use-package key-chord
+  :after meow
+  :config
+  (key-chord-mode 1)
+  (key-chord-define meow-insert-state-keymap ";;" 'right-char))
+
 (use-package hydra
   :after ace-window
   :config

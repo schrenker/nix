@@ -161,14 +161,6 @@
   `(let ((current-prefix-arg -1))
      (call-interactively ,form)))
 
-;; (use-package diminish
-;;   :config
-;;   (diminish 'global-which-key-mode)
-;;   (add-hook 'auto-revert-mode-hook (lambda () (diminish 'auto-revert-mode)))
-;;   (add-hook 'which-key-mode-hook (lambda () (diminish 'which-key-mode)))
-;;   (add-hook 'eldoc-mode-hook (lambda () (diminish 'eldoc-mode)))
-;;   (add-hook 'visual-line-mode-hook (lambda () (diminish 'visual-line-mode))))
-
 (use-package meow
   :config
   (defun schrenker/meow-append-to-end-of-line ()

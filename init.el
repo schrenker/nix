@@ -1009,6 +1009,7 @@ targets."
    org-priority-default '?C
    org-hide-emphasis-markers t
    org-return-follows-link t
+   org-edit-src-content-indentation 0
    org-priority-start-cycle-with-default t
    org-priority-faces '((?A :foreground "#DC322F" :weight normal)
                         (?B :foreground "#B58900" :weight normal)

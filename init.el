@@ -196,6 +196,11 @@
     (interactive)
     (schrenker/call-negative 'meow-till))
 
+  (defun schrenker/change-to-eol ()
+    (interactive)
+    (call-interactively #'kill-line)
+    (call-interactively #'schrenker/meow-smart-append))
+
   (when (eq system-type 'gnu/linux)
 
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
@@ -272,6 +277,7 @@
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)
    '("c" . meow-change)
+   '("C" . schrenker/change-to-eol)
    '("d" . meow-delete)
    '("D" . meow-backward-delete)
    '("e" . meow-line)

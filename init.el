@@ -627,7 +627,10 @@
     '("-a" "Autostash" "--autostash")))
 
 (use-package git-timemachine
-  :commands (git-timemachine))
+  :commands (git-timemachine)
+  :bind (:map git-timemachine-mode-map
+              ("M-n" . git-timemachine-show-next-revision)
+              ("M-p" . git-timemachine-show-previous-revision)))
 
 (use-package diff-hl
   :config

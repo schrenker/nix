@@ -867,6 +867,7 @@ targets."
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
+          ("\\*Warnings\\*" . hide)
           "Output\\*$"
           "\\*Async Shell Command\\*"
           help-mode

@@ -966,7 +966,8 @@ targets."
   :init
   (perject-tab-mode 1)
   (add-hook 'perject-before-switch-hook (lambda (&rest orig new frame)
-                                          (let ((inhibit-message t))
+                                          (let ((inhibit-message t)
+                                                (message-log-max nil))
                                             (when (cdr (perject-current))
                                               (call-interactively #'perject-tab-set)))))
   :bind

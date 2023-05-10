@@ -1031,6 +1031,7 @@ targets."
    org-priority-default '?C
    org-hide-emphasis-markers t
    org-return-follows-link t
+   org-fontify-quote-and-verse-blocks t
    org-edit-src-content-indentation 0
    org-priority-start-cycle-with-default t
    org-priority-faces '((?A :foreground "#DC322F" :weight normal)
@@ -1323,6 +1324,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
             green "#859900"
             green-bg (if (eq appearance 'light) "#efeac7" "#1d3732"))
       (progn
+        (setq org-src-block-faces
+              `(("emacs-lisp" (:background ,magenta-bg :extend t))
+                ("python" (:background ,green-bg :extend t))
+                ("yaml" (:background ,cyan-bg :extend t))
+                ("bash" (:background ,green-bg :extend t))
+                ("nix" (:background ,blue-bg :extend t))))
         (mapc #'disable-theme custom-enabled-themes)
         (pcase appearance
           ('light (load-theme 'solarized-light t))

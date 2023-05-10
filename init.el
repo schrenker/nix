@@ -1007,6 +1007,7 @@ targets."
   (require 'org-capture)
   (load-file (concat user-emacs-directory "org-format.el"))
   (setf epa-pinentry-mode 'loopback)
+  (setf (alist-get 'file org-link-frame-setup) #'find-file)
   (setq
    org-log-into-drawer "LOGBOOK"
    org-log-done 'time

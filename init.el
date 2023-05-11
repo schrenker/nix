@@ -1018,7 +1018,8 @@ targets."
    org-fontify-whole-heading-line t
    org-tags-exclude-from-inheritance '("crypt"
                                        "moc"
-                                       "inbox")
+                                       "inbox"
+                                       "verb")
    org-tags-column -77
    org-directory "~/org"
    org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a."))
@@ -1052,6 +1053,7 @@ targets."
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
   (org-crypt-use-before-save-magic)
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
   (defadvice org-babel-execute-src-block (around load-language nil activate)
     "Load language if needed"
     (let ((language (org-element-property :language (org-element-at-point))))
@@ -1488,7 +1490,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package sh-script
   :elpaca nil)
 
-
+(use-package verb
+  :after org
+  :elpaca
+  (verb :files (:defaults "ob-verb.el")))
 
 (elpaca-process-queues)
 

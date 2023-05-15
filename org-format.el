@@ -137,7 +137,11 @@ Only applies to level-1 headings in the document."
   :lighter nil
   (cond
    (org-format-on-save-mode
-    (add-hook 'before-save-hook 'org-format-all-headings org-format-on-save-mode-hook-depth t))
+    (add-hook 'before-save-hook
+              (lambda ()
+                (org-element-cache-reset)
+                (org-format-all-headings))
+              org-format-on-save-mode-hook-depth t))
    (t
     (remove-hook 'before-save-hook 'org-format-all-headings t))))
 

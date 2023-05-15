@@ -32,6 +32,7 @@
       display-line-numbers-type 'visual
       scroll-margin 5
       scroll-step 1
+      delete-pair-blink-delay 0
       sentence-end-double-space nil
       auto-window-vscroll nil
       savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
@@ -231,6 +232,18 @@
     (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
     (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
     (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
+
+  (define-key global-map (kbd "M-[") 'insert-pair)
+  (define-key global-map (kbd "M-(") 'insert-pair)
+  (define-key global-map (kbd "M-{") 'insert-pair)
+  (define-key global-map (kbd "M-<") 'insert-pair)
+  (define-key global-map (kbd "M-\"") 'insert-pair)
+  (define-key global-map (kbd "M-\'") 'insert-pair)
+
+  (define-key global-map (kbd "M-]") 'delete-pair)
+  (define-key global-map (kbd "M-)") 'delete-pair)
+  (define-key global-map (kbd "M-}") 'delete-pair)
+  (define-key global-map (kbd "M->") 'delete-pair)
 
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key)

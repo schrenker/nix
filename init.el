@@ -1457,6 +1457,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :bind
   ("M-_" . vundo))
 
+(use-package woman
+  :elpaca nil
+  :bind
+  (:map woman-mode-map
+        ("n" . next-line)
+        ("p" . previous-line)
+        ("N" . Man-next-section)
+        ("P" . Man-previous-section)))
+
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
 

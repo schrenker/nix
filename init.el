@@ -374,6 +374,12 @@
   :after ace-window
   :config
   (setq hydra-is-helpful t)
+
+  (defun schrenker/ace-swap-window ()
+    (interactive)
+    (let ((aw-ignore-current t))
+      (ace-swap-window)))
+
   (defhydra hydra-uictl
     (:hint nil)
     "
@@ -403,7 +409,7 @@
     ("O" ace-select-window)
     ("2" schrenker/split-and-follow-horizontally)
     ("3" schrenker/split-and-follow-vertically)
-    ("s" ace-swap-window)
+    ("s" schrenker/ace-swap-window)
     ("d" delete-window)
     ("D" ace-delete-window)
     ("X" delete-other-windows)

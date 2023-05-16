@@ -41,6 +41,7 @@
       mac-command-modifier 'meta
       mac-option-modifier 'alt
       mac-right-option-modifier nil
+      electric-pair-open-newline-between-pairs t
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
       frame-resize-pixelwise t

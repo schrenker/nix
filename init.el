@@ -149,6 +149,7 @@
 
 (unbind-key (kbd "M-v"))
 (unbind-key (kbd "M-r"))
+(unbind-key (kbd "C-z"))
 (unbind-key (kbd "<f2>"))
 (unbind-key (kbd "<f10>"))
 

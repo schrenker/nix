@@ -890,14 +890,23 @@ targets."
 
 (use-package popper
   :init
+  (setq popper-display-function
+      (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
+        (if (popper--suppress-p buffer)
+            (display-buffer-no-window buffer '((allow-no-window . t)))
+          (popper-select-popup-at-bottom buffer _act))))
   (setq popper-reference-buffers
         '("\\*Messages\\*"
-          ("\\*Warnings\\*" . hide)
+          "\\*Warnings\\*"
           "Output\\*$"
           "\\*Async Shell Command\\*"
           help-mode
           helpful-mode
           compilation-mode))
+  (add-hook 'org-mode-hook
+            (lambda () (setq-local popper-reference-buffers (append
+                                                        (remove "\\*Warnings\\*" popper-reference-buffers)
+                                                        '(("\\*Warnings\\*" . hide))))))
   (popper-mode 1)
   (popper-echo-mode 1))
 
@@ -1019,7 +1028,8 @@ targets."
          ("M-h" . org-metaleft)
          ("M-H" . org-shiftmetaleft)
          ("M-t" . org-metaright)
-         ("M-T" . org-shiftmetaright))
+         ("M-T" . org-shiftmetaright)
+         ("C-c g f" . org-format-all-headings))
   :init
   (setq time-stamp-active t
         time-stamp-start "#\\+modified: [ \t]*"
@@ -1107,7 +1117,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'org-mode-hook (lambda () (ignore-errors (unless (org-roam-capture-p) (lambda () (org-format-on-save-mode 1))))))
+  (add-hook 'org-mode-hook (lambda () (unless (org-roam-capture-p) (org-format-on-save-mode 1))))
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
   (add-hook 'org-mode-hook
             (lambda ()

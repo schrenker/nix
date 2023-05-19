@@ -1373,6 +1373,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                 ("python" (:background ,green-bg :extend t))
                 ("yaml" (:background ,cyan-bg :extend t))
                 ("bash" (:background ,green-bg :extend t))
+                ("sh" (:background ,green-bg :extend t))
+                ("shell" (:background ,green-bg :extend t))
+                ("fish" (:background ,green-bg :extend t))
                 ("nix" (:background ,blue-bg :extend t))))
         (mapc #'disable-theme custom-enabled-themes)
         (pcase appearance

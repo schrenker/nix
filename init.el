@@ -1034,7 +1034,8 @@ targets."
          ("M-H" . org-shiftmetaleft)
          ("M-t" . org-metaright)
          ("M-T" . org-shiftmetaright)
-         ("C-c g f" . org-format-all-headings))
+         ("C-c C-f" . org-format-all-headings)
+         ("C-c l" . org-store-link))
   :init
   (setq time-stamp-active t
         time-stamp-start "#\\+modified: [ \t]*"

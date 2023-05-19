@@ -679,7 +679,12 @@
            :host "github.com"
            :repo "alphapapa/prism.el")
   :config
-  (setq prism-comments nil))
+  (setq prism-comments nil
+        prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
+                                        (t . 2)))
+  (add-hook 'yaml-mode-hook #'prism-whitespace-mode)
+  (add-hook 'shell-script-mode #'prism-whitespace-mode)
+  (add-hook 'emacs-lisp-mode #'prism-mode))
 
 (use-package inheritenv
   :config

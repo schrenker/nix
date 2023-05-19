@@ -1543,6 +1543,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package sh-script
   :elpaca nil)
 
+(use-package dockerfile-mode)
+
 (use-package verb
   :after org
   :elpaca

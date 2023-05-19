@@ -1256,7 +1256,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; (dirvish-peek-mode) ; Preview files in minibuffer
   (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
   (setq dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
-        dirvish-attributes '(all-the-icons file-time file-size collapse subtree-state vc-state git-msg)
+        ;; Don't worry, Dirvish is still performant even if you enable all these attributes
+        dirvish-attributes '(vc-state subtree-state all-the-icons collapse git-msg file-time file-size)
         dirvish-path-separators '("~" "/" "/")
         delete-by-moving-to-trash t
         dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
@@ -1417,7 +1418,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (solaire-global-mode +1))
 
-(use-package all-the-icons)
+(use-package all-the-icons
+  :config
+  (add-to-list 'all-the-icons-extension-icon-alist '("jar" all-the-icons-alltheicon "java" :height 1.0 :face all-the-icons-dpurple)))
 
 (use-package all-the-icons-ibuffer
   :after all-the-icons

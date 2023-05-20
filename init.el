@@ -695,7 +695,6 @@
 
 (use-package prism
   :commands (prism-set-colors)
-  :demand t
   :elpaca (prism
            :host "github.com"
            :repo "alphapapa/prism.el")
@@ -704,8 +703,8 @@
         prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
                                         (t . 2)))
   (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'shell-script-mode (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'emacs-lisp-mode (lambda () (prism-mode 1))))
+  (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1))))
 
 (use-package inheritenv
   :config

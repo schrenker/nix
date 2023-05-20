@@ -1267,6 +1267,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :init
   (when (eq system-type 'darwin)
     (setq dired-use-ls-dired t
+          dired-dwim-target t
           insert-directory-program "/opt/homebrew/bin/gls"
           dired-listing-switches "-aBhl --group-directories-first")))
 

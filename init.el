@@ -175,6 +175,13 @@
 
 (use-package meow
   :config
+  (defun schrenker/old-meow-quit ()
+    "Quit current window or buffer."
+    (interactive)
+    (if (> (seq-length (window-list (selected-frame))) 1)
+        (delete-window)
+      (previous-buffer)))
+
   (defun schrenker/meow-append-to-end-of-line ()
     "Go to the end of the line and enter insert mode."
     (interactive)
@@ -330,7 +337,7 @@
    '("p" . meow-prev)
    '("P" . meow-prev-expand)
    '("q" . ignore)
-   '("Q" . meow-quit)
+   '("Q" . schrenker/old-meow-quit)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
    '("s" . meow-search)

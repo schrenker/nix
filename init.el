@@ -1356,6 +1356,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (mood-line-mode 1))
 
 (use-package solarized-theme
+  :after dirvish
+  :demand t
   :init
   (setq solarized-use-more-italic t
         solarized-scale-org-headlines nil
@@ -1430,7 +1432,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)
         (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)
         (set-face-attribute 'org-modern-time-active nil :foreground fg-emph :background bg-main :inverse-video t)
-        (set-face-attribute 'org-modern-time-inactive nil :foreground fg-alt :background bg-main :inverse-video t))))
+        (set-face-attribute 'org-modern-time-inactive nil :foreground fg-alt :background bg-main :inverse-video t)
+        (set-face-foreground 'vc-edited-state yellow)
+        (set-face-foreground 'vc-locally-added-state green)
+        (set-face-foreground 'vc-removed-state red)
+        (set-face-foreground 'vc-missing-state fg-alt)
+        (set-face-foreground 'vc-conflict-state orange)
+        (set-face-foreground 'vc-locked-state violet)
+        (set-face-foreground 'vc-needs-update-state blue))))
 
   :config
   (if (eq system-type 'darwin)

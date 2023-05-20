@@ -8,6 +8,14 @@
 (setq gc-cons-threshold (* 1024 1024 200)
       gc-cons-percentage 0.6)
 
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+
 (setq-default indent-tabs-mode nil
               truncate-string-ellipsis "…"
               x-stretch-cursor t

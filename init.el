@@ -1278,7 +1278,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
   (setq dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
         ;; Don't worry, Dirvish is still performant even if you enable all these attributes
-        dirvish-attributes '(vc-state subtree-state all-the-icons collapse git-msg file-time file-size)
+        dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-time file-size)
         dirvish-path-separators '("~" "/" "/")
         delete-by-moving-to-trash t
         dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")

@@ -1097,19 +1097,7 @@ targets."
    org-fontify-quote-and-verse-blocks t
    org-edit-src-content-indentation 0
    org-priority-start-cycle-with-default t
-   org-priority-faces '((?A :foreground "#DC322F" :weight normal)
-                        (?B :foreground "#B58900" :weight normal)
-                        (?C :foreground "#6C71C4" :weight normal))
    org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
-   org-todo-keyword-faces
-   '(("TODO" :foreground "#D33682" :weight bold :inverse-video t)
-     ("INPROGRESS" :foreground "#859900" :weight bold :inverse-video t)
-     ("BLOCKED" :foreground "#CB4B16" :weight bold :inverse-video t)
-     ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t)
-     ("REVIEW" :foreground "#268BD2" :weight bold :inverse-video t)
-     ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t )
-     ("CANCELLED" :foreground "#9FA4BB" :weight bold :inverse-video t)
-     ("DELEGATED"  :foreground "#9FA4BB" :weight bold :inverse-video t))
    org-capture-templates
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
@@ -1206,24 +1194,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         org-modern-star nil
         org-modern-checkbox nil
         org-modern-block-fringe nil
-        org-modern-list nil
-        org-modern-todo-faces
-        '(("TODO" :foreground "#D33682" :weight bold :inverse-video t)
-          ("INPROGRESS" :foreground "#859900" :weight bold :inverse-video t)
-          ("BLOCKED" :foreground "#CB4B16" :weight bold :inverse-video t)
-          ("ONHOLD" :foreground "#2AA198" :weight bold :inverse-video t)
-          ("REVIEW" :foreground "#268BD2" :weight bold :inverse-video t)
-          ("DONE" :foreground "#9FA4BB" :weight bold :inverse-video t)
-          ("CANCELLED" :foreground "#9FA4BB" :weight bold :inverse-video t)
-          ("DELEGATED"  :foreground "#9FA4BB" :weight bold :inverse-video t))
-        org-modern-priority-faces '((?A :foreground "#DC322F" :weight bold :inverse-video t)
-                                    (?B :foreground "#B58900" :weight bold :inverse-video t)
-                                    (?C :foreground "#6C71C4" :weight bold :inverse-video t)))
-  (advice-add
-   'org-modern--update-label-face
-   :override
-   (lambda (&rest r)
-     (set-face-attribute 'org-modern-label nil :height 1.0 :box nil)))
+        org-modern-list nil)
   (global-org-modern-mode 1))
 
 (use-package german-holidays)
@@ -1356,7 +1327,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (mood-line-mode 1))
 
 (use-package solarized-theme
-  :after dirvish
+  :after (org org-modern dirvish)
   :demand t
   :init
   (setq solarized-use-more-italic t
@@ -1375,6 +1346,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
             fg-main (if (eq appearance 'light) "#657b83" "#839496")
             fg-alt (if (eq appearance 'light) "#93a1a1" "#586e75")
             fg-emph (if (eq appearance 'light) "#586e75" "#93a1a1")
+            neutral "9fa4bb"
             yellow "#b58900"
             yellow-bg (if (eq appearance 'light) "#f8e8c6" "#273532")
             orange "#cb4b16"
@@ -1392,6 +1364,19 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
             green "#859900"
             green-bg (if (eq appearance 'light) "#efeac7" "#1d3732"))
       (progn
+        (setq org-todo-keyword-faces `(("TODO" :foreground ,magenta :weight bold :inverse-video t)
+                                       ("INPROGRESS" :foreground ,green :weight bold :inverse-video t)
+                                       ("BLOCKED" :foreground ,orange :weight bold :inverse-video t)
+                                       ("ONHOLD" :foreground ,cyan :weight bold :inverse-video t)
+                                       ("REVIEW" :foreground ,blue :weight bold :inverse-video t)
+                                       ("DONE" :foreground ,neutral :weight bold :inverse-video t)
+                                       ("CANCELLED" :foreground ,neutral :weight bold :inverse-video t)
+                                       ("DELEGATED"  :foreground ,neutral :weight bold :inverse-video t))
+              org-priority-faces `((?A :foreground ,red :weight bold :inverse-video t)
+                                   (?B :foreground ,yellow :weight bold :inverse-video t)
+                                   (?C :foreground ,violet :weight bold :inverse-video t))
+              org-modern-todo-faces org-todo-keyword-faces
+              org-modern-priority-faces org-priority-faces)
         (setq org-src-block-faces
               `(("emacs-lisp" (:background ,magenta-bg :extend t))
                 ("python" (:background ,green-bg :extend t))
@@ -1439,7 +1424,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (set-face-foreground 'vc-missing-state fg-alt)
         (set-face-foreground 'vc-conflict-state orange)
         (set-face-foreground 'vc-locked-state violet)
-        (set-face-foreground 'vc-needs-update-state blue))))
+        (set-face-foreground 'vc-needs-update-state blue)
+        (advice-add
+         'org-modern--update-label-face
+         :override
+         (lambda (&rest r)
+           (set-face-attribute 'org-modern-label nil :height 1.0 :box nil)))
+        )))
 
   :config
   (if (eq system-type 'darwin)

@@ -1349,7 +1349,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
             fg-main (if (eq appearance 'light) "#657b83" "#839496")
             fg-alt (if (eq appearance 'light) "#93a1a1" "#586e75")
             fg-emph (if (eq appearance 'light) "#586e75" "#93a1a1")
-            neutral "9fa4bb"
             yellow "#b58900"
             yellow-bg (if (eq appearance 'light) "#f8e8c6" "#273532")
             orange "#cb4b16"
@@ -1372,9 +1371,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                        ("BLOCKED" :foreground ,orange :weight bold :inverse-video t)
                                        ("ONHOLD" :foreground ,cyan :weight bold :inverse-video t)
                                        ("REVIEW" :foreground ,blue :weight bold :inverse-video t)
-                                       ("DONE" :foreground ,neutral :weight bold :inverse-video t)
-                                       ("CANCELLED" :foreground ,neutral :weight bold :inverse-video t)
-                                       ("DELEGATED"  :foreground ,neutral :weight bold :inverse-video t))
+                                       ("DONE" :foreground ,fg-emph :weight bold :inverse-video t)
+                                       ("CANCELLED" :foreground ,fg-alt :weight bold :inverse-video t)
+                                       ("DELEGATED"  :foreground ,fg-main :weight bold :inverse-video t))
               org-priority-faces `((?A :foreground ,red :weight bold :inverse-video t)
                                    (?B :foreground ,yellow :weight bold :inverse-video t)
                                    (?C :foreground ,violet :weight bold :inverse-video t))

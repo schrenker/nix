@@ -1252,6 +1252,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ;; Don't worry, Dirvish is still performant even if you enable all these attributes
         dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-time file-size)
         dirvish-path-separators '("~" "/" "/")
+        dirvish-default-layout '(1 0.1 0.5)
+        dirvish-layout-recipes '((0 0 0.4) (0 0 0.8) (1 0.08 0.8) (1 0.1 0.5))
         delete-by-moving-to-trash t
         dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
 
@@ -1276,6 +1278,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("M-l" . dirvish-ls-switches-menu)
    ("M-m" . dirvish-mark-menu)
    ("M-t" . dirvish-layout-toggle)
+   ("M-T" . dirvish-layout-switch)
    ("M-s" . dirvish-setup-menu)
    ("M-e" . dirvish-emerge-menu)
    ("M-j" . dirvish-fd-jump)))

@@ -414,7 +414,7 @@
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle    [_B_] ibuffer
   _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type     [_S_] scratch
       ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_t_] vterm    [_k_] kill
-      ^_N_^        [_3_] split right    [_M-p_] vShrink     ^^^^          [_T_] dirSide
+      ^_N_^        [_3_] split right    [_M-p_] vShrink     ^^            [_T_] dirSide
      ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
      ^^   ^^       [_X_] single         [_M-t_] hEnlarge    ^^^^                         [_q_] quit
@@ -1273,6 +1273,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("h"   . dirvish-history-jump) ; remapped `describe-mode'
    ("s"   . dirvish-quicksort)    ; remapped `dired-sort-toggle-or-edit'
    ("v"   . dirvish-vc-menu)      ; remapped `dired-view-file'
+   ("^"   . dired-up-directory)
    ("TAB" . dirvish-subtree-toggle)
    ("M-f" . dirvish-history-go-forward)
    ("M-b" . dirvish-history-go-backward)

@@ -414,7 +414,7 @@
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle    [_B_] ibuffer
   _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type     [_S_] scratch
       ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_t_] vterm    [_k_] kill
-      ^_N_^        [_3_] split right    [_M-p_] vShrink
+      ^_N_^        [_3_] split right    [_M-p_] vShrink     ^^^^          [_T_] dirSide
      ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
      ^^   ^^       [_X_] single         [_M-t_] hEnlarge    ^^^^                         [_q_] quit
@@ -447,6 +447,7 @@
     ("," popper-cycle)
     ("'" popper-toggle-type)
     ("t" multi-vterm-dedicated-toggle)
+    ("T" dirvish-side)
     ("b" consult-buffer)
     ("B" ibuffer :color blue)
     ("S" scratch-buffer)

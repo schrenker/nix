@@ -26,7 +26,6 @@ in
     nix-direnv
     nodejs
     pinentry_mac
-    powershell
     ripgrep
     tmux
     wget

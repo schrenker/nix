@@ -45,7 +45,6 @@
     "bartender"
     "cloudflare-warp"
     "crossover"
-    "emacs-mac"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
     "hazeover"
@@ -65,7 +64,7 @@
     "homebrew/cask-drivers"
     "homebrew/cask-fonts"
     "homebrew/services"
-    "railwaycat/emacsmacport"
+    "d12frosted/emacs-plus"
   ];
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;

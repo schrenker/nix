@@ -24,6 +24,7 @@
   users.users.sebastian = {
     name = "sebastian";
     home = "/Users/sebastian";
+    shell = pkgs.fish;
   };
 
   home-manager.useUserPackages = true;
@@ -127,8 +128,6 @@
     if [ ! -d /Applications/Sorted.app ]; then
         mv /Applications/Sorted* /Applications/Sorted.app
     fi
-
-    cp -fav ~/.nixpkgs/dotfiles/beorg-config.org ~/org/init.org
   '';
 
   security.pam.enableSudoTouchIdAuth = true;

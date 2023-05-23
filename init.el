@@ -186,7 +186,7 @@
   (defun schrenker/old-meow-quit ()
     "Quit current window or buffer."
     (interactive)
-    (if (> (seq-length (window-list (selected-frame))) 1)
+    (if (> (seq-length (window-list (selected-frame))) (if (dirvish-side--session-visible-p) 2 1))
         (delete-window)
       (previous-buffer)))
 
@@ -938,8 +938,12 @@ targets."
 
 (use-package perject
   :demand t
-  :after (savehist popper)
+  :after (savehist popper dirvish)
   :config
+  (advice-add 'perject-switch :before (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
+                                              (when (eq visible (selected-window))
+                                                (other-window 1)))))
+
   (defun schrenker/perject-switch-project-global ()
     "Shows unfiltered list of all collections and projects to switch between them freely"
     (interactive)

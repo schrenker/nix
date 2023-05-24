@@ -1543,6 +1543,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("N" . Man-next-section)
         ("P" . Man-previous-section)))
 
+(use-package uniquify
+  :elpaca nil
+  :config
+  (setq uniquify-buffer-name-style 'forward
+        uniquify-separator "/"
+        uniquify-after-kill-buffer-p t    ; rename after killing uniquified
+        uniquify-ignore-buffers-re "^\\*"))
+
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
 

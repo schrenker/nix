@@ -846,7 +846,6 @@ targets."
         ("C-<tab> I" . perject-tab-decrement-index)))
 
 (use-package org
-  :elpaca nil
   :bind (("C-c n n" . org-capture)
          :map org-mode-map
          ("M-n" . org-metadown)

@@ -182,212 +182,7 @@
   `(let ((current-prefix-arg -1))
      (call-interactively ,form)))
 
-(use-package meow
-  :config
-  (defun schrenker/old-meow-quit ()
-    "Quit current window or buffer."
-    (interactive)
-    (if (> (seq-length (window-list (selected-frame))) (if (dirvish-side--session-visible-p) 2 1))
-        (delete-window)
-      (previous-buffer)))
 
-  (defun schrenker/meow-append-to-end-of-line ()
-    "Go to the end of the line and enter insert mode."
-    (interactive)
-    (call-interactively #'meow-line)
-    (call-interactively #'meow-append))
-
-  (defun schrenker/meow-insert-at-beginning-of-line ()
-    "Go to the beginnig of the line and enter insert mode."
-    (interactive)
-    (call-interactively #'meow-join)
-    (call-interactively #'meow-append))
-
-  (defun schrenker/meow-join-below ()
-    "Join line below to current line"
-    (interactive)
-    (call-interactively #'meow-next)
-    (call-interactively #'meow-join)
-    (call-interactively #'meow-kill))
-
-  (defun schrenker/meow-smart-append ()
-    (interactive)
-    (if (eolp)
-        (call-interactively #'meow-insert)
-      (call-interactively #'meow-append)))
-
-  (defun schrenker/meow-find-backwards ()
-    (interactive)
-    (schrenker/call-negative 'meow-find))
-
-  (defun schrenker/meow-till-backwards ()
-    (interactive)
-    (schrenker/call-negative 'meow-till))
-
-  (defun schrenker/change-to-eol ()
-    (interactive)
-    (call-interactively #'kill-line)
-    (call-interactively #'schrenker/meow-smart-append))
-
-  (when (eq system-type 'gnu/linux)
-
-    (defun schrenker/wsl-copy-region-to-clipboard (start end)
-      "Copy region to Windows clipboard."
-      (interactive "r")
-      (call-process-region start end "clip.exe" nil 0)
-      (call-interactively #'meow-cancel-selection))
-
-    (defun schrenker/wsl-kill-region-to-clipboard (start end)
-      "Copy region to Windows clipboard."
-      (interactive "r")
-      (call-process-region start end "clip.exe" nil 0)
-      (call-interactively #'kill-region))
-
-    (defun schrenker/wsl-clipboard-to-string ()
-      "Return Windows clipboard as string."
-      (let ((coding-system-for-read 'dos))
-        (substring              ; remove added trailing \n
-         (shell-command-to-string "powershell.exe -Command Get-Clipboard") 0 -1)))
-
-    (defun schrenker/wsl-paste-from-clipboard (arg)
-      "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"
-      (interactive "P")
-      (let ((clip (schrenker/wsl-clipboard-to-string)))
-        (insert clip)
-        (if arg (kill-new clip))))
-
-    (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
-    (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
-    (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
-
-  (define-key global-map (kbd "M-[") 'insert-pair)
-  (define-key global-map (kbd "M-(") 'insert-pair)
-  (define-key global-map (kbd "M-{") 'insert-pair)
-  (define-key global-map (kbd "M-<") 'insert-pair)
-  (define-key global-map (kbd "M-\"") 'insert-pair)
-  (define-key global-map (kbd "M-\'") 'insert-pair)
-
-  (define-key global-map (kbd "M-]") 'delete-pair)
-  (define-key global-map (kbd "M-)") 'delete-pair)
-  (define-key global-map (kbd "M-}") 'delete-pair)
-  (define-key global-map (kbd "M->") 'delete-pair)
-
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
-  (meow-motion-overwrite-define-key)
-  (meow-leader-define-key
-   '("1" . meow-digit-argument)
-   '("2" . meow-digit-argument)
-   '("3" . meow-digit-argument)
-   '("4" . meow-digit-argument)
-   '("5" . meow-digit-argument)
-   '("6" . meow-digit-argument)
-   '("7" . meow-digit-argument)
-   '("8" . meow-digit-argument)
-   '("9" . meow-digit-argument)
-   '("0" . meow-digit-argument)
-   '("/" . meow-keypad-describe-key)
-   '("?" . meow-cheatsheet))
-  (meow-motion-overwrite-define-key
-   ;; custom keybinding for motion state
-   '("<escape>" . ignore)
-   '("SPC" . ignore))
-  (meow-normal-define-key
-   '("0" . meow-expand-0)
-   '("1" . meow-expand-1)
-   '("2" . meow-expand-2)
-   '("3" . meow-expand-3)
-   '("4" . meow-expand-4)
-   '("5" . meow-expand-5)
-   '("6" . meow-expand-6)
-   '("7" . meow-expand-7)
-   '("8" . meow-expand-8)
-   '("9" . meow-expand-9)
-   '("-" . negative-argument)
-   '("#" . universal-argument)
-   '(";" . meow-reverse)
-   '(":" . meow-goto-line)
-   '("," . meow-inner-of-thing)
-   '("." . meow-bounds-of-thing)
-   '("'" . repeat)
-   '("<" . meow-beginning-of-thing)
-   '(">" . meow-end-of-thing)
-   '("%" . meow-block)
-   '("a" . schrenker/meow-smart-append)
-   '("A" . schrenker/meow-append-to-end-of-line)
-   '("b" . meow-back-word)
-   '("B" . meow-back-symbol)
-   '("c" . meow-change)
-   '("C" . schrenker/change-to-eol)
-   '("d" . meow-delete)
-   '("D" . meow-backward-delete)
-   '("e" . meow-line)
-   '("E" . ignore)
-   '("f" . meow-find)
-   '("F" . schrenker/meow-find-backwards)
-   '("g" . meow-cancel-selection)
-   '("G" . meow-grab)
-   '("h" . meow-left)
-   '("H" . meow-left-expand)
-   '("O" . meow-open-above)
-   '("I" . schrenker/meow-insert-at-beginning-of-line)
-   '("i" . meow-insert)
-   '("j" . meow-join)
-   '("J" . schrenker/meow-join-below)
-   '("k" . meow-kill)
-   '("K" . helpful-at-point)
-   '("l" . meow-till)
-   '("L" . schrenker/meow-till-backwards)
-   '("m" . meow-mark-word)
-   '("M" . meow-mark-symbol)
-   '("n" . meow-next)
-   '("N" . meow-next-expand)
-   '("o" . meow-open-below)
-   '("O" . meow-open-above)
-   '("p" . meow-prev)
-   '("P" . meow-prev-expand)
-   '("q" . ignore)
-   '("Q" . schrenker/old-meow-quit)
-   '("r" . meow-replace)
-   '("R" . meow-swap-grab)
-   '("s" . meow-search)
-   '("t" . meow-right)
-   '("T" . meow-right-expand)
-   '("u" . meow-undo)
-   '("U" . meow-undo-in-selection)
-   '("/" . meow-visit)
-   '("w" . meow-next-word)
-   '("W" . meow-next-symbol)
-   '("x" . meow-save)
-   '("X" . meow-sync-grab)
-   '("y" . meow-yank)
-   '("Y" . meow-yank-pop)
-   '("z" . meow-pop-selection)
-   '("<escape>" . meow-cancel-selection)
-   '("SPC" . ignore)) ; I don't need keypad
-  
-  (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
-  (add-to-list 'meow-mode-state-list '(dired-mode . motion))
-  (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
-  (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
-
-  (add-hook 'meow-insert-exit-hook 'corfu-quit)
-
-  (setq meow-use-clipboard t
-        meow-use-cursor-position-hack t
-        meow-expand-exclude-mode-list nil
-        meow-use-enhanced-selection-effect t
-        meow-char-thing-table '((?r . round)
-                                (?s . square)
-                                (?c . curly)
-                                (?S . string)
-                                (?o . symbol)
-                                (?w . window)
-                                (?b . buffer)
-                                (?p . paragraph)
-                                (?l . line)
-                                (?d . defun)
-                                (?. . sentence)))
-  (meow-global-mode 1))
 
 (use-package key-chord
   :after meow
@@ -1590,6 +1385,214 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :after org
   :elpaca
   (verb :files (:defaults "ob-verb.el")))
+
+(use-package meow
+  :config
+  (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
+  (add-to-list 'meow-mode-state-list '(dired-mode . motion))
+  (add-to-list 'meow-mode-state-list '(dirvish-mode . motion))
+  (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
+  (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
+  
+  (defun schrenker/old-meow-quit ()
+    "Quit current window or buffer."
+    (interactive)
+    (if (> (seq-length (window-list (selected-frame))) (if (dirvish-side--session-visible-p) 2 1))
+        (delete-window)
+      (previous-buffer)))
+
+  (defun schrenker/meow-append-to-end-of-line ()
+    "Go to the end of the line and enter insert mode."
+    (interactive)
+    (call-interactively #'meow-line)
+    (call-interactively #'meow-append))
+
+  (defun schrenker/meow-insert-at-beginning-of-line ()
+    "Go to the beginnig of the line and enter insert mode."
+    (interactive)
+    (call-interactively #'meow-join)
+    (call-interactively #'meow-append))
+
+  (defun schrenker/meow-join-below ()
+    "Join line below to current line"
+    (interactive)
+    (call-interactively #'meow-next)
+    (call-interactively #'meow-join)
+    (call-interactively #'meow-kill))
+
+  (defun schrenker/meow-smart-append ()
+    (interactive)
+    (if (eolp)
+        (call-interactively #'meow-insert)
+      (call-interactively #'meow-append)))
+
+  (defun schrenker/meow-find-backwards ()
+    (interactive)
+    (schrenker/call-negative 'meow-find))
+
+  (defun schrenker/meow-till-backwards ()
+    (interactive)
+    (schrenker/call-negative 'meow-till))
+
+  (defun schrenker/change-to-eol ()
+    (interactive)
+    (call-interactively #'kill-line)
+    (call-interactively #'schrenker/meow-smart-append))
+
+  (when (eq system-type 'gnu/linux)
+
+    (defun schrenker/wsl-copy-region-to-clipboard (start end)
+      "Copy region to Windows clipboard."
+      (interactive "r")
+      (call-process-region start end "clip.exe" nil 0)
+      (call-interactively #'meow-cancel-selection))
+
+    (defun schrenker/wsl-kill-region-to-clipboard (start end)
+      "Copy region to Windows clipboard."
+      (interactive "r")
+      (call-process-region start end "clip.exe" nil 0)
+      (call-interactively #'kill-region))
+
+    (defun schrenker/wsl-clipboard-to-string ()
+      "Return Windows clipboard as string."
+      (let ((coding-system-for-read 'dos))
+        (substring              ; remove added trailing \n
+         (shell-command-to-string "powershell.exe -Command Get-Clipboard") 0 -1)))
+
+    (defun schrenker/wsl-paste-from-clipboard (arg)
+      "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"
+      (interactive "P")
+      (let ((clip (schrenker/wsl-clipboard-to-string)))
+        (insert clip)
+        (if arg (kill-new clip))))
+
+    (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
+    (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
+    (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
+
+  (define-key global-map (kbd "M-[") 'insert-pair)
+  (define-key global-map (kbd "M-(") 'insert-pair)
+  (define-key global-map (kbd "M-{") 'insert-pair)
+  (define-key global-map (kbd "M-<") 'insert-pair)
+  (define-key global-map (kbd "M-\"") 'insert-pair)
+  (define-key global-map (kbd "M-\'") 'insert-pair)
+
+  (define-key global-map (kbd "M-]") 'delete-pair)
+  (define-key global-map (kbd "M-)") 'delete-pair)
+  (define-key global-map (kbd "M-}") 'delete-pair)
+  (define-key global-map (kbd "M->") 'delete-pair)
+
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
+  (meow-motion-overwrite-define-key)
+  (meow-leader-define-key
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument)
+   '("/" . meow-keypad-describe-key)
+   '("?" . meow-cheatsheet))
+  (meow-motion-overwrite-define-key
+   ;; custom keybinding for motion state
+   '("<escape>" . ignore)
+   '("SPC" . ignore))
+  (meow-normal-define-key
+   '("0" . meow-expand-0)
+   '("1" . meow-expand-1)
+   '("2" . meow-expand-2)
+   '("3" . meow-expand-3)
+   '("4" . meow-expand-4)
+   '("5" . meow-expand-5)
+   '("6" . meow-expand-6)
+   '("7" . meow-expand-7)
+   '("8" . meow-expand-8)
+   '("9" . meow-expand-9)
+   '("-" . negative-argument)
+   '("#" . universal-argument)
+   '(";" . meow-reverse)
+   '(":" . meow-goto-line)
+   '("," . meow-inner-of-thing)
+   '("." . meow-bounds-of-thing)
+   '("'" . repeat)
+   '("<" . meow-beginning-of-thing)
+   '(">" . meow-end-of-thing)
+   '("%" . meow-block)
+   '("a" . schrenker/meow-smart-append)
+   '("A" . schrenker/meow-append-to-end-of-line)
+   '("b" . meow-back-word)
+   '("B" . meow-back-symbol)
+   '("c" . meow-change)
+   '("C" . schrenker/change-to-eol)
+   '("d" . meow-delete)
+   '("D" . meow-backward-delete)
+   '("e" . meow-line)
+   '("E" . ignore)
+   '("f" . meow-find)
+   '("F" . schrenker/meow-find-backwards)
+   '("g" . meow-cancel-selection)
+   '("G" . meow-grab)
+   '("h" . meow-left)
+   '("H" . meow-left-expand)
+   '("O" . meow-open-above)
+   '("I" . schrenker/meow-insert-at-beginning-of-line)
+   '("i" . meow-insert)
+   '("j" . meow-join)
+   '("J" . schrenker/meow-join-below)
+   '("k" . meow-kill)
+   '("K" . helpful-at-point)
+   '("l" . meow-till)
+   '("L" . schrenker/meow-till-backwards)
+   '("m" . meow-mark-word)
+   '("M" . meow-mark-symbol)
+   '("n" . meow-next)
+   '("N" . meow-next-expand)
+   '("o" . meow-open-below)
+   '("O" . meow-open-above)
+   '("p" . meow-prev)
+   '("P" . meow-prev-expand)
+   '("q" . ignore)
+   '("Q" . schrenker/old-meow-quit)
+   '("r" . meow-replace)
+   '("R" . meow-swap-grab)
+   '("s" . meow-search)
+   '("t" . meow-right)
+   '("T" . meow-right-expand)
+   '("u" . meow-undo)
+   '("U" . meow-undo-in-selection)
+   '("/" . meow-visit)
+   '("w" . meow-next-word)
+   '("W" . meow-next-symbol)
+   '("x" . meow-save)
+   '("X" . meow-sync-grab)
+   '("y" . meow-yank)
+   '("Y" . meow-yank-pop)
+   '("z" . meow-pop-selection)
+   '("<escape>" . meow-cancel-selection)
+   '("SPC" . ignore)) ; I don't need keypad
+  
+  (add-hook 'meow-insert-exit-hook 'corfu-quit)
+
+  (setq meow-use-clipboard t
+        meow-use-cursor-position-hack t
+        meow-expand-exclude-mode-list nil
+        meow-use-enhanced-selection-effect t
+        meow-char-thing-table '((?r . round)
+                                (?s . square)
+                                (?c . curly)
+                                (?S . string)
+                                (?o . symbol)
+                                (?w . window)
+                                (?b . buffer)
+                                (?p . paragraph)
+                                (?l . line)
+                                (?d . defun)
+                                (?. . sentence)))
+  (meow-global-mode 1))
 
 (elpaca-process-queues)
 

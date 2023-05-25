@@ -121,7 +121,6 @@
   (setq elpaca-use-package-by-default t))
 
 (add-hook 'elpaca-ui-mode-hook (lambda ()
-                                 (meow-normal-mode -1)
                                  (bind-key (kbd "/") 'elpaca-ui-search 'elpaca-ui-mode-map)))
 
 (elpaca-wait)

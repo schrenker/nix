@@ -76,6 +76,35 @@
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;; Thanks to Xenodium https://xenodium.com/deleting-from-emacs-sequence-vars
+(defun schrenker/remove-from-list-variable ()
+  (interactive)
+  (let* ((var (intern
+               (completing-read "From variable: "
+                                (let (symbols)
+                                  (mapatoms
+                                   (lambda (sym)
+                                     (when (and (boundp sym)
+                                                (seqp (symbol-value sym)))
+                                       (push sym symbols))))
+                                  symbols) nil t)))
+         (values (mapcar (lambda (item)
+                           (setq item (prin1-to-string item))
+                           (concat (truncate-string-to-width
+                                    (nth 0 (split-string item "\n"))
+                                    (window-body-width))
+                                   (propertize item 'invisible t)))
+                         (symbol-value var)))
+         (index (progn
+                  (when (seq-empty-p values) (error "Already empty"))
+                  (seq-position values (completing-read "Delete: " values nil t)))))
+    (unless index (error "Eeek. Something's up."))
+    (set var (append (seq-take (symbol-value var) index)
+                     (seq-drop (symbol-value var) (1+ index))))
+    (message "Deleted: %s" (truncate-string-to-width
+                            (seq-elt values index)
+                            (- (window-body-width) 9)))))
+
 (defvar elpaca-installer-version 0.4)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))

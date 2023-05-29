@@ -744,10 +744,10 @@ targets."
 (use-package popper
   :init
   (setq popper-display-function
-      (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
-        (if (popper--suppress-p buffer)
-            (display-buffer-no-window buffer '((allow-no-window . t)))
-          (popper-select-popup-at-bottom buffer _act))))
+        (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
+          (if (popper--suppress-p buffer)
+              (display-buffer-no-window buffer '((allow-no-window . t)))
+            (popper-select-popup-at-bottom buffer _act))))
   (setq popper-reference-buffers
         '("\\*Messages\\*"
           "\\*Warnings\\*"
@@ -758,8 +758,8 @@ targets."
           compilation-mode))
   (add-hook 'org-mode-hook
             (lambda () (setq-local popper-reference-buffers (append
-                                                        (remove "\\*Warnings\\*" popper-reference-buffers)
-                                                        '(("\\*Warnings\\*" . hide))))))
+                                                             (remove "\\*Warnings\\*" popper-reference-buffers)
+                                                             '(("\\*Warnings\\*" . hide))))))
   (popper-mode 1)
   (popper-echo-mode 1))
 
@@ -768,8 +768,8 @@ targets."
   :after (savehist popper dirvish)
   :config
   (advice-add 'perject-switch :before (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
-                                              (when (eq visible (selected-window))
-                                                (other-window 1)))))
+                                                          (when (eq visible (selected-window))
+                                                            (other-window 1)))))
 
   (defun schrenker/perject-switch-project-global ()
     "Shows unfiltered list of all collections and projects to switch between them freely"
@@ -1363,10 +1363,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :bind
   (("C-c C-w" . woman)
    :map woman-mode-map
-        ("n" . next-line)
-        ("p" . previous-line)
-        ("N" . Man-next-section)
-        ("P" . Man-previous-section)))
+   ("n" . next-line)
+   ("p" . previous-line)
+   ("N" . Man-next-section)
+   ("P" . Man-previous-section)))
 
 (use-package uniquify
   :elpaca nil

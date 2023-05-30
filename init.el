@@ -861,6 +861,8 @@ targets."
                                           (let ((inhibit-message t)
                                                 (message-log-max nil))
                                             (when (cdr (perject-current))
+                                              (unless (perject-tab-tabs)
+                                                (perject-tab-create))
                                               (call-interactively #'perject-tab-set)))))
   :bind
   (:map perject-tab-mode-map

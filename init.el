@@ -801,7 +801,6 @@ targets."
         ("C-<tab> C-<tab> c" . perject-create)
         ("C-<tab> C-<tab> r" . perject-rename)
         ("C-<tab> C-<tab> R" . perject-rename-collection)
-        ("C-<tab> C-<tab> f" . perject-create-new-frame)
         ("C-<tab> C-<tab> K" . perject-delete)
         ("C-<tab> C-<tab> e" . perject-open-close-or-reload)
         ("C-<tab> C-<tab> s" . perject-sort)

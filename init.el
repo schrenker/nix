@@ -886,8 +886,14 @@ targets."
          ("M-t" . org-metaright)
          ("M-T" . org-shiftmetaright)
          ("C-c C-f" . org-format-all-headings)
-         ("C-c l" . org-store-link))
+         ("C-c l" . org-store-link)
+         ("C-c C-^" . schrenker/sort-priority-then-state))
   :init
+  (defun schrenker/sort-priority-then-state ()
+    (interactive)
+    (org-sort-entries nil ?a)
+    (org-sort-entries nil ?p)
+    (org-sort-entries nil ?o))
   (setq time-stamp-active t
         time-stamp-start "#\\+modified: [ \t]*"
         time-stamp-end "$"

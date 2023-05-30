@@ -54,7 +54,9 @@
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
       frame-resize-pixelwise t
-      initial-frame-alist '((fullscreen . maximized)))
+      initial-frame-alist (if (eq system-type 'gnu/linux)
+                              '((top . 1) (left . 1) (width . 120) (height . 40))
+                            '((fullscreen . maximized))))
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 

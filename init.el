@@ -932,8 +932,8 @@ targets."
    org-crypt-disable-auto-save t
    org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu")
    org-priority-highest '?A
-   org-priority-lowest  '?C
-   org-priority-default '?C
+   org-priority-lowest  '?D
+   org-priority-default '?D
    org-hide-emphasis-markers t
    org-return-follows-link t
    org-fontify-quote-and-verse-blocks t
@@ -1218,7 +1218,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                        ("DELEGATED"  :foreground ,fg-main :weight bold :inverse-video t))
               org-priority-faces `((?A :foreground ,red :weight bold :inverse-video t)
                                    (?B :foreground ,yellow :weight bold :inverse-video t)
-                                   (?C :foreground ,violet :weight bold :inverse-video t))
+                                   (?C :foreground ,violet :weight bold :inverse-video t)
+                                   (?D :foreground ,fg-emph :weight bold :inverse-video t))
               org-modern-todo-faces org-todo-keyword-faces
               org-modern-priority-faces org-priority-faces)
         (setq org-src-block-faces

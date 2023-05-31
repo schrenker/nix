@@ -1185,28 +1185,27 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         solarized-height-plus-4 1.0)
   (defun schrenker/solarized-theme-overlay (appearance)
     ;; Function that is there just to make my life easier. Reapplies all visual updates, and that's it.
-    (let (bg-main bg-alt fg-main fg-alt fg-emph yellow orange red magenta violet blue cyan green)
-      (setq bg-main (if (eq appearance 'light) "#fdf6e3" "#002b36")
-            bg-alt (if (eq appearance 'light) "#eee8d5" "#073642")
-            fg-main (if (eq appearance 'light) "#657b83" "#839496")
-            fg-alt (if (eq appearance 'light) "#93a1a1" "#586e75")
-            fg-emph (if (eq appearance 'light) "#586e75" "#93a1a1")
-            yellow "#b58900"
-            yellow-bg (if (eq appearance 'light) "#f8e8c6" "#273532")
-            orange "#cb4b16"
-            orange-bg (if (eq appearance 'light) "#fedfc5" "#2b2d2e")
-            red "#dc322f"
-            red-bg (if (eq appearance 'light) "#ffdec8" "#2d2c31")
-            magenta "#d33682"
-            magenta-bg (if (eq appearance 'light) "#fdded7" "#272d3c")
-            violet "#6c71c4"
-            violet-bg (if (eq appearance 'light) "#ebe4e2" "#0c3144")
-            blue "#268bd2"
-            blue-bg (if (eq appearance 'light) "#e7e8e4" "#003547")
-            cyan "#2aa198"
-            cyan-bg (if (eq appearance 'light) "#e4ecda" "#013841")
-            green "#859900"
-            green-bg (if (eq appearance 'light) "#efeac7" "#1d3732"))
+    (let ((bg-main (if (eq appearance 'light) "#fdf6e3" "#002b36"))
+          (bg-alt (if (eq appearance 'light) "#eee8d5" "#073642"))
+          (fg-main (if (eq appearance 'light) "#657b83" "#839496"))
+          (fg-alt (if (eq appearance 'light) "#93a1a1" "#586e75"))
+          (fg-emph (if (eq appearance 'light) "#586e75" "#93a1a1"))
+          (yellow "#b58900")
+          (yellow-bg (if (eq appearance 'light) "#f8e8c6" "#273532"))
+          (orange "#cb4b16")
+          (orange-bg (if (eq appearance 'light) "#fedfc5" "#2b2d2e"))
+          (red "#dc322f")
+          (red-bg (if (eq appearance 'light) "#ffdec8" "#2d2c31"))
+          (magenta "#d33682")
+          (magenta-bg (if (eq appearance 'light) "#fdded7" "#272d3c"))
+          (violet "#6c71c4")
+          (violet-bg (if (eq appearance 'light) "#ebe4e2" "#0c3144"))
+          (blue "#268bd2")
+          (blue-bg (if (eq appearance 'light) "#e7e8e4" "#003547"))
+          (cyan "#2aa198")
+          (cyan-bg (if (eq appearance 'light) "#e4ecda" "#013841"))
+          (green "#859900")
+          (green-bg (if (eq appearance 'light) "#efeac7" "#1d3732")))
       (progn
         (setq org-todo-keyword-faces `(("TODO" :foreground ,magenta :weight bold :inverse-video t)
                                        ("INPROGRESS" :foreground ,green :weight bold :inverse-video t)

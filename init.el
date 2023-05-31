@@ -65,7 +65,6 @@
 (tool-bar-mode -1)
 
 (savehist-mode 1)
-(which-function-mode 1)
 (winner-mode 1)
 (pixel-scroll-mode 1)
 (global-display-line-numbers-mode 1)

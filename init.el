@@ -522,19 +522,22 @@
 
 (use-package prism
   :commands (prism-set-colors)
+  :after yaml-mode
+  :demand t
   :elpaca (prism
            :host "github.com"
            :repo "alphapapa/prism.el")
   :init
-  (setq prism-comments nil
-        prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
-                                        (yaml-ts-mode . yaml-indent-offset)
-                                        (t . 2)))
   (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'yaml-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1))))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
+  :config
+  (setq prism-comments nil
+        prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
+                                        (yaml-ts-mode . yaml-indent-offset)
+                                        (t . 2))))
 
 (use-package inheritenv
   :config
@@ -1170,7 +1173,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (mood-line-mode 1))
 
 (use-package solarized-theme
-  :after (org org-modern dirvish)
+  :after (org org-modern dirvish prism)
   :demand t
   :init
   (setq solarized-use-more-italic t
@@ -1387,6 +1390,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
+
+(use-package yaml-mode
+  :mode "\\.ya?ml\\'")
 
 (use-package markdown-mode
   :mode "\\.md\\'")

@@ -1077,6 +1077,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         org-modern-list nil)
   (global-org-modern-mode 1))
 
+(use-package org-modern-indent
+  :elpaca
+  (org-modern-indent
+   :host "github.com"
+   :repo "jdtsmith/org-modern-indent")
+  :config ; add late to hook
+  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
+
 (use-package german-holidays)
 
 (use-package polish-holidays

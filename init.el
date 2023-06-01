@@ -940,6 +940,7 @@ targets."
    org-return-follows-link t
    org-fontify-quote-and-verse-blocks t
    org-edit-src-content-indentation 0
+   org-src-preserve-indentation t
    org-priority-start-cycle-with-default t
    org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
@@ -1076,14 +1077,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         org-modern-block-fringe nil
         org-modern-list nil)
   (global-org-modern-mode 1))
-
-(use-package org-modern-indent
-  :elpaca
-  (org-modern-indent
-   :host "github.com"
-   :repo "jdtsmith/org-modern-indent")
-  :config ; add late to hook
-  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 
 (use-package german-holidays)
 

@@ -913,6 +913,7 @@ targets."
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
   (setq
    org-log-into-drawer "LOGBOOK"
+   org-log-state-notes-insert-after-drawers t
    org-log-done 'time
    org-refile-use-outline-path 'file
    org-outline-path-complete-in-steps nil
@@ -942,7 +943,7 @@ targets."
    org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
-     ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "** TODO %?\n%U" :empty-lines 1)))
+     ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "*** TODO %?\n:LOGBOOK:\n- Created at %U\n:END:" :empty-lines 1 :prepend t)))
   (org-crypt-use-before-save-magic)
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
   (defadvice org-babel-execute-src-block (around load-language nil activate)
@@ -971,6 +972,42 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (org-delete-property "ARCHIVE_TODO")
       (org-delete-property "ARCHIVE_ITAGS")
       (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
+
+  ;;Stolen from https://emacs.stackexchange.com/questions/17282/org-mode-logbook-note-entry-without-logbook-drawer
+  (defun schrenker/org-add-note (func &rest args)
+    "Advisor function to go around `org-add-note'.  Takes optional
+  count (c-u) and sets schrenker/org-log-into-drawer to be used by
+  `schrenker/org-store-log-note'.
+
+  The usage is thus:
+
+  (advice-add 'org-log-into-drawer :around #'schrenker/org-log-into-drawer)
+  (advice-add 'org-add-note :around #'schrenker/org-add-note)
+
+  When you do not want to log note into a draw use C-u C-c C-z.
+  Otherwise use C-c C-z as normal and it should log note as per
+  standard `org-log-into-drawer'.
+  "
+    (interactive "P")
+    (setq schrenker/org-log-into-drawer (car args))
+    (funcall func))
+
+  (defun schrenker/org-log-into-drawer (func)
+    "Advisor function to go around `org-log-into-drawer'.
+  Reads value of schrenker/org-log-into-drawer, as set by
+  `schrenker/org-add-note', and if set returns nil meaning do not log
+  into drawer.  Otherwise returns value from call to
+  `org-log-into-draw'.  Before returning resets
+  schrenker/org-log-into-drawer for subsequent calls."
+    (let ((ret
+           (if (not schrenker/org-log-into-drawer)
+               (funcall func)
+             nil)))
+      (setq schrenker/org-log-into-drawer nil)
+      ret))
+  (setq schrenker/org-log-into-drawer nil)
+  (advice-add 'org-log-into-drawer :around #'schrenker/org-log-into-drawer)
+  (advice-add 'org-add-note :around #'schrenker/org-add-note)
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook (lambda () (unless (org-roam-capture-p) (org-format-on-save-mode 1))))

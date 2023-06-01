@@ -914,6 +914,7 @@ targets."
   (setq
    org-log-into-drawer "LOGBOOK"
    org-log-state-notes-insert-after-drawers t
+   org-log-states-order-reversed nil
    org-log-done 'time
    org-refile-use-outline-path 'file
    org-outline-path-complete-in-steps nil
@@ -943,7 +944,7 @@ targets."
    org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
-     ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "*** TODO %?\n:LOGBOOK:\n- Created at %U\n:END:" :empty-lines 1 :prepend t)))
+     ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "*** TODO %?\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\" :empty-lines 1 :prepend t)))
   (org-crypt-use-before-save-magic)
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
   (defadvice org-babel-execute-src-block (around load-language nil activate)

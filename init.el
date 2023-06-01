@@ -1429,6 +1429,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
 
 (use-package yaml-mode
+  :demand t
   :mode "\\.ya?ml\\'")
 
 (use-package markdown-mode

@@ -1476,6 +1476,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq treesit-auto-install 'prompt)
   (global-treesit-auto-mode))
 
+(use-package wgrep)
+
 (use-package meow
   :config
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))

@@ -1476,7 +1476,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package go-gen-test)
 
-(use-package flymake-golangci)
+(use-package flymake-golangci
+  :ofter go-mode
+  :config
+  (add-hook 'go-mode-hook 'flymake-golangci-load))
 
 (use-package json-mode
   :mode "\\.json\\'")

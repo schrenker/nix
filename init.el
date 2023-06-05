@@ -1392,24 +1392,26 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :elpaca nil
   :bind
   (:map eglot-mode-map
-        ("C-c c c" . eglot)
-        ("C-c c f" . eglot-format)
-        ("C-c c a" . eglot-code-actions)
-        ("C-c c r" . eglot-rename)
-        ("C-c c i" . eglot-find-implementation)
-        ("C-c c d" . eglot-find-declaration)
-        ("C-c c t" . eglot-find-typeDefinition))
-  :config
+   ("C-c c c" . eglot)
+   ("C-c c f" . eglot-format)
+   ("C-c c a" . eglot-code-actions)
+   ("C-c c r" . eglot-rename)
+   ("C-c c i" . eglot-find-implementation)
+   ("C-c c d" . eglot-find-declaration)
+   ("C-c c t" . eglot-find-typeDefinition))
+  :init
   (add-to-list 'eglot-server-programs
-               '((go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) .
+               '((go-mode go-dot-mod-mode go-dot-work-mode) .
                  ("gopls" :initializationOptions
-                  (:hints (:parameterNames t
+                  (:hints (
+                           :parameterNames t
                            :rangeVariableTypes t
                            :functionTypeParameters t
                            :assignVariableTypes t
                            :compositeLiteralFields t
                            :compositeLiteralTypes t
                            :constantValues t)))))
+  :config
   (eglot-inlay-hints-mode 1)
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
@@ -1463,6 +1465,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'go-mode-hook
           (lambda ()
             (add-hook 'before-save-hook 'gofmt-before-save)
+            (eglot-inlay-hints-mode 1)
             (setq-local tab-width 4)
             (setq-local indent-tabs-mode 1))))
 
@@ -1477,7 +1480,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package go-gen-test)
 
 (use-package flymake-golangci
-  :ofter go-mode
+  :after go-mode
   :config
   (add-hook 'go-mode-hook 'flymake-golangci-load))
 

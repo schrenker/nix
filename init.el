@@ -1395,6 +1395,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package eglot
   :after cape
   :elpaca nil
+  :bind
+  (:map eglot-mode-map
+        ("C-c C-f" . eglot-format))
   :config
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
@@ -1445,7 +1448,24 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package go-mode
   :mode "\\.go\\'"
   :init
-  (add-hook 'go-mode-hook #'eglot-ensure))
+  (add-hook 'go-mode-hook #'eglot-ensure)
+  (add-hook 'go-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'gofmt-before-save)
+            (setq-local tab-width 4)
+            (setq-local indent-tabs-mode 1))))
+
+(use-package go-eldoc)
+
+(use-package go-guru)
+
+(use-package gorepl-mode)
+
+(use-package go-tag)
+
+(use-package go-gen-test)
+
+(use-package flymake-golangci)
 
 (use-package json-mode
   :mode "\\.json\\'")
@@ -1470,11 +1490,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :elpaca
   (verb :files (:defaults "ob-verb.el")))
 
-(use-package treesit-auto
-  :demand t
-  :config
-  (setq treesit-auto-install 'prompt)
-  (global-treesit-auto-mode))
+;; (use-package treesit-auto
+;;   :demand t
+;;   :config
+;;   (setq treesit-auto-install 'prompt)
+;;   (global-treesit-auto-mode))
 
 (use-package wgrep)
 

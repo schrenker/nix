@@ -1389,6 +1389,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package eglot
   :after cape
+  :demand t
   :elpaca nil
   :bind
   (:map eglot-mode-map
@@ -1399,20 +1400,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("C-c c i" . eglot-find-implementation)
    ("C-c c d" . eglot-find-declaration)
    ("C-c c t" . eglot-find-typeDefinition))
-  :init
-  (add-to-list 'eglot-server-programs
-               '((go-mode go-dot-mod-mode go-dot-work-mode) .
-                 ("gopls" :initializationOptions
-                  (:hints (
-                           :parameterNames t
-                           :rangeVariableTypes t
-                           :functionTypeParameters t
-                           :assignVariableTypes t
-                           :compositeLiteralFields t
-                           :compositeLiteralTypes t
-                           :constantValues t)))))
   :config
-  (eglot-inlay-hints-mode 1)
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
                 (list (cape-super-capf
@@ -1460,14 +1448,27 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package go-mode
   :mode "\\.go\\'"
+  :after eglot
   :init
   (add-hook 'go-mode-hook #'eglot-ensure)
   (add-hook 'go-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'gofmt-before-save)
-            (eglot-inlay-hints-mode 1)
-            (setq-local tab-width 4)
-            (setq-local indent-tabs-mode 1))))
+            (lambda ()
+              (add-hook 'before-save-hook 'gofmt-before-save)
+              (eglot-inlay-hints-mode 1)
+              (setq-local tab-width 4)
+              (setq-local indent-tabs-mode 1)))
+  :config
+  (add-to-list 'eglot-server-programs
+               '((go-mode go-dot-mod-mode go-dot-work-mode) .
+                 ("gopls" :initializationOptions
+                  (:hints (
+                           :parameterNames t
+                           :rangeVariableTypes t
+                           :functionTypeParameters t
+                           :assignVariableTypes t
+                           :compositeLiteralFields t
+                           :compositeLiteralTypes t
+                           :constantValues t))))))
 
 (use-package go-eldoc)
 

@@ -521,21 +521,16 @@
 
 (use-package prism
   :commands (prism-set-colors)
-  :after yaml-mode
-  :demand t
   :elpaca (prism
            :host "github.com"
            :repo "alphapapa/prism.el")
   :init
   (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'yaml-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
   :config
   (setq prism-comments nil
         prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
-                                        (yaml-ts-mode . yaml-indent-offset)
                                         (t . 2))))
 
 (use-package inheritenv
@@ -1489,12 +1484,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :after org
   :elpaca
   (verb :files (:defaults "ob-verb.el")))
-
-;; (use-package treesit-auto
-;;   :demand t
-;;   :config
-;;   (setq treesit-auto-install 'prompt)
-;;   (global-treesit-auto-mode))
 
 (use-package wgrep)
 

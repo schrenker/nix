@@ -1400,6 +1400,16 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("C-c c d" . eglot-find-declaration)
         ("C-c c t" . eglot-find-typeDefinition))
   :config
+  (add-to-list 'eglot-server-programs
+               '((go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) .
+                 ("gopls" :initializationOptions
+                  (:hints (:parameterNames t
+                           :rangeVariableTypes t
+                           :functionTypeParameters t
+                           :assignVariableTypes t
+                           :compositeLiteralFields t
+                           :compositeLiteralTypes t
+                           :constantValues t)))))
   (eglot-inlay-hints-mode 1)
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions

@@ -520,7 +520,7 @@
   (global-set-key (kbd "C-h F") #'helpful-function))
 
 (use-package prism
-  :commands (prism-set-colors)
+  :commands (prism-set-colors prism-whitespace-mode prism-mode)
   :elpaca (prism
            :host "github.com"
            :repo "alphapapa/prism.el")
@@ -1206,7 +1206,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (mood-line-mode 1))
 
 (use-package solarized-theme
-  :after (org org-modern dirvish prism)
+  :after (org org-modern dirvish)
   :demand t
   :init
   (setq solarized-use-more-italic t
@@ -1502,6 +1502,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :elpaca nil)
 
 (use-package dockerfile-mode)
+
+(use-package jenkinsfile-mode
+  :mode "\\.jenkinsfile\\'")
 
 (use-package verb
   :after org

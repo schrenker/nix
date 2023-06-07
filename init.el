@@ -1270,9 +1270,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           ('dark (load-theme 'solarized-dark t)))
         (kind-icon-reset-cache)
         (prism-set-colors
-          :num 16
-          :desaturations '(0 5 10 15)
-          :lightens '(0 -1 -2 -3)
+          :num 20
+          :desaturations '(0 5 10 15 20)
+          :lightens '(0 -15 -30 -45 -60)
           :colors (list blue green cyan yellow))
         (set-face-attribute 'org-level-1 nil :background orange-bg :extend t :height 1.1)
         (set-face-attribute 'org-level-2 nil :background green-bg :extend t :height 1.1)

@@ -367,16 +367,6 @@
               ("S-SPC" . corfu-insert-separator)
               ("C-S-n" . corfu-move-to-minibuffer))
 
-  :init
-  ;; Auto-completion settings, must be set before calling `global-corfu-mode'.
-  (setq corfu-auto t
-        corfu-auto-delay 0.1
-        corfu-auto-prefix 3
-        corfu-excluded-modes '(erc-mode
-                               circe-mode
-                               help-mode
-                               gud-mode
-                               vterm-mode))
   :config
   (unbind-key (kbd "M-n") 'corfu-map)
   (unbind-key (kbd "M-p") 'corfu-map)
@@ -385,8 +375,15 @@
     (let ((completion-extra-properties corfu--extra)
           completion-cycle-threshold completion-cycling)
       (apply #'consult-completion-in-region completion-in-region--data)))
-
-  (setq corfu-cycle t
+  ;; Auto-completion settings, must be set before calling `global-corfu-mode'.
+  (setq corfu-auto t
+        corfu-auto-prefix 3
+        corfu-excluded-modes '(erc-mode
+                               circe-mode
+                               help-mode
+                               gud-mode
+                               vterm-mode)
+        corfu-cycle t
         corfu-separator ?\s
         corfu-preselect 'prompt
         corfu-count 16

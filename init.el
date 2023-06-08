@@ -460,7 +460,14 @@
 
 (use-package magit
   :bind (("C-c g g" . magit)
-         ("C-c g s" . schrenker/smerge-repeatedly))
+         ("C-c g s" . schrenker/smerge-repeatedly)
+         :map magit-status-mode-map
+         ("n" . magit-next-line)
+         ("p" . magit-previous-line)
+         ("M-n" . magit-section-forward)
+         ("M-p" . magit-section-backward)
+         ("M-N" . magit-section-forward-sibling)
+         ("M-P" . magit-section-backward-sibling))
   :config
   (require 'transient)
   (defun schrenker/smerge-repeatedly ()

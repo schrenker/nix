@@ -1612,6 +1612,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
     (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
 
+  (meow-thing-register 'angle
+                       '(pair ("<") (">"))
+                       '(pair ("<") (">")))
+
+  (add-to-list 'meow-char-thing-table '(?a . angle))
+
   (define-key global-map (kbd "M-[") 'insert-pair)
   (define-key global-map (kbd "M-(") 'insert-pair)
   (define-key global-map (kbd "M-{") 'insert-pair)
@@ -1619,10 +1625,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (define-key global-map (kbd "M-\"") 'insert-pair)
   (define-key global-map (kbd "M-\'") 'insert-pair)
 
-  (define-key global-map (kbd "M-]") 'delete-pair)
-  (define-key global-map (kbd "M-)") 'delete-pair)
-  (define-key global-map (kbd "M-}") 'delete-pair)
-  (define-key global-map (kbd "M->") 'delete-pair)
+  (define-key global-map (kbd "M-]") (lambda () (interactive) (meow-bounds-of-thing ?s) (delete-pair)))
+  (define-key global-map (kbd "M-)") (lambda () (interactive) (meow-bounds-of-thing ?r) (delete-pair)))
+  (define-key global-map (kbd "M-}") (lambda () (interactive) (meow-bounds-of-thing ?c) (delete-pair)))
+  (define-key global-map (kbd "M->") (lambda () (interactive) (meow-bounds-of-thing ?a) (delete-pair)))
 
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key)

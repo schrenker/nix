@@ -1428,6 +1428,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("M-n" . Man-next-section)
    ("M-p" . Man-previous-section)))
 
+(use-package info
+  :elpaca nil
+  :bind
+  (:map Info-mode-map
+        ("n" . next-line)
+        ("p" . previous-line)
+        ("M-n" . Info-next)
+        ("M-p" . Info-prev)))
+
 (use-package uniquify
   :elpaca nil
   :config

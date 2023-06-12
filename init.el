@@ -946,7 +946,7 @@ targets."
    org-priority-start-cycle-with-default t
    org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
-   '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U\n%i%?" :empty-lines 1)
+   '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U - %^{prompt}\n%i%?" :empty-lines 1 :prepend t)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "*** TODO %?\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\" :empty-lines 1 :prepend t)))
   (org-crypt-use-before-save-magic)
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map)

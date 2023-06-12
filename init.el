@@ -1616,8 +1616,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                        '(pair ("<") (">"))
                        '(pair ("<") (">")))
 
-  (add-to-list 'meow-char-thing-table '(?a . angle))
-
   (define-key global-map (kbd "M-[") 'insert-pair)
   (define-key global-map (kbd "M-(") 'insert-pair)
   (define-key global-map (kbd "M-{") 'insert-pair)
@@ -1732,6 +1730,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         meow-char-thing-table '((?r . round)
                                 (?s . square)
                                 (?c . curly)
+                                (?a . angle)
                                 (?S . string)
                                 (?o . symbol)
                                 (?w . window)

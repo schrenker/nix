@@ -464,10 +464,13 @@
          :map magit-status-mode-map
          ("n" . magit-next-line)
          ("p" . magit-previous-line)
+         ("N" . meow-next-expand)
+         ("P" . meow-prev-expand)
          ("M-n" . magit-section-forward)
          ("M-p" . magit-section-backward)
          ("M-N" . magit-section-forward-sibling)
-         ("M-P" . magit-section-backward-sibling))
+         ("M-P" . magit-section-backward-sibling)
+         ("<escape>" . meow-cancel-selection))
   :config
   (require 'transient)
   (defun schrenker/smerge-repeatedly ()
@@ -1423,8 +1426,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (:map woman-mode-map
    ("n" . next-line)
    ("p" . previous-line)
-   ("N" . Man-next-section)
-   ("P" . Man-previous-section)))
+   ("M-n" . Man-next-section)
+   ("M-p" . Man-previous-section)))
 
 (use-package uniquify
   :elpaca nil
@@ -1630,7 +1633,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("?" . meow-cheatsheet))
   (meow-motion-overwrite-define-key
    ;; custom keybinding for motion state
-   '("<escape>" . ignore)
+   '("<escape>" . nil)
    '("SPC" . ignore))
   (meow-normal-define-key
    '("0" . meow-expand-0)

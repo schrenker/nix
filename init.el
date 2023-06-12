@@ -916,7 +916,6 @@ targets."
   (setq
    org-log-into-drawer "LOGBOOK"
    org-log-state-notes-insert-after-drawers t
-   org-log-states-order-reversed nil
    org-log-done 'time
    org-refile-use-outline-path 'file
    org-outline-path-complete-in-steps nil
@@ -981,7 +980,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (defun schrenker/org-add-note (func &rest args)
     "Advisor function to go around `org-add-note'.  Takes optional
   count (c-u) and sets schrenker/org-log-into-drawer to be used by
-  `schrenker/org-store-log-note'.
+  `schrenker/org-add-note'.
 
   The usage is thus:
 

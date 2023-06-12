@@ -464,8 +464,8 @@
          :map magit-status-mode-map
          ("n" . magit-next-line)
          ("p" . magit-previous-line)
-         ("N" . meow-next-expand)
-         ("P" . meow-prev-expand)
+         ("C-n" . meow-next-expand)
+         ("C-p" . meow-prev-expand)
          ("M-n" . magit-section-forward)
          ("M-p" . magit-section-backward)
          ("M-N" . magit-section-forward-sibling)

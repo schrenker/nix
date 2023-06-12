@@ -1641,12 +1641,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
-   '("/" . meow-keypad-describe-key)
-   '("?" . meow-cheatsheet))
+   '("SPC" . project-find-file))
   (meow-motion-overwrite-define-key
    ;; custom keybinding for motion state
    '("<escape>" . nil)
-   '("SPC" . ignore))
+   '("SPC" . meow-keypad))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("1" . meow-expand-1)
@@ -1719,11 +1718,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("Y" . meow-yank-pop)
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection)
-   '("SPC" . ignore)) ; I don't need keypad
+   '("SPC" . meow-keypad)) ; I don't need keypad
   
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
 
   (setq meow-use-clipboard t
+        meow-keypad-ctrl-meta-prefix nil
         meow-use-cursor-position-hack t
         meow-expand-exclude-mode-list nil
         meow-use-enhanced-selection-effect t

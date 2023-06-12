@@ -1397,16 +1397,16 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :after cape
   :demand t
   :elpaca nil
-  :bind
-  (:map eglot-mode-map
-   ("C-c c c" . eglot)
-   ("C-c c f" . eglot-format)
-   ("C-c c a" . eglot-code-actions)
-   ("C-c c r" . eglot-rename)
-   ("C-c c i" . eglot-find-implementation)
-   ("C-c c d" . eglot-find-declaration)
-   ("C-c c t" . eglot-find-typeDefinition))
   :config
+  (bind-keys :map eglot-mode-map
+             ("C-c c c" . eglot)
+             ("C-c c f" . eglot-format)
+             ("C-c c a" . eglot-code-actions)
+             ("C-c c r" . eglot-rename)
+             ("C-c c i" . eglot-find-implementation)
+             ("C-c c d" . eglot-find-declaration)
+             ("C-c c t" . eglot-find-typeDefinition))
+
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
                 (list (cape-super-capf

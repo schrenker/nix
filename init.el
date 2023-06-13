@@ -508,9 +508,21 @@
 
 (use-package git-timemachine
   :commands (git-timemachine)
+  :after hydra
+  :init
+  (defhydra hydra-git-timemachine
+    (:hint nil)
+    "
+╭─────────────────────────────────────────
+  [_N_] Next Rev [_P_] Prev Rev [_Q_] Quit Timemachine [_q_] Quit Hydra
+ ─────────────────────────────────────────╯
+"
+    ("N" git-timemachine-show-next-revision)
+    ("P" git-timemachine-show-previous-revision)
+    ("Q" git-timemachine-quit :color blue)
+    ("q" nil :color blue))
   :bind (:map git-timemachine-mode-map
-              ("M-n" . git-timemachine-show-next-revision)
-              ("M-p" . git-timemachine-show-previous-revision)))
+              ("M-O" . hydra-git-timemachine/body)))
 
 (use-package diff-hl
   :config

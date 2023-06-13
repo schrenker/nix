@@ -1637,11 +1637,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (meow-digit-argument)))
 
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
-  (meow-motion-overwrite-define-key)
   (meow-motion-overwrite-define-key
    ;; custom keybinding for motion state
    '("<escape>" . nil)
-   '("SPC" . nil))
+   '("SPC SPC" . project-find-file))
   (meow-normal-define-key
    '("0" . schrenker/meow-expand-or-digit-argument)
    '("1" . schrenker/meow-expand-or-digit-argument)
@@ -1714,7 +1713,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("Y" . meow-yank-pop)
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection)
-   '("SPC" . nil)) ; I don't need keypad
+   '("SPC SPC" . project-find-file)) ; I don't need keypad
   
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
 

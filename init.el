@@ -1640,6 +1640,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (meow-motion-overwrite-define-key
    ;; custom keybinding for motion state
    '("<escape>" . nil)
+   '("SPC" . nil)
    '("SPC SPC" . project-find-file))
   (meow-normal-define-key
    '("0" . schrenker/meow-expand-or-digit-argument)
@@ -1713,7 +1714,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("Y" . meow-yank-pop)
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection)
-   '("SPC SPC" . project-find-file)) ; I don't need keypad
+   '("SPC" . nil)
+   '("SPC SPC" . project-find-file))
   
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
 

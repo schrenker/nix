@@ -1408,6 +1408,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq multi-vterm-dedicated-window-height-percent 30))
 
 (use-package eglot
+  :elpaca nil
   :bind
   (:map eglot-mode-map
         ("C-c c c" . eglot)

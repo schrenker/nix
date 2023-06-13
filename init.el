@@ -39,8 +39,10 @@
       load-prefer-newer t
       visible-bell (eq system-type 'gnu/linux)
       display-line-numbers-type 'visual
-      scroll-margin 5
+      scroll-margin 10
+      scroll-conservatively 1000
       scroll-step 1
+      scroll-preserve-screen-position t
       delete-pair-blink-delay 0
       sentence-end-double-space nil
       auto-window-vscroll nil

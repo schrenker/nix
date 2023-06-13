@@ -1650,7 +1650,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key
-   ;; custom keybinding for motion state
    '("<escape>" . nil)
    '("SPC" . nil)
    '("SPC SPC" . project-find-file))
@@ -1666,7 +1665,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("8" . schrenker/meow-expand-or-digit-argument)
    '("9" . schrenker/meow-expand-or-digit-argument)
    '("-" . negative-argument)
-   '("#" . universal-argument)
    '(";" . meow-reverse)
    '(":" . meow-goto-line)
    '("," . meow-inner-of-thing)

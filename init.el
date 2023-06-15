@@ -1129,6 +1129,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    :repo "nan0scho1ar/ox-confluence-modern"
    :files ("*.el")))
 
+(use-package ibuffer
+  :elpaca nil
+  :bind
+  (:map ibuffer-mode-map
+        ("M-o" . nil)))
+
 (use-package dired
   :elpaca nil
   :init

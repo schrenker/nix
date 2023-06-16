@@ -1479,13 +1479,29 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("M-n" . Info-next)
         ("M-p" . Info-prev)))
 
-(use-package uniquify
-  :elpaca nil
+;; (use-package uniquify
+;;   :elpaca nil
+;;   :config
+;;   (setq uniquify-buffer-name-style 'forward
+;;         uniquify-separator "/"
+;;         uniquify-after-kill-buffer-p t    ; rename after killing uniquified
+;;         uniquify-ignore-buffers-re "^\\*"))
+
+(use-package buffer-name-relative
   :config
-  (setq uniquify-buffer-name-style 'forward
-        uniquify-separator "/"
-        uniquify-after-kill-buffer-p t    ; rename after killing uniquified
-        uniquify-ignore-buffers-re "^\\*"))
+  (setq buffer-name-relative-abbrev-limit 24)
+  (advice-add
+   'buffer-name-relative--create-file-buffer-advice
+   :before
+   (lambda (&rest r)
+     (let ((vc-root (buffer-name-relative-root-path-from-vc (nth 1 r))))
+       (if vc-root
+           (setq buffer-name-relative-prefix
+                 (concat "["
+                         (file-name-nondirectory (directory-file-name (buffer-name-relative-root-path-from-vc (nth 1 r))))
+                         "]:"))
+         (setq buffer-name-relative-prefix "[?]:")))))
+  (buffer-name-relative-mode))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.

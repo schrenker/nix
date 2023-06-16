@@ -194,7 +194,6 @@
 (global-set-key (kbd "C-x 3") 'schrenker/split-and-follow-vertically)
 
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (unbind-key (kbd "M-v"))
 (unbind-key (kbd "M-r"))
@@ -1132,8 +1131,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package ibuffer
   :elpaca nil
   :bind
-  (:map ibuffer-mode-map
-        ("M-o" . nil)))
+  (("C-x C-b" . ibuffer)
+   :map ibuffer-mode-map
+   ("M-o" . nil)))
 
 (use-package dired
   :elpaca nil

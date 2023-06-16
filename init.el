@@ -1353,7 +1353,30 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package all-the-icons-ibuffer
   :after all-the-icons
-  :hook (ibuffer-mode . all-the-icons-ibuffer-mode))
+  :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
+  :init
+  (setq all-the-icons-ibuffer-formats `((mark
+                                         modified
+                                         read-only
+                                         ,(if (>= emacs-major-version 26) 'locked "")
+                                         " "
+                                         (icon 2 2)
+                                         (name 48 48 :left :elide)
+                                         " "
+                                         (size-h 9 -1 :right)
+                                         " "
+                                         (mode+ 16 16 :left :elide)
+                                         " "
+                                         filename-and-process+)
+                                        (mark
+                                         modified
+                                         read-only
+                                         ,(if (>= emacs-major-version 26) 'locked "")
+                                         " "
+                                         (icon 2 2)
+                                         (name 30 30 :left :elide)
+                                         " "
+                                         filename-and-process+))))
 
 (use-package all-the-icons-completion
   :after all-the-icons

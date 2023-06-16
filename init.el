@@ -1465,10 +1465,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :elpaca nil
   :bind
   (:map woman-mode-map
-   ("n" . next-line)
-   ("p" . previous-line)
-   ("M-n" . Man-next-section)
-   ("M-p" . Man-previous-section)))
+        ("n" . next-line)
+        ("p" . previous-line)
+        ("M-n" . Man-next-section)
+        ("M-p" . Man-previous-section)))
 
 (use-package info
   :elpaca nil

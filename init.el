@@ -1589,6 +1589,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package wgrep)
 
+(use-package vlf
+  :config
+  (require 'vlf-setup))
+
 (use-package meow
   :config
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))

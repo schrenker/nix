@@ -1498,9 +1498,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
        (if vc-root
            (setq buffer-name-relative-prefix
                  (concat "["
-                         (file-name-nondirectory (directory-file-name (buffer-name-relative-root-path-from-vc (nth 1 r))))
+                         (let ((vc-dir (file-name-nondirectory (directory-file-name (buffer-name-relative-root-path-from-vc (nth 1 r))))))
+                           (if (length> vc-dir 12)
+                               (concat (substring vc-dir 0 6) ".." (substring vc-dir -4))
+                             vc-dir))
                          "]:"))
-         (setq buffer-name-relative-prefix "[?]:")))))
+         (setq buffer-name-relative-prefix "")))))
   (buffer-name-relative-mode))
 
 ;; Major modes for text/programming

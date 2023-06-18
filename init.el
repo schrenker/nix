@@ -1063,7 +1063,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
               (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t)))
   (add-hook 'org-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook (schrenker/trim-src-block-buffer) nil t))))
+              (add-hook 'before-save-hook #'schrenker/trim-src-block-buffer nil t))))
 
 (use-package org-make-toc
   :hook (org-mode . org-make-toc-mode)

@@ -516,9 +516,9 @@
   ^Rev-Movement    ^Commits^               ^^Misc
 ╭────────────────────────────────────────────────────────────^^^^^^
   [_N_] Next Rev    [_b_] Blame             [_?_] Help
-  [_P_] Prev Rev    [_c_] Show Commit       [_q_] Quit Hydra
-  [_g_] Nth Rev     [_w_] Copy Short Hash   [_Q_] Quit Timemachine
-  [_T_] Fuzzy Rev   [_W_] Copy Long Hash
+  [_P_] Prev Rev    [_c_] Show Commit       [_S_] Write File
+  [_g_] Nth Rev     [_w_] Copy Short Hash   [_q_] Quit Hydra
+  [_T_] Fuzzy Rev   [_W_] Copy Long Hash    [_Q_] Quit Timemachine
  ^^^^^^─────────────────────────────────────────────────────────────╯
 "
     ("N" git-timemachine-show-next-revision)
@@ -530,6 +530,7 @@
     ("w" git-timemachine-kill-abbreviated-revision)
     ("W" git-timemachine-kill-revision)
     ("?" git-timemachine-help)
+    ("S" write-file)
     ("q" nil :color blue)
     ("Q" git-timemachine-quit :color blue))
   :bind (:map git-timemachine-mode-map

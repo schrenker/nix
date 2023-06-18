@@ -512,14 +512,26 @@
   (defhydra hydra-git-timemachine
     (:hint nil)
     "
-╭─────────────────────────────────────────
-  [_N_] Next Rev [_P_] Prev Rev [_Q_] Quit Timemachine [_q_] Quit Hydra
- ─────────────────────────────────────────╯
+
+  ^Rev-Movement    ^Commits^               ^^Misc
+╭────────────────────────────────────────────────────────────^^^^^^
+  [_N_] Next Rev    [_b_] Blame             [_?_] Help
+  [_P_] Prev Rev    [_c_] Show Commit       [_q_] Quit Hydra
+  [_g_] Nth Rev     [_w_] Copy Short Hash   [_Q_] Quit Timemachine
+  [_T_] Fuzzy Rev   [_W_] Copy Long Hash
+ ^^^^^^─────────────────────────────────────────────────────────────╯
 "
     ("N" git-timemachine-show-next-revision)
     ("P" git-timemachine-show-previous-revision)
-    ("Q" git-timemachine-quit :color blue)
-    ("q" nil :color blue))
+    ("g" git-timemachine-show-nth-revision)
+    ("T" git-timemachine-show-revision-fuzzy)
+    ("b" git-timemachine-blame)
+    ("c" git-timemachine-show-commit)
+    ("w" git-timemachine-kill-abbreviated-revision)
+    ("W" git-timemachine-kill-revision)
+    ("?" git-timemachine-help)
+    ("q" nil :color blue)
+    ("Q" git-timemachine-quit :color blue))
   :bind (:map git-timemachine-mode-map
               ("M-O" . hydra-git-timemachine/body)))
 

@@ -989,6 +989,36 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (org-delete-property "ARCHIVE_ITAGS")
       (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
 
+  (defun schrenker/trim-src-block ()
+    "Trim leading spaces in src block header and footer, and adjust contents accordingly."
+    (interactive)
+    (save-excursion
+      (let ((element (org-element-context)))
+        (when (eq (org-element-type element) 'src-block)
+          (goto-char (org-element-property :begin element))
+          (let* ((leading-spaces (skip-chars-forward " \t"))
+                 (start (org-element-property :begin element))
+                 (end (org-element-property :end element)))
+            (goto-char start)
+            (while (and (< (point) (- end 1))
+                        (not (eobp)))
+              (beginning-of-line)
+              (when (looking-at (format "^ \\{0,%d\\}" leading-spaces))
+                (let* ((current-leading-spaces (skip-chars-forward " \t")))
+                  (beginning-of-line)
+                  (delete-char
+                   (if (> leading-spaces current-leading-spaces)
+                       current-leading-spaces
+                     leading-spaces))))
+              (forward-line)))))))
+
+  (defun schrenker/trim-src-block-buffer ()
+    "Trim leading spaces in all src blocks header and footer, and adjust contents accordingly."
+    (interactive)
+    (org-babel-map-src-blocks nil
+      (save-excursion
+        (schrenker/trim-src-block))))
+
   ;;Stolen from https://emacs.stackexchange.com/questions/17282/org-mode-logbook-note-entry-without-logbook-drawer
   (defun schrenker/org-add-note (func &rest args)
     "Advisor function to go around `org-add-note'.  Takes optional
@@ -1030,7 +1060,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
   (add-hook 'org-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
+              (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t)))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook (schrenker/trim-src-block-buffer) nil t))))
 
 (use-package org-make-toc
   :hook (org-mode . org-make-toc-mode)

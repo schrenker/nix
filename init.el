@@ -171,7 +171,7 @@
 (use-package envrc
   :hook (after-init . envrc-global-mode))
 
-(defun kill-buffer--possibly-save (buffer)
+(defun schrenker/kill-buffer--possibly-save (buffer)
   (let ((response
          (cadr
           (read-multiple-choice
@@ -188,6 +188,7 @@
           ((equal response "diff") (with-current-buffer buffer (diff-buffer-with-file buffer) nil))
           (t (with-current-buffer buffer (save-buffer)) t))))
 
+(advice-add #'kill-buffer--possibly-save :override #'schrenker/kill-buffer--possibly-save)
 
 (defun schrenker/kill-this-buffer ()
   "Kill current buffer without confirmation."

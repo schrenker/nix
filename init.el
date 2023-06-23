@@ -1788,7 +1788,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("G" . meow-grab)
    '("h" . meow-left)
    '("H" . meow-left-expand)
-   '("O" . meow-open-above)
    '("I" . schrenker/meow-insert-at-beginning-of-line)
    '("i" . meow-insert)
    '("j" . meow-join)

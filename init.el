@@ -171,6 +171,23 @@
 (use-package envrc
   :hook (after-init . envrc-global-mode))
 
+(defun kill-buffer--possibly-save (buffer)
+  (let ((response
+         (cadr
+          (read-multiple-choice
+           (format "Buffer %s modified; kill anyway?"
+                   (buffer-name))
+           '((?y "yes" "kill buffer without saving")
+             (?n "no" "exit without doing anything")
+             (?s "save and then kill" "save the buffer and then kill it")
+             (?d "diff" "diff the buffer with original file" ))
+           nil nil (and (not use-short-answers)
+                        (not (use-dialog-box-p)))))))
+    (cond ((equal response "no") nil)
+          ((equal response "yes") t)
+          ((equal response "diff") (with-current-buffer buffer (diff-buffer-with-file buffer) nil))
+          (t (with-current-buffer buffer (save-buffer)) t))))
+
 
 (defun schrenker/kill-this-buffer ()
   "Kill current buffer without confirmation."

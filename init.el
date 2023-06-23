@@ -1380,7 +1380,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
          :override
          (lambda (&rest r)
            (set-face-attribute 'org-modern-label nil :height 1.0 :box nil)))
-        )))
+        (run-with-idle-timer 0 nil (lambda ()(mapc (lambda (buffer) (with-current-buffer buffer (when (derived-mode-p 'org-mode)(font-lock-update)))) (buffer-list)))))))
 
   :config
   (if (eq system-type 'darwin)

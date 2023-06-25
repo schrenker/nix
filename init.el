@@ -807,8 +807,8 @@ targets."
           compilation-mode))
   (add-hook 'org-mode-hook
             (lambda () (setq-local popper-reference-buffers (append
-                                                             (remove "\\*Warnings\\*" popper-reference-buffers)
-                                                             '(("\\*Warnings\\*" . hide))))))
+                                                        (remove "\\*Warnings\\*" popper-reference-buffers)
+                                                        '(("\\*Warnings\\*" . hide))))))
   (popper-mode 1)
   (popper-echo-mode 1))
 
@@ -817,8 +817,8 @@ targets."
   :after (savehist popper dirvish)
   :config
   (advice-add 'perject-switch :before (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
-                                                          (when (eq visible (selected-window))
-                                                            (other-window 1)))))
+                                                     (when (eq visible (selected-window))
+                                                       (other-window 1)))))
 
   (defun schrenker/perject-switch-project-global ()
     "Shows unfiltered list of all collections and projects to switch between them freely"

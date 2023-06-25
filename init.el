@@ -239,66 +239,9 @@
   (key-chord-define meow-insert-state-keymap ";;" 'right-char))
 
 (use-package hydra
-  :after ace-window
   :config
   (setq hydra-is-helpful t)
-
-  (defun schrenker/ace-swap-window ()
-    (interactive)
-    (let ((aw-ignore-current t))
-      (ace-swap-window)))
-
-  (defhydra hydra-uictl
-    (:hint nil)
-    "
-
-   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^        ^Buffer^
-╭────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^^
-      ^_P_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show     [_b_] buffers
-      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle    [_B_] ibuffer
-  _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type     [_S_] scratch
-      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_V_] vterm    [_k_] kill
-      ^_N_^        [_3_] split right    [_M-p_] vShrink     ^^            [_T_] dirSide
-     ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge
-     ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
-     ^^   ^^       [_X_] single         [_M-t_] hEnlarge    ^^^^                         [_q_] quit
- ^^^^^^^^^^^^^^^─────────────────────────────────────────────────────────────────────────────────────────╯
-
-"
-    ("P" windmove-up)
-    ("N" windmove-down)
-    ("H" windmove-left)
-    ("T" windmove-right)
-    ("M-p" shrink-window)
-    ("M-n" enlarge-window)
-    ("M-h" shrink-window-horizontally)
-    ("M-t" enlarge-window-horizontally)
-    ("o" aw-flip-window)
-    ("O" ace-select-window)
-    ("2" schrenker/split-and-follow-horizontally)
-    ("3" schrenker/split-and-follow-vertically)
-    ("s" schrenker/ace-swap-window)
-    ("d" delete-window)
-    ("D" ace-delete-window)
-    ("X" delete-other-windows)
-    ("=" balance-windows)
-    ("m" maximize-window)
-    ("+" text-scale-increase)
-    ("-" text-scale-decrease)
-    ("u" winner-undo)
-    ("r" winner-redo)
-    ("." popper-toggle-latest)
-    ("," popper-cycle)
-    ("'" popper-toggle-type)
-    ("V" multi-vterm-dedicated-toggle)
-    ("T" dirvish-side)
-    ("b" consult-buffer)
-    ("B" ibuffer :color blue)
-    ("S" scratch-buffer)
-    ("k" schrenker/kill-this-buffer)
-    ("q" nil :color blue))
-
-  (global-set-key (kbd "M-o") 'hydra-uictl/body))
+  :commands (defhydra))
 
 (use-package hydra-posframe
   :elpaca
@@ -525,24 +468,24 @@
 
 (use-package git-timemachine
   :commands (git-timemachine)
-  :after hydra
-  :init
-  (defhydra hydra-git-timemachine
-    (:hint nil)
+  :config
+  (defhydra hydra-git-timemachine (:hint nil)
     "
 
-  ^Rev-Movement    ^Commits^               ^^Misc
-╭────────────────────────────────────────────────────────────^^^^^^
-  [_N_] Next Rev    [_b_] Blame             [_?_] Help
-  [_P_] Prev Rev    [_c_] Show Commit       [_S_] Write File
-  [_g_] Nth Rev     [_w_] Copy Short Hash   [_q_] Quit Hydra
-  [_T_] Fuzzy Rev   [_W_] Copy Long Hash    [_Q_] Quit Timemachine
- ^^^^^^─────────────────────────────────────────────────────────────╯
+  ^Rev-Movement       ^Commits^                 ^Misc
+╭─────────────────────────────────────────────────────────────────^^^^^^
+  [_N_] Next Rev       [_b_] Blame               [_?_] Help
+  [_P_] Prev Rev       [_c_] Show Commit         [_S_] Write File
+  [_g_] Nth Rev        [_w_] Copy Short Hash     [_q_] Quit Hydra
+  [_T_] Fuzzy Rev      [_W_] Copy Long Hash      [_Q_] Quit Timemachine
+  [_C_] Current Rev
+ ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
     ("N" git-timemachine-show-next-revision)
     ("P" git-timemachine-show-previous-revision)
     ("g" git-timemachine-show-nth-revision)
     ("T" git-timemachine-show-revision-fuzzy)
+    ("C" git-timemachine-show-current-revision)
     ("b" git-timemachine-blame)
     ("c" git-timemachine-show-commit)
     ("w" git-timemachine-kill-abbreviated-revision)
@@ -786,8 +729,64 @@ targets."
 (use-package posframe)
 
 (use-package ace-window
+  :after posframe
+  :bind
+  ("M-o" . 'hydra-uictl/body)
   :config
-  (require 'posframe)
+  (defun schrenker/ace-swap-window ()
+    (interactive)
+    (let ((aw-ignore-current t))
+      (ace-swap-window)))
+
+  (defhydra hydra-uictl
+    (:hint nil)
+    "
+
+   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^        ^Buffer^
+╭────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^^
+      ^_P_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show     [_b_] buffers
+      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle    [_B_] ibuffer
+  _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type     [_S_] scratch
+      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_V_] vterm    [_k_] kill
+      ^_N_^        [_3_] split right    [_M-p_] vShrink     ^^            [_T_] dirSide
+     ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge
+     ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
+     ^^   ^^       [_X_] single         [_M-t_] hEnlarge    ^^^^                         [_q_] quit
+ ^^^^^^^^^^^^^^^────────────────────────────────────────────────────────────────────────────────────────╯
+"
+    ("P" windmove-up)
+    ("N" windmove-down)
+    ("H" windmove-left)
+    ("T" windmove-right)
+    ("M-p" shrink-window)
+    ("M-n" enlarge-window)
+    ("M-h" shrink-window-horizontally)
+    ("M-t" enlarge-window-horizontally)
+    ("o" aw-flip-window)
+    ("O" ace-select-window)
+    ("2" schrenker/split-and-follow-horizontally)
+    ("3" schrenker/split-and-follow-vertically)
+    ("s" schrenker/ace-swap-window)
+    ("d" delete-window)
+    ("D" ace-delete-window)
+    ("X" delete-other-windows)
+    ("=" balance-windows)
+    ("m" maximize-window)
+    ("+" text-scale-increase)
+    ("-" text-scale-decrease)
+    ("u" winner-undo)
+    ("r" winner-redo)
+    ("." popper-toggle-latest)
+    ("," popper-cycle)
+    ("'" popper-toggle-type)
+    ("V" multi-vterm-dedicated-toggle)
+    ("T" dirvish-side)
+    ("b" consult-buffer)
+    ("B" ibuffer :color blue)
+    ("S" scratch-buffer)
+    ("k" schrenker/kill-this-buffer)
+    ("q" nil :color blue))
+
   (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
   (ace-window-posframe-mode 1))
 

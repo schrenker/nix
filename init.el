@@ -177,14 +177,14 @@
           (read-multiple-choice
            (format "Buffer %s modified; kill anyway?"
                    (buffer-name))
-           '((?y "yes" "kill buffer without saving")
-             (?n "no" "exit without doing anything")
+           '((?y "kill" "kill buffer without saving")
+             (?n "cancel" "exit without doing anything")
              (?s "save and then kill" "save the buffer and then kill it")
              (?d "diff" "diff the buffer with original file" ))
            nil nil (and (not use-short-answers)
                         (not (use-dialog-box-p)))))))
-    (cond ((equal response "no") nil)
-          ((equal response "yes") t)
+    (cond ((equal response "cancel") nil)
+          ((equal response "kill") t)
           ((equal response "diff") (with-current-buffer buffer (diff-buffer-with-file buffer) nil))
           (t (with-current-buffer buffer (save-buffer)) t))))
 

@@ -927,6 +927,7 @@ targets."
 (use-package org
   :bind (("C-c n n" . org-capture)
          :map org-mode-map
+         ("M-O" . hydra-org/body)
          ("M-n" . org-metadown)
          ("M-N" . org-shiftmetadown)
          ("M-p" . org-metaup)
@@ -1084,6 +1085,30 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq schrenker/org-log-into-drawer nil)
   (advice-add 'org-log-into-drawer :around #'schrenker/org-log-into-drawer)
   (advice-add 'org-add-note :around #'schrenker/org-add-note)
+
+  (defun schrenker/refile (file headline &optional arg)
+    ;; (let ((pos (save-excursion
+    ;;              (find-file file)
+    ;;              (org-find-exact-headline-in-buffer headline))))
+    ;;   (org-refile arg nil (list headline file nil pos)))
+    ;; (switch-to-buffer (current-buffer))
+    (org-refile arg nil (list nil file nil (org-find-olp `(,file ,@(split-string headline "/")) nil))))
+
+(defhydra hydra-org (:hint nil)
+    "
+
+  ^Refile
+╭─────────────────────────────────────────────────────────────────^^^^^^
+  [_B_] Tasks/Backlog
+  [_A_] Tasks/Active
+  [_C_] Tasks/Completed
+  [_q_] Quit
+ ^^^^^^─────────────────────────────────────────────────────────────────╯
+"
+    ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
+    ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
+    ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
+    ("q" nil :color blue))
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook (lambda () (unless (org-roam-capture-p) (org-format-on-save-mode 1))))

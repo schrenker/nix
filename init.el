@@ -1224,6 +1224,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package dired
   :elpaca nil
+  :bind
+  ("M-+" . dired-create-empty-file)
   :init
   (when (eq system-type 'darwin)
     (setq dired-use-ls-dired t

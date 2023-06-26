@@ -1890,14 +1890,5 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (elpaca-process-queues)
 
-(defun schrenker/reorder-todos ()
-  "WIP. This function reorganises headings in certain files. In files with 'capture' file tag, there is Top level headings called 'Tasks', with two children headings: 'Backlog' and 'Active'.
-'Backlog' heading should contain tasks only with 'TODO' and 'ONHOLD' states, while 'Active' should contain all other tasks. After implementing this, I will also thing about putting 'DONE', 'CANCELLED' and 'DELEGATED' into separate heading, like 'Completed'."
-  (interactive)
-  (if (string= "capture" (substring-no-properties (car (org-get-tags nil))))
-      (let ((org-refile-targets nil))
-        (save-excursion
-          (message "Temp save exc for reorder-todos")))))
-
 (provide 'init)
 ;;; init.el ends here.

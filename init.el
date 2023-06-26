@@ -233,10 +233,9 @@
 
 
 (use-package key-chord
-  :after meow
+  :commands (key-chord-define)
   :config
-  (key-chord-mode 1)
-  (key-chord-define meow-insert-state-keymap ";;" 'right-char))
+  (key-chord-mode 1))
 
 (use-package hydra
   :commands (defhydra)
@@ -1171,7 +1170,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'org-mode-hook 'org-appear-mode))
 
 (use-package org-modern
-  :after org
   :config
   (setq org-modern-hide-stars nil
         org-modern-table nil
@@ -1441,7 +1439,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-to-list 'all-the-icons-extension-icon-alist '("jar" all-the-icons-alltheicon "java" :height 1.0 :face all-the-icons-dpurple)))
 
 (use-package all-the-icons-ibuffer
-  :after all-the-icons
   :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
   :init
   (setq all-the-icons-ibuffer-formats `((mark
@@ -1468,7 +1465,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                          filename-and-process+))))
 
 (use-package all-the-icons-completion
-  :after all-the-icons
   :config
   (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
   (all-the-icons-completion-mode 1))
@@ -1496,7 +1492,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package vterm
   :if (not (eq system-type 'windows-nt))
-  :after meow
   :demand t
   :init
   (defun schrenker/CC-out-of-copy-mode ()
@@ -1518,7 +1513,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package multi-vterm
   :if (not (eq system-type 'windows-nt))
-  :after vterm
   :bind (("C-c t p" . multi-vterm-project)
          ("C-c t t" . multi-vterm-dedicated-toggle)
          ("C-c t T" . multi-vterm-dedicated-select))
@@ -1612,7 +1606,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'nix-mode-hook #'eglot-ensure))
 
 (use-package go-mode
-  :mode "\\.go\\'"
   :after eglot
   :init
   (add-hook 'go-mode-hook #'eglot-ensure)
@@ -1672,7 +1665,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :mode "\\.jenkinsfile\\'")
 
 (use-package verb
-  :after org
   :elpaca
   (verb :files (:defaults "ob-verb.el")))
 
@@ -1886,6 +1878,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                 (?l . line)
                                 (?d . defun)
                                 (?. . sentence)))
+
+  (key-chord-define meow-insert-state-keymap ";;" 'right-char)
+
   (meow-global-mode 1))
 
 (elpaca-process-queues)

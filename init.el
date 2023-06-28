@@ -980,6 +980,7 @@ targets."
    org-priority-lowest  '?D
    org-priority-default '?D
    org-hide-emphasis-markers t
+   org-M-RET-may-split-line '((default . nil))
    org-return-follows-link t
    org-fontify-quote-and-verse-blocks t
    org-edit-src-content-indentation 0

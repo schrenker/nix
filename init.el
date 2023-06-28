@@ -1869,6 +1869,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         meow-use-cursor-position-hack t
         meow-expand-exclude-mode-list nil
         meow-use-enhanced-selection-effect t
+        meow-select-on-change nil
         meow-char-thing-table '((?r . round)
                                 (?s . square)
                                 (?c . curly)

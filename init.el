@@ -39,6 +39,7 @@
       load-prefer-newer t
       visible-bell (eq system-type 'gnu/linux)
       display-line-numbers-type 'visual
+      visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
       scroll-margin 10
       scroll-conservatively 1000
       scroll-step 1
@@ -1121,10 +1122,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
             (lambda ()
               (add-hook 'before-save-hook #'schrenker/trim-src-block-buffer nil t))))
 
-(use-package org-make-toc
-  :hook (org-mode . org-make-toc-mode)
-  :config
-  (setq org-make-toc-link-type-fn 'org-make-toc--link-entry-org))
+(use-package toc-org
+  :init
+  (add-hook 'org-mode-hook 'toc-org-mode)
+  (add-hook 'markdown-mode-hook 'toc-org-mode))
 
 (use-package org-roam
   :after org

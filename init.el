@@ -1440,7 +1440,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package all-the-icons
   :config
   (add-to-list 'all-the-icons-extension-icon-alist '("jar" all-the-icons-alltheicon "java" :height 1.0 :face all-the-icons-dpurple))
-  (add-to-list 'all-the-icons-extension-icon-alist '("jenkinsfile" all-the-icons-fileicon "groovy" :height 1.0 :face all-the-icons-dpurple)))
+  (add-to-list 'all-the-icons-extension-icon-alist '("jenkinsfile" all-the-icons-fileicon "jenkins" :height 1.0 :face all-the-icons-dpurple)))
 
 (use-package all-the-icons-ibuffer
   :hook (ibuffer-mode . all-the-icons-ibuffer-mode)

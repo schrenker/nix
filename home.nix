@@ -31,27 +31,16 @@ in
     wget
   ];
 
-  programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
 
   programs.fish = {
     enable = true;
 
-    #    shellInit = builtins.readFile ./dotfiles/config.fish;
-    shellInit = ''
-function __nixos_path_fix -d "fix PATH value"
-set -l result (string replace '$HOME' "$HOME" $__nixos_path_original)
-for elt in $PATH
-  if not contains -- $elt $result
-    set -a result $elt
-  end
-end
-set -g PATH $result
-end
-
-    __nixos_path_fix
-    '';
-
+    shellInit = builtins.readFile ./dotfiles/config.fish;
 
     shellAliases = {
       wget = "wget --hsts-file ~/.config/wget/wget-hsts";

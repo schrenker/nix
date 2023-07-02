@@ -1,8 +1,16 @@
-#!/usr/bin/env fish
-
-set -g __nixos_path_original $PATH
-
 ulimit -n 1024
+
+function __nixos_path_fix -d "fix PATH value"
+    set -l result (string replace '$HOME' "$HOME" $__nixos_path_original)
+    for elt in $PATH
+        if not contains -- $elt $result
+            set -a result $elt
+        end
+    end
+    set -g PATH $result
+end
+
+__nixos_path_fix
 
 function fish_title
     hostname
@@ -10,12 +18,14 @@ function fish_title
     pwd
 end
 
-fish_add_path /opt/homebrew/sbin
-fish_add_path /opt/homebrew/bin
-fish_add_path ~/.config/emacs/bin
+if [ "$system" = aarch64-darwin ]
+    fish_add_path /opt/homebrew/sbin
+    fish_add_path /opt/homebrew/bin
+end
 
 set -gx LESSHISTFILE -
 set -gx GOPATH ~/.local/go
+
 
 if [ "$INSIDE_EMACS" = vterm ]
     function clear
@@ -23,6 +33,3 @@ if [ "$INSIDE_EMACS" = vterm ]
         tput clear
     end
 end
-
-
-direnv hook fish | source

@@ -3,7 +3,7 @@ let unstable = import <unstable> { config = { allowUnfree = true; }; };
 in
 {
 
-  home.stateVersion = "22.05";
+  home.stateVersion = "23.05";
   home.username = "sebastian";
   home.homeDirectory = "/Users/sebastian";
 

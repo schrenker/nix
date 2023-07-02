@@ -60,7 +60,6 @@
     "zsa-wally"
   ];
   homebrew.taps = [
-    "homebrew/cask"
     "homebrew/cask-versions"
     "homebrew/cask-drivers"
     "homebrew/cask-fonts"
@@ -124,11 +123,11 @@
   system.activationScripts.preActivation.text = ''
     rm -f /etc/shells
   '';
-  system.activationScripts.postActivation.text = ''
-    if [ ! -d /Applications/Sorted.app ]; then
-        mv /Applications/Sorted* /Applications/Sorted.app
-    fi
-  '';
+  # system.activationScripts.postActivation.text = ''
+  #   if [ ! -d /Applications/Sorted.app ]; then
+  #       mv /Applications/Sorted* /Applications/Sorted.app
+  #   fi
+  # '';
 
   security.pam.enableSudoTouchIdAuth = true;
 }

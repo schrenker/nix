@@ -704,6 +704,18 @@
   :bind (:map eglot-mode-map
               ("C-c SPC" . consult-eglot-symbols)))
 
+(use-package consult-org-roam
+  :after org-roam
+  :config
+  (setq consult-org-roam-grep-func #'consult-ripgrep
+        consult-org-roam-buffer-narrow-key ?r
+        consult-org-roam-buffer-enabled nil)
+  (consult-org-roam-mode 1)
+  ;; Eventually suppress previewing for certain functions
+  (consult-customize
+   consult-org-roam-forward-links
+   :preview-key (kbd "M-.")))
+
 (use-package consult-dir
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map

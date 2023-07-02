@@ -695,6 +695,15 @@
   ;;;; 1. project.el (the default)
   (setq consult-project-function   #'consult--default-project-function))
 
+(use-package consult-project-extra
+  :commands (consult-project-extra-find
+             consult-project-extra-find-other-window))
+
+(use-package consult-eglot
+  :after eglot
+  :bind (:map eglot-mode-map
+              ("C-c SPC" . consult-eglot-symbols)))
+
 (use-package consult-dir
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
@@ -1681,6 +1690,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package meow
   :config
+  (global-unset-key (kbd "C-c SPC"))
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
   (add-to-list 'meow-mode-state-list '(dirvish-mode . motion))
@@ -1791,7 +1801,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (meow-motion-overwrite-define-key
    '("<escape>" . nil)
    '("SPC" . nil)
-   '("SPC SPC" . project-find-file))
+   '("SPC SPC" . consult-project-extra-find)
+   '("S-SPC S-SPC" . consult-project-extra-find-other-window))
   (meow-normal-define-key
    '("0" . schrenker/meow-expand-or-digit-argument)
    '("1" . schrenker/meow-expand-or-digit-argument)
@@ -1863,7 +1874,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection)
    '("SPC" . nil)
-   '("SPC SPC" . project-find-file))
+   '("SPC SPC" . consult-project-extra-find)
+   '("S-SPC SPC" . consult-project-extra-find-other-window))
   
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
 

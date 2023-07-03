@@ -22,10 +22,12 @@ in
     git
     git-crypt
     gnupg
+    gnutls
+    jq
     kind
     kubectl
     kubectx
-    jq
+    libgccjit
     nix-direnv
     nodejs
     pinentry_mac

@@ -50,6 +50,7 @@
     "font-jetbrains-mono-nerd-font"
     "hazeover"
     "karabiner-elements"
+    "libtool"
     "logitech-options"
     "lulu"
     "numi"

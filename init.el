@@ -484,7 +484,8 @@
          ("M-P" . magit-section-backward-sibling)
          ("<escape>" . meow-cancel-selection))
   :config
-  (setq magit-git-executable "/etc/profiles/per-user/sebastian/bin/git")
+  (when (eq system-type 'darwin)
+    (setq magit-git-executable "/etc/profiles/per-user/sebastian/bin/git"))
   (require 'transient)
   (defun schrenker/smerge-repeatedly ()
     "Perform smerge actions again and again"

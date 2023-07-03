@@ -1889,8 +1889,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("SPC" . nil)
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC SPC" . consult-project-extra-find-other-window))
-  
+
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
+  (add-hook 'meow-switch-state-hook (lambda (&rest _) (when (symbol-value 'meow-beacon-mode) (corfu-quit))))
 
   (setq meow-use-clipboard t
         meow-use-cursor-position-hack t

@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
-let unstable = import <unstable> { config = { allowUnfree = true; }; };
+let
+  unstable = import <unstable> { config = { allowUnfree = true; }; };
+  emacsCustom = pkgs.callPackage ./custom/emacs.nix {};
 in
 {
 
@@ -14,6 +16,7 @@ in
   home.packages = with pkgs; [
     arping
     cmake
+    emacsCustom
     fd
     fish
     git
@@ -44,9 +47,7 @@ in
 
     shellAliases = {
       wget = "wget --hsts-file ~/.config/wget/wget-hsts";
-      vi = "/opt/homebrew/bin/emacsclient -c -a emacs $argv &>/dev/null";
       nQ = "networkQuality";
-      fixproj = "rm ~/.config/emacs/.local/cache/treemacs-persist";
       docker = "podman";
       k = "kubectl";
       kx = "kubectx";

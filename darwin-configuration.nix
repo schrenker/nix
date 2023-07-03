@@ -64,13 +64,13 @@
     "homebrew/cask-drivers"
     "homebrew/cask-fonts"
     "homebrew/services"
-    "d12frosted/emacs-plus"
+    # "d12frosted/emacs-plus"
   ];
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
-  homebrew.extraConfig = ''
-    brew "emacs-plus@29", args: ["with-dbus", "with-mailutils", "with-no-frame-refocus", "with-xwidgets", "with-imagemagick", "with-native-comp", "with-nobu417-big-sur-icon", "with-poll"]
-  '';
+  # homebrew.extraConfig = ''
+  #   brew "emacs-plus@29", args: ["with-dbus", "with-mailutils", "with-no-frame-refocus", "with-xwidgets", "with-imagemagick", "with-native-comp", "with-nobu417-big-sur-icon", "with-poll"]
+  # '';
   homebrew.masApps = {
     "Amphetamine" = 937984704;
     "Bitwarden" = 1352778147;
@@ -123,11 +123,18 @@
   system.activationScripts.preActivation.text = ''
     rm -f /etc/shells
   '';
-  # system.activationScripts.postActivation.text = ''
+  system.activationScripts.postActivation.text = ''
   #   if [ ! -d /Applications/Sorted.app ]; then
   #       mv /Applications/Sorted* /Applications/Sorted.app
   #   fi
-  # '';
+    # Find the latest Emacs.app in the Nix store
+    EMACS_APP=$(ls -dt /nix/store/*emacs*/Applications/Emacs.app | head -n 1)
+
+    # Create a symlink to it in /Applications
+    unlink /Applications/Emacs.app
+    ln -sf "$EMACS_APP" /Applications/Emacs.app
+
+  '';
 
   security.pam.enableSudoTouchIdAuth = true;
 }

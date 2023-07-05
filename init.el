@@ -1530,14 +1530,17 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (vterm-send "C-c"))
   :bind
   (:map vterm-copy-mode-map
-        ("C-c C-c" . schrenker/CC-out-of-copy-mode))
+        ("C-c C-c" . schrenker/CC-out-of-copy-mode)
+        ("C-y" . (lambda () (interactive) (vterm-send "C-v"))))
   :config
-  (setq vterm-max-scrollback 10000)
+  (setq vterm-max-scrollback 10000
+        vterm-kill-buffer-on-exit t)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   (add-hook 'vterm-mode-hook (lambda ()
                                (meow-normal-mode -1)
                                (add-hook 'meow-normal-mode-hook (lambda () (vterm-copy-mode 1)) nil t)))
   (add-hook 'vterm-mode-hook (lambda ()
+                               (setq-local confirm-kill-processes nil)
                                (display-line-numbers-mode -1))))
 
 (use-package multi-vterm
@@ -1679,7 +1682,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :mode "\\.fish\\'")
 
 (use-package fish-completion
-  :if (executable-find "fish")
   :config
   (global-fish-completion-mode))
 

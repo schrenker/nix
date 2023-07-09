@@ -1594,14 +1594,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("M-n" . Info-next)
         ("M-p" . Info-prev)))
 
-;; (use-package uniquify
-;;   :elpaca nil
-;;   :config
-;;   (setq uniquify-buffer-name-style 'forward
-;;         uniquify-separator "/"
-;;         uniquify-after-kill-buffer-p t    ; rename after killing uniquified
-;;         uniquify-ignore-buffers-re "^\\*"))
-
 (use-package buffer-name-relative
   :config
   (setq buffer-name-relative-abbrev-limit 24)

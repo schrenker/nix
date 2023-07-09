@@ -1351,7 +1351,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (mood-line-mode 1))
 
 (use-package solarized-theme
-  :after (org org-modern dirvish)
+  :after (org org-modern dirvish embark)
   :demand t
   :init
   (setq solarized-use-more-italic t
@@ -1366,6 +1366,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     ;; Function that is there just to make my life easier. Reapplies all visual updates, and that's it.
     (let ((bg-main (if (eq appearance 'light) "#fdf6e3" "#002b36"))
           (bg-alt (if (eq appearance 'light) "#eee8d5" "#073642"))
+          (bg-highlight (if (eq appearance 'light) "#ece3cc" "#184956"))
           (fg-main (if (eq appearance 'light) "#657b83" "#839496"))
           (fg-alt (if (eq appearance 'light) "#93a1a1" "#586e75"))
           (fg-emph (if (eq appearance 'light) "#586e75" "#93a1a1"))
@@ -1448,6 +1449,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (set-face-foreground 'vc-conflict-state orange)
         (set-face-foreground 'vc-locked-state violet)
         (set-face-foreground 'vc-needs-update-state blue)
+        (set-face-background 'embark-target bg-highlight)
         (advice-add
          'org-modern--update-label-face
          :override

@@ -1559,6 +1559,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package eglot
   :elpaca nil
+  :commands (eglot-ensure eglot-inlay-hints-mode)
   :bind
   (:map eglot-mode-map
         ("C-c c c" . eglot)
@@ -1622,16 +1623,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
 
-(use-package yaml-mode
-  :demand t
-  :mode "\\.ya?ml\\'")
+(use-package yaml-mode)
 
-(use-package markdown-mode
-  :mode "\\.md\\'")
+(use-package markdown-mode)
 
 (use-package nix-mode
-  :after magit-section
-  :mode "\\.nix\\'"
   :init
   (add-hook 'nix-mode-hook #'eglot-ensure))
 
@@ -1673,11 +1669,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (add-hook 'go-mode-hook 'flymake-golangci-load))
 
-(use-package json-mode
-  :mode "\\.json\\'")
+(use-package json-mode)
 
-(use-package fish-mode
-  :mode "\\.fish\\'")
+(use-package fish-mode)
 
 (use-package fish-completion
   :config

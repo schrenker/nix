@@ -1022,8 +1022,9 @@ targets."
    org-capture-templates
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U - %^{prompt}\n%i%?" :empty-lines 1 :prepend t)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "*** TODO %^{prompt}\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\\n  %i%?" :empty-lines 1 :prepend t)))
+
   (org-crypt-use-before-save-magic)
-  (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
+
   (defadvice org-babel-execute-src-block (around load-language nil activate)
     "Load language if needed"
     (let ((language (org-element-property :language (org-element-at-point))))
@@ -1691,7 +1692,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package verb
   :elpaca
-  (verb :files (:defaults "ob-verb.el")))
+  (verb :files (:defaults "ob-verb.el"))
+  :after org
+  :bind
+  (:map org-mode-map
+        ("C-c C-r" . verb-command-map)))
 
 (use-package wgrep)
 

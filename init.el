@@ -1699,6 +1699,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (require 'vlf-setup))
 
+(use-package vi-tilde-fringe
+  :config
+  (global-vi-tilde-fringe-mode 1))
+
 (use-package meow
   :config
   (global-unset-key (kbd "C-c SPC"))

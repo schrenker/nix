@@ -1389,7 +1389,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           (cyan "#2aa198")
           (cyan-bg (if (eq appearance 'light) "#e4ecda" "#013841"))
           (green "#859900")
-          (green-bg (if (eq appearance 'light) "#efeac7" "#1d3732")))
+          (green-bg (if (eq appearance 'light) "#efeac7" "#1d3732"))
+          (white "#ffffff")
+          (black "#181818"))
       (progn
         (setq org-todo-keyword-faces `(("TODO" :foreground ,magenta :weight bold :inverse-video t)
                                        ("INPROGRESS" :foreground ,green :weight bold :inverse-video t)
@@ -1453,7 +1455,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (set-face-foreground 'vc-conflict-state orange)
         (set-face-foreground 'vc-locked-state violet)
         (set-face-foreground 'vc-needs-update-state blue)
-        (set-face-background 'embark-target bg-highlight)
+        (set-face-background 'hl-line bg-highlight)
+        (set-face-background 'embark-target (if (eq appearance 'light) white black))
         (advice-add
          'org-modern--update-label-face
          :override

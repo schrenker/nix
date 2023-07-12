@@ -26,43 +26,41 @@
               delete-by-moving-to-trash t
               tab-width 4)
 
-(setq custom-file "/dev/null"
-      backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
+(setq auto-window-vscroll nil
       backup-by-copying t
-      version-control t
+      backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
+      create-lockfiles nil
+      custom-file "/dev/null"
       delete-old-versions t
+      delete-pair-blink-delay 0
+      display-line-numbers-type 'visual
+      electric-pair-open-newline-between-pairs t
+      frame-resize-pixelwise t
+      inhibit-startup-message t
+      inhibit-startup-screen t
+      initial-frame-alist (if (eq system-type 'gnu/linux) '((top . 1) (left . 1) (width . 120) (height . 40)) '((fullscreen . maximized)))
+      initial-major-mode 'org-mode
+      initial-scratch-message nil
       kept-new-versions 6
       kept-old-versions 2
-      create-lockfiles nil
-      inhibit-startup-screen t
-      inhibit-startup-message t
-      initial-scratch-message nil
-      initial-major-mode 'org-mode
-      max-lisp-eval-depth 10000
       load-prefer-newer t
-      visible-bell (eq system-type 'gnu/linux)
-      display-line-numbers-type 'visual
-      visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
-      scroll-margin 10
-      scroll-conservatively 1000
-      scroll-step 1
-      scroll-preserve-screen-position t
-      delete-pair-blink-delay 0
-      sentence-end-double-space nil
-      auto-window-vscroll nil
-      savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
-      native-comp-async-report-warnings-errors nil
-      require-final-newline t
       mac-command-modifier 'meta
       mac-option-modifier 'alt
       mac-right-option-modifier nil
-      electric-pair-open-newline-between-pairs t
+      max-lisp-eval-depth 10000
+      native-comp-async-report-warnings-errors nil
+      require-final-newline t
+      savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
+      scroll-conservatively 1000
+      scroll-margin 10
+      scroll-preserve-screen-position t
+      scroll-step 1
+      sentence-end-double-space nil
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
-      frame-resize-pixelwise t
-      initial-frame-alist (if (eq system-type 'gnu/linux)
-                              '((top . 1) (left . 1) (width . 120) (height . 40))
-                            '((fullscreen . maximized))))
+      version-control t
+      visible-bell (eq system-type 'gnu/linux)
+      visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
@@ -70,19 +68,19 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
+(column-number-mode 1)
+(electric-indent-mode 1)
+(electric-pair-mode 1)
+(global-display-line-numbers-mode 1)
+(global-hl-line-mode 1)
+(global-prettify-symbols-mode 1)
+(pixel-scroll-mode 1)
 (savehist-mode 1)
 (winner-mode 1)
-(pixel-scroll-mode 1)
-(global-display-line-numbers-mode 1)
-(electric-pair-mode 1)
-(electric-indent-mode 1)
-(global-prettify-symbols-mode 1)
-(column-number-mode 1)
-(global-hl-line-mode 1)
 
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
 
 ;; Thanks to Xenodium https://xenodium.com/deleting-from-emacs-sequence-vars
 (defun schrenker/remove-from-list-variable ()

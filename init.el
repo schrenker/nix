@@ -1711,6 +1711,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (global-vi-tilde-fringe-mode 1))
 
+(use-package ws-butler
+  :config
+  (ws-butler-global-mode 1))
+
 (use-package meow
   :config
   (global-unset-key (kbd "C-c SPC"))

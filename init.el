@@ -477,9 +477,6 @@
   (which-key-mode))
 
 (use-package magit
-  :init
-  (when (eq system-type 'darwin)
-    (setq with-editor-emacsclient-executable nil))
   :bind (("C-c g g" . magit)
          ("C-c g s" . schrenker/smerge-repeatedly)
          :map magit-status-mode-map

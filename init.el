@@ -16,6 +16,9 @@
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
 
+(if (eq system-type 'darwin)
+    (server-start))
+
 (setq-default indent-tabs-mode nil
               truncate-string-ellipsis "…"
               x-stretch-cursor t

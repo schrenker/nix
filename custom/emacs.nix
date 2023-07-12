@@ -1,8 +1,8 @@
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.emacs29.overrideAttrs (old: {
-  buildInputs = old.buildInputs ++ [ pkgs.dbus pkgs.mailutils pkgs.imagemagick pkgs.libgccjit ];
-  configureFlags = old.configureFlags ++ [ "--with-imagemagick" "--with-native-compilation" "--with-poll" "--with-no-frame-refocus" "--with-dbus" "--with-mailutils" ];
+  buildInputs = old.buildInputs ++ [ pkgs.dbus pkgs.mailutils pkgs.imagemagick pkgs.libgccjit pkgs.libtool pkgs.gnutls ];
+  configureFlags = old.configureFlags ++ [ "--with-imagemagick" "--with-native-compilation=aot" "--with-poll" "--with-no-frame-refocus" "--with-dbus" "--with-mailutils" ];
   patches =
     (old.patches or [])
     ++ [

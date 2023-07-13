@@ -216,7 +216,6 @@
 
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
 
-(unbind-key (kbd "M-v"))
 (unbind-key (kbd "M-r"))
 (unbind-key (kbd "C-z"))
 (unbind-key (kbd "<f2>"))
@@ -1591,7 +1590,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package vundo
   :bind
-  ("M-_" . vundo))
+  ("M-v" . vundo))
 
 (use-package woman
   :elpaca nil

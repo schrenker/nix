@@ -1548,7 +1548,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :bind*
   (:map vterm-copy-mode-map
         ("C-c C-c" . schrenker/CC-out-of-copy-mode)
-        ("C-y" . (lambda () (interactive) (vterm-send "C-v"))))
+        ("C-y" . vterm-yank))
   :config
   (setq vterm-max-scrollback 10000
         vterm-kill-buffer-on-exit t)

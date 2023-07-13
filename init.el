@@ -475,7 +475,8 @@
   (which-key-mode))
 
 (use-package magit
-  :bind (("C-c g g" . magit)
+  :bind (("C-x g" . magit-status)
+         ("C-x G" . schrenker/magit-status-with-prefix)
          ("C-c g s" . schrenker/smerge-repeatedly)
          :map magit-status-mode-map
          ("n" . magit-next-line)
@@ -520,7 +521,12 @@
   (transient-append-suffix 'magit-fetch "-p"
     '("-t" "Fetch all tags" ("-t" "--tags")))
   (transient-append-suffix 'magit-pull "-r"
-    '("-a" "Autostash" "--autostash")))
+    '("-a" "Autostash" "--autostash"))
+
+  (defun schrenker/magit-status-with-prefix ()
+    (interactive)
+    (let ((current-prefix-arg '(4)))
+      (call-interactively 'magit-status))))
 
 (use-package git-timemachine
   :commands (git-timemachine)

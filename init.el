@@ -474,6 +474,9 @@
   (which-key-mode))
 
 (use-package magit
+  :init
+  (when (eq system-type 'darwin)
+    (setq with-editor-emacsclient-executable nil))
   :bind (("C-x g" . magit-status)
          ("C-x G" . schrenker/magit-status-with-prefix)
          ("C-c g s" . schrenker/smerge-repeatedly)

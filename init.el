@@ -1677,6 +1677,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (add-hook 'go-mode-hook 'flymake-golangci-load))
 
+(use-package python-mode)
+
+(use-package python-black
+  :demand t
+  :after python
+  :hook (python-mode . python-black-on-save-mode))
+
 (use-package json-mode)
 
 (use-package fish-mode)

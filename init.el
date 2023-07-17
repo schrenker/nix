@@ -1458,7 +1458,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (set-face-foreground 'vc-conflict-state orange)
         (set-face-foreground 'vc-locked-state violet)
         (set-face-foreground 'vc-needs-update-state blue)
-        (set-face-background 'hl-line bg-highlight)
+        (set-face-background 'hl-line bg-alt)
         (set-face-background 'embark-target (if (eq appearance 'light) white black))
         (advice-add
          'org-modern--update-label-face

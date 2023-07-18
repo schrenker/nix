@@ -1641,13 +1641,17 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :init
   (add-hook 'nix-mode-hook #'eglot-ensure))
 
+(use-package format-all
+  :config
+  (format-all-mode 1))
+
 (use-package go-mode
   :after eglot
   :init
   (add-hook 'go-mode-hook #'eglot-ensure)
   (add-hook 'go-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook 'gofmt-before-save)
+              ;(add-hook 'before-save-hook 'gofmt-before-save)
               (eglot-inlay-hints-mode 1)
               (setq-local tab-width 4)
               (setq-local indent-tabs-mode 1)))
@@ -1678,7 +1682,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (add-hook 'go-mode-hook 'flymake-golangci-load))
 
-(use-package python-mode)
+(use-package python-mode
+  :init
+  (setq python-indent-offset 4))
 
 (use-package json-mode)
 

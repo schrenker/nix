@@ -172,6 +172,7 @@
     (exec-path-from-shell-initialize)))
 
 (use-package envrc
+  :if (executable-find "direnv")
   :hook (after-init . envrc-global-mode))
 
 (defun schrenker/kill-buffer--possibly-save (buffer)

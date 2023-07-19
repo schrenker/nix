@@ -1708,6 +1708,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package jenkinsfile-mode
   :mode "\\.jenkinsfile\\'")
 
+(use-package d2-mode)
+
+(use-package ob-d2)
+
 (use-package verb
   :elpaca
   (verb :files (:defaults "ob-verb.el"))

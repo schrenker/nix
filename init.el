@@ -17,6 +17,7 @@
                      gcs-done)))
 
 (if (eq system-type 'darwin)
+    (setq server-use-tcp t)
     (server-start))
 
 (setq-default indent-tabs-mode nil
@@ -490,8 +491,8 @@
          ("M-P" . magit-section-backward-sibling)
          ("<escape>" . meow-cancel-selection))
   :config
-  ;; (when (eq system-type 'darwin)
-  ;;   (setq magit-git-executable "/etc/profiles/per-user/sebastian/bin/git"))
+  (when (eq system-type 'darwin)
+    (setq magit-git-executable "/etc/profiles/per-user/sebastian/bin/git"))
   (require 'transient)
   (defun schrenker/smerge-repeatedly ()
     "Perform smerge actions again and again"
@@ -528,6 +529,8 @@
     (interactive)
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status))))
+
+(use-package with-editor)
 
 (use-package git-timemachine
   :commands (git-timemachine)

@@ -22,3 +22,4 @@ custom.el
 /.org-id-locations
 /tramp
 /tree-sitter/
+/server/

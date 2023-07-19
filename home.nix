@@ -16,6 +16,7 @@ in
   home.packages = with pkgs; [
     arping
     cmake
+    d2
     emacsCustom
     fd
     fish

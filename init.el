@@ -173,7 +173,7 @@
     (exec-path-from-shell-initialize)))
 
 (use-package envrc
-  :if (executable-find "direnv")
+  :if (or (executable-find "direnv") (eq system-type 'darwin))
   :hook (after-init . envrc-global-mode))
 
 (defun schrenker/kill-buffer--possibly-save (buffer)

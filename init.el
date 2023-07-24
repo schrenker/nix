@@ -1419,6 +1419,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
               `(("emacs-lisp" (:background ,magenta-bg :extend t))
                 ("python" (:background ,green-bg :extend t))
                 ("yaml" (:background ,cyan-bg :extend t))
+                ("json" (:background ,blue-bg :extend t))
                 ("bash" (:background ,green-bg :extend t))
                 ("sh" (:background ,green-bg :extend t))
                 ("shell" (:background ,green-bg :extend t))

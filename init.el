@@ -483,8 +483,6 @@
          :map magit-status-mode-map
          ("n" . magit-next-line)
          ("p" . magit-previous-line)
-         ("C-n" . meow-next-expand)
-         ("C-p" . meow-prev-expand)
          ("M-n" . magit-section-forward)
          ("M-p" . magit-section-backward)
          ("M-N" . magit-section-forward-sibling)
@@ -627,7 +625,8 @@
          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g o" . consult-org-heading)
+         ("M-g O" . consult-outline)               ;; Alternative: consult-org-heading
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
          ("M-g i" . consult-imenu)

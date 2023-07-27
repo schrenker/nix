@@ -1544,6 +1544,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :if (not (eq system-type 'windows-nt))
   :demand t
   :init
+  (setq vterm-always-compile-module t)
   (defun schrenker/CC-out-of-copy-mode ()
     (interactive)
     (meow-normal-mode -1)

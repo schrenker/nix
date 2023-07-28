@@ -1,6 +1,15 @@
 { pkgs ? import <nixpkgs> {} }:
 
+
 pkgs.emacs29.overrideAttrs (old: {
+  pname = "emacs";
+    version = "29.1-rc1";
+    variant = "mainline";
+    src = pkgs.fetchFromSavannah {
+      repo = "emacs";
+      rev = "29.1-rc1";
+      hash = "sha256-p0lBSKsHrFwYTqO5UVIF/PgiqwdhYQE4oUVcPtd+gsU=";
+    };
   buildInputs = old.buildInputs ++ [ pkgs.dbus pkgs.mailutils pkgs.imagemagick pkgs.libgccjit pkgs.libtool pkgs.gnutls ];
   configureFlags = old.configureFlags ++ [ "--with-imagemagick" "--with-native-compilation=aot" "--with-poll" "--with-no-frame-refocus" "--with-dbus" "--with-mailutils" ];
   patches =

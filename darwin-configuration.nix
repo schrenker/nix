@@ -61,6 +61,7 @@
     "zsa-wally"
   ];
   homebrew.taps = [
+    "d12frosted/emacs-plus"
     "homebrew/cask-drivers"
     "homebrew/cask-fonts"
     "homebrew/cask-versions"
@@ -68,6 +69,9 @@
   ];
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
+  homebrew.extraConfig = ''
+    brew "emacs-plus@29", args: ["with-dbus", "with-mailutils", "with-no-frame-refocus", "with-xwidgets", "with-imagemagick", "with-native-comp", "with-nobu417-big-sur-icon", "with-poll"]
+  '';
   homebrew.masApps = {
     "Amphetamine" = 937984704;
     "Bitwarden" = 1352778147;
@@ -120,21 +124,21 @@
   system.activationScripts.preActivation.text = ''
     rm -f /etc/shells
   '';
-  system.activationScripts.postActivation.text = ''
-    #   if [ ! -d /Applications/Sorted.app ]; then
-    #       mv /Applications/Sorted* /Applications/Sorted.app
-    #   fi
-    # Find the latest Emacs.app in the Nix store
-    EMACS_APP=$(ls -dt /nix/store/*emacs*/Applications/Emacs.app | head -n 1)
+  # system.activationScripts.postActivation.text = ''
+  #   #   if [ ! -d /Applications/Sorted.app ]; then
+  #   #       mv /Applications/Sorted* /Applications/Sorted.app
+  #   #   fi
+  #   # Find the latest Emacs.app in the Nix store
+  #   # EMACS_APP=$(ls -dt /nix/store/*emacs*/Applications/Emacs.app | head -n 1)
 
-    # Change icon
-    cp /Users/sebastian/.nixpkgs/custom/Emacs.icns $EMACS_APP/Contents/Resources/Emacs.icns
+  #   # # Change icon
+  #   # cp /Users/sebastian/.nixpkgs/custom/Emacs.icns $EMACS_APP/Contents/Resources/Emacs.icns
 
-    # Create a symlink to it in /Applications
-    test -f /Applications/Emacs.app && unlink /Applications/Emacs.app
-    ln -sf "$EMACS_APP" /Applications/Emacs.app
+  #   # # Create a symlink to it in /Applications
+  #   # test -f /Applications/Emacs.app && unlink /Applications/Emacs.app
+  #   # ln -sf "$EMACS_APP" /Applications/Emacs.app
 
-  '';
+  # '';
 
   security.pam.enableSudoTouchIdAuth = true;
 }

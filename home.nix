@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   unstable = import <unstable> { config = { allowUnfree = true; }; };
-  emacsCustom = pkgs.callPackage ./custom/emacs.nix {};
+  # emacsCustom = pkgs.callPackage ./custom/emacs.nix {};
 in
 {
 
@@ -17,7 +17,7 @@ in
     arping
     cmake
     d2
-    emacsCustom
+    # emacsCustom
     fd
     fish
     git

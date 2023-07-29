@@ -244,6 +244,24 @@
 (use-package hydra
   :commands (defhydra)
   :bind ("M-o" . 'hydra-uictl/body)
+  :init
+  (defun schrenker/zoom-frame (&optional amt frame)
+    "Increaze FRAME font size by amount AMT. Defaults to selected
+frame if FRAME is nil, and to 1 if AMT is nil."
+    (interactive "p")
+    (let* ((frame (or frame (selected-frame)))
+           (font (face-attribute 'default :font frame))
+           (size (font-get font :size))
+           (amt (or amt 1))
+           (new-size (+ size amt)))
+      (set-frame-font (font-spec :size new-size) t `(,frame))
+      (message "Frame's font new size: %d" new-size)))
+
+  (defun schrenker/zoom-frame-out (&optional amt frame)
+    "Call `acg/zoom-frame' with negative argument."
+    (interactive "p")
+    (acg/zoom-frame (- (or amt 1)) frame))
+
   :config
   (setq hydra-is-helpful t)
   (defhydra hydra-uictl
@@ -280,8 +298,8 @@
     ("X" delete-other-windows)
     ("=" balance-windows)
     ("m" maximize-window)
-    ("+" text-scale-increase)
-    ("-" text-scale-decrease)
+    ("+" schrenker/zoom-frame)
+    ("-" schrenker/zoom-frame-out)
     ("u" winner-undo)
     ("r" winner-redo)
     ("." popper-toggle-latest)

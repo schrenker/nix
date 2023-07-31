@@ -1663,19 +1663,21 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'nix-mode-hook #'eglot-ensure))
 
 (use-package format-all
+  :init
+  (add-hook 'prog-mode 'format-all-mode)
   :config
-  (format-all-mode 1))
+  (add-hook 'go-ts-mode-hook (lambda ()
+                               (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
 
 (use-package go-mode
   :after eglot
   :init
-  (add-hook 'go-mode-hook #'eglot-ensure)
-  (add-hook 'go-mode-hook
-            (lambda ()
-              ;(add-hook 'before-save-hook 'gofmt-before-save)
-              (eglot-inlay-hints-mode 1)
-              (setq-local tab-width 4)
-              (setq-local indent-tabs-mode 1)))
+  (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
+  (setq go-ts-mode-indent-offset 4)
+  (add-hook 'go-ts-mode-hook (lambda ()
+                               (eglot-inlay-hints-mode 1)
+                               (setq-local tab-width 4)
+                               (setq-local indent-tabs-mode 1)))
   :config
   (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
           '("gopls" :initializationOptions
@@ -1701,7 +1703,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package flymake-golangci
   :after go-mode
   :config
-  (add-hook 'go-mode-hook 'flymake-golangci-load))
+  (add-hook 'go-ts-mode-hook 'flymake-golangci-load))
 
 (use-package python-mode
   :init

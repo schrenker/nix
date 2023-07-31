@@ -1805,6 +1805,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (call-interactively #'kill-line)
     (call-interactively #'schrenker/meow-smart-append))
 
+  (defun schrenker/meow-search (ARG)
+    "Sometimes, when searching for a string that resides within truncated org link, it will add the search string to 'regexp-search-ring' with additional remnants of org link, making further search impossible. This function checks for problematic strings that appear within the car of regexp-search-string, and if they are found, it pops to a previous search string."
+  (interactive "P")
+  (when (or
+       (string-match-p "\\[.?$" (car regexp-search-ring))
+       (string-match-p "\\[file:" (car regexp-search-ring)))
+      (meow-pop-search))
+  (meow-search ARG))
+
   (when (eq system-type 'gnu/linux)
 
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
@@ -1922,7 +1931,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("Q" . schrenker/old-meow-quit)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
-   '("s" . meow-search)
+   '("s" . schrenker/meow-search)
    '("t" . meow-right)
    '("T" . meow-right-expand)
    '("u" . meow-undo)

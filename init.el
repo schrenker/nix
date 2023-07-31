@@ -258,9 +258,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (message "Frame's font new size: %d" new-size)))
 
   (defun schrenker/zoom-frame-out (&optional amt frame)
-    "Call `acg/zoom-frame' with negative argument."
+    "Call `schrenker/zoom-frame' with negative argument."
     (interactive "p")
-    (acg/zoom-frame (- (or amt 1)) frame))
+    (schrenker/zoom-frame (- (or amt 1)) frame))
 
   :config
   (setq hydra-is-helpful t)

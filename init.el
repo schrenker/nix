@@ -1044,7 +1044,7 @@ targets."
    org-edit-src-content-indentation 0
    org-src-preserve-indentation t
    org-priority-start-cycle-with-default t
-   org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
+   org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U - %^{prompt}\n%i%?" :empty-lines 1 :prepend t)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "*** TODO %^{prompt}\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\\n  %i%?" :empty-lines 1 :prepend t)))
@@ -1419,7 +1419,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           (white "#ffffff")
           (black "#181818"))
       (progn
-        (setq org-todo-keyword-faces `(("TODO" :foreground ,magenta :weight bold :inverse-video t)
+        (setq org-todo-keyword-faces `(("NEXT" :foreground ,yellow :weight bold :inverse-video t)
+                                       ("TODO" :foreground ,magenta :weight bold :inverse-video t)
                                        ("INPROGRESS" :foreground ,green :weight bold :inverse-video t)
                                        ("BLOCKED" :foreground ,orange :weight bold :inverse-video t)
                                        ("ONHOLD" :foreground ,cyan :weight bold :inverse-video t)

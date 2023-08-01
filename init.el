@@ -219,7 +219,8 @@
 (global-set-key (kbd "<A-backspace>") 'backward-kill-word)
 
 (unbind-key (kbd "M-r"))
-(unbind-key (kbd "C-z"))
+(unbind-key (kbd "C-z")) ; suspend emacs
+(unbind-key (kbd "C-x C-z")) ; suspend frame
 (unbind-key (kbd "<f2>"))
 (unbind-key (kbd "<f10>"))
 

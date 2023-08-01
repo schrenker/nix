@@ -1604,10 +1604,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
-                (list (cape-super-capf
-                       #'eglot-completion-at-point
-                       #'tempel-expand
-                       #'cape-file))))
+                (list (#'eglot-completion-at-point
+                       #'cape-file
+                       #'tempel-expand))))
   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
 
 (use-package vundo

@@ -271,12 +271,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
    ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^          ^Buffer^
 ╭──────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^^
-      ^_P_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_b_] buffers
-      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_B_] ibuffer
-  _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_S_] scratch
-      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_k_] kill
-      ^_N_^        [_3_] split right    [_M-p_] vShrink     ^^            [_V_] PvTerm
-     ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge    ^^            [_T_] dirSide
+      ^_P_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_<_] prev
+      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
+  _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
+      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
+      ^_N_^        [_3_] split right    [_M-p_] vShrink     ^^            [_V_] PvTerm     [_S_] scratch
+     ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge    ^^            [_T_] dirSide    [_k_] kill
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
      ^^   ^^       [_X_] single         [_M-t_] hEnlarge    ^^^^                           [_q_] quit
  ^^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
@@ -309,6 +309,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     ("v" multi-vterm-dedicated-toggle)
     ("V" multi-vterm-project)
     ("T" dirvish-side)
+    ("<" previous-buffer)
+    (">" next-buffer)
     ("b" consult-buffer)
     ("B" ibuffer :color blue)
     ("S" scratch-buffer)

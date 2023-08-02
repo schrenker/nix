@@ -1812,6 +1812,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (interactive "P")
   (when (or
        (string-match-p "\\[.?$" (car regexp-search-ring))
+       (string-match-p "\\] - ?$" (car regexp-search-ring))
        (string-match-p "\\[file:" (car regexp-search-ring)))
       (meow-pop-search))
   (meow-search ARG))

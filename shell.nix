@@ -5,6 +5,5 @@ with pkgs;
 mkShell {
   buildInputs = [
     nixfmt
-    rnix-lsp
   ];
 }

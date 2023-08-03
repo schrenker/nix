@@ -1636,9 +1636,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package markdown-mode)
 
-(use-package nix-mode
-  :init
-  (add-hook 'nix-mode-hook #'eglot-ensure))
+(use-package nix-mode)
 
 (use-package format-all
   :init

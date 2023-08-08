@@ -437,7 +437,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (corfu-popupinfo-mode 1))
 
 (use-package cape
-  :after (eglot corfu)
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)

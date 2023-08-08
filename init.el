@@ -1599,7 +1599,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("n" . next-line)
         ("p" . previous-line)
         ("M-n" . Man-next-section)
-        ("M-p" . Man-previous-section)))
+        ("M-p" . Man-previous-section)
+        ("/" . meow-visit)
+        ("s" . schrenker/meow-search)
+        (";" . meow-reverse)
+        ("j" . Man-goto-section)))
 
 (use-package info
   :elpaca nil

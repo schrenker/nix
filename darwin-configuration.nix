@@ -2,9 +2,9 @@
   imports = [ <home-manager/nix-darwin> ];
 
   environment.systemPackages = with pkgs;
-  [
-    # define packages available on system level for all users
-  ];
+    [
+      # define packages available on system level for all users
+    ];
 
   # auto upgrade nix package and the daemon service
   services.nix-daemon.enable = true;
@@ -67,6 +67,7 @@
     "homebrew/cask-versions"
     "homebrew/services"
   ];
+
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
   homebrew.extraConfig = ''

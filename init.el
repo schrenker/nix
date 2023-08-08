@@ -394,10 +394,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :bind (:map corfu-map
               ("TAB" . corfu-next)
               ("<tab>" . corfu-next)
-              ("[tab]" . corfu-next)
               ("S-TAB" . corfu-previous)
               ("<backtab>" . corfu-previous)
-              ("[backtab]" . corfu-previous)
               ("S-SPC" . corfu-insert-separator)
               ("C-S-n" . corfu-move-to-minibuffer))
 

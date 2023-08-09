@@ -1726,7 +1726,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package python-mode
   :init
-  (setq python-indent-offset 4))
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+  (setq python-indent-offset 4)
+  (add-hook 'python-ts-mode-hook (lambda ()
+                               (eglot-inlay-hints-mode 1)
+                               (setq-local tab-width 4))))
 
 (use-package json-mode)
 

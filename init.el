@@ -470,10 +470,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package magit
   :init
+  (defun schrenker/magit-diff-visit-file-other-window ()
+    (interactive)
+    (let ((current-prefix-arg 4))
+      (call-interactively 'magit-diff-visit-file)))
   :bind (("C-x g" . magit-status)
          ("C-x G" . schrenker/magit-status-with-prefix)
          ("C-c g s" . schrenker/smerge-repeatedly)
          :map magit-status-mode-map
+         ("o" . schrenker/magit-diff-visit-file-other-window)
          ("n" . magit-next-line)
          ("p" . magit-previous-line)
          ("M-n" . magit-section-forward)

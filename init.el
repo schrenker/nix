@@ -1618,6 +1618,43 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package buffer-name-relative
   :config
+  (defun schrenker/buffer-name-relative--abbrev-directory-impl (path overflow)
+  "Abbreviate PATH by OVERFLOW characters."
+  ;; Skip leading slashes.
+  (let ((beg (string-match-p "[^/]" path)))
+    (cond
+     (beg
+      (let ((end (string-search "/" path beg)))
+        (cond
+         (end
+          (setq beg (1+ beg))
+          (let ((len 1)
+                (trunc (- end beg)))
+            (setq overflow (- overflow trunc))
+            (when (< overflow 0)
+              (setq beg (- beg overflow))
+              (setq trunc (+ trunc overflow))
+              (setq len (- len overflow))
+              (setq overflow 0))
+            ;; The resulting abbreviated name.
+            (cons
+             ;; The `head'.
+             (cond
+              ((< 1 len)
+               (concat (substring path 0 (1- beg)) "…"))
+              (t
+               (substring path 0 beg)))
+             ;; The `tail'.
+             (cond
+              ((zerop overflow)
+               (cons (substring path end) nil))
+              (t
+               (buffer-name-relative--abbrev-directory-impl (substring path end) overflow))))))
+         (t ;; `end' not found.
+          (cons path nil)))))
+     (t ;; `beg' not found.
+      (cons path nil)))))
+  (advice-add 'buffer-name-relative--abbrev-directory-impl :override #'schrenker/buffer-name-relative--abbrev-directory-impl)
   (setq buffer-name-relative-abbrev-limit 24)
   (advice-add
    'buffer-name-relative--create-file-buffer-advice

@@ -1132,10 +1132,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (defhydra hydra-org (:hint nil)
     "
 
-  ^Refile
+  Refile^                 ^Movement
 ╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_B_] Tasks/Backlog
-  [_A_] Tasks/Active
+  [_B_] Tasks/Backlog      [_P_] Prev Heading
+  [_A_] Tasks/Active       [_N_] Next Heading
   [_C_] Tasks/Completed
   [_TAB_] Uictl
   [_q_] Quit
@@ -1144,6 +1144,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
     ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
     ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
+    ("P" outline-previous-heading)
+    ("N" outline-next-heading)
     ("TAB" hydra-uictl/body :color blue)
     ("q" nil :color blue))
 

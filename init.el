@@ -839,8 +839,8 @@ targets."
           compilation-mode))
   (add-hook 'org-mode-hook
             (lambda () (setq-local popper-reference-buffers (append
-                                                             (remove "\\*Warnings\\*" popper-reference-buffers)
-                                                             '(("\\*Warnings\\*" . hide))))))
+                                                        (remove "\\*Warnings\\*" popper-reference-buffers)
+                                                        '(("\\*Warnings\\*" . hide))))))
   (popper-mode 1)
   (popper-echo-mode 1))
 
@@ -849,8 +849,8 @@ targets."
   :after (savehist popper dirvish)
   :config
   (advice-add 'perject-switch :before (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
-                                                          (when (eq visible (selected-window))
-                                                            (other-window 1)))))
+                                                     (when (eq visible (selected-window))
+                                                       (other-window 1)))))
 
   (defun schrenker/perject-switch-project-global ()
     "Shows unfiltered list of all collections and projects to switch between them freely"
@@ -1588,8 +1588,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
                 (list #'eglot-completion-at-point
-                       #'cape-file
-                       #'tempel-expand)))
+                      #'cape-file
+                      #'tempel-expand)))
   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
 
 (use-package vundo
@@ -1621,41 +1621,41 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package buffer-name-relative
   :config
   (defun schrenker/buffer-name-relative--abbrev-directory-impl (path overflow)
-  "Abbreviate PATH by OVERFLOW characters."
-  ;; Skip leading slashes.
-  (let ((beg (string-match-p "[^/]" path)))
-    (cond
-     (beg
-      (let ((end (string-search "/" path beg)))
-        (cond
-         (end
-          (setq beg (1+ beg))
-          (let ((len 1)
-                (trunc (- end beg)))
-            (setq overflow (- overflow trunc))
-            (when (< overflow 0)
-              (setq beg (- beg overflow))
-              (setq trunc (+ trunc overflow))
-              (setq len (- len overflow))
-              (setq overflow 0))
-            ;; The resulting abbreviated name.
-            (cons
-             ;; The `head'.
-             (cond
-              ((< 1 len)
-               (concat (substring path 0 (1- beg)) "…"))
-              (t
-               (substring path 0 beg)))
-             ;; The `tail'.
-             (cond
-              ((zerop overflow)
-               (cons (substring path end) nil))
-              (t
-               (buffer-name-relative--abbrev-directory-impl (substring path end) overflow))))))
-         (t ;; `end' not found.
-          (cons path nil)))))
-     (t ;; `beg' not found.
-      (cons path nil)))))
+    "Abbreviate PATH by OVERFLOW characters."
+    ;; Skip leading slashes.
+    (let ((beg (string-match-p "[^/]" path)))
+      (cond
+       (beg
+        (let ((end (string-search "/" path beg)))
+          (cond
+           (end
+            (setq beg (1+ beg))
+            (let ((len 1)
+                  (trunc (- end beg)))
+              (setq overflow (- overflow trunc))
+              (when (< overflow 0)
+                (setq beg (- beg overflow))
+                (setq trunc (+ trunc overflow))
+                (setq len (- len overflow))
+                (setq overflow 0))
+              ;; The resulting abbreviated name.
+              (cons
+               ;; The `head'.
+               (cond
+                ((< 1 len)
+                 (concat (substring path 0 (1- beg)) "…"))
+                (t
+                 (substring path 0 beg)))
+               ;; The `tail'.
+               (cond
+                ((zerop overflow)
+                 (cons (substring path end) nil))
+                (t
+                 (buffer-name-relative--abbrev-directory-impl (substring path end) overflow))))))
+           (t ;; `end' not found.
+            (cons path nil)))))
+       (t ;; `beg' not found.
+        (cons path nil)))))
   (advice-add 'buffer-name-relative--abbrev-directory-impl :override #'schrenker/buffer-name-relative--abbrev-directory-impl)
   (setq buffer-name-relative-abbrev-limit 24)
   (advice-add
@@ -1731,8 +1731,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (setq python-indent-offset 4)
   (add-hook 'python-ts-mode-hook (lambda ()
-                               (eglot-inlay-hints-mode 1)
-                               (setq-local tab-width 4))))
+                                   (eglot-inlay-hints-mode 1)
+                                   (setq-local tab-width 4))))
 
 (use-package json-mode)
 
@@ -1834,13 +1834,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   (defun schrenker/meow-search (ARG)
     "Sometimes, when searching for a string that resides within truncated org link, it will add the search string to 'regexp-search-ring' with additional remnants of org link, making further search impossible. This function checks for problematic strings that appear within the car of regexp-search-string, and if they are found, it pops to a previous search string."
-  (interactive "P")
-  (when (or
-       (string-match-p "\\[.?$" (car regexp-search-ring))
-       (string-match-p "\\] - ?$" (car regexp-search-ring))
-       (string-match-p "\\[file:" (car regexp-search-ring)))
+    (interactive "P")
+    (when (or
+           (string-match-p "\\[.?$" (car regexp-search-ring))
+           (string-match-p "\\] - ?$" (car regexp-search-ring))
+           (string-match-p "\\[file:" (car regexp-search-ring)))
       (meow-pop-search))
-  (meow-search ARG))
+    (meow-search ARG))
 
   (when (eq system-type 'gnu/linux)
 

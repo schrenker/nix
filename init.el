@@ -1328,8 +1328,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; (tempel-trigger-prefix "<")
 
   :bind (:map tempel-map
-              ("M-n" . tempel-next)
-              ("M-p" . tempel-previous))
+              ("M-j" . tempel-next)
+              ("M-k" . tempel-previous))
 
   :init
   ;; Setup completion at point
@@ -1833,6 +1833,18 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (defun schrenker/meow-search (ARG)
     "Sometimes, when searching for a string that resides within truncated org link, it will add the search string to 'regexp-search-ring' with additional remnants of org link, making further search impossible. This function checks for problematic strings that appear within the car of regexp-search-string, and if they are found, it pops to a previous search string."
     (interactive "P")
+    (meow--direction-forward)
+    (when (or
+           (string-match-p "\\[.?$" (car regexp-search-ring))
+           (string-match-p "\\] - ?$" (car regexp-search-ring))
+           (string-match-p "\\[file:" (car regexp-search-ring)))
+      (meow-pop-search))
+    (meow-search ARG))
+
+  (defun schrenker/meow-search-backwards (ARG)
+    "Sometimes, when searching for a string that resides within truncated org link, it will add the search string to 'regexp-search-ring' with additional remnants of org link, making further search impossible. This function checks for problematic strings that appear within the car of regexp-search-string, and if they are found, it pops to a previous search string."
+    (interactive "P")
+    (meow--direction-backward)
     (when (or
            (string-match-p "\\[.?$" (car regexp-search-ring))
            (string-match-p "\\] - ?$" (car regexp-search-ring))
@@ -1980,7 +1992,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("m" . meow-mark-word)
    '("M" . meow-mark-symbol)
    '("n" . schrenker/meow-search)
-   '("N" . ignore)
+   '("N" . schrenker/meow-search-backwards)
    '("o" . meow-open-below)
    '("O" . meow-open-above)
    '("p" . meow-yank)
@@ -2016,6 +2028,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         meow-expand-exclude-mode-list nil
         meow-use-enhanced-selection-effect t
         meow-select-on-change nil
+        meow-motion-remap-prefix "A-C-M-"
         meow-char-thing-table '((?r . round)
                                 (?s . square)
                                 (?c . curly)

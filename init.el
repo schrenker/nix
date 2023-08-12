@@ -267,24 +267,24 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
    ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^          ^Buffer^
 ╭──────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^^
-      ^_P_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_<_] prev
+      ^_K_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_<_] prev
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
-  _H_ ←   → _T_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
+  _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
       ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
-      ^_N_^        [_3_] split right    [_M-p_] vShrink     ^^            [_V_] PvTerm     [_S_] scratch
-     ^^   ^^       [_d_] win delete     [_M-n_] vEnlarge    ^^            [_T_] dirSide    [_k_] kill
+      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] PvTerm     [_S_] scratch
+     ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dirSide    [_Q_] kill
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
-     ^^   ^^       [_X_] single         [_M-t_] hEnlarge    ^^^^                           [_q_] quit
+     ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
  ^^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
 "
-    ("P" windmove-up)
-    ("N" windmove-down)
+    ("K" windmove-up)
+    ("J" windmove-down)
     ("H" windmove-left)
-    ("T" windmove-right)
-    ("M-p" shrink-window)
-    ("M-n" enlarge-window)
+    ("L" windmove-right)
+    ("M-k" shrink-window)
+    ("M-j" enlarge-window)
     ("M-h" shrink-window-horizontally)
-    ("M-t" enlarge-window-horizontally)
+    ("M-l" enlarge-window-horizontally)
     ("o" aw-flip-window)
     ("O" ace-select-window)
     ("2" schrenker/split-and-follow-horizontally)
@@ -310,7 +310,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     ("b" consult-buffer)
     ("B" ibuffer :color blue)
     ("S" scratch-buffer)
-    ("k" schrenker/kill-this-buffer)
+    ("Q" schrenker/kill-this-buffer)
     ("q" nil :color blue)))
 
 (use-package hydra-posframe
@@ -479,12 +479,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("C-c g s" . schrenker/smerge-repeatedly)
          :map magit-status-mode-map
          ("o" . schrenker/magit-diff-visit-file-other-window)
-         ("n" . magit-next-line)
-         ("p" . magit-previous-line)
-         ("M-n" . magit-section-forward)
-         ("M-p" . magit-section-backward)
-         ("M-N" . magit-section-forward-sibling)
-         ("M-P" . magit-section-backward-sibling)
+         ("j" . magit-next-line)
+         ("k" . magit-previous-line)
+         ("M-j" . magit-section-forward)
+         ("M-k" . magit-section-backward)
+         ("M-J" . magit-section-forward-sibling)
+         ("M-K" . magit-section-backward-sibling)
          ("<escape>" . meow-cancel-selection))
   :config
   (require 'transient)
@@ -1897,6 +1897,38 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (if n (meow-expand n) (meow-expand))
       (meow-digit-argument)))
 
+  (defun schrenker/meow-next-or-expand ()
+    (interactive)
+    (if (and meow--expand-nav-function
+             (region-active-p)
+             (meow--selection-type))
+        (call-interactively #'meow-next-expand)
+      (call-interactively #'meow-next)))
+
+  (defun schrenker/meow-prev-or-expand ()
+    (interactive)
+    (if (and meow--expand-nav-function
+             (region-active-p)
+             (meow--selection-type))
+        (call-interactively #'meow-prev-expand)
+      (call-interactively #'meow-prev)))
+
+  (defun schrenker/meow-left-or-expand ()
+    (interactive)
+    (if (and meow--expand-nav-function
+             (region-active-p)
+             (meow--selection-type))
+        (call-interactively #'meow-left-expand)
+      (call-interactively #'meow-left)))
+
+  (defun schrenker/meow-right-or-expand ()
+    (interactive)
+    (if (and meow--expand-nav-function
+             (region-active-p)
+             (meow--selection-type))
+        (call-interactively #'meow-right-expand)
+      (call-interactively #'meow-right)))
+
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key
    '("<escape>" . nil)
@@ -1923,54 +1955,53 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("<" . meow-beginning-of-thing)
    '(">" . meow-end-of-thing)
    '("%" . meow-block)
+   '("/" . meow-visit)
    '("a" . schrenker/meow-smart-append)
    '("A" . schrenker/meow-append-to-end-of-line)
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)
    '("c" . meow-change)
    '("C" . schrenker/change-to-eol)
-   '("d" . meow-delete)
-   '("D" . meow-backward-delete)
-   '("e" . meow-line)
+   '("d" . meow-kill-append)
+   '("D" . meow-kill-whole-line)
+   '("e" . ignore)
    '("E" . ignore)
    '("f" . meow-find)
    '("F" . schrenker/meow-find-backwards)
    '("g" . meow-cancel-selection)
    '("G" . meow-grab)
-   '("h" . meow-left)
-   '("H" . meow-left-expand)
-   '("I" . schrenker/meow-insert-at-beginning-of-line)
+   '("h" . schrenker/meow-left-or-expand)
    '("i" . meow-insert)
-   '("j" . meow-join)
+   '("I" . schrenker/meow-insert-at-beginning-of-line)
+   '("j" . schrenker/meow-next-or-expand)
    '("J" . schrenker/meow-join-below)
-   '("k" . meow-kill)
+   '("k" . schrenker/meow-prev-or-expand)
    '("K" . helpful-at-point)
-   '("l" . meow-till)
-   '("L" . schrenker/meow-till-backwards)
    '("m" . meow-mark-word)
    '("M" . meow-mark-symbol)
-   '("n" . meow-next)
-   '("N" . meow-next-expand)
+   '("n" . schrenker/meow-search)
+   '("N" . ignore)
    '("o" . meow-open-below)
    '("O" . meow-open-above)
-   '("p" . meow-prev)
-   '("P" . meow-prev-expand)
+   '("p" . meow-yank)
+   '("P" . meow-yank-pop)
    '("q" . ignore)
    '("Q" . schrenker/old-meow-quit)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
-   '("s" . schrenker/meow-search)
-   '("t" . meow-right)
-   '("T" . meow-right-expand)
+   '("s" . meow-change)
+   '("t" . meow-till)
+   '("T" . schrenker/meow-till-backwards)
+   '("l" . schrenker/meow-right-or-expand)
    '("u" . meow-undo)
    '("U" . meow-undo-in-selection)
-   '("/" . meow-visit)
    '("w" . meow-next-word)
    '("W" . meow-next-symbol)
-   '("x" . meow-save)
-   '("X" . meow-sync-grab)
-   '("y" . meow-yank)
-   '("Y" . meow-yank-pop)
+   '("V" . meow-line)
+   '("y" . meow-save)
+   '("Y" . meow-sync-grab)
+   '("x" . meow-delete)
+   '("X" . meow-backward-delete)
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection)
    '("SPC" . nil)

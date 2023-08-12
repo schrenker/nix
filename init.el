@@ -1939,6 +1939,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (call-interactively #'meow-right-expand)
       (call-interactively #'meow-right)))
 
+  (defun schrenker/meow-visual ()
+    (interactive)
+    (meow--select (meow--make-selection '(expand . char) (point) (point))))
+
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
@@ -2009,6 +2013,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("U" . meow-undo-in-selection)
    '("w" . meow-next-word)
    '("W" . meow-next-symbol)
+   '("v" . schrenker/meow-visual)
    '("V" . meow-line)
    '("y" . meow-save)
    '("Y" . meow-sync-grab)

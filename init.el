@@ -479,8 +479,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("C-c g s" . schrenker/smerge-repeatedly)
          :map magit-status-mode-map
          ("o" . schrenker/magit-diff-visit-file-other-window)
-         ("j" . magit-next-line)
-         ("k" . magit-previous-line)
          ("K" . magit-discard)
          ("M-j" . magit-section-forward)
          ("M-k" . magit-section-backward)
@@ -535,22 +533,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ^Rev-Movement       ^Commits^                 ^Misc
 ╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_N_] Next Rev       [_b_] Blame               [_?_] Help
-  [_P_] Prev Rev       [_c_] Show Commit         [_S_] Write File
-  [_g_] Nth Rev        [_w_] Copy Short Hash     [_q_] Quit Hydra
-  [_T_] Fuzzy Rev      [_W_] Copy Long Hash      [_Q_] Quit Timemachine
+  [_J_] Next Rev       [_b_] Blame               [_?_] Help
+  [_K_] Prev Rev       [_c_] Show Commit         [_S_] Write File
+  [_g_] Nth Rev        [_y_] Copy Short Hash     [_q_] Quit Hydra
+  [_T_] Fuzzy Rev      [_Y_] Copy Long Hash      [_Q_] Quit Timemachine
   [_C_] Current Rev^^                            [_TAB_] Uictl
  ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
-    ("N" git-timemachine-show-next-revision)
-    ("P" git-timemachine-show-previous-revision)
+    ("J" git-timemachine-show-next-revision)
+    ("K" git-timemachine-show-previous-revision)
     ("g" git-timemachine-show-nth-revision)
     ("T" git-timemachine-show-revision-fuzzy)
     ("C" git-timemachine-show-current-revision)
     ("b" git-timemachine-blame)
     ("c" git-timemachine-show-commit)
-    ("w" git-timemachine-kill-abbreviated-revision)
-    ("W" git-timemachine-kill-revision)
+    ("y" git-timemachine-kill-abbreviated-revision)
+    ("Y" git-timemachine-kill-revision)
     ("?" git-timemachine-help)
     ("TAB" hydra-uictl/body :color blue)
     ("S" write-file)
@@ -962,14 +960,14 @@ targets."
   :bind (("C-c n n" . org-capture)
          :map org-mode-map
          ("M-O" . hydra-org/body)
-         ("M-n" . org-metadown)
-         ("M-N" . org-shiftmetadown)
-         ("M-p" . org-metaup)
-         ("M-P" . org-shiftmetaup)
+         ("M-j" . org-metadown)
+         ("M-J" . org-shiftmetadown)
+         ("M-k" . org-metaup)
+         ("M-K" . org-shiftmetaup)
          ("M-h" . org-metaleft)
          ("M-H" . org-shiftmetaleft)
-         ("M-t" . org-metaright)
-         ("M-T" . org-shiftmetaright)
+         ("M-l" . org-metaright)
+         ("M-L" . org-shiftmetaright)
          ("C-c C-f" . org-format-all-headings)
          ("C-c l" . org-store-link)
          ("C-c C-^" . schrenker/sort-priority-then-state))
@@ -1135,8 +1133,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   Refile^                 ^Movement
 ╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_B_] Tasks/Backlog      [_P_] Prev Heading
-  [_A_] Tasks/Active       [_N_] Next Heading
+  [_B_] Tasks/Backlog      [_K_] Prev Heading
+  [_A_] Tasks/Active       [_J_] Next Heading
   [_C_] Tasks/Completed
   [_TAB_] Uictl
   [_q_] Quit
@@ -1145,8 +1143,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
     ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
     ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
-    ("P" outline-previous-heading)
-    ("N" outline-next-heading)
+    ("K" outline-previous-heading)
+    ("J" outline-next-heading)
     ("TAB" hydra-uictl/body :color blue)
     ("q" nil :color blue))
 
@@ -1260,12 +1258,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :bind
   (("C-x C-b" . ibuffer)
    :map ibuffer-mode-map
+   ("J" . ibuffer-jump-to-buffer)
    ("M-o" . nil)))
 
 (use-package dired
   :elpaca nil
   :bind
-  ("M-+" . dired-create-empty-file)
+  (:map dired-mode-map
+        ("M-+" . dired-create-empty-file)
+        ("J" . dired-goto-file))
   :init
   (setq dired-use-ls-dired t
         dired-dwim-target t)
@@ -1601,23 +1602,19 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :elpaca nil
   :bind
   (:map woman-mode-map
-        ("n" . next-line)
-        ("p" . previous-line)
-        ("M-n" . Man-next-section)
-        ("M-p" . Man-previous-section)
+        ("M-j" . Man-next-section)
+        ("M-k" . Man-previous-section)
         ("/" . meow-visit)
         ("s" . schrenker/meow-search)
         (";" . meow-reverse)
-        ("j" . Man-goto-section)))
+        ("J" . Man-goto-section)))
 
 (use-package info
   :elpaca nil
   :bind
   (:map Info-mode-map
-        ("n" . next-line)
-        ("p" . previous-line)
-        ("M-n" . Info-next)
-        ("M-p" . Info-prev)))
+        ("M-j" . Info-next)
+        ("M-k" . Info-prev)))
 
 (use-package buffer-name-relative
   :config
@@ -1932,6 +1929,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key
+   '("j" . meow-next)
+   '("k" . meow-prev)
    '("<escape>" . nil)
    '("SPC" . nil)
    '("SPC SPC" . consult-project-extra-find)

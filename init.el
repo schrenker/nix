@@ -481,6 +481,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("o" . schrenker/magit-diff-visit-file-other-window)
          ("j" . magit-next-line)
          ("k" . magit-previous-line)
+         ("K" . magit-discard)
          ("M-j" . magit-section-forward)
          ("M-k" . magit-section-backward)
          ("M-J" . magit-section-forward-sibling)

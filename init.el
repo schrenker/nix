@@ -1943,6 +1943,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (interactive)
     (meow--select (meow--make-selection '(expand . char) (point) (point))))
 
+  (defun schrenker/meow-yank-forward ()
+    (interactive)
+    (let ((current-prefix-arg '(4)))
+      (call-interactively 'meow-yank)))
+
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
@@ -1999,8 +2004,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("N" . schrenker/meow-search-backwards)
    '("o" . meow-open-below)
    '("O" . meow-open-above)
-   '("p" . meow-yank)
-   '("P" . meow-yank-pop)
+   '("p" . schrenker/meow-yank-forward)
+   '("P" . meow-yank)
+   '("M-p" . meow-yank-pop)
    '("q" . ignore)
    '("Q" . schrenker/old-meow-quit)
    '("r" . meow-replace)

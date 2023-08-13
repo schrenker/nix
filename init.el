@@ -1852,53 +1852,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (meow-pop-search))
     (meow-search ARG))
 
-  (when (eq system-type 'gnu/linux)
-
-    (defun schrenker/wsl-copy-region-to-clipboard (start end)
-      "Copy region to Windows clipboard."
-      (interactive "r")
-      (call-process-region start end "clip.exe" nil 0)
-      (call-interactively #'meow-cancel-selection))
-
-    (defun schrenker/wsl-kill-region-to-clipboard (start end)
-      "Copy region to Windows clipboard."
-      (interactive "r")
-      (call-process-region start end "clip.exe" nil 0)
-      (call-interactively #'kill-region))
-
-    (defun schrenker/wsl-clipboard-to-string ()
-      "Return Windows clipboard as string."
-      (let ((coding-system-for-read 'dos))
-        (substring              ; remove added trailing \n
-         (shell-command-to-string "powershell.exe -Command Get-Clipboard") 0 -1)))
-
-    (defun schrenker/wsl-paste-from-clipboard (arg)
-      "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"
-      (interactive "P")
-      (let ((clip (schrenker/wsl-clipboard-to-string)))
-        (insert clip)
-        (if arg (kill-new clip))))
-
-    (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
-    (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
-    (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
-
-  (meow-thing-register 'angle
-                       '(pair ("<") (">"))
-                       '(pair ("<") (">")))
-
-  (define-key global-map (kbd "M-[") 'insert-pair)
-  (define-key global-map (kbd "M-(") 'insert-pair)
-  (define-key global-map (kbd "M-{") 'insert-pair)
-  (define-key global-map (kbd "M-<") 'insert-pair)
-  (define-key global-map (kbd "M-\"") 'insert-pair)
-  (define-key global-map (kbd "M-\'") 'insert-pair)
-
-  (define-key global-map (kbd "M-]") (lambda () (interactive) (meow-bounds-of-thing ?s) (delete-pair)))
-  (define-key global-map (kbd "M-)") (lambda () (interactive) (meow-bounds-of-thing ?r) (delete-pair)))
-  (define-key global-map (kbd "M-}") (lambda () (interactive) (meow-bounds-of-thing ?c) (delete-pair)))
-  (define-key global-map (kbd "M->") (lambda () (interactive) (meow-bounds-of-thing ?a) (delete-pair)))
-
   (defun schrenker/meow-expand-or-digit-argument (&optional n)
     (interactive)
     (if (and meow--expand-nav-function
@@ -1947,6 +1900,52 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (interactive)
     (let ((current-prefix-arg '(4)))
       (call-interactively 'meow-yank)))
+  (when (eq system-type 'gnu/linux)
+
+    (defun schrenker/wsl-copy-region-to-clipboard (start end)
+      "Copy region to Windows clipboard."
+      (interactive "r")
+      (call-process-region start end "clip.exe" nil 0)
+      (call-interactively #'meow-cancel-selection))
+
+    (defun schrenker/wsl-kill-region-to-clipboard (start end)
+      "Copy region to Windows clipboard."
+      (interactive "r")
+      (call-process-region start end "clip.exe" nil 0)
+      (call-interactively #'kill-region))
+
+    (defun schrenker/wsl-clipboard-to-string ()
+      "Return Windows clipboard as string."
+      (let ((coding-system-for-read 'dos))
+        (substring              ; remove added trailing \n
+         (shell-command-to-string "powershell.exe -Command Get-Clipboard") 0 -1)))
+
+    (defun schrenker/wsl-paste-from-clipboard (arg)
+      "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"
+      (interactive "P")
+      (let ((clip (schrenker/wsl-clipboard-to-string)))
+        (insert clip)
+        (if arg (kill-new clip))))
+
+    (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
+    (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
+    (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
+
+  (meow-thing-register 'angle
+                       '(pair ("<") (">"))
+                       '(pair ("<") (">")))
+
+  (define-key global-map (kbd "M-[") 'insert-pair)
+  (define-key global-map (kbd "M-(") 'insert-pair)
+  (define-key global-map (kbd "M-{") 'insert-pair)
+  (define-key global-map (kbd "M-<") 'insert-pair)
+  (define-key global-map (kbd "M-\"") 'insert-pair)
+  (define-key global-map (kbd "M-\'") 'insert-pair)
+
+  (define-key global-map (kbd "M-]") (lambda () (interactive) (meow-bounds-of-thing ?s) (delete-pair)))
+  (define-key global-map (kbd "M-)") (lambda () (interactive) (meow-bounds-of-thing ?r) (delete-pair)))
+  (define-key global-map (kbd "M-}") (lambda () (interactive) (meow-bounds-of-thing ?c) (delete-pair)))
+  (define-key global-map (kbd "M->") (lambda () (interactive) (meow-bounds-of-thing ?a) (delete-pair)))
 
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key
@@ -1956,6 +1955,73 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("SPC" . nil)
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC S-SPC" . consult-project-extra-find-other-window))
+
+  ;;Movement
+  (meow-normal-define-key
+   '("/" . meow-visit)
+   '(":" . meow-goto-line)
+   '("b" . meow-back-word)
+   '("B" . meow-back-symbol)
+   '("f" . meow-find)
+   '("F" . schrenker/meow-find-backwards)
+   '("h" . schrenker/meow-left-or-expand)
+   '("j" . schrenker/meow-next-or-expand)
+   '("k" . schrenker/meow-prev-or-expand)
+   '("l" . schrenker/meow-right-or-expand)
+   '("t" . meow-till)
+   '("T" . schrenker/meow-till-backwards)
+   '("w" . meow-next-word)
+   '("W" . meow-next-symbol))
+
+  ;;Insert
+  (meow-normal-define-key
+   '("a" . schrenker/meow-smart-append)
+   '("A" . schrenker/meow-append-to-end-of-line)
+   '("i" . meow-insert)
+   '("I" . schrenker/meow-insert-at-beginning-of-line)
+   '("o" . meow-open-below)
+   '("O" . meow-open-above))
+
+  ;;Modify
+  (meow-normal-define-key
+   '("c" . meow-change)
+   '("C" . schrenker/change-to-eol)
+   '("d" . meow-kill)
+   '("D" . meow-kill-whole-line)
+   '("J" . schrenker/meow-join-below)
+   '("s" . meow-change)
+   '("u" . meow-undo)
+   '("U" . meow-undo-in-selection)
+   '("x" . meow-delete)
+   '("X" . meow-backward-delete))
+
+  ;;Clipboard
+  (meow-normal-define-key
+   '("p" . schrenker/meow-yank-forward)
+   '("P" . meow-yank)
+   '("M-p" . meow-yank-pop)
+   '("y" . meow-save))
+
+  ;;Selection
+  (meow-normal-define-key
+   '("," . meow-inner-of-thing)
+   '("." . meow-bounds-of-thing)
+   '("<" . meow-beginning-of-thing)
+   '(">" . meow-end-of-thing)
+   '("%" . meow-block)
+   '("g" . meow-cancel-selection)
+   '("G" . meow-grab)
+   '("m" . meow-mark-word)
+   '("M" . meow-mark-symbol)
+   '("r" . meow-replace)
+   '("R" . meow-swap-grab)
+   '("v" . schrenker/meow-visual)
+   '("V" . meow-line)
+   '("Y" . meow-sync-grab)
+   '("z" . meow-pop-selection)
+   '("<escape>" . meow-cancel-selection))
+
+  ;;Misc
   (meow-normal-define-key
    '("0" . schrenker/meow-expand-or-digit-argument)
    '("1" . schrenker/meow-expand-or-digit-argument)
@@ -1969,67 +2035,20 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("9" . schrenker/meow-expand-or-digit-argument)
    '("-" . negative-argument)
    '(";" . meow-reverse)
-   '(":" . meow-goto-line)
-   '("," . meow-inner-of-thing)
-   '("." . meow-bounds-of-thing)
    '("'" . repeat)
-   '("<" . meow-beginning-of-thing)
-   '(">" . meow-end-of-thing)
-   '("%" . meow-block)
-   '("/" . meow-visit)
-   '("a" . schrenker/meow-smart-append)
-   '("A" . schrenker/meow-append-to-end-of-line)
-   '("b" . meow-back-word)
-   '("B" . meow-back-symbol)
-   '("c" . meow-change)
-   '("C" . schrenker/change-to-eol)
-   '("d" . meow-kill-append)
-   '("D" . meow-kill-whole-line)
-   '("e" . ignore)
-   '("E" . ignore)
-   '("f" . meow-find)
-   '("F" . schrenker/meow-find-backwards)
-   '("g" . meow-cancel-selection)
-   '("G" . meow-grab)
-   '("h" . schrenker/meow-left-or-expand)
-   '("i" . meow-insert)
-   '("I" . schrenker/meow-insert-at-beginning-of-line)
-   '("j" . schrenker/meow-next-or-expand)
-   '("J" . schrenker/meow-join-below)
-   '("k" . schrenker/meow-prev-or-expand)
    '("K" . helpful-at-point)
-   '("m" . meow-mark-word)
-   '("M" . meow-mark-symbol)
    '("n" . schrenker/meow-search)
    '("N" . schrenker/meow-search-backwards)
-   '("o" . meow-open-below)
-   '("O" . meow-open-above)
-   '("p" . schrenker/meow-yank-forward)
-   '("P" . meow-yank)
-   '("M-p" . meow-yank-pop)
-   '("q" . ignore)
    '("Q" . schrenker/old-meow-quit)
-   '("r" . meow-replace)
-   '("R" . meow-swap-grab)
-   '("s" . meow-change)
-   '("t" . meow-till)
-   '("T" . schrenker/meow-till-backwards)
-   '("l" . schrenker/meow-right-or-expand)
-   '("u" . meow-undo)
-   '("U" . meow-undo-in-selection)
-   '("w" . meow-next-word)
-   '("W" . meow-next-symbol)
-   '("v" . schrenker/meow-visual)
-   '("V" . meow-line)
-   '("y" . meow-save)
-   '("Y" . meow-sync-grab)
-   '("x" . meow-delete)
-   '("X" . meow-backward-delete)
-   '("z" . meow-pop-selection)
-   '("<escape>" . meow-cancel-selection)
-   '("SPC" . nil)
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC SPC" . consult-project-extra-find-other-window))
+
+  ;;Disable
+  (meow-normal-define-key
+   '("e" . ignore)
+   '("E" . ignore)
+   '("q" . ignore)
+   '("SPC" . nil))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
   (add-hook 'meow-switch-state-hook (lambda (&rest _) (when (symbol-value 'meow-beacon-mode) (corfu-quit))))

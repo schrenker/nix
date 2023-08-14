@@ -1785,7 +1785,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
   (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
   
-  (defun schrenker/old-meow-quit ()
+  (defun schrenker/meow-old-quit ()
     "Quit current window or buffer."
     (interactive)
     (if (> (seq-length (window-list (selected-frame))) (if (dirvish-side--session-visible-p) 2 1))
@@ -1798,7 +1798,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (call-interactively #'meow-line)
     (call-interactively #'meow-append))
 
-  (defun schrenker/insert-at-bol ()
+  (defun schrenker/meow-insert-at-bol ()
     "Go to the beginnig of the line and enter insert mode."
     (interactive)
     (call-interactively #'meow-join)
@@ -1825,7 +1825,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (interactive)
     (schrenker/call-negative 'meow-till))
 
-  (defun schrenker/change-to-eol ()
+  (defun schrenker/meow-change-to-eol ()
     (interactive)
     (call-interactively #'kill-line)
     (call-interactively #'schrenker/meow-smart-append))
@@ -1978,14 +1978,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("a" . schrenker/meow-smart-append)
    '("A" . schrenker/meow-append-to-eol)
    '("i" . meow-insert)
-   '("I" . schrenker/insert-at-bol)
+   '("I" . schrenker/meow-insert-at-bol)
    '("o" . meow-open-below)
    '("O" . meow-open-above))
 
   ;;Modify
   (meow-normal-define-key
    '("c" . meow-change)
-   '("C" . schrenker/change-to-eol)
+   '("C" . schrenker/meow-change-to-eol)
    '("d" . meow-kill)
    '("D" . meow-kill-whole-line)
    '("J" . schrenker/meow-join-below)
@@ -2039,7 +2039,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("K" . helpful-at-point)
    '("n" . schrenker/meow-search)
    '("N" . schrenker/meow-search-backwards)
-   '("Q" . schrenker/old-meow-quit)
+   '("Q" . schrenker/meow-old-quit)
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC SPC" . consult-project-extra-find-other-window))
 

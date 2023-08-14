@@ -1792,13 +1792,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (delete-window)
       (previous-buffer)))
 
-  (defun schrenker/meow-append-to-end-of-line ()
+  (defun schrenker/meow-append-to-eol ()
     "Go to the end of the line and enter insert mode."
     (interactive)
     (call-interactively #'meow-line)
     (call-interactively #'meow-append))
 
-  (defun schrenker/meow-insert-at-beginning-of-line ()
+  (defun schrenker/insert-at-bol ()
     "Go to the beginnig of the line and enter insert mode."
     (interactive)
     (call-interactively #'meow-join)
@@ -1976,9 +1976,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;;Insert
   (meow-normal-define-key
    '("a" . schrenker/meow-smart-append)
-   '("A" . schrenker/meow-append-to-end-of-line)
+   '("A" . schrenker/meow-append-to-eol)
    '("i" . meow-insert)
-   '("I" . schrenker/meow-insert-at-beginning-of-line)
+   '("I" . schrenker/insert-at-bol)
    '("o" . meow-open-below)
    '("O" . meow-open-above))
 

@@ -1956,6 +1956,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC S-SPC" . consult-project-extra-find-other-window))
 
+  ;;Disable
+  (meow-normal-define-key
+   '("e" . ignore)
+   '("E" . ignore)
+   '("q" . ignore)
+   '("SPC" . nil))
+
   ;;Movement
   (meow-normal-define-key
    '("/" . meow-visit)
@@ -2042,13 +2049,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("Q" . schrenker/meow-old-quit)
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC SPC" . consult-project-extra-find-other-window))
-
-  ;;Disable
-  (meow-normal-define-key
-   '("e" . ignore)
-   '("E" . ignore)
-   '("q" . ignore)
-   '("SPC" . nil))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
   (add-hook 'meow-switch-state-hook (lambda (&rest _) (when (symbol-value 'meow-beacon-mode) (corfu-quit))))

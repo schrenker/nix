@@ -1789,15 +1789,21 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (and (region-active-p)
          (meow--selection-type)))
 
+  (defun schrenker/meow-kill-to-bol ()
+    (interactive)
+    (meow-beginning-of-thing ?l)
+    (call-interactively #'meow-kill))
+
   (defvar-keymap schrenker/meow-d
     "d" #'meow-kill-whole-line
-    "$" #'kill-line)
+    "$" #'kill-line
+    "0" #'schrenker/meow-kill-to-bol)
 
   (defun schrenker/meow-kill ()
     (interactive)
     (if (schrenker/meow-selection-p)
         (call-interactively 'meow-kill)
-    (set-transient-map schrenker/meow-d nil nil "Meow delete command... d$" 5)))
+    (set-transient-map schrenker/meow-d nil nil "Meow delete command... $0d" 5)))
   
   (defun schrenker/meow-old-quit ()
     "Quit current window or buffer."

@@ -1784,6 +1784,20 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-to-list 'meow-mode-state-list '(dirvish-mode . motion))
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
   (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
+
+  (defun schrenker/meow-selection-p ()
+    (and (region-active-p)
+         (meow--selection-type)))
+
+  (defvar-keymap schrenker/meow-d
+    "d" #'meow-kill-whole-line
+    "$" #'kill-line)
+
+  (defun schrenker/meow-kill ()
+    (interactive)
+    (if (schrenker/meow-selection-p)
+        (call-interactively 'meow-kill)
+    (set-transient-map schrenker/meow-d nil nil "Meow delete command... d$" 5)))
   
   (defun schrenker/meow-old-quit ()
     "Quit current window or buffer."
@@ -1993,8 +2007,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (meow-normal-define-key
    '("c" . meow-change)
    '("C" . schrenker/meow-change-to-eol)
-   '("d" . meow-kill)
-   '("D" . meow-kill-whole-line)
+   '("d" . schrenker/meow-kill)
+   '("D" . kill-line)
    '("J" . schrenker/meow-join-below)
    '("s" . meow-change)
    '("u" . meow-undo)

@@ -271,10 +271,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
   _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
       ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
-      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] PvTerm     [_S_] scratch
-     ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dirSide    [_Q_] kill
-     ^^   ^^       [_D_] aw delete      [_M-h_] hShrink
-     ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
+      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] PvTerm     [_f_] findf
+     ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dirSide    [_S_] scratch
+     ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
+     ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^
+                                                                                           [_q_] quit
  ^^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
 "
     ("K" windmove-up)
@@ -309,6 +310,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (">" next-buffer)
     ("b" consult-buffer)
     ("B" ibuffer :color blue)
+    ("f" find-file :color blue)
     ("S" scratch-buffer)
     ("Q" schrenker/kill-this-buffer)
     ("q" nil :color blue)))
@@ -1587,6 +1589,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("C-c c t" . eglot-find-typeDefinition))
 
   :config
+  (add-to-list 'eglot-workspace-configuration
+  '(:yaml . (schemas .
+                     ((https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json "/*")))))
+
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
                 (list #'eglot-completion-at-point
@@ -1778,6 +1784,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package meow
   :config
+  (load-file (concat user-emacs-directory "meovil.el"))
   (global-unset-key (kbd "C-c SPC"))
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
@@ -1785,141 +1792,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
   (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
 
-  (defun schrenker/meow-selection-p ()
-    (and (region-active-p)
-         (meow--selection-type)))
-
-  (defun schrenker/meow-kill-to-bol ()
-    (interactive)
-    (meow-beginning-of-thing ?l)
-    (call-interactively #'meow-kill))
-
-  (defvar-keymap schrenker/meow-d
-    "d" #'meow-kill-whole-line
-    "$" #'kill-line
-    "0" #'schrenker/meow-kill-to-bol)
-
-  (defun schrenker/meow-kill ()
-    (interactive)
-    (if (schrenker/meow-selection-p)
-        (call-interactively 'meow-kill)
-      (set-transient-map schrenker/meow-d nil nil "Meow delete command... $0d" 5)))
-  
   (defun schrenker/meow-old-quit ()
     "Quit current window or buffer."
     (interactive)
     (if (> (seq-length (window-list (selected-frame))) (if (dirvish-side--session-visible-p) 2 1))
         (delete-window)
       (previous-buffer)))
-
-  (defun schrenker/meow-append-to-eol ()
-    "Go to the end of the line and enter insert mode."
-    (interactive)
-    (call-interactively #'meow-line)
-    (call-interactively #'meow-append))
-
-  (defun schrenker/meow-insert-at-bol ()
-    "Go to the beginnig of the line and enter insert mode."
-    (interactive)
-    (call-interactively #'meow-join)
-    (call-interactively #'meow-append))
-
-  (defun schrenker/meow-join-below ()
-    "Join line below to current line"
-    (interactive)
-    (call-interactively #'meow-next)
-    (call-interactively #'meow-join)
-    (call-interactively #'meow-kill))
-
-  (defun schrenker/meow-smart-append ()
-    (interactive)
-    (if (eolp)
-        (call-interactively #'meow-insert)
-      (call-interactively #'meow-append)))
-
-  (defun schrenker/meow-find-backwards ()
-    (interactive)
-    (schrenker/call-negative 'meow-find))
-
-  (defun schrenker/meow-till-backwards ()
-    (interactive)
-    (schrenker/call-negative 'meow-till))
-
-  (defun schrenker/meow-change-to-eol ()
-    (interactive)
-    (call-interactively #'kill-line)
-    (call-interactively #'schrenker/meow-smart-append))
-
-  (defun schrenker/meow-search (ARG)
-    "Sometimes, when searching for a string that resides within truncated org link, it will add the search string to 'regexp-search-ring' with additional remnants of org link, making further search impossible. This function checks for problematic strings that appear within the car of regexp-search-string, and if they are found, it pops to a previous search string."
-    (interactive "P")
-    (meow--direction-forward)
-    (when (or
-           (string-match-p "\\[.?$" (car regexp-search-ring))
-           (string-match-p "\\] - ?$" (car regexp-search-ring))
-           (string-match-p "\\[file:" (car regexp-search-ring)))
-      (meow-pop-search))
-    (meow-search ARG))
-
-  (defun schrenker/meow-search-backwards (ARG)
-    "Sometimes, when searching for a string that resides within truncated org link, it will add the search string to 'regexp-search-ring' with additional remnants of org link, making further search impossible. This function checks for problematic strings that appear within the car of regexp-search-string, and if they are found, it pops to a previous search string."
-    (interactive "P")
-    (meow--direction-backward)
-    (when (or
-           (string-match-p "\\[.?$" (car regexp-search-ring))
-           (string-match-p "\\] - ?$" (car regexp-search-ring))
-           (string-match-p "\\[file:" (car regexp-search-ring)))
-      (meow-pop-search))
-    (meow-search ARG))
-
-  (defun schrenker/meow-expand-or-digit-argument (&optional n)
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (if n (meow-expand n) (meow-expand))
-      (meow-digit-argument)))
-
-  (defun schrenker/meow-next-or-expand ()
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (call-interactively #'meow-next-expand)
-      (call-interactively #'meow-next)))
-
-  (defun schrenker/meow-prev-or-expand ()
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (call-interactively #'meow-prev-expand)
-      (call-interactively #'meow-prev)))
-
-  (defun schrenker/meow-left-or-expand ()
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (call-interactively #'meow-left-expand)
-      (call-interactively #'meow-left)))
-
-  (defun schrenker/meow-right-or-expand ()
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (call-interactively #'meow-right-expand)
-      (call-interactively #'meow-right)))
-
-  (defun schrenker/meow-visual ()
-    (interactive)
-    (meow--select (meow--make-selection '(expand . char) (point) (point))))
-
-  (defun schrenker/meow-yank-forward ()
-    (interactive)
-    (let ((current-prefix-arg '(4)))
-      (call-interactively 'meow-yank)))
 
   (when (eq system-type 'gnu/linux)
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
@@ -2014,7 +1892,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   ;;Modify
   (meow-normal-define-key
-   '("c" . meow-change)
+   '("c" . schrenker/meow-change)
    '("C" . schrenker/meow-change-to-eol)
    '("d" . schrenker/meow-kill)
    '("D" . kill-line)

@@ -1803,7 +1803,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (interactive)
     (if (schrenker/meow-selection-p)
         (call-interactively 'meow-kill)
-    (set-transient-map schrenker/meow-d nil nil "Meow delete command... $0d" 5)))
+      (set-transient-map schrenker/meow-d nil nil "Meow delete command... $0d" 5)))
   
   (defun schrenker/meow-old-quit ()
     "Quit current window or buffer."
@@ -1920,8 +1920,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (interactive)
     (let ((current-prefix-arg '(4)))
       (call-interactively 'meow-yank)))
-  (when (eq system-type 'gnu/linux)
 
+  (when (eq system-type 'gnu/linux)
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
       "Copy region to Windows clipboard."
       (interactive "r")
@@ -1944,7 +1944,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"
       (interactive "P")
       (let ((clip (schrenker/wsl-clipboard-to-string)))
-        (insert clip)
+        (if current-prefix-arg
+            (save-excursion
+              (insert clip))
+          (insert clip))
         (if arg (kill-new clip))))
 
     (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)

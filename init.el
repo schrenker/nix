@@ -259,6 +259,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (interactive "p")
     (schrenker/zoom-frame (- (or amt 1)) frame))
 
+  (defun schrenker/aw-flip-window ()
+    (interactive)
+    (if (and (length< (window-list) 2) (eq system-type 'darwin))
+        (shell-command "osascript -e 'tell application \"System Events\" to key down command'; osascript -e 'tell application \"System Events\" to key code 48';osascript -e 'tell application \"System Events\" to key up command'")
+      (aw-flip-window)))
+
   :config
   (setq hydra-is-helpful t)
   (defhydra hydra-uictl
@@ -286,7 +292,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     ("M-j" enlarge-window)
     ("M-h" shrink-window-horizontally)
     ("M-l" enlarge-window-horizontally)
-    ("o" aw-flip-window)
+    ("o" schrenker/aw-flip-window)
     ("O" ace-select-window)
     ("2" schrenker/split-and-follow-horizontally)
     ("3" schrenker/split-and-follow-vertically)

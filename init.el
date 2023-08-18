@@ -170,7 +170,10 @@
 
 (use-package envrc
   :if (or (executable-find "direnv") (eq system-type 'darwin))
-  :hook (after-init . envrc-global-mode))
+  :hook (after-init . envrc-global-mode)
+  :init
+  (defvar envrc-after-update-hook nil)
+  (advice-add #'envrc--update :after (lambda () (run-hooks 'envrc-after-update-hook))))
 
 (defun schrenker/kill-buffer--possibly-save (buffer)
   (let ((response
@@ -1785,7 +1788,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package flymake-golangci
   :after go-mode
   :config
-  (add-hook 'go-ts-mode-hook 'flymake-golangci-load))
+  (add-hook 'go-ts-mode-hook (lambda ()
+                               (add-hook 'envrc-after-update-hook 'flymake-golangci-load 0 t))))
 
 (use-package python-mode
   :init

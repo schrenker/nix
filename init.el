@@ -1709,10 +1709,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("M-h" . yaml-pro-unindent-subtree)
         ("M-l" . yaml-pro-indent-subtree)
         ("M-?" . yaml-pro-convolute-tree))
-;; yaml-pro-ts-kill-subtree (C-c C-x C-w)
-;; yaml-pro-ts-up-level (C-c C-u)
-;; yaml-pro-ts-mark-subtree (C-c @)
-;; yaml-pro-ts-paste-subtree (C-c C-x C-y)
   :init
   (add-hook 'yaml-ts-mode-hook 'yaml-pro-ts-mode))
 

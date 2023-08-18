@@ -759,7 +759,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   :config
 
-  (keymap-set embark-org-item-map "RET" #'schrenker/org-cycle-checkbox)
+  (with-eval-after-load 'embark-org
+    (keymap-set embark-org-item-map "RET" #'schrenker/org-cycle-checkbox))
 
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.
@@ -1375,7 +1376,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (mood-line-mode 1))
 
 (use-package solarized-theme
-  :after (org org-modern dirvish embark)
   :demand t
   :init
   (setq solarized-use-more-italic t

@@ -581,6 +581,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            :repo "alphapapa/prism.el")
   :init
   (add-hook 'yaml-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
+  (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
   :config
@@ -1020,6 +1021,17 @@ targets."
    org-fontify-quote-and-verse-blocks t
    org-edit-src-content-indentation 0
    org-src-preserve-indentation t
+   org-babel-shell-names '("bash" "fish" "sh" "zsh" "csh" "ash" "dash" "ksh" "mksh" "posh")
+   org-src-lang-modes '(("bash" . bash-ts)
+                        ("shell" . bash-ts)
+                        ("sh" . bash-ts)
+                        ("fish" . fish)
+                        ("elisp" . emacs-lisp)
+                        ("yaml" . yaml-ts)
+                        ("sqlite" . sql)
+                        ("go" . go-ts)
+                        ("python" . python-ts)
+                        ("py" . python-ts))
    org-priority-start-cycle-with-default t
    org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
@@ -1770,7 +1782,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package bash-completion)
 
 (use-package sh-script
-  :elpaca nil)
+  :elpaca nil
+  :init
+  (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
+  (setq-default sh-shell "bash")
+  (setq-default sh-shell-file "/bin/bash")
+  :mode
+  ("\\.sh\\'" . bash-ts-mode))
 
 (use-package dockerfile-mode)
 

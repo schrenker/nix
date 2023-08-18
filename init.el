@@ -231,13 +231,6 @@
   `(let ((current-prefix-arg -1))
      (call-interactively ,form)))
 
-
-
-(use-package key-chord
-  :commands (key-chord-define)
-  :config
-  (key-chord-mode 1))
-
 (use-package hydra
   :commands (defhydra)
   :bind ("M-o" . 'hydra-uictl/body)
@@ -2000,8 +1993,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                 (?l . line)
                                 (?d . defun)
                                 (?. . sentence)))
-
-  (key-chord-define meow-insert-state-keymap ";;" 'right-char)
 
   (meow-global-mode 1))
 

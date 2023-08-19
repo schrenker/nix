@@ -583,7 +583,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            :host "github.com"
            :repo "alphapapa/prism.el")
   :init
-  (add-hook 'yaml-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
+  (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
@@ -1031,7 +1031,7 @@ targets."
                         ("sh" . bash-ts)
                         ("fish" . fish)
                         ("elisp" . emacs-lisp)
-                        ("yaml" . yaml-ts)
+                        ;("yaml" . yaml-ts)
                         ("sqlite" . sql)
                         ("go" . go-ts)
                         ("python" . python-ts)
@@ -1481,6 +1481,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (set-face-foreground 'vc-locked-state violet)
         (set-face-foreground 'vc-needs-update-state blue)
         (set-face-background 'hl-line bg-alt)
+        (require 'embark)
         (set-face-background 'embark-target (if (eq appearance 'light) white black))
         (advice-add
          'org-modern--update-label-face
@@ -1724,24 +1725,28 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
 
 (use-package yaml-mode
-  :init
-  (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode)))
+  ;; :init
+  ;; (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
+  ;; (add-hook 'yaml-ts-mode-hook (lambda ()
+  ;;                                (setq-local tab-width yaml-indent-offset)))
+  )
 
 (use-package yaml-pro
   :demand t
-  :bind*
-  (:map yaml-pro-ts-mode-map
-        ("M-<return>" . yaml-pro-ts-meta-return)
-        ("C-c '" . yaml-pro-edit-ts-scalar)
-        ("M-J" . yaml-pro-ts-move-subtree-down)
-        ("M-K" . yaml-pro-ts-move-subtree-up)
-        ("M-j" . yaml-pro-ts-next-subtree)
-        ("M-k" . yaml-pro-ts-prev-subtree)
+  :bind
+  (:map yaml-pro-mode-map
+        ;("M-<return>" . yaml-pro-ts-meta-return)
+        ("C-c C-'" . yaml-pro-edit-scalar)
+        ("C-c '" . nil)
+        ("M-J" . yaml-pro-move-subtree-down)
+        ("M-K" . yaml-pro-move-subtree-up)
+        ("M-j" . yaml-pro-next-subtree)
+        ("M-k" . yaml-pro-prev-subtree)
         ("M-h" . yaml-pro-unindent-subtree)
         ("M-l" . yaml-pro-indent-subtree)
         ("M-?" . yaml-pro-convolute-tree))
   :init
-  (add-hook 'yaml-ts-mode-hook 'yaml-pro-ts-mode))
+  (add-hook 'yaml-mode-hook 'yaml-pro-mode))
 
 (use-package markdown-mode)
 

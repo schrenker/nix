@@ -113,8 +113,10 @@
 
 (defun schrenker/meow-change-to-eol ()
   (interactive)
-  (call-interactively #'kill-line)
-  (call-interactively #'schrenker/meow-smart-append))
+  (when (schrenker/meow-selection-p)
+    (goto-char (region-beginning)))
+  (meow-end-of-thing ?l)
+  (call-interactively #'meow-change))
 
 
 (defun schrenker/meow-selection-p ()

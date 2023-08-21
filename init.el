@@ -235,7 +235,6 @@
      (call-interactively ,form)))
 
 (use-package hydra
-  :commands (defhydra)
   :bind ("M-o" . 'hydra-uictl/body)
   :init
   (defun schrenker/zoom-frame (&optional amt frame)
@@ -1244,9 +1243,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package holidays
   :elpaca nil
-  ;; ;; I can't seem to get this thing to load properly. Temporary workaround.
-  ;; :load-path "elpaca/repos/emacs-polish-holidays"
-  :after (org-agenda polish-holidays german-holidays)
+  :after org-agenda
   :init
   (require 'polish-holidays)
   (require 'german-holidays)

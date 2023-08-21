@@ -141,17 +141,15 @@
 
 (defun schrenker/meow-change ()
   (interactive)
-  (if (schrenker/meow-selection-p)
-      (call-interactively 'meow-change)
-    (set-transient-map schrenker/meow-c nil nil "Meow change command... $0d" 5)))
+  (cond ((meow-beacon-mode-p) (call-interactively #'meow-beacon-change))
+        ((schrenker/meow-selection-p) (call-interactively #'meow-change))
+        (t (set-transient-map schrenker/meow-c nil nil "Meow change command... $0c" 5))))
 
 (defun schrenker/meow-kill ()
   (interactive)
-  (if (schrenker/meow-selection-p)
-      (call-interactively 'meow-kill)
-    (set-transient-map schrenker/meow-d nil nil "Meow delete command... $0d" 5)))
-
-
+  (cond ((meow-beacon-mode-p) (call-interactively #'meow-beacon-kill-delete))
+        ((schrenker/meow-selection-p) (call-interactively #'meow-kill))
+        (t (set-transient-map schrenker/meow-d nil nil "Meow delete command... $0d" 5))))
 
 (defvar-keymap schrenker/meow-d
   "d" #'meow-kill-whole-line
@@ -162,9 +160,6 @@
   "c" #'schrenker/meow-change-line
   "$" #'schrenker/meow-change-to-eol
   "0" #'schrenker/meow-change-to-bol)
-
-(define-key meow-beacon-state-keymap (kbd "c") #'meow-change)
-(define-key meow-beacon-state-keymap (kbd "d") #'meow-kill)
 
 (provide 'meovil)
 ;;; meovil.el ends here.

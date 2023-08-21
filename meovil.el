@@ -163,5 +163,8 @@
   "$" #'schrenker/meow-change-to-eol
   "0" #'schrenker/meow-change-to-bol)
 
+(define-key meow-beacon-state-keymap (kbd "c") #'meow-change)
+(define-key meow-beacon-state-keymap (kbd "d") #'meow-kill)
+
 (provide 'meovil)
 ;;; meovil.el ends here.

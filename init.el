@@ -1971,6 +1971,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("D" . kill-line)
    '("J" . schrenker/meow-join-below)
    '("s" . meow-change)
+   '("S" . schrenker/meow-change-to-eol)
    '("u" . meow-undo)
    '("U" . meow-undo-in-selection)
    '("x" . meow-delete)

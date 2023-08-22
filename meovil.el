@@ -139,6 +139,26 @@
   (meow-beginning-of-thing ?l)
   (call-interactively #'meow-change))
 
+(defun schrenker/meow-copy-to-eol ()
+  (interactive)
+  (save-excursion
+    (when (schrenker/meow-selection-p)
+      (goto-char (region-beginning)))
+    (meow-end-of-thing ?l)
+    (call-interactively #'meow-save)))
+
+(defun schrenker/meow-copy-line ()
+  (interactive)
+  (save-excursion
+    (meow-inner-of-thing ?l)
+    (call-interactively #'meow-save)))
+
+(defun schrenker/meow-copy-to-bol ()
+  (interactive)
+  (save-excursion
+    (meow-beginning-of-thing ?l)
+    (call-interactively #'meow-save)))
+
 (defun schrenker/meow-change ()
   (interactive)
   (cond ((meow-beacon-mode-p) (call-interactively #'meow-beacon-change))
@@ -151,6 +171,11 @@
         ((schrenker/meow-selection-p) (call-interactively #'meow-kill))
         (t (set-transient-map schrenker/meow-d nil nil "Meow delete command... $0d" 5))))
 
+(defun schrenker/meow-copy ()
+  (interactive)
+  (cond ((schrenker/meow-selection-p) (call-interactively #'meow-save))
+        (t (set-transient-map schrenker/meow-y nil nil "Meow copy command... $0y" 5))))
+
 (defvar-keymap schrenker/meow-d
   "d" #'meow-kill-whole-line
   "$" #'kill-line
@@ -160,6 +185,12 @@
   "c" #'schrenker/meow-change-line
   "$" #'schrenker/meow-change-to-eol
   "0" #'schrenker/meow-change-to-bol)
+
+(defvar-keymap schrenker/meow-y
+  "y" #'schrenker/meow-copy-line
+  "$" #'schrenker/meow-copy-to-eol
+  "0" #'schrenker/meow-copy-to-bol)
+
 
 (provide 'meovil)
 ;;; meovil.el ends here.

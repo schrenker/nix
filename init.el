@@ -1979,7 +1979,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("p" . schrenker/meow-yank-forward)
    '("P" . meow-yank)
    '("M-p" . meow-yank-pop)
-   '("y" . meow-save))
+   '("y" . schrenker/meow-copy))
 
   ;;Selection
   (meow-normal-define-key
@@ -1996,7 +1996,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("R" . meow-swap-grab)
    '("v" . schrenker/meow-visual)
    '("V" . meow-line)
-   '("Y" . meow-sync-grab)
+   '("Y" . schrenker/meow-copy-to-eol)
    '("z" . meow-pop-selection)
    '("<escape>" . meow-cancel-selection))
 

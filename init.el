@@ -262,6 +262,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   :config
   (setq hydra-is-helpful t)
+
   (defhydra hydra-uictl
     (:hint nil)
     "
@@ -314,7 +315,56 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     ("f" find-file :color blue)
     ("S" scratch-buffer)
     ("Q" schrenker/kill-this-buffer)
-    ("q" nil :color blue)))
+    ("q" nil :color blue))
+
+  (with-eval-after-load 'org
+    (defhydra hydra-org (:hint nil)
+      "
+
+  Refile^                 ^Movement
+╭─────────────────────────────────────────────────────────────────^^^^^^
+  [_B_] Tasks/Backlog      [_K_] Prev Heading
+  [_A_] Tasks/Active       [_J_] Next Heading
+  [_C_] Tasks/Completed
+  [_TAB_] Uictl
+  [_q_] Quit
+ ^^^^^^─────────────────────────────────────────────────────────────────╯
+"
+      ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
+      ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
+      ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
+      ("K" outline-previous-heading)
+      ("J" outline-next-heading)
+      ("TAB" hydra-uictl/body :color blue)
+      ("q" nil :color blue)))
+
+  (with-eval-after-load 'git-timemachine
+    (defhydra hydra-git-timemachine (:hint nil)
+    "
+
+  ^Rev-Movement       ^Commits^                 ^Misc
+╭─────────────────────────────────────────────────────────────────^^^^^^
+  [_J_] Next Rev       [_b_] Blame               [_?_] Help
+  [_K_] Prev Rev       [_c_] Show Commit         [_S_] Write File
+  [_g_] Nth Rev        [_y_] Copy Short Hash     [_q_] Quit Hydra
+  [_T_] Fuzzy Rev      [_Y_] Copy Long Hash      [_Q_] Quit Timemachine
+  [_C_] Current Rev^^                            [_TAB_] Uictl
+ ^^^^^^─────────────────────────────────────────────────────────────────╯
+"
+    ("J" git-timemachine-show-next-revision)
+    ("K" git-timemachine-show-previous-revision)
+    ("g" git-timemachine-show-nth-revision)
+    ("T" git-timemachine-show-revision-fuzzy)
+    ("C" git-timemachine-show-current-revision)
+    ("b" git-timemachine-blame)
+    ("c" git-timemachine-show-commit)
+    ("y" git-timemachine-kill-abbreviated-revision)
+    ("Y" git-timemachine-kill-revision)
+    ("?" git-timemachine-help)
+    ("TAB" hydra-uictl/body :color blue)
+    ("S" write-file)
+    ("q" nil :color blue)
+    ("Q" git-timemachine-quit :color blue))))
 
 (use-package hydra-posframe
   :elpaca
@@ -530,33 +580,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package git-timemachine
   :commands (git-timemachine)
-  :config
-  (defhydra hydra-git-timemachine (:hint nil)
-    "
-
-  ^Rev-Movement       ^Commits^                 ^Misc
-╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_J_] Next Rev       [_b_] Blame               [_?_] Help
-  [_K_] Prev Rev       [_c_] Show Commit         [_S_] Write File
-  [_g_] Nth Rev        [_y_] Copy Short Hash     [_q_] Quit Hydra
-  [_T_] Fuzzy Rev      [_Y_] Copy Long Hash      [_Q_] Quit Timemachine
-  [_C_] Current Rev^^                            [_TAB_] Uictl
- ^^^^^^─────────────────────────────────────────────────────────────────╯
-"
-    ("J" git-timemachine-show-next-revision)
-    ("K" git-timemachine-show-previous-revision)
-    ("g" git-timemachine-show-nth-revision)
-    ("T" git-timemachine-show-revision-fuzzy)
-    ("C" git-timemachine-show-current-revision)
-    ("b" git-timemachine-blame)
-    ("c" git-timemachine-show-commit)
-    ("y" git-timemachine-kill-abbreviated-revision)
-    ("Y" git-timemachine-kill-revision)
-    ("?" git-timemachine-help)
-    ("TAB" hydra-uictl/body :color blue)
-    ("S" write-file)
-    ("q" nil :color blue)
-    ("Q" git-timemachine-quit :color blue))
   :bind (:map git-timemachine-mode-map
               ("M-O" . hydra-git-timemachine/body)))
 
@@ -1144,25 +1167,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     ;; (switch-to-buffer (current-buffer))
     (org-refile arg nil (list nil file nil (org-find-olp `(,file ,@(split-string headline "/")) nil))))
 
-  (defhydra hydra-org (:hint nil)
-    "
 
-  Refile^                 ^Movement
-╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_B_] Tasks/Backlog      [_K_] Prev Heading
-  [_A_] Tasks/Active       [_J_] Next Heading
-  [_C_] Tasks/Completed
-  [_TAB_] Uictl
-  [_q_] Quit
- ^^^^^^─────────────────────────────────────────────────────────────────╯
-"
-    ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
-    ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
-    ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
-    ("K" outline-previous-heading)
-    ("J" outline-next-heading)
-    ("TAB" hydra-uictl/body :color blue)
-    ("q" nil :color blue))
+
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook (lambda () (unless (org-roam-capture-p) (org-format-on-save-mode 1))))

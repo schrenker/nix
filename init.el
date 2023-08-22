@@ -588,7 +588,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
   :config
   (setq prism-comments nil
-        prism-whitespace-mode-indents '((yaml-ts-mode . yaml-indent-offset)
+        prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
                                         (t . 2))))
 
 (use-package inheritenv
@@ -1721,12 +1721,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
 
-(use-package yaml-mode
-  ;; :init
-  ;; (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
-  ;; (add-hook 'yaml-ts-mode-hook (lambda ()
-  ;;                                (setq-local tab-width yaml-indent-offset)))
-  )
+(use-package yaml-mode)
 
 (use-package yaml-pro
   :demand t

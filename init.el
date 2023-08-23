@@ -1963,6 +1963,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   ;;Modify
   (meow-normal-define-key
+   '("'" . meow-query-replace)
+   '("\"" . meow-query-replace-regexp)
    '("c" . schrenker/meow-change)
    '("C" . schrenker/meow-change-to-eol)
    '("d" . schrenker/meow-kill)
@@ -2015,8 +2017,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("9" . schrenker/meow-expand-or-digit-argument)
    '("-" . negative-argument)
    '(";" . meow-reverse)
-   '("'" . meow-query-replace)
-   '("\"" . meow-query-replace-regexp)
    '("K" . helpful-at-point)
    '("n" . schrenker/meow-search)
    '("N" . schrenker/meow-search-backwards)

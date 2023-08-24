@@ -277,7 +277,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
      ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dirSide    [_S_] scratch
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
      ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^
-                                                                                           [_q_] quit
+     ^^^^^^^^^^^^                                                                          [_q_] quit
  ^^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
 "
     ("K" windmove-up)

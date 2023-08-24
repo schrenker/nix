@@ -450,7 +450,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
               ("S-TAB" . corfu-previous)
               ("<backtab>" . corfu-previous)
               ("S-SPC" . corfu-insert-separator)
-              ("C-S-n" . corfu-move-to-minibuffer))
+              ("C-S-n" . corfu-move-to-minibuffer)
+              :map corfu-popupinfo-map
+              ("M-j" . corfu-popupinfo-scroll-up)
+              ("M-k" . corfu-popupinfo-scroll-down))
 
   :config
   (unbind-key (kbd "M-n") 'corfu-map)

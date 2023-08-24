@@ -1053,7 +1053,6 @@ targets."
                         ("sh" . bash-ts)
                         ("fish" . fish)
                         ("elisp" . emacs-lisp)
-                        ;("yaml" . yaml-ts)
                         ("sqlite" . sql)
                         ("go" . go-ts)
                         ("python" . python-ts)
@@ -1721,8 +1720,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (rust "https://github.com/tree-sitter/tree-sitter-rust")
     (toml "https://github.com/tree-sitter/tree-sitter-toml")
     (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-    (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
-    (yaml "https://github.com/ikatyang/tree-sitter-yaml"))))
+    (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
@@ -1733,7 +1731,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :demand t
   :bind
   (:map yaml-pro-mode-map
-        ;("M-<return>" . yaml-pro-ts-meta-return)
         ("C-c C-'" . yaml-pro-edit-scalar)
         ("C-c '" . nil)
         ("M-J" . yaml-pro-move-subtree-down)

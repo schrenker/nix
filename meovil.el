@@ -77,8 +77,8 @@
 (defun schrenker/meow-smart-append ()
   (interactive)
   (if (eolp)
-      (call-interactively #'meow-insert)
-    (call-interactively #'meow-append)))
+      (if (meow-beacon-mode-p) (call-interactively #'meow-beacon-insert) (call-interactively #'meow-insert))
+    (if (meow-beacon-mode-p) (call-interactively #'meow-beacon-append) (call-interactively #'meow-append))))
 
 (defun schrenker/meow-find-backwards ()
   (interactive)

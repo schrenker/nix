@@ -1887,7 +1887,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       "Return Windows clipboard as string."
       (let ((coding-system-for-read 'dos))
         (substring              ; remove added trailing \n
-         (shell-command-to-string "powershell.exe -Command Get-Clipboard") 0 -1)))
+         (replace-regexp-in-string "\r" ""
+         (shell-command-to-string "powershell.exe -Command Get-Clipboard")) 0 -1)))
 
     (defun schrenker/wsl-paste-from-clipboard (arg)
       "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"

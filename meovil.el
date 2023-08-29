@@ -134,6 +134,12 @@
   (meow-inner-of-thing ?l)
   (call-interactively #'meow-change))
 
+(defun schrenker/meow-delete-line ()
+  (interactive)
+  (meow-inner-of-thing ?l)
+  (call-interactively #'meow-kill))
+
+
 (defun schrenker/meow-change-to-bol ()
   (interactive)
   (meow-beginning-of-thing ?l)
@@ -177,7 +183,7 @@
         (t (set-transient-map schrenker/meow-y nil nil "Meow copy command... $0y" 5))))
 
 (defvar-keymap schrenker/meow-d
-  "d" #'meow-kill-whole-line
+  "d" #'schrenker/meow-delete-line
   "$" #'kill-line
   "0" #'schrenker/meow-kill-to-bol)
 

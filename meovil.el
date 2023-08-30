@@ -1,7 +1,7 @@
 ;;; meovil.el --- Evil actions for meow -*- lexical-binding: t; no-byte-compile: t; -*-
 
 ;;; Commentary:
-;; I want to replicate part of Vi actions in meow. Why not use evil instead? Meow respects emacs as it is much more than evil, integrating perfectly into it. Evil on the other hand changes way too much, to the point where you question if this is even emacs anymore. Yet, I still want to use muscle memory of Vi motions to work in emacs. Thus you will see a lot of garbage code, glued together with duct tape and sticks. This is what it is, and it works for me perfectly. And this is what matters really.
+;; I want to replicate part of Vi actions in meow. Why not use evil instead? Meow respects Emacs as it is much more than evil, integrating perfectly into it. Evil on the other hand changes way too much, to the point where you question if this is even Emacs anymore. Yet, I still want to use muscle memory of Vi motions to work in Emacs. Thus you will see a lot of garbage code, glued together with duct tape and sticks. This is what it is, and it works for me perfectly. And this is what matters really.
 
 ;;; Code:
   (defun schrenker/meow-expand-or-digit-argument (&optional n)
@@ -68,7 +68,7 @@
   (call-interactively #'meow-append))
 
 (defun schrenker/meow-join-below ()
-  "Join line below to current line"
+  "Join line below to current line."
   (interactive)
   (call-interactively #'meow-next)
   (call-interactively #'meow-join)

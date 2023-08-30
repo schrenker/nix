@@ -136,7 +136,7 @@
 
 (defun schrenker/meow-delete-line ()
   (interactive)
-  (meow-inner-of-thing ?l)
+  (meow-bounds-of-thing ?l)
   (call-interactively #'meow-kill))
 
 

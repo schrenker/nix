@@ -279,7 +279,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
       ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
       ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] PvTerm     [_f_] findf
-     ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dirSide    [_S_] scratch
+     ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dired      [_S_] scratch
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
      ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^
      ^^^^^^^^^^^^
@@ -313,7 +313,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     ("'" popper-toggle-type)
     ("v" multi-vterm-dedicated-toggle)
     ("V" multi-vterm-project)
-    ("T" dirvish-side)
+    ("T" dirvish-dwim)
     ("<" previous-buffer)
     (">" next-buffer)
     ("b" consult-buffer)

@@ -55,6 +55,20 @@ in {
       kns = "kubens";
     };
 
+    functions = {
+      git_is_repo = {
+        description = "Check if directory is a repository";
+        body = ''
+test -d .git
+  or begin
+    set -l info (command git rev-parse --git-dir --is-bare-repository 2>/dev/null)
+    and test $info[2] = false
+  end
+'';
+
+      };
+    };
+
     plugins = [
       {
         name = "plugin-bang-bang";
@@ -71,9 +85,9 @@ in {
         };
       }
       {
-        name = "theme-cmorrell.com";
+        name = "theme-solarfish";
         src = builtins.fetchGit {
-          url = "https://github.com/oh-my-fish/theme-cmorrell.com";
+          url = "https://github.com/thesilican/theme-solarfish";
           ref = "master";
         };
       }

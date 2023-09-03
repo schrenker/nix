@@ -156,7 +156,7 @@
 (defun schrenker/meow-copy-line ()
   (interactive)
   (save-excursion
-    (meow-inner-of-thing ?l)
+    (meow-bounds-of-thing ?l)
     (call-interactively #'meow-save)))
 
 (defun schrenker/meow-copy-to-bol ()

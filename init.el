@@ -1203,6 +1203,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n N" . org-roam-capture)
+         ("C-c n a" . org-roam-tag-add)
+         ("C-c n d" . org-roam-tag-remove)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
@@ -1227,6 +1229,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
+
+(use-package org-roam-ui
+    :after org-roam
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 
 (use-package org-kanban
   :config

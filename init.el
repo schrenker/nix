@@ -23,6 +23,10 @@
               delete-by-moving-to-trash t
               tab-width 4)
 
+(when (eq system-type 'gnu/linux)
+  (setq browse-url-browser-function 'browser-url-generic
+        browse-url-generic-program "MicrosoftEdge.Exe"))
+
 (setq auto-window-vscroll nil
       backup-by-copying t
       backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))

@@ -1235,12 +1235,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (require 'org-roam-protocol))
 
 (use-package org-roam-ui
-    :after org-roam
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+  :after org-roam
+  :bind (("C-c n o" . org-roam-ui-open))
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 
 (use-package org-kanban
   :config
@@ -1467,7 +1468,19 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                 ("sh" (:background ,green-bg :extend t))
                 ("shell" (:background ,green-bg :extend t))
                 ("fish" (:background ,green-bg :extend t))
-                ("nix" (:background ,blue-bg :extend t))))
+                ("nix" (:background ,blue-bg :extend t)))
+              org-roam-ui-custom-theme  `((bg . ,bg-main)
+                                          (bg-alt . ,bg-alt)
+                                          (fg . ,fg-main)
+                                          (fg-alt . ,fg-alt)
+                                          (red . ,red)
+                                          (orange . ,orange)
+                                          (yellow . ,yellow)
+                                          (green . ,green)
+                                          (cyan . ,cyan)
+                                          (blue . ,blue)
+                                          (violet . ,violet)
+                                          (magenta . ,magenta)))
         (mapc #'disable-theme custom-enabled-themes)
         (pcase appearance
           ('light (load-theme 'solarized-light t))
@@ -1518,11 +1531,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (run-with-idle-timer 0 nil (lambda ()(mapc (lambda (buffer) (with-current-buffer buffer (when (derived-mode-p 'org-mode)(font-lock-update)))) (buffer-list)))))))
 
   :config
+  (defun schrenker/apply-overlay (appearance)
+    (schrenker/solarized-theme-overlay appearance)
+    (ignore-errors (org-roam-ui-sync-theme)))
   (if (eq system-type 'darwin)
       (progn
-        (add-hook 'ns-system-appearance-change-functions #'schrenker/solarized-theme-overlay)
-        (schrenker/solarized-theme-overlay ns-system-appearance))
-    (schrenker/solarized-theme-overlay 'light)))
+        (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-overlay)
+        (schrenker/apply-overlay ns-system-appearance))
+    (schrenker/apply-overlay 'light)))
 
 (use-package solaire-mode
   :config

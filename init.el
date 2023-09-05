@@ -112,6 +112,18 @@
                             (seq-elt values index)
                             (- (window-body-width) 9)))))
 
+(defun schrenker/retry-until-success (func max-tries)
+  "Run FUNC every second until it returns non-nil or MAX-TRIES is reached."
+  (let ((counter 0)
+        (timer nil))
+    (setq timer
+          (run-with-timer
+           0 1
+           (lambda ()
+             (if (or (ignore-errors (funcall func)) (> counter max-tries))
+                 (cancel-timer timer)
+               (setq counter (1+ counter))))))))
+
 (defvar elpaca-installer-version 0.5)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -1241,7 +1253,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq org-roam-ui-sync-theme nil
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+        org-roam-ui-open-on-start t)
+  (advice-add 'org-roam-ui-open :after (lambda () (schrenker/retry-until-success #'org-roam-ui-sync-theme 15))))
 
 (use-package org-kanban
   :config

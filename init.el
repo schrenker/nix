@@ -286,7 +286,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (defun schrenker/switch-hydra ()
     (interactive)
-    (cond ((and (boundp git-timemachine-mode) git-timemachine-mode) (hydra-git-timemachine/body))
+    (cond ((and (boundp 'git-timemachine-mode) git-timemachine-mode) (hydra-git-timemachine/body))
           ((eq major-mode 'org-mode) (hydra-org/body))
           (t (hydra-uictl/body))))
 

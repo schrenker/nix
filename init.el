@@ -1217,6 +1217,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'markdown-mode-hook 'toc-org-mode))
 
 (use-package org-roam
+  :commands (org-roam-capture-p)
   :after org
   :demand t
   :bind (("C-c n l" . org-roam-buffer-toggle)

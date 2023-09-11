@@ -83,9 +83,7 @@
     "Hush" = 1544743900;
     "ImageFinder for Safari" = 1514863337;
     "Microsoft Remote Desktop" = 1295203466;
-    "Microsoft To Do" = 1274495053;
     "Noir" = 1592917505;
-    "Sorted" = 1306893526;
     "SponsorBlock for YouTube - Skip Sponsorships" = 1573461917;
     "Wipr" = 1320666476;
     "uBlacklist for Safari" = 1547912640;
@@ -126,21 +124,5 @@
   system.activationScripts.preActivation.text = ''
     rm -f /etc/shells
   '';
-  # system.activationScripts.postActivation.text = ''
-  #   #   if [ ! -d /Applications/Sorted.app ]; then
-  #   #       mv /Applications/Sorted* /Applications/Sorted.app
-  #   #   fi
-  #   # Find the latest Emacs.app in the Nix store
-  #   # EMACS_APP=$(ls -dt /nix/store/*emacs*/Applications/Emacs.app | head -n 1)
-
-  #   # # Change icon
-  #   # cp /Users/sebastian/.nixpkgs/custom/Emacs.icns $EMACS_APP/Contents/Resources/Emacs.icns
-
-  #   # # Create a symlink to it in /Applications
-  #   # test -f /Applications/Emacs.app && unlink /Applications/Emacs.app
-  #   # ln -sf "$EMACS_APP" /Applications/Emacs.app
-
-  # '';
-
   security.pam.enableSudoTouchIdAuth = true;
 }

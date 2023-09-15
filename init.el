@@ -776,6 +776,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package consult-org-roam
   :after org-roam
+  :bind (("C-c n b" . consult-org-roam-backlinks)
+         ("C-c n w" . consult-org-roam-forward-links))
   :config
   (setq consult-org-roam-grep-func #'consult-ripgrep
         consult-org-roam-buffer-narrow-key ?r
@@ -1973,6 +1975,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
     (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
     (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
+    (global-set-key (kbd "C-v") 'schrenker/meow-yank-forward)
     (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
 
   (meow-thing-register 'angle

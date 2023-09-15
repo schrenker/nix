@@ -1063,6 +1063,7 @@ targets."
    org-tags-exclude-from-inheritance '("crypt"
                                        "moc"
                                        "inbox"
+                                       "toplevel"
                                        "verb")
    org-tags-column -77
    org-directory "~/org"
@@ -1230,6 +1231,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
          ("C-c n N" . org-roam-capture)
          ("C-c n a" . org-roam-tag-add)
          ("C-c n d" . org-roam-tag-remove)
+         ("C-c n c" . org-id-get-create)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config

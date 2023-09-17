@@ -1061,9 +1061,7 @@ targets."
    org-insert-heading-respect-content t
    org-fontify-whole-heading-line t
    org-tags-exclude-from-inheritance '("crypt"
-                                       "moc"
                                        "inbox"
-                                       "toplevel"
                                        "verb")
    org-tags-column -77
    org-directory "~/org"
@@ -1250,26 +1248,28 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                        TAG (concat "#" TAG)))
 
   (defun schrenker/update-tag-nodes ()
+    (interactive)
     (let ((taglist (schrenker/get-all-org-tags)))
       (dolist (tag taglist)
         (let ((nodes (schrenker/get-nodes-by-tag tag))
               (tagfile (concat org-directory "/tags/tag:" tag ".org")))
-          (with-current-buffer (find-file-noselect tagfile)
-            (goto-line 6)
-            (delete-region (point) (point-max))
-            (insert "\n" (mapconcat (lambda (x)
-                                      (format "[[id:%s][%s]]" (car x) (cadr x)))
-                                    nodes "\n"))
-            (save-buffer)
-            (schrenker/kill-this-buffer))))))
+          (when (file-exists-p tagfile)
+            (with-current-buffer (find-file-noselect tagfile)
+              (goto-line 6)
+              (delete-region (point) (point-max))
+              (insert "\n" (mapconcat (lambda (x)
+                                        (format "[[id:%s][%s]]" (car x) (cadr x)))
+                                      nodes "\n"))
+              (save-buffer)
+              (schrenker/kill-this-buffer)))))))
 
   (defun schrenker/org-roam-node-find-nonarchived ()
     (interactive)
     (org-roam-node-find nil nil (lambda (node)
-                              (let ((tags (org-roam-node-tags node)))
-                                   (if (eq tags nil)
-                                       t
-                                     (not (member "archive" tags)))))))
+                                  (let ((tags (org-roam-node-tags node)))
+                                    (if (eq tags nil)
+                                        t
+                                      (not (member "archive" tags)))))))
 
   :config
   (defun schrenker/agenda-files-update (&rest _)

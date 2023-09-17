@@ -1269,7 +1269,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                   (let ((tags (org-roam-node-tags node)))
                                     (if (eq tags nil)
                                         t
-                                      (not (member "archive" tags)))))))
+                                      (not (or (member "archive" tags) (member "tag" tags))))))))
 
   :config
   (defun schrenker/agenda-files-update (&rest _)

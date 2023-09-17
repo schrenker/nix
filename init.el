@@ -1225,7 +1225,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :after org
   :demand t
   :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
+         ("C-c n f" . schrenker/org-roam-node-find-nonarchived)
+         ("C-c n F" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n N" . org-roam-capture)
@@ -1234,6 +1235,42 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
          ("C-c n c" . org-id-get-create)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
+
+  :init
+  (defun schrenker/get-all-org-tags ()
+    (seq-uniq (seq-map #'car
+                       (org-roam-db-query [:select [tags:tag] :from tags]))))
+
+  (defun schrenker/get-nodes-by-tag (TAG)
+    (org-roam-db-query [:select [nodes:id nodes:title]
+                                :from tags
+                                :left-join nodes
+                                :on (= tags:node-id nodes:id)
+                                :where (and (like tags:tag $s1) (not (= nodes:title $s2)))]
+                       TAG (concat "#" TAG)))
+
+  (defun schrenker/update-tag-nodes ()
+    (let ((taglist (schrenker/get-all-org-tags)))
+      (dolist (tag taglist)
+        (let ((nodes (schrenker/get-nodes-by-tag tag))
+              (tagfile (concat org-directory "/tags/tag:" tag ".org")))
+          (with-current-buffer (find-file-noselect tagfile)
+            (goto-line 6)
+            (delete-region (point) (point-max))
+            (insert "\n" (mapconcat (lambda (x)
+                                      (format "[[id:%s][%s]]" (car x) (cadr x)))
+                                    nodes "\n"))
+            (save-buffer)
+            (schrenker/kill-this-buffer))))))
+
+  (defun schrenker/org-roam-node-find-nonarchived ()
+    (interactive)
+    (org-roam-node-find nil nil (lambda (node)
+                              (let ((tags (org-roam-node-tags node)))
+                                   (if (eq tags nil)
+                                       t
+                                     (not (member "archive" tags)))))))
+
   :config
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."

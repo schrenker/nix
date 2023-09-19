@@ -1246,7 +1246,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                 :from tags
                                 :left-join nodes
                                 :on (= tags:node-id nodes:id)
-                                :where (and (like tags:tag $s1) (not (= nodes:title $s2)))]
+                                :where (and (like tags:tag $s1) (not (= nodes:title $s2)))
+                                :order-by [(asc title)]]
                        TAG (concat "#" TAG)))
 
   (defun schrenker/update-tag-nodes ()

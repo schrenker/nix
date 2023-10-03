@@ -1030,6 +1030,7 @@ targets."
          ("M-H" . org-shiftmetaleft)
          ("M-l" . org-metaright)
          ("M-L" . org-shiftmetaright)
+         ("C-c C-j" . nil)
          ("C-c C-f" . org-format-all-headings)
          ("C-c l" . org-store-link)
          ("C-c C-^" . schrenker/sort-priority-then-state))

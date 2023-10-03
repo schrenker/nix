@@ -1071,7 +1071,7 @@ targets."
    org-archive-location "archive/%s_archive::"
    org-archive-tag "archive"
    org-element-archive-tag "archive"
-   org-default-notes-file (concat org-directory "/20221222131538-personal.org")
+   org-default-notes-file (concat org-directory "/20221222131538-inbox.org")
    org-crypt-disable-auto-save t
    org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu")
    org-priority-highest '?A

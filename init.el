@@ -1080,6 +1080,7 @@ targets."
    org-hide-emphasis-markers t
    org-M-RET-may-split-line '((default . nil))
    org-return-follows-link t
+   org-agenda-skip-unavailable-files t
    org-fontify-quote-and-verse-blocks t
    org-edit-src-content-indentation 0
    org-src-preserve-indentation t
@@ -1278,6 +1279,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
+    (interactive)
     (setq org-agenda-files (seq-uniq
                             (seq-map
                              #'car
@@ -1289,8 +1291,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                        :where (like tag (quote "%\"agenda\"%"))])))))
   (advice-add 'org-agenda :before #'schrenker/agenda-files-update)
   (advice-add 'org-todo-list :before #'schrenker/agenda-files-update)
-  (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :inbox:\n\n")
+  (setq org-roam-capture-templates '(("p" "Project" plain "%?"
+                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n#+BEGIN: kanban :mirrored t :compressed t\n#+END:\n\n* TOC                                                                   :TOC:\n\n* Tasks\n\n** Backlog\n\n** Active\n\n** Completed\n\n* Notes\n\n* Repositories\n\n* Secrets                                                  :crypt:noexport_1:\n:PROPERTIES:\n:CRYPTKEY: 839AB1D6FFFBCA335D34F79EEB3A7B93512AAEEC\n:END:\n\n")
+                                      :immediate-finish t :unnarrowed t)
+                                     ("a" "Area" plain "%?"
+                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :area:\n\n* TOC                                                                   :TOC:\n\n* Purpose/Goal\n")
+                                      :immediate-finish t :unnarrowed t)
+("r" "Resource" plain "%?"
+                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :resource:\n\n")
                                       :immediate-finish t :unnarrowed t))
         org-roam-directory (file-truename "~/org")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))

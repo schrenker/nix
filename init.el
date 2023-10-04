@@ -996,6 +996,9 @@ targets."
    :main "perject-tab.el")
   :after perject
   :init
+  (setq perject-tab-states '(("mutable" always "⟨" "⟩")
+                            ("dynamic" perject-tab--dynamic-state "[" "]")
+                            ("immutable" ignore "⟦" "⟧")))
   (perject-tab-mode 1)
   (add-hook 'perject-before-switch-hook (lambda (&rest orig new frame)
                                           (let ((inhibit-message t)

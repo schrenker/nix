@@ -1211,7 +1211,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'org-mode-hook (lambda () (unless (org-roam-capture-p) (org-format-on-save-mode 1))))
+  ;(add-hook 'org-mode-hook (lambda () (unless (org-roam-capture-p) (org-format-on-save-mode 1))))
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
   (add-hook 'org-mode-hook
             (lambda ()
@@ -1296,16 +1296,16 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (advice-add 'org-todo-list :before #'schrenker/agenda-files-update)
   (setq org-roam-capture-templates '(("p" "Project")
                                      ("pp" "Minor Project" plain "%?"
-                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n#+BEGIN: kanban :mirrored t :compressed t\n#+END:\n\n* TOC                                                                   :TOC:\n\n* Goal\n\n%?")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n#+BEGIN: kanban :mirrored t :compressed t\n#+END:\n\n* TOC                                                                   :TOC:\n\n* Goal\n\n")
                                       :immediate-finish t :unnarrowed t)
                                      ("pP" "Major Project" plain "%?"
-                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n#+BEGIN: kanban :mirrored t :compressed t\n#+END:\n\n* TOC                                                                   :TOC:\n\n* Goals\n\n%?\n\n* Tasks\n\n** Backlog\n\n** Active\n\n** Completed\n\n* Notes\n\n* Repositories\n\n* Secrets                                                  :crypt:noexport_1:\n:PROPERTIES:\n:CRYPTKEY: 839AB1D6FFFBCA335D34F79EEB3A7B93512AAEEC\n:END:\n\n")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n#+BEGIN: kanban :mirrored t :compressed t\n#+END:\n\n* TOC                                                                   :TOC:\n\n* Goals\n\n* Tasks\n\n** Backlog\n\n** Active\n\n** Completed\n\n* Notes\n\n* Repositories\n\n* Secrets                                                  :crypt:noexport_1:\n:PROPERTIES:\n:CRYPTKEY: 839AB1D6FFFBCA335D34F79EEB3A7B93512AAEEC\n:END:\n\n")
                                       :immediate-finish t :unnarrowed t)
                                      ("a" "Area" plain "%?"
-                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :area:\n\n* TOC                                                                   :TOC:\n\n* Purpose/Goal\n")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :area:\n\n* TOC                                                                   :TOC:\n\n* Purpose/Goal\n")
                                       :immediate-finish t :unnarrowed t)
 ("r" "Resource" plain "%?"
-                                      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :resource:\n\n")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :resource:\n\n")
                                       :immediate-finish t :unnarrowed t))
         org-roam-directory (file-truename "~/org")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))

@@ -1303,13 +1303,17 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n* TOC                                                                   :TOC:\n\n* Goal\n\n")
                                       :immediate-finish t :unnarrowed t)
                                      ("pP" "Major Project" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n* TOC                                                                   :TOC:\n\n* Goals\n\n* Tasks\n\n** Backlog\n\n** Active\n\n** Completed\n\n* Notes\n\n* Repositories\n\n* Secrets                                                  :crypt:noexport_1:\n:PROPERTIES:\n:CRYPTKEY: 839AB1D6FFFBCA335D34F79EEB3A7B93512AAEEC\n:END:\n\n")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n* TOC                                                                   :TOC:\n\n* Goals\n\n* Tasks\n\n** Backlog\n\n** Active\n\n** Completed\n\n* Notes\n\n* Repositories\n\n* Documentation \n\n* Investigations\n\n* Secrets                                                  :crypt:noexport_1:\n:PROPERTIES:\n:CRYPTKEY: 839AB1D6FFFBCA335D34F79EEB3A7B93512AAEEC\n:END:\n-----BEGIN PGP MESSAGE-----\n\nhF4DGCGFOnC1fLgSAQdASvl1zdNs80NWiQzNbk+jex5y54bEO/y4Ns0EGzuOlTcw\nS0J/3uX3gD182MgNrMeIfFjLfBFEi8Oy/yR8+g1XUcH7wv9l+R5j1QNnbJ3hG9vI\n0jsBqq9MUlKc/T2VZRX5An79kZ3MtneXCwRUE+xopOL5v7gPmEn7ei2aiaFDATAs\nC2+dSr0byxCqlWd2gw==\n=4iXA\n-----END PGP MESSAGE-----")
                                       :immediate-finish t :unnarrowed t)
                                      ("a" "Area" plain "%?"
                                       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :area:\n\n* TOC                                                                   :TOC:\n\n* Purpose/Goal\n")
                                       :immediate-finish t :unnarrowed t)
-("r" "Resource" plain "%?"
+                                     ("r" "Resource")
+                                     ("rr" "Resource" plain "%?"
                                       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :resource:\n\n")
+                                      :immediate-finish t :unnarrowed t)
+                                     ("ri" "Investigation" plain "%?"
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :resource:investigation:\n\n* TOC                                                                   :TOC:\n\n* Problem Identification\n\n** Description\n\n** Reproduction steps\n\n** Potential Causes\n\n* Investigation\n\n* Solution\n\n")
                                       :immediate-finish t :unnarrowed t))
         org-roam-directory (file-truename "~/org")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))

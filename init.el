@@ -23,10 +23,13 @@
               delete-by-moving-to-trash t
               tab-width 4)
 
-(when (and (eq system-type 'gnu/linux)
+(defun schrenker/wsl2-p ()
+  (and (eq system-type 'gnu/linux)
            (string-match
             "Linux.*Microsoft.*Linux"
-            (shell-command-to-string "uname -a")))
+            (shell-command-to-string "uname -a"))))
+
+(when (schrenker/wsl2-p)
   (setq
    browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
    browse-url-generic-args     '("/c" "start")
@@ -44,7 +47,7 @@
       frame-resize-pixelwise t
       inhibit-startup-message t
       inhibit-startup-screen t
-      initial-frame-alist (if (eq system-type 'gnu/linux) '((top . 1) (left . 1) (width . 120) (height . 40)) '((fullscreen . maximized)))
+      initial-frame-alist (if (schrenker/wsl2-p) '((top . 1) (left . 1) (width . 120) (height . 40)) '((fullscreen . maximized)))
       initial-major-mode 'org-mode
       initial-scratch-message nil
       kept-new-versions 6
@@ -65,7 +68,7 @@
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
       version-control t
-      visible-bell (eq system-type 'gnu/linux)
+      visible-bell (schrenker/wsl2-p)
       visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -179,7 +182,7 @@
 (elpaca-wait)
 
 (add-hook 'elpaca-after-init-hook (lambda ()
-                                    (when (eq system-type 'gnu/linux)
+                                    (when (schrenker/wsl2-p)
                                       (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
 
 (use-package exec-path-from-shell
@@ -246,7 +249,7 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(if (eq system-type 'gnu/linux)
+(if (schrenker/wsl2-p)
     (set-frame-font "JetBrains Mono 10" nil t)
   (set-frame-font "JetBrains Mono 13" nil t))
 
@@ -2009,7 +2012,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         (delete-window)
       (previous-buffer)))
 
-  (when (eq system-type 'gnu/linux)
+  (when (schrenker/wsl2-p)
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
       "Copy region to Windows clipboard."
       (interactive "r")

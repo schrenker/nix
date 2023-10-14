@@ -1640,11 +1640,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (defun schrenker/apply-overlay (appearance)
     (schrenker/solarized-theme-overlay appearance)
     (ignore-errors (org-roam-ui-sync-theme)))
-  (if (eq system-type 'darwin)
-      (progn
-        (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-overlay)
-        (schrenker/apply-overlay ns-system-appearance))
-    (schrenker/apply-overlay 'light)))
+  (cond
+   ((not (display-graphic-p))(schrenker/apply-overlay 'light))
+   ((eq system-type 'darwin)(progn
+          (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-overlay)
+          (schrenker/apply-overlay ns-system-appearance)))
+   (t (schrenker/apply-overlay 'light))))
 
 (use-package solaire-mode
   :config

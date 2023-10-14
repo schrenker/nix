@@ -873,10 +873,10 @@ targets."
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package posframe)
+(use-package posframe
+  :if (display-graphic-p))
 
 (use-package ace-window
-  :after posframe
   :config
   (defun schrenker/ace-swap-window ()
     (interactive)
@@ -884,7 +884,9 @@ targets."
       (ace-swap-window)))
   
   (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
-  (ace-window-posframe-mode 1))
+  (when (display-graphic-p)
+    (with-eval-after-load 'posframe
+      (ace-window-posframe-mode 1))))
 
 (use-package popper
   :init

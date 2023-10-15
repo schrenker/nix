@@ -1,0 +1,73 @@
+font:
+  normal:
+    family: JetBrainsMonoNL Nerd Font
+    style: Regular
+
+  bold:
+    family: JetBrainsMonoNL Nerd Font
+    style: Bold
+
+  italic:
+    family: JetBrainsMonoNL Nerd Font
+    style: Italic
+
+  bold_italic:
+    family: JetBrainsMonoNL Nerd Font
+    style: Bold Italic
+
+  size: 14
+
+window:
+  decorations: full
+  padding: { x: 3, y: 3}
+  dynamic_padding: true
+  option_as_alt: Both
+
+# Colors (Solarized Light)
+colors:
+  # Default colors
+  primary:
+    background: '0xfdf6e3'
+    foreground: '0x586e75'
+
+  # Normal colors
+  normal:
+    black:   '0x073642'
+    red:     '0xdc322f'
+    green:   '0x859900'
+    yellow:  '0xb58900'
+    blue:    '0x268bd2'
+    magenta: '0xd33682'
+    cyan:    '0x2aa198'
+    white:   '0xeee8d5'
+
+  # Bright colors
+  bright:
+    black:   '0x002b36'
+    red:     '0xcb4b16'
+    green:   '0x586e75'
+    yellow:  '0x657b83'
+    blue:    '0x839496'
+    magenta: '0x6c71c4'
+    cyan:    '0x93a1a1'
+    white:   '0xfdf6e3'
+
+key_bindings:
+  # \x1b[27;5; is Control + Something. Use \x1b[27;5;ASCII~ to have ctrl combinations. Use 6 instead of 5 for control shift.
+  - { key: Period, mods: Command, chars: "\x1b." }
+  - { key: Period, mods: Control, chars: "\x1b[27;5;46~" }
+  - { key: Comma, mods: Command, chars: "\x1b," }
+  - { key: Semicolon, mods: Command, chars: "\x1b;" }
+  - { key: Semicolon, mods: Command|Shift, chars: "\x1b:" }
+
+
+  - { key: O, mods: Command, chars: "\x1bo" }
+  - { key: O, mods: Command|Shift, chars: "\x1bO" }
+  - { key: P, mods: Command, chars: "\x1bp" }
+  - { key: P, mods: Command|Shift, chars: "\x1bP" }
+  - { key: X, mods: Command, chars: "\x1bx" }
+  - { key: X, mods: Command|Shift, chars: "\x1bX" }
+
+  - { key: Tab, mods: Command, chars: "\x09" }
+  - { key: Tab, mods: Control, chars: "\x1b[27;5;9~" }
+  - { key: Tab, mods: Control|Shift, chars: "\x1b[27;6;9~" }

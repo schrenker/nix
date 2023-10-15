@@ -43,6 +43,7 @@
     "svn"
   ];
   homebrew.casks = [
+    "alacritty"
     "alt-tab"
     "bartender"
     "cloudflare-warp"

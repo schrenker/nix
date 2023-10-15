@@ -59,12 +59,12 @@ in {
       git_is_repo = {
         description = "Check if directory is a repository";
         body = ''
-test -d .git
-  or begin
-    set -l info (command git rev-parse --git-dir --is-bare-repository 2>/dev/null)
-    and test $info[2] = false
-  end
-'';
+          test -d .git
+            or begin
+              set -l info (command git rev-parse --git-dir --is-bare-repository 2>/dev/null)
+              and test $info[2] = false
+            end
+        '';
 
       };
     };
@@ -113,6 +113,8 @@ test -d .git
   };
 
   home.file = {
+    ".config/alacritty/alacritty.yml".source =
+      config.lib.file.mkOutOfStoreSymlink ./dotfiles/alacritty.yml;
     ".gnupg/gpg-agent.conf".source =
       config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
     ".gnupg/gpg.conf".source =

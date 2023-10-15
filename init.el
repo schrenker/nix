@@ -399,6 +399,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     ("Q" git-timemachine-quit :color blue))))
 
 (use-package hydra-posframe
+  :if (display-graphic-p)
   :elpaca
   (hydra-posframe
    :host "github.com"
@@ -521,6 +522,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (require 'corfu-popupinfo)
   (setq corfu-popupinfo-delay '(1.0 . 1.0))
   (corfu-popupinfo-mode 1))
+
+(use-package corfu-terminal
+  :if (not (display-graphic-p))
+  :config
+  (corfu-terminal-mode +1))
 
 (use-package cape
   :init

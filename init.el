@@ -74,8 +74,9 @@
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
 (menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
+(when (display-graphic-p)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1))
 
 (column-number-mode 1)
 (electric-indent-mode 1)

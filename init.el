@@ -2060,13 +2060,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (meow-thing-register 'angle
                        '(pair ("<") (">"))
                        '(pair ("<") (">")))
+  (when (display-graphic-p)
+    (define-key global-map (kbd "M-[") 'insert-pair)
+    (define-key global-map (kbd "M-(") 'insert-pair)
+    (define-key global-map (kbd "M-{") 'insert-pair)
+    (define-key global-map (kbd "M-<") 'insert-pair)
+    (define-key global-map (kbd "M-\"") 'insert-pair)
+    (define-key global-map (kbd "M-\'") 'insert-pair))
 
-  (define-key global-map (kbd "M-[") 'insert-pair)
-  (define-key global-map (kbd "M-(") 'insert-pair)
-  (define-key global-map (kbd "M-{") 'insert-pair)
-  (define-key global-map (kbd "M-<") 'insert-pair)
-  (define-key global-map (kbd "M-\"") 'insert-pair)
-  (define-key global-map (kbd "M-\'") 'insert-pair)
 
   (define-key global-map (kbd "M-]") (lambda () (interactive) (meow-bounds-of-thing ?s) (delete-pair)))
   (define-key global-map (kbd "M-)") (lambda () (interactive) (meow-bounds-of-thing ?r) (delete-pair)))

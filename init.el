@@ -1374,11 +1374,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package holidays
   :elpaca nil
-  :after org-agenda
-  :init
+  :after (org-agenda polish-holidays)
+  :config
   (require 'polish-holidays)
   (require 'german-holidays)
-  :config
   (setq calendar-holidays '((holiday-fixed 1 1 "New Year's Day")
                             (holiday-fixed 2 14 "Valentine's Day")
                             (holiday-fixed 4 1 "April Fools' Day")

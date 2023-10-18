@@ -28,6 +28,7 @@ end
 set -gx LESSHISTFILE -
 set -gx GOPATH ~/.local/go
 
+alias em='COLORTERM=TRUECOLOR emacs -nw'
 
 if [ "$INSIDE_EMACS" = vterm ]
     fish_default_key_bindings

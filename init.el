@@ -23,6 +23,9 @@
               delete-by-moving-to-trash t
               tab-width 4)
 
+(defvar emacs-appearance 'dark
+  "This variable holds initial value for theme if there is no dynamic system in place (macos), or value of theme that has been switched to.")
+
 (defun schrenker/wsl2-p ()
   (and (eq system-type 'gnu/linux)
            (string-match
@@ -652,6 +655,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
   :config
+  ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
+  (unless (display-graphic-p)
+    (load (concat user-emacs-directory "prism-cl.el") 'noerror 'nomessage))
   (setq prism-comments nil
         prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
                                         (t . 2))))
@@ -1644,14 +1650,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   :config
   (defun schrenker/apply-overlay (appearance)
+    (setq emacs-appearance appearance)
     (schrenker/solarized-theme-overlay appearance)
     (ignore-errors (org-roam-ui-sync-theme)))
   (cond
-   ((not (display-graphic-p))(schrenker/apply-overlay 'light))
+   ((not (display-graphic-p))(schrenker/apply-overlay emacs-appearance))
    ((eq system-type 'darwin)(progn
           (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-overlay)
           (schrenker/apply-overlay ns-system-appearance)))
-   (t (schrenker/apply-overlay 'light))))
+   (t (schrenker/apply-overlay emacs-appearance))))
 
 (use-package solaire-mode
   :config

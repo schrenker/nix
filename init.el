@@ -945,7 +945,7 @@ targets."
   (add-to-list 'savehist-additional-variables 'perject--previous-collections)
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
-  (setq perject-load-at-startup 'previous
+  (setq perject-load-at-startup '("dotfiles")
         perject-save-frames nil
         perject-frame-title-format nil
         perject-switch-to-new-collection t
@@ -1219,19 +1219,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (advice-add 'org-add-note :around #'schrenker/org-add-note)
 
   (defun schrenker/refile (file headline &optional arg)
-    ;; (let ((pos (save-excursion
-    ;;              (find-file file)
-    ;;              (org-find-exact-headline-in-buffer headline))))
-    ;;   (org-refile arg nil (list headline file nil pos)))
-    ;; (switch-to-buffer (current-buffer))
     (org-refile arg nil (list nil file nil (org-find-olp `(,file ,@(split-string headline "/")) nil))))
 
 
 
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'org-mode-hook (lambda () (unless (or (string-match-p "^CAPTURE" (buffer-name)) (string-match-p "^\*Capture" (buffer-name)))
-                                   (org-format-on-save-mode 1))))
+  ;; (add-hook 'org-mode-hook (lambda () (unless (or (string-match-p "^CAPTURE" (buffer-name)) (string-match-p "^\*Capture" (buffer-name)))
+  ;;                                  (org-format-on-save-mode 1))))
+  (add-hook 'org-mode-hook (lambda () (org-format-on-save-mode 1)))
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
   (add-hook 'org-mode-hook
             (lambda ()

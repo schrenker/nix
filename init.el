@@ -1062,6 +1062,11 @@ targets."
     (org-sort-entries nil ?a)
     (org-sort-entries nil ?p)
     (org-sort-entries nil ?o))
+
+  (defun schrenker/get-org-template (template)
+    (with-temp-buffer
+      (insert-file-contents (concat user-emacs-directory "templates/" template))
+      (buffer-string)))
   (setq time-stamp-active t
         time-stamp-start "#\\+modified: [ \t]*"
         time-stamp-end "$"
@@ -1120,10 +1125,10 @@ targets."
    org-priority-start-cycle-with-default t
    org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
-   '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U - %^{prompt}\n%i%?" :empty-lines 1 :prepend t)
-     ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "*** TODO %^{prompt}\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\\n  %i%?" :empty-lines 1 :prepend t)
-     ("a" "Any Project Note" entry (file+headline (lambda () (schrenker/get-project-file)) "Notes") "** %U - %^{prompt}\n%i%?" :empty-lines 1 :prepend t)
-     ("A" "Any Project Task" entry (file+olp (lambda () (schrenker/get-project-file)) "Tasks" "Backlog") "*** TODO %^{prompt}\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\\n  %i%?" :empty-lines 1 :prepend t)))
+   `(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") '(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
+     ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") '(schrenker/get-org-template "task") :empty-lines 1 :prepend t)
+     ("a" "Any Project Note" entry (file+headline (lambda () (schrenker/get-project-file)) "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
+     ("A" "Any Project Task" entry (file+olp (lambda () (schrenker/get-project-file)) "Tasks" "Backlog") ,(schrenker/get-org-template "task") :empty-lines 1 :prepend t)))
 
   (org-crypt-use-before-save-magic)
 
@@ -1276,8 +1281,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (org-roam-node-file
      (org-roam-node-read nil
                          (lambda (node) (and
-                                    (member "project" (org-roam-node-tags node))
-                                    (not (string= "#project" (org-roam-node-title node))))))))
+                                         (member "project" (org-roam-node-tags node))
+                                         (not (string= "#project" (org-roam-node-title node))))))))
 
   (defun schrenker/update-tag-nodes ()
     (interactive)
@@ -1303,10 +1308,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                         t
                                       (not (or (member "archive" tags) (member "tag" tags))))))))
 
-  (defun schrenker/get-org-template (template)
-    (with-temp-buffer
-      (insert-file-contents (concat user-emacs-directory "templates/" template))
-      (buffer-string)))
 
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
@@ -1325,22 +1326,23 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (schrenker/agenda-files-update)
   (advice-add 'org-agenda :before #'schrenker/agenda-files-update)
   (advice-add 'org-todo-list :before #'schrenker/agenda-files-update)
-  (setq org-roam-capture-templates `(("p" "Project")
+  (setq fileslug "%<%Y%m%d%H%M%S>-${slug}.org"
+        org-roam-capture-templates `(("p" "Project")
                                      ("pp" "Minor Project" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ,(schrenker/get-org-template "project-minor"))
+                                      :target (file+head ,fileslug ,(schrenker/get-org-template "project-minor"))
                                       :immediate-finish t :unnarrowed t)
                                      ("pP" "Major Project" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ,(schrenker/get-org-template "project-major"))
+                                      :target (file+head ,fileslug ,(schrenker/get-org-template "project-major"))
                                       :immediate-finish t :unnarrowed t)
                                      ("a" "Area" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ,(schrenker/get-org-template "area"))
+                                      :target (file+head ,fileslug ,(schrenker/get-org-template "area"))
                                       :immediate-finish t :unnarrowed t)
                                      ("r" "Resource")
                                      ("rr" "Resource" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" '(schrenker/get-org-template "resource"))
+                                      :target (file+head ,fileslug ,(schrenker/get-org-template "resource"))
                                       :immediate-finish t :unnarrowed t)
                                      ("ri" "Investigation" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" '(schrenker/get-org-template "resource-investigation"))
+                                      :target (file+head ,fileslug ,(schrenker/get-org-template "resource-investigation"))
                                       :immediate-finish t :unnarrowed t))
         org-roam-directory (file-truename "~/org")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))

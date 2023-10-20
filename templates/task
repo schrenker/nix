@@ -1,0 +1,6 @@
+*** TODO %^{prompt}
+:LOGBOOK:
+- Created at %U
+:END:
+- Note taken on *creation* \\
+  %i%?

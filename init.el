@@ -1122,8 +1122,8 @@ targets."
    org-capture-templates
    '(("p" "Personal Note" entry (file+headline org-default-notes-file "Notes") "** %U - %^{prompt}\n%i%?" :empty-lines 1 :prepend t)
      ("P" "Personal Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") "*** TODO %^{prompt}\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\\n  %i%?" :empty-lines 1 :prepend t)
-     ("a" "Any Project Note" entry (file+headline (lambda () (completing-read "File: " (mapcar 'cdr (schrenker/get-nodes-by-tag "project" "nodes:file")))) "Notes") "** %U - %^{prompt}\n%i%?" :empty-lines 1 :prepend t)
-     ("A" "Any Project Task" entry (file+olp (lambda () (completing-read "File: " (mapcar 'cdr (schrenker/get-nodes-by-tag "project" "nodes:file")))) "Tasks" "Backlog") "*** TODO %^{prompt}\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\\n  %i%?" :empty-lines 1 :prepend t)))
+     ("a" "Any Project Note" entry (file+headline (lambda () (schrenker/get-project-file)) "Notes") "** %U - %^{prompt}\n%i%?" :empty-lines 1 :prepend t)
+     ("A" "Any Project Task" entry (file+olp (lambda () (schrenker/get-project-file)) "Tasks" "Backlog") "*** TODO %^{prompt}\n:LOGBOOK:\n- Created at %U\n:END:\n- Note taken on *creation* \\\\\n  %i%?" :empty-lines 1 :prepend t)))
 
   (org-crypt-use-before-save-magic)
 
@@ -1227,8 +1227,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-  ;; (add-hook 'org-mode-hook (lambda () (unless (or (string-match-p "^CAPTURE" (buffer-name)) (string-match-p "^\*Capture" (buffer-name)))
-  ;;                                  (org-format-on-save-mode 1))))
   (add-hook 'org-mode-hook (lambda () (org-format-on-save-mode 1)))
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
   (add-hook 'org-mode-hook
@@ -1265,15 +1263,21 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (seq-uniq (seq-map #'car
                        (org-roam-db-query [:select [tags:tag] :from tags]))))
 
-(defun schrenker/get-nodes-by-tag (TAG &optional COLUMN)
-    (let ((COLUMN (if COLUMN (intern COLUMN) 'title)))
-      (org-roam-db-query `[:select [nodes:id ,COLUMN]
-                                   :from tags
-                                   :left-join nodes
-                                   :on (= tags:node-id nodes:id)
-                                   :where (and (like tags:tag $s1) (not (= nodes:title $s2)))
-                                   :order-by [(asc ,COLUMN)]]
-                         TAG (concat "#" TAG))))
+  (defun schrenker/get-nodes-by-tag (TAG)
+    (org-roam-db-query [:select [nodes:id nodes:title]
+                                :from tags
+                                :left-join nodes
+                                :on (= tags:node-id nodes:id)
+                                :where (and (like tags:tag $s1) (not (= nodes:title $s2)))
+                                :order-by [(asc title)]]
+                       TAG (concat "#" TAG)))
+
+  (defun schrenker/get-project-file ()
+    (org-roam-node-file
+     (org-roam-node-read nil
+                         (lambda (node) (and
+                                    (member "project" (org-roam-node-tags node))
+                                    (not (string= "#project" (org-roam-node-title node))))))))
 
   (defun schrenker/update-tag-nodes ()
     (interactive)

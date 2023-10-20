@@ -1,0 +1,19 @@
+#+title: ${title}
+#+startup: showeverything
+#+date: %U
+#+modified:
+#+filetags: :resource:investigation:
+
+* TOC                                                                   :TOC:
+
+* Problem Identification
+
+** Description
+
+** Reproduction steps
+
+** Potential Causes
+
+* Investigation
+
+* Solution

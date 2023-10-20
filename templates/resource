@@ -1,0 +1,5 @@
+#+title: ${title}
+#+startup: showeverything
+#+date: %U
+#+modified:
+#+filetags: :resource:

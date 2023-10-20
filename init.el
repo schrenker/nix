@@ -1303,6 +1303,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                         t
                                       (not (or (member "archive" tags) (member "tag" tags))))))))
 
+  (defun schrenker/get-org-template (template)
+  (with-temp-buffer
+    (insert-file-contents (concat user-emacs-directory "templates/" template))
+    (buffer-string)))
+
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
     (interactive)
@@ -1320,22 +1325,22 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (schrenker/agenda-files-update)
   (advice-add 'org-agenda :before #'schrenker/agenda-files-update)
   (advice-add 'org-todo-list :before #'schrenker/agenda-files-update)
-  (setq org-roam-capture-templates '(("p" "Project")
+  (setq org-roam-capture-templates `(("p" "Project")
                                      ("pp" "Minor Project" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n* TOC                                                                   :TOC:\n\n* Goal\n\n")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ,(schrenker/get-org-template "project-minor"))
                                       :immediate-finish t :unnarrowed t)
                                      ("pP" "Major Project" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :project:\n\n* TOC                                                                   :TOC:\n\n* Goals\n\n* Tasks\n\n** Backlog\n\n** Active\n\n** Completed\n\n* Notes\n\n* Repositories\n\n* Documentation \n\n* Investigations\n\n* Secrets                                                  :crypt:noexport_1:\n:PROPERTIES:\n:CRYPTKEY: 839AB1D6FFFBCA335D34F79EEB3A7B93512AAEEC\n:END:\n-----BEGIN PGP MESSAGE-----\n\nhF4DGCGFOnC1fLgSAQdASvl1zdNs80NWiQzNbk+jex5y54bEO/y4Ns0EGzuOlTcw\nS0J/3uX3gD182MgNrMeIfFjLfBFEi8Oy/yR8+g1XUcH7wv9l+R5j1QNnbJ3hG9vI\n0jsBqq9MUlKc/T2VZRX5An79kZ3MtneXCwRUE+xopOL5v7gPmEn7ei2aiaFDATAs\nC2+dSr0byxCqlWd2gw==\n=4iXA\n-----END PGP MESSAGE-----")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ,(schrenker/get-org-template "project-major"))
                                       :immediate-finish t :unnarrowed t)
                                      ("a" "Area" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :area:\n\n* TOC                                                                   :TOC:\n\n* Purpose/Goal\n")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ,(schrenker/get-org-template "area"))
                                       :immediate-finish t :unnarrowed t)
                                      ("r" "Resource")
                                      ("rr" "Resource" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :resource:\n\n")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" '(schrenker/get-org-template "resource"))
                                       :immediate-finish t :unnarrowed t)
                                      ("ri" "Investigation" plain "%?"
-                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+startup: showeverything\n#+date: %U\n#+modified: \n#+filetags: :resource:investigation:\n\n* TOC                                                                   :TOC:\n\n* Problem Identification\n\n** Description\n\n** Reproduction steps\n\n** Potential Causes\n\n* Investigation\n\n* Solution\n\n")
+                                      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" '(schrenker/get-org-template "resource-investigation"))
                                       :immediate-finish t :unnarrowed t))
         org-roam-directory (file-truename "~/org")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))
@@ -1486,6 +1491,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
               ("M-k" . tempel-previous))
 
   :init
+  (setq tempel-path (concat user-emacs-directory "templates/tempel"))
   ;; Setup completion at point
   (defun tempel-setup-capf ()
     ;; Add the Tempel Capf to `completion-at-point-functions'.

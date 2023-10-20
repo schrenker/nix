@@ -658,7 +658,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
   (unless (display-graphic-p)
-    (load (concat user-emacs-directory "prism-cl.el") 'noerror 'nomessage))
+    (load (concat user-emacs-directory "lisp/prism-cl.el") 'noerror 'nomessage))
   (setq prism-comments nil
         prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
                                         (t . 2))))
@@ -1071,7 +1071,7 @@ targets."
   (require 'org-crypt)
   (require 'org-agenda)
   (require 'org-capture)
-  (load-file (concat user-emacs-directory "org-format.el"))
+  (load-file (concat user-emacs-directory "lisp/org-format.el"))
   (setf epa-pinentry-mode 'loopback)
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
   (setq
@@ -2023,7 +2023,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package meow
   :config
-  (load-file (concat user-emacs-directory "meovil.el"))
+  (load-file (concat user-emacs-directory "lisp/meovil.el"))
   (global-unset-key (kbd "C-c SPC"))
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))

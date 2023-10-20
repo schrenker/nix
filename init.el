@@ -1329,20 +1329,30 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq fileslug "%<%Y%m%d%H%M%S>-${slug}.org"
         org-roam-capture-templates `(("p" "Project")
                                      ("pp" "Minor Project" plain "%?"
-                                      :target (file+head ,fileslug ,(schrenker/get-org-template "project-minor"))
+                                      :target (file+head
+                                               ,fileslug
+                                               ,(schrenker/get-org-template "project-minor"))
                                       :immediate-finish t :unnarrowed t)
                                      ("pP" "Major Project" plain "%?"
-                                      :target (file+head ,fileslug ,(schrenker/get-org-template "project-major"))
+                                      :target (file+head
+                                               ,fileslug
+                                               ,(schrenker/get-org-template "project-major"))
                                       :immediate-finish t :unnarrowed t)
                                      ("a" "Area" plain "%?"
-                                      :target (file+head ,fileslug ,(schrenker/get-org-template "area"))
+                                      :target (file+head
+                                               ,fileslug
+                                               ,(schrenker/get-org-template "area"))
                                       :immediate-finish t :unnarrowed t)
                                      ("r" "Resource")
                                      ("rr" "Resource" plain "%?"
-                                      :target (file+head ,fileslug ,(schrenker/get-org-template "resource"))
+                                      :target (file+head
+                                               ,fileslug
+                                               ,(schrenker/get-org-template "resource"))
                                       :immediate-finish t :unnarrowed t)
                                      ("ri" "Investigation" plain "%?"
-                                      :target (file+head ,fileslug ,(schrenker/get-org-template "resource-investigation"))
+                                      :target (file+head
+                                               ,fileslug
+                                               ,(schrenker/get-org-template "resource-investigation"))
                                       :immediate-finish t :unnarrowed t))
         org-roam-directory (file-truename "~/org")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))

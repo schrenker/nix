@@ -28,9 +28,9 @@
 
 (defun schrenker/wsl2-p ()
   (and (eq system-type 'gnu/linux)
-           (string-match
-            "Linux.*Microsoft.*Linux"
-            (shell-command-to-string "uname -a"))))
+       (string-match
+        "Linux.*Microsoft.*Linux"
+        (shell-command-to-string "uname -a"))))
 
 (when (schrenker/wsl2-p)
   (setq
@@ -377,7 +377,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (with-eval-after-load 'git-timemachine
     (defhydra hydra-git-timemachine (:hint nil)
-    "
+      "
 
   ^Rev-Movement       ^Commits^                 ^Misc
 ╭─────────────────────────────────────────────────────────────────^^^^^^
@@ -388,20 +388,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   [_C_] Current Rev^^                            [_TAB_] Uictl
  ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
-    ("J" git-timemachine-show-next-revision)
-    ("K" git-timemachine-show-previous-revision)
-    ("g" git-timemachine-show-nth-revision)
-    ("T" git-timemachine-show-revision-fuzzy)
-    ("C" git-timemachine-show-current-revision)
-    ("b" git-timemachine-blame)
-    ("c" git-timemachine-show-commit)
-    ("y" git-timemachine-kill-abbreviated-revision)
-    ("Y" git-timemachine-kill-revision)
-    ("?" git-timemachine-help)
-    ("TAB" hydra-uictl/body :color blue)
-    ("S" write-file)
-    ("q" nil :color blue)
-    ("Q" git-timemachine-quit :color blue))))
+      ("J" git-timemachine-show-next-revision)
+      ("K" git-timemachine-show-previous-revision)
+      ("g" git-timemachine-show-nth-revision)
+      ("T" git-timemachine-show-revision-fuzzy)
+      ("C" git-timemachine-show-current-revision)
+      ("b" git-timemachine-blame)
+      ("c" git-timemachine-show-commit)
+      ("y" git-timemachine-kill-abbreviated-revision)
+      ("Y" git-timemachine-kill-revision)
+      ("?" git-timemachine-help)
+      ("TAB" hydra-uictl/body :color blue)
+      ("S" write-file)
+      ("q" nil :color blue)
+      ("Q" git-timemachine-quit :color blue))))
 
 (use-package hydra-posframe
   :if (display-graphic-p)
@@ -1016,8 +1016,8 @@ targets."
   :after perject
   :init
   (setq perject-tab-states '(("mutable" always "⟨" "⟩")
-                            ("dynamic" perject-tab--dynamic-state "[" "]")
-                            ("immutable" ignore "⟦" "⟧")))
+                             ("dynamic" perject-tab--dynamic-state "[" "]")
+                             ("immutable" ignore "⟦" "⟧")))
   (perject-tab-mode 1)
   (add-hook 'perject-before-switch-hook (lambda (&rest orig new frame)
                                           (let ((inhibit-message t)
@@ -1304,9 +1304,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                       (not (or (member "archive" tags) (member "tag" tags))))))))
 
   (defun schrenker/get-org-template (template)
-  (with-temp-buffer
-    (insert-file-contents (concat user-emacs-directory "templates/" template))
-    (buffer-string)))
+    (with-temp-buffer
+      (insert-file-contents (concat user-emacs-directory "templates/" template))
+      (buffer-string)))
 
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
@@ -1666,8 +1666,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (cond
    ((not (display-graphic-p))(schrenker/apply-overlay emacs-appearance))
    ((eq system-type 'darwin)(progn
-          (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-overlay)
-          (schrenker/apply-overlay ns-system-appearance)))
+                              (add-hook 'ns-system-appearance-change-functions #'schrenker/apply-overlay)
+                              (schrenker/apply-overlay ns-system-appearance)))
    (t (schrenker/apply-overlay emacs-appearance))))
 
 (use-package solaire-mode
@@ -1778,8 +1778,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   :config
   (add-to-list 'eglot-workspace-configuration
-  '(:yaml . (schemas .
-                     ((https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json "/*")))))
+               '(:yaml . (schemas .
+                                  ((https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json "/*")))))
 
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
@@ -1870,28 +1870,28 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :elpaca nil
   :init
   (setq treesit-language-source-alist
-  '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-    (c "https://github.com/tree-sitter/tree-sitter-c")
-    (cmake "https://github.com/uyha/tree-sitter-cmake")
-    (common-lisp "https://github.com/theHamsta/tree-sitter-commonlisp")
-    (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-    (css "https://github.com/tree-sitter/tree-sitter-css")
-    (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
-    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-    (go "https://github.com/tree-sitter/tree-sitter-go")
-    (go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
-    (html "https://github.com/tree-sitter/tree-sitter-html")
-    (js . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-    (json "https://github.com/tree-sitter/tree-sitter-json")
-    (lua "https://github.com/Azganoth/tree-sitter-lua")
-    (make "https://github.com/alemuller/tree-sitter-make")
-    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-    (python "https://github.com/tree-sitter/tree-sitter-python")
-    (r "https://github.com/r-lib/tree-sitter-r")
-    (rust "https://github.com/tree-sitter/tree-sitter-rust")
-    (toml "https://github.com/tree-sitter/tree-sitter-toml")
-    (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-    (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))))
+        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+          (c "https://github.com/tree-sitter/tree-sitter-c")
+          (cmake "https://github.com/uyha/tree-sitter-cmake")
+          (common-lisp "https://github.com/theHamsta/tree-sitter-commonlisp")
+          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+          (css "https://github.com/tree-sitter/tree-sitter-css")
+          (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
+          (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+          (go "https://github.com/tree-sitter/tree-sitter-go")
+          (go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
+          (html "https://github.com/tree-sitter/tree-sitter-html")
+          (js . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+          (json "https://github.com/tree-sitter/tree-sitter-json")
+          (lua "https://github.com/Azganoth/tree-sitter-lua")
+          (make "https://github.com/alemuller/tree-sitter-make")
+          (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+          (python "https://github.com/tree-sitter/tree-sitter-python")
+          (r "https://github.com/r-lib/tree-sitter-r")
+          (rust "https://github.com/tree-sitter/tree-sitter-rust")
+          (toml "https://github.com/tree-sitter/tree-sitter-toml")
+          (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+          (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
@@ -2056,7 +2056,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (let ((coding-system-for-read 'dos))
         (substring              ; remove added trailing \n
          (replace-regexp-in-string "\r" ""
-         (shell-command-to-string "powershell.exe -Command Get-Clipboard")) 0 -1)))
+                                   (shell-command-to-string "powershell.exe -Command Get-Clipboard")) 0 -1)))
 
     (defun schrenker/wsl-paste-from-clipboard (arg)
       "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"

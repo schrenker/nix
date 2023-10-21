@@ -1964,6 +1964,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq go-ts-mode-indent-offset 4)
   (add-hook 'go-ts-mode-hook (lambda ()
                                (eglot-inlay-hints-mode 1)
+                               (go-eldoc-setup)
                                (setq-local tab-width 4)
                                (setq-local indent-tabs-mode 1)))
   :config

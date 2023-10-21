@@ -4,7 +4,7 @@ with pkgs;
 
 mkShell {
   buildInputs = [
-    go_1_19
+    go
     gocode
     golangci-lint
     gomodifytags
@@ -20,3 +20,9 @@ mkShell {
     mkdir -p .go/tmp
   '';
 }
+
+# ENVRC
+# export GOPATH=$PWD/.go
+# export GOTMPDIR=$PWD/.go/tmp
+
+# use nix

@@ -1544,9 +1544,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         solarized-height-plus-1 1.0
         solarized-height-plus-2 1.0
         solarized-height-plus-3 1.0
-        solarized-height-plus-4 1.0)
+        solarized-height-plus-4 1.0
+        alacritty-config-path "~/.config/alacritty/alacritty.yml")
+
   (defun schrenker/set-alacritty-theme (appearance)
-    (let ((buffer (find-file-noselect "~/.config/alacritty/alacritty.yml")))
+    (let ((buffer (find-file-noselect alacritty-config-path)))
       (with-current-buffer buffer
         (goto-char (point-min))
         (if (eq appearance 'light)

@@ -692,6 +692,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (load (concat user-emacs-directory "lisp/prism-cl.el") 'noerror 'nomessage))
   (setq prism-comments nil
         prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
+                                        (python-ts-mode . python-indent-offset)
                                         (t . 2))))
 
 (use-package inheritenv

@@ -402,7 +402,37 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ("TAB" hydra-uictl/body :color blue)
       ("S" write-file)
       ("q" nil :color blue)
-      ("Q" git-timemachine-quit :color blue))))
+      ("Q" git-timemachine-quit :color blue)))
+
+  (with-eval-after-load 'dape
+    (defhydra dape-hydra (:color pink :hint nil :foreign-keys run)
+      "
+^Stepping^          ^Breakpoints^         ^Info
+╭─────────────────────────────────────────────────────────────────^^^^^^
+[_n_]: Next           [_bb_]: Toggle          [_si_]: Info
+[_i_]: Step in        [_bd_]: Delete          [_sm_]: Memory
+[_o_]: Step out       [_ba_]: Add             [_ss_]: Select Stack
+[_c_]: Continue       [_bD_]: Delete all       [_R_]: Repl
+[_r_]: Restart        [_bl_]: Set log message
+[_Q_]: Disconnect
+ ^^^^^^─────────────────────────────────────────────────────────────────╯
+"
+      ("n" dape-next)
+      ("i" dape-step-in)
+      ("o" dape-step-out)
+      ("c" dape-continue)
+      ("r" dape-restart)
+      ("bb" dape-toggle-breakpoint)
+      ("be" dape-expression-breakpoint)
+      ("bd" dape-remove-breakpoint-at-point)
+      ("bD" dape-remove-all-breakpoints)
+      ("bl" dape-log-breakpoint)
+      ("si" dape-info)
+      ("sm" dape-read-memory)
+      ("ss" dape-select-stack)
+      ("R"  dape-repl)
+      ("q" nil "quit" :color blue)
+      ("Q" dape-kill :color red))))
 
 (use-package hydra-posframe
   :if (display-graphic-p)
@@ -1822,6 +1852,55 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                       #'cape-file
                       #'tempel-expand)))
   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
+
+(use-package dape
+  :elpaca
+  (dape
+   :host "github.com"
+   :repo "svaante/dape")
+  :config
+  ;; Add inline variable hints, this feature is highly experimental
+  ;; (setq dape-inline-variables t)
+
+  ;; To remove info buffer on startup
+  ;; (remove-hook 'dape-on-start-hooks 'dape-info)
+
+  ;; To remove repl buffer on startup
+  ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
+
+  ;; By default dape uses gdb keybinding prefix
+  ;; (setq dape-key-prefix "\C-x\C-a")
+
+  ;; Use n for next etc. in REPL
+  ;; (setq dape-repl-use-shorthand t)
+
+  ;; Kill compile buffer on build success
+  ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
+
+  ;; Projectile users
+  ;; (setq dape-cwd-fn 'projectile-project-root)
+  (add-to-list 'dape-configs
+               `(delve
+                 modes (go-mode go-ts-mode)
+                 command "dlv"
+                 command-args ("dap" "--listen" "127.0.0.1:55878")
+                 command-cwd dape-cwd-fn
+                 host "127.0.0.1"
+                 port 55878
+                 :type "debug"
+                 :request "launch"
+                 :cwd dape-cwd-fn
+                 :program dape-cwd-fn))
+
+  (add-to-list 'dape-configs
+             `(debugpy
+               modes (python-ts-mode python-mode)
+               command "python3"
+               command-args ("-m" "debugpy.adapter")
+               :type "executable"
+               :request "launch"
+               :cwd dape-cwd-fn
+               :program dape-find-file-buffer-default)))
 
 (use-package vundo
   :bind

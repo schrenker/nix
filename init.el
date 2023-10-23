@@ -1157,8 +1157,8 @@ targets."
    org-priority-start-cycle-with-default t
    org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
-   `(("i" "Inbox Note" entry (file+headline org-default-notes-file "Notes") '(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
-     ("I" "Inbox Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") '(schrenker/get-org-template "task") :empty-lines 1 :prepend t)
+   `(("i" "Inbox Note" entry (file+headline org-default-notes-file "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
+     ("I" "Inbox Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") ,(schrenker/get-org-template "task") :empty-lines 1 :prepend t)
      ("a" "Area Note" entry (file+headline (lambda () (schrenker/get-node-file-by-tag "area")) "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
      ("p" "Project Note" entry (file+headline (lambda () (schrenker/get-node-file-by-tag "project")) "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
      ("P" "Project Task" entry (file+olp (lambda () (schrenker/get-node-file-by-tag "project")) "Tasks" "Backlog") ,(schrenker/get-org-template "task") :empty-lines 1 :prepend t)))

@@ -380,7 +380,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (defhydra hydra-git-timemachine (:hint nil)
       "
 
-  ^Rev-Movement       ^Commits^                 ^Misc
+ ^Rev-Movement        ^Commits^                 ^Misc
 ╭─────────────────────────────────────────────────────────────────^^^^^^
   [_J_] Next Rev       [_b_] Blame               [_?_] Help
   [_K_] Prev Rev       [_c_] Show Commit         [_S_] Write File
@@ -405,25 +405,25 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ("Q" git-timemachine-quit :color blue)))
 
   (with-eval-after-load 'dape
-    (defhydra dape-hydra (:color pink :hint nil :foreign-keys run)
+    (defhydra hydra-dape (:hint nil)
       "
-^Stepping^          ^Breakpoints^         ^Info
+  Stepping^           ^Breakpoints^              ^Info
 ╭─────────────────────────────────────────────────────────────────^^^^^^
-[_n_]: Next           [_bb_]: Toggle          [_si_]: Info
-[_i_]: Step in        [_bd_]: Delete          [_sm_]: Memory
-[_o_]: Step out       [_ba_]: Add             [_ss_]: Select Stack
-[_c_]: Continue       [_bD_]: Delete all       [_R_]: Repl
-[_r_]: Restart        [_bl_]: Set log message
-[_Q_]: Disconnect
+  [_N_]: Next          [_bb_]: Toggle             [_si_]: Info
+  [_i_]: Step in       [_ba_]: Add                [_sm_]: Memory
+  [_o_]: Step out      [_bd_]: Delete             [_ss_]: Select Stack
+  [_c_]: Continue      [_bD_]: Delete all         [_R_]: Repl
+  [_r_]: Restart       [_bl_]: Set log message    [_q_]: Quit Hydra
+  ^^^^                                            [_Q_]: Quit Dape
  ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
-      ("n" dape-next)
+      ("N" dape-next)
       ("i" dape-step-in)
       ("o" dape-step-out)
       ("c" dape-continue)
       ("r" dape-restart)
       ("bb" dape-toggle-breakpoint)
-      ("be" dape-expression-breakpoint)
+      ("ba" dape-expression-breakpoint)
       ("bd" dape-remove-breakpoint-at-point)
       ("bD" dape-remove-all-breakpoints)
       ("bl" dape-log-breakpoint)
@@ -431,8 +431,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ("sm" dape-read-memory)
       ("ss" dape-select-stack)
       ("R"  dape-repl)
-      ("q" nil "quit" :color blue)
-      ("Q" dape-kill :color red))))
+      ("q" nil :color blue)
+      ("Q" dape-kill :color blue))))
 
 (use-package hydra-posframe
   :if (display-graphic-p)

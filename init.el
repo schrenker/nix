@@ -1519,6 +1519,27 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("M-e" . dirvish-emerge-menu)
    ("M-j" . dirvish-fd-jump)))
 
+(use-package run-command
+  :bind ("C-<escape>" . run-command)
+  :config
+  (setq run-command-default-runner 'run-command-runner-vterm)
+  (defun schrenker/yaegi:run-nix ()
+
+    (when-let ((file-name (buffer-file-name))
+               (yaegi-path (concat (car (cl-member "yaegi" (split-string (getenv "PATH") ":") :test #'string-match-p)) "/yaegi")))
+      (when (and file-name
+                 (equal (file-name-extension file-name) "go"))
+        (list
+         (list
+          :command-name "yaegi:run"
+          :runner 'run-command-runner-term
+          :command-line (format "%s %s" yaegi-path file-name)
+          :hook #'envrc-allow
+          :display
+          (format "Run `%s' go file with yaegi"
+                  (file-name-nondirectory file-name)))))))
+
+  (add-to-list 'run-command-recipes 'schrenker/yaegi:run-nix))
 
 (use-package flymake
   :elpaca nil

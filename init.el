@@ -295,7 +295,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (defun schrenker/switch-hydra ()
     (interactive)
-    (cond ((and (boundp 'git-timemachine-mode) git-timemachine-mode) (hydra-git-timemachine/body))
+    (cond ((bound-and-true-p dape--process) (hydra-dape/body))
+          ((bound-and-true-p git-timemachine-mode) (hydra-git-timemachine/body))
           ((eq major-mode 'org-mode) (hydra-org/body))
           (t (hydra-uictl/body))))
 
@@ -409,15 +410,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       "
   Stepping^           ^Breakpoints^              ^Info
 ╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_N_]: Next          [_bb_]: Toggle             [_si_]: Info
+  [_n_]: Next          [_bb_]: Toggle             [_si_]: Info
   [_i_]: Step in       [_ba_]: Add                [_sm_]: Memory
   [_o_]: Step out      [_bd_]: Delete             [_ss_]: Select Stack
   [_c_]: Continue      [_bD_]: Delete all         [_R_]: Repl
   [_r_]: Restart       [_bl_]: Set log message    [_q_]: Quit Hydra
   ^^^^                                            [_Q_]: Quit Dape
+  ^^^^                                            [_TAB_] Uictl
  ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
-      ("N" dape-next)
+      ("n" dape-next)
       ("i" dape-step-in)
       ("o" dape-step-out)
       ("c" dape-continue)
@@ -431,8 +433,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ("sm" dape-read-memory)
       ("ss" dape-select-stack)
       ("R"  dape-repl)
+      ("TAB" hydra-uictl/body :color blue)
       ("q" nil :color blue)
-      ("Q" dape-kill :color blue))))
+      ("Q" dape-quit :color blue))))
 
 (use-package hydra-posframe
   :if (display-graphic-p)

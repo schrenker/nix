@@ -1520,20 +1520,21 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("M-j" . dirvish-fd-jump)))
 
 (use-package run-command
-  :bind ("C-<escape>" . run-command)
+  :bind ("C-x c" . run-command)
   :config
   (setq run-command-default-runner 'run-command-runner-vterm)
   (defun schrenker/yaegi:run-nix ()
 
     (when-let ((file-name (buffer-file-name))
-               (yaegi-path (concat (car (cl-member "yaegi" (split-string (getenv "PATH") ":") :test #'string-match-p)) "/yaegi")))
+               (yaegi-path (car (cl-member "yaegi" (split-string (getenv "PATH") ":") :test #'string-match-p))))
       (when (and file-name
+                 yaegi-path
                  (equal (file-name-extension file-name) "go"))
         (list
          (list
-          :command-name "yaegi:run"
+          :command-name "yaegi:run-nix"
           :runner 'run-command-runner-term
-          :command-line (format "%s %s" yaegi-path file-name)
+          :command-line (format "%s %s" (concat yaegi-path "/yaegi") file-name)
           :hook #'envrc-allow
           :display
           (format "Run `%s' go file with yaegi"

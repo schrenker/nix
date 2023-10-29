@@ -363,18 +363,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (defhydra hydra-org (:hint nil)
       "
 
-  Refile^                 ^Movement
+  Refile^                 ^Movement             ^Misc
 ╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_B_] Tasks/Backlog      [_K_] Prev Heading
-  [_A_] Tasks/Active       [_J_] Next Heading
-  [_C_] Tasks/Completed
-  [_TAB_] Uictl
-  [_q_] Quit
+  [_b_] Tasks/Backlog      [_K_] Prev Heading    [_q_] Quit Hydra
+  [_a_] Tasks/Active       [_J_] Next Heading    [_TAB_] Uictl
+  [_c_] Tasks/Completed
  ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
-      ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
-      ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
-      ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
+      ("b" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
+      ("a" (schrenker/refile (buffer-file-name) "Tasks/Active"))
+      ("c" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
       ("K" outline-previous-heading)
       ("J" outline-next-heading)
       ("TAB" hydra-uictl/body :color blue)

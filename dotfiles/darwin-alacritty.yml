@@ -34,11 +34,16 @@ key_bindings:
   - { key: Semicolon, mods: Command, chars: "\x1b;" }
   - { key: Semicolon, mods: Command|Shift, chars: "\x1b:" }
 
+  - { key: J, mods: Command, chars: "\x1bj" }
+  - { key: J, mods: Command|Shift, chars: "\x1bJ" }
+  - { key: K, mods: Command, chars: "\x1bk" }
+  - { key: K, mods: Command|Shift, chars: "\x1bK" }
 
   - { key: O, mods: Command, chars: "\x1bo" }
   - { key: O, mods: Command|Shift, chars: "\x1bO" }
   - { key: P, mods: Command, chars: "\x1bp" }
   - { key: P, mods: Command|Shift, chars: "\x1bP" }
+
   - { key: X, mods: Command, chars: "\x1bx" }
   - { key: X, mods: Command|Shift, chars: "\x1bX" }
 

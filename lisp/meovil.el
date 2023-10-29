@@ -12,37 +12,27 @@
       (if n (meow-expand n) (meow-expand))
     (meow-digit-argument)))
 
-(defun schrenker/meow-next-or-expand ()
+(defun schrenker/meow-next ()
   (interactive)
-  (if (and meow--expand-nav-function
-           (region-active-p)
-           (meow--selection-type))
-      (call-interactively #'meow-next-expand)
-    (call-interactively #'meow-next)))
+  (cond ((derived-mode-p 'magit-mode)(call-interactively #'magit-next-line))
+        ((schrenker/meow-selection-p)(call-interactively #'meow-next-expand))
+        (t (call-interactively #'meow-next))))
 
-(defun schrenker/meow-prev-or-expand ()
+(defun schrenker/meow-prev ()
   (interactive)
-  (if (and meow--expand-nav-function
-           (region-active-p)
-           (meow--selection-type))
-      (call-interactively #'meow-prev-expand)
-    (call-interactively #'meow-prev)))
+  (cond ((derived-mode-p 'magit-mode)(call-interactively #'magit-previous-line))
+        ((schrenker/meow-selection-p)(call-interactively #'meow-next-expand))
+        (t (call-interactively #'meow-prev))))
 
-(defun schrenker/meow-left-or-expand ()
+(defun schrenker/meow-left ()
   (interactive)
-  (if (and meow--expand-nav-function
-           (region-active-p)
-           (meow--selection-type))
-      (call-interactively #'meow-left-expand)
-    (call-interactively #'meow-left)))
+  (cond ((schrenker/meow-selection-p)(call-interactively #'meow-left-expand))
+        (t (call-interactively #'meow-left))))
 
-(defun schrenker/meow-right-or-expand ()
+(defun schrenker/meow-right ()
   (interactive)
-  (if (and meow--expand-nav-function
-           (region-active-p)
-           (meow--selection-type))
-      (call-interactively #'meow-right-expand)
-    (call-interactively #'meow-right)))
+  (cond ((schrenker/meow-selection-p)(call-interactively #'meow-right-expand))
+        (t (call-interactively #'meow-right))))
 
 (defun schrenker/meow-visual ()
   (interactive)

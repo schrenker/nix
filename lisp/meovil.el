@@ -55,7 +55,9 @@
   "Go to the beginnig of the line and enter insert mode."
   (interactive)
   (call-interactively #'meow-join)
-  (call-interactively #'meow-append))
+  (if (meow-beacon-mode-p)
+      (call-interactively #'meow-beacon-append)
+    (call-interactively #'meow-append)))
 
 (defun schrenker/meow-join-below ()
   "Join line below to current line."

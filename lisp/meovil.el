@@ -4,55 +4,55 @@
 ;; I want to replicate part of Vi actions in meow. Why not use evil instead? Meow respects Emacs as it is much more than evil, integrating perfectly into it. Evil on the other hand changes way too much, to the point where you question if this is even Emacs anymore. Yet, I still want to use muscle memory of Vi motions to work in Emacs. Thus you will see a lot of garbage code, glued together with duct tape and sticks. This is what it is, and it works for me perfectly. And this is what matters really.
 
 ;;; Code:
-  (defun schrenker/meow-expand-or-digit-argument (&optional n)
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (if n (meow-expand n) (meow-expand))
-      (meow-digit-argument)))
+(defun schrenker/meow-expand-or-digit-argument (&optional n)
+  (interactive)
+  (if (and meow--expand-nav-function
+           (region-active-p)
+           (meow--selection-type))
+      (if n (meow-expand n) (meow-expand))
+    (meow-digit-argument)))
 
-  (defun schrenker/meow-next-or-expand ()
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (call-interactively #'meow-next-expand)
-      (call-interactively #'meow-next)))
+(defun schrenker/meow-next-or-expand ()
+  (interactive)
+  (if (and meow--expand-nav-function
+           (region-active-p)
+           (meow--selection-type))
+      (call-interactively #'meow-next-expand)
+    (call-interactively #'meow-next)))
 
-  (defun schrenker/meow-prev-or-expand ()
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (call-interactively #'meow-prev-expand)
-      (call-interactively #'meow-prev)))
+(defun schrenker/meow-prev-or-expand ()
+  (interactive)
+  (if (and meow--expand-nav-function
+           (region-active-p)
+           (meow--selection-type))
+      (call-interactively #'meow-prev-expand)
+    (call-interactively #'meow-prev)))
 
-  (defun schrenker/meow-left-or-expand ()
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (call-interactively #'meow-left-expand)
-      (call-interactively #'meow-left)))
+(defun schrenker/meow-left-or-expand ()
+  (interactive)
+  (if (and meow--expand-nav-function
+           (region-active-p)
+           (meow--selection-type))
+      (call-interactively #'meow-left-expand)
+    (call-interactively #'meow-left)))
 
-  (defun schrenker/meow-right-or-expand ()
-    (interactive)
-    (if (and meow--expand-nav-function
-             (region-active-p)
-             (meow--selection-type))
-        (call-interactively #'meow-right-expand)
-      (call-interactively #'meow-right)))
+(defun schrenker/meow-right-or-expand ()
+  (interactive)
+  (if (and meow--expand-nav-function
+           (region-active-p)
+           (meow--selection-type))
+      (call-interactively #'meow-right-expand)
+    (call-interactively #'meow-right)))
 
-  (defun schrenker/meow-visual ()
-    (interactive)
-    (meow--select (meow--make-selection '(expand . char) (point) (point))))
+(defun schrenker/meow-visual ()
+  (interactive)
+  (meow--select (meow--make-selection '(expand . char) (point) (point))))
 
 
-  (defun schrenker/meow-yank-forward ()
-    (interactive)
-    (let ((current-prefix-arg '(4)))
-      (call-interactively 'meow-yank)))
+(defun schrenker/meow-yank-forward ()
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively 'meow-yank)))
 
 
 (defun schrenker/meow-append-to-eol ()

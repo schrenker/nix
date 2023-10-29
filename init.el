@@ -175,6 +175,9 @@
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
 
+(if (member system-type '(windows-nt ms-dos cygwin))
+    (elpaca-no-symlink-mode))
+
 ;; Install use-package support
 (elpaca elpaca-use-package
   ;; Enable :elpaca use-package keyword.

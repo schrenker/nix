@@ -1,10 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{ pkgs, ... }: {
   imports = [ <home-manager/nix-darwin> ];
 
-  environment.systemPackages = with pkgs;
-    [
-      # define packages available on system level for all users
-    ];
+  # environment.systemPackages = with pkgs;
+  #   [
+  #     # define packages available on system level for all users
+  #   ];
 
   # auto upgrade nix package and the daemon service
   services.nix-daemon.enable = true;
@@ -50,6 +50,7 @@
     "crossover"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
+    "google-chrome"
     "hazeover"
     "karabiner-elements"
     "logitech-options"

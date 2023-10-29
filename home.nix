@@ -1,9 +1,4 @@
-{ config, pkgs, lib, ... }:
-let
-  unstable = import <unstable> { config = { allowUnfree = true; }; };
-  # emacsCustom = pkgs.callPackage ./custom/emacs.nix {};
-in {
-
+{ config, pkgs, ... }: {
   home.stateVersion = "23.05";
   home.username = "sebastian";
   home.homeDirectory = "/Users/sebastian";
@@ -114,7 +109,7 @@ in {
 
   home.file = {
     ".config/alacritty/alacritty.yml".source =
-      config.lib.file.mkOutOfStoreSymlink ./dotfiles/alacritty.yml;
+      config.lib.file.mkOutOfStoreSymlink ./dotfiles/darwin-alacritty.yml;
     ".gnupg/gpg-agent.conf".source =
       config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
     ".gnupg/gpg.conf".source =

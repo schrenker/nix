@@ -1840,12 +1840,20 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq vterm-max-scrollback 10000
         vterm-kill-buffer-on-exit t)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-  (add-hook 'vterm-mode-hook (lambda ()
-                               (meow-normal-mode -1)
-                               (add-hook 'meow-normal-mode-hook (lambda () (vterm-copy-mode 1)) nil t)))
+  (with-eval-after-load 'meow
+    (push '(vterm-mode . insert) meow-mode-state-list)
+    (add-hook 'vterm-mode-hook
+              (lambda ()
+                (add-hook 'meow-insert-enter-hook
+                          (lambda () (vterm-copy-mode -1))
+                          nil t)
+                (add-hook 'meow-insert-exit-hook
+                          (lambda () (vterm-copy-mode 1))
+                          nil t))))
   (add-hook 'vterm-mode-hook (lambda ()
                                (setq-local confirm-kill-processes nil)
-                               (display-line-numbers-mode -1))))
+                               (display-line-numbers-mode -1)
+                               (corfu-mode -1))))
 
 (use-package multi-vterm
   :if (not (eq system-type 'windows-nt))

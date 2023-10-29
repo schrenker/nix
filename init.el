@@ -681,11 +681,27 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    ("C-h x" . helpful-command)
    ("C-h F" . helpful-function))
   :init
-  (advice-add 'describe-variable :override 'helpful-variable)
-  (advice-add 'describe-function :override 'helpful-callable)
-  (advice-add 'describe-symbol :override 'helpful-symbol)
-  (advice-add 'describe-key :override 'helpful-key)
-  (advice-add 'describe-command :override 'helpful-command))
+  (advice-add 'describe-variable :around
+              (lambda (orig-fun variable &optional buffer frame)
+                (if (called-interactively-p 'interactive)
+                    (helpful-variable variable)
+                  (funcall orig-fun variable buffer frame))))
+  (advice-add 'describe-function :around
+              (lambda (orig-fun function)
+                (if (called-interactively-p 'interactive)
+                    (helpful-callable function)
+                  (funcall orig-fun function))))
+  (advice-add 'describe-symbol :around
+              (lambda (orig-fun symbol &optional buffer frame)
+                (if (called-interactively-p 'interactive)
+                    (helpful-symbol symbol)
+                  (funcall orig-fun symbol buffer frame))))
+  (advice-add 'describe-command :around
+              (lambda (orig-fun command)
+                (if (called-interactively-p 'interactive)
+                    (helpful-command command)
+                  (funcall orig-fun command))))
+  (advice-add 'describe-key :override 'helpful-key))
 
 (use-package prism
   :commands (prism-set-colors prism-whitespace-mode prism-mode)

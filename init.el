@@ -671,13 +671,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (global-diff-hl-mode))
 
 (use-package helpful
-  :demand t
-  :config
-  (global-set-key (kbd "C-h f") #'helpful-callable)
-  (global-set-key (kbd "C-h v") #'helpful-variable)
-  (global-set-key (kbd "C-h k") #'helpful-key)
-  (global-set-key (kbd "C-h x") #'helpful-command)
-  (global-set-key (kbd "C-h F") #'helpful-function))
+  :bind
+  (("C-h f" . helpful-callable)
+   ("C-h v" . helpful-variable)
+   ("C-h k" . helpful-key)
+   ("C-h x" . helpful-command)
+   ("C-h F" . helpful-function))
+  :init
+  (advice-add 'describe-variable :override 'helpful-variable)
+  (advice-add 'describe-function :override 'helpful-callable)
+  (advice-add 'describe-symbol :override 'helpful-symbol)
+  (advice-add 'describe-key :override 'helpful-key)
+  (advice-add 'describe-command :override 'helpful-command))
 
 (use-package prism
   :commands (prism-set-colors prism-whitespace-mode prism-mode)

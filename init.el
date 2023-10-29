@@ -298,7 +298,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (defun schrenker/switch-hydra ()
     (interactive)
-    (cond ((bound-and-true-p dape--process) (hydra-dape/body))
+    (cond ((bound-and-true-p smerge-mode) (hydra-smerge/body))
+          ((bound-and-true-p dape--process) (hydra-dape/body))
           ((bound-and-true-p git-timemachine-mode) (hydra-git-timemachine/body))
           ((eq major-mode 'org-mode) (hydra-org/body))
           (t (hydra-uictl/body))))
@@ -308,7 +309,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     "
 
    ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^          ^Buffer^
-╭──────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^^
+╭──────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^
       ^_K_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_<_] prev
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
   _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
@@ -316,10 +317,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] PvTerm     [_f_] findf
      ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dired      [_S_] scratch
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
-     ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^
-     ^^^^^^^^^^^^
-     ^^^^^^^^^^                                                     [_TAB_] Switch Hydra   [_q_] quit
- ^^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
+     ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
+     ^^^^^^^^^^^^                                                                          [_TAB_] Hydra
+ ^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
 "
     ("K" windmove-up)
     ("J" windmove-down)
@@ -364,11 +364,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       "
 
   Refile^                 ^Movement             ^Misc
-╭─────────────────────────────────────────────────────────────────^^^^^^
+╭───────────────────────────────────────────────────────────^^^^^^
   [_b_] Tasks/Backlog      [_K_] Prev Heading    [_q_] Quit Hydra
   [_a_] Tasks/Active       [_J_] Next Heading    [_TAB_] Uictl
   [_c_] Tasks/Completed
- ^^^^^^─────────────────────────────────────────────────────────────────╯
+ ^^^^^^───────────────────────────────────────────────────────────╯
 "
       ("b" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
       ("a" (schrenker/refile (buffer-file-name) "Tasks/Active"))
@@ -411,13 +411,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       "
   Stepping^           ^Breakpoints^              ^Info
 ╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_n_]: Next          [_bb_]: Toggle             [_si_]: Info
-  [_i_]: Step in       [_ba_]: Add                [_sm_]: Memory
-  [_o_]: Step out      [_bd_]: Delete             [_ss_]: Select Stack
-  [_c_]: Continue      [_bD_]: Delete all         [_R_]: Repl
-  [_r_]: Restart       [_bl_]: Set log message    [_q_]: Quit Hydra
-  ^^^^                                            [_Q_]: Quit Dape
-  ^^^^                                            [_TAB_] Uictl
+  [_n_]: Next          [_bb_]: Toggle             [_si_]:  Info
+  [_i_]: Step in       [_ba_]: Add                [_sm_]:  Memory
+  [_o_]: Step out      [_bd_]: Delete             [_ss_]:  Select Stack
+  [_c_]: Continue      [_bD_]: Delete all         [_R_]:   Repl
+  [_r_]: Restart       [_bl_]: Set log message    [_q_]:   Quit Hydra
+  ^^^^                                            [_Q_]:   Quit Dape
+  ^^^^                                            [_TAB_]: Uictl
  ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
       ("n" dape-next)
@@ -436,7 +436,42 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ("R"  dape-repl)
       ("TAB" hydra-uictl/body :color blue)
       ("q" nil :color blue)
-      ("Q" dape-quit :color blue))))
+      ("Q" dape-quit :color blue)))
+
+  (defun schrenker/smerge-repeatedly ()
+    (interactive)
+    (smerge-mode 1)
+    (hydra-smerge/body))
+  (defhydra hydra-smerge (:hint nil)
+    "
+  Move^         Keep^^^            Diff^^               Misc
+╭─────────────────────────────────────────────────────────────────────^^^^^^^
+  [_J_]: Next   [_b_]:   Base      [_<_]: Upper/Base    [_c_]:   Combine
+  [_K_]: Prev   [_u_]:   Upper     [_=_]: Upper/Lower   [_r_]:   Resolve
+ ^^             [_l_]:   Lower     [_>_]: Base/Lower    [_d_]:   Kill Current
+ ^^             [_a_]:   All       [_R_]: Refine        [_q_]:   Quit Hydra
+ ^^             [_RET_]: Current   [_E_]: Ediff         [_Q_]:   Quit Smerge
+ ^^^^^^                                                 [_TAB_]: Uictl
+ ^^^^^^^^─────────────────────────────────────────────────────────────────────╯
+"
+    ("J"  smerge-next)
+    ("K"  smerge-prev)
+    ("b"  smerge-keep-base)
+    ("u"  smerge-keep-upper)
+    ("l"  smerge-keep-lower)
+    ("a"  smerge-keep-all)
+    ("RET" smerge-keep-current)
+    ("<"  smerge-diff-base-upper)
+    ("="  smerge-diff-upper-lower)
+    (">"  smerge-diff-base-lower)
+    ("R"  smerge-refine)
+    ("E"  smerge-ediff)
+    ("c"  smerge-combine-with-next)
+    ("r"  smerge-resolve)
+    ("d"  smerge-kill-current)
+    ("TAB" hydra-uictl/body :color blue)
+    ("q" nil :color blue)
+    ("Q" (lambda () (interactive)(smerge-auto-leave)) :color blue)))
 
 (use-package hydra-posframe
   :if (display-graphic-p)
@@ -621,32 +656,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("<escape>" . meow-cancel-selection))
   :config
   (require 'transient)
-  (defun schrenker/smerge-repeatedly ()
-    "Perform smerge actions again and again"
-    (interactive)
-    (smerge-mode 1)
-    (smerge-transient))
-  (transient-define-prefix smerge-transient ()
-    [["Move"
-      ("n" "next" (lambda () (interactive) (ignore-errors (smerge-next)) (schrenker/smerge-repeatedly)))
-      ("p" "previous" (lambda () (interactive) (ignore-errors (smerge-prev)) (schrenker/smerge-repeatedly)))]
-     ["Keep"
-      ("b" "base" (lambda () (interactive) (ignore-errors (smerge-keep-base)) (schrenker/smerge-repeatedly)))
-      ("u" "upper" (lambda () (interactive) (ignore-errors (smerge-keep-upper)) (schrenker/smerge-repeatedly)))
-      ("l" "lower" (lambda () (interactive) (ignore-errors (smerge-keep-lower)) (schrenker/smerge-repeatedly)))
-      ("a" "all" (lambda () (interactive) (ignore-errors (smerge-keep-all)) (schrenker/smerge-repeatedly)))
-      ("RET" "current" (lambda () (interactive) (ignore-errors (smerge-keep-current)) (schrenker/smerge-repeatedly)))]
-     ["Diff"
-      ("<" "upper/base" (lambda () (interactive) (ignore-errors (smerge-diff-base-upper)) (schrenker/smerge-repeatedly)))
-      ("=" "upper/lower" (lambda () (interactive) (ignore-errors (smerge-diff-upper-lower)) (schrenker/smerge-repeatedly)))
-      (">" "base/lower" (lambda () (interactive) (ignore-errors (smerge-diff-base-lower)) (schrenker/smerge-repeatedly)))
-      ("R" "refine" (lambda () (interactive) (ignore-errors (smerge-refine)) (schrenker/smerge-repeatedly)))
-      ("E" "ediff" (lambda () (interactive) (ignore-errors (smerge-ediff)) (schrenker/smerge-repeatedly)))]
-     ["Other"
-      ("c" "combine" (lambda () (interactive) (ignore-errors (smerge-combine-with-next)) (schrenker/smerge-repeatedly)))
-      ("r" "resolve" (lambda () (interactive) (ignore-errors (smerge-resolve)) (schrenker/smerge-repeatedly)))
-      ("k" "kill current" (lambda () (interactive) (ignore-errors (smerge-kill-current)) (schrenker/smerge-repeatedly)))
-      ("q" "quit" (lambda () (interactive) (smerge-auto-leave)))]])
   (transient-append-suffix 'magit-fetch "-p"
     '("-t" "Fetch all tags" ("-t" "--tags")))
   (transient-append-suffix 'magit-pull "-r"

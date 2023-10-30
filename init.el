@@ -1187,7 +1187,8 @@ targets."
                         ("go" . go-ts)
                         ("python" . python-ts)
                         ("py" . python-ts)
-                        ("txt" . text))
+                        ("txt" . text)
+                        ("typst" . typst-ts))
    org-priority-start-cycle-with-default t
    org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates

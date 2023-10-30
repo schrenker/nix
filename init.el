@@ -1615,6 +1615,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; (global-tempel-abbrev-mode)
   )
 
+(use-package typst-ts-mode
+  :elpaca (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+  :init
+  (setq typst-ts-mode-watch-options "--open"))
+
 (use-package mood-line
   :config
   (setq mood-line-show-eol-style t
@@ -1681,6 +1686,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           (black "#181818"))
       (progn
         (when (eq system-type 'darwin) (schrenker/set-alacritty-theme appearance))
+
         (setq org-modern-todo-faces org-todo-keyword-faces
               org-modern-priority-faces org-priority-faces
               org-todo-keyword-faces
@@ -1750,34 +1756,32 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
         (set-face-background 'hl-line bg-alt)
 
-        (with-eval-after-load 'org
-          (set-face-attribute 'org-level-1 nil :background orange-bg :extend t :height 1.1)
-          (set-face-attribute 'org-level-2 nil :background green-bg :extend t :height 1.1)
-          (set-face-attribute 'org-level-3 nil :background blue-bg :extend t :height 1.1)
-          (set-face-attribute 'org-level-4 nil :background yellow-bg :extend t :height 1.1)
-          (set-face-attribute 'org-level-5 nil :background cyan-bg :extend t :height 1.1)
-          (set-face-attribute 'org-level-6 nil :background green-bg :extend t :height 1.1)
-          (set-face-attribute 'org-level-7 nil :background red-bg :extend t :height 1.1)
-          (set-face-attribute 'org-level-8 nil :background blue-bg :extend t :height 1.1)
-          (set-face-background 'org-block bg-alt)
-          (set-face-extend 'org-block-begin-line t)
-          (set-face-extend 'org-block-end-line t)
-          (set-face-attribute 'link nil :foreground cyan :slant 'italic )
-          (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt))
+        (set-face-attribute 'org-level-1 nil :background orange-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-2 nil :background green-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-3 nil :background blue-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-4 nil :background yellow-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-5 nil :background cyan-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-6 nil :background green-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-7 nil :background red-bg :extend t :height 1.1)
+        (set-face-attribute 'org-level-8 nil :background blue-bg :extend t :height 1.1)
+        (set-face-background 'org-block bg-alt)
+        (set-face-extend 'org-block-begin-line t)
+        (set-face-extend 'org-block-end-line t)
+        (set-face-attribute 'link nil :foreground cyan :slant 'italic )
+        (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt)
 
-        (with-eval-after-load 'org-modern
-          (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
-          (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)
-          (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)
-          (set-face-attribute 'org-modern-time-active nil :foreground fg-emph :background bg-main :inverse-video t)
-          (set-face-attribute 'org-modern-time-inactive nil :foreground fg-alt :background bg-main :inverse-video t)
-          (custom-set-faces `(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground ,violet :inverse-video t)))))
-          (custom-set-faces `(org-modern-statistics ((t (:inherit org-modern-label :weight bold :background ,bg-alt :foreground ,green)))))
-          (advice-add
-           'org-modern--update-label-face
-           :override
-           (lambda (&rest r)
-             (set-face-attribute 'org-modern-label nil :height 1.0 :box nil))))
+        (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
+        (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)
+        (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)
+        (set-face-attribute 'org-modern-time-active nil :foreground fg-emph :background bg-main :inverse-video t)
+        (set-face-attribute 'org-modern-time-inactive nil :foreground fg-alt :background bg-main :inverse-video t)
+        (custom-set-faces `(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground ,violet :inverse-video t)))))
+        (custom-set-faces `(org-modern-statistics ((t (:inherit org-modern-label :weight bold :background ,bg-alt :foreground ,green)))))
+        (advice-add
+         'org-modern--update-label-face
+         :override
+         (lambda (&rest r)
+           (set-face-attribute 'org-modern-label nil :height 1.0 :box nil)))
 
         (with-eval-after-load 'ace-window
           (custom-set-faces `(aw-leading-char-face ((t (:inherit org-modern-label :width expanded :weight bold :background ,magenta :foreground ,bg-main :height 3.0 ))))))
@@ -2088,7 +2092,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           (rust "https://github.com/tree-sitter/tree-sitter-rust")
           (toml "https://github.com/tree-sitter/tree-sitter-toml")
           (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-          (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))))
+          (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+          (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src")))))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.

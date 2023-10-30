@@ -190,10 +190,6 @@
 
 (elpaca-wait)
 
-(add-hook 'elpaca-after-init-hook (lambda ()
-                                    (when (schrenker/wsl2-p)
-                                      (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
-
 (use-package exec-path-from-shell
   :config
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
@@ -409,16 +405,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (with-eval-after-load 'dape
     (defhydra hydra-dape (:hint nil)
       "
-  Stepping^           ^Breakpoints^              ^Info
-╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_n_]: Next          [_bb_]: Toggle             [_si_]:  Info
-  [_i_]: Step in       [_ba_]: Add                [_sm_]:  Memory
-  [_o_]: Step out      [_bd_]: Delete             [_ss_]:  Select Stack
-  [_c_]: Continue      [_bD_]: Delete all         [_R_]:   Repl
-  [_r_]: Restart       [_bl_]: Set log message    [_q_]:   Quit Hydra
-  ^^^^                                            [_Q_]:   Quit Dape
-  ^^^^                                            [_TAB_]: Uictl
- ^^^^^^─────────────────────────────────────────────────────────────────╯
+
+  Stepping^          ^Breakpoints^             ^Info
+╭─────────────────────────────────────────────────────────────^^^^^^
+  [_n_] Next          [_bb_] Toggle             [_si_] Info
+  [_i_] Step in       [_ba_] Add                [_sm_] Memory
+  [_o_] Step out      [_bd_] Delete             [_ss_] Select Stack
+  [_c_] Continue      [_bD_] Delete all         [_R_]  Repl
+  [_r_] Restart       [_bl_] Set log message    [_q_]  Quit Hydra
+  ^^^^                                          [_Q_]  Quit Dape
+  ^^^^                                          [_TAB_] Uictl
+ ^^^^^^─────────────────────────────────────────────────────────────╯
 "
       ("n" dape-next)
       ("i" dape-step-in)
@@ -444,15 +441,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (hydra-smerge/body))
   (defhydra hydra-smerge (:hint nil)
     "
-  Move^         Keep^^^            Diff^^               Misc
-╭─────────────────────────────────────────────────────────────────────^^^^^^^
-  [_J_]: Next   [_b_]:   Base      [_<_]: Upper/Base    [_c_]:   Combine
-  [_K_]: Prev   [_u_]:   Upper     [_=_]: Upper/Lower   [_r_]:   Resolve
- ^^             [_l_]:   Lower     [_>_]: Base/Lower    [_d_]:   Kill Current
- ^^             [_a_]:   All       [_R_]: Refine        [_q_]:   Quit Hydra
- ^^             [_RET_]: Current   [_E_]: Ediff         [_Q_]:   Quit Smerge
- ^^^^^^                                                 [_TAB_]: Uictl
- ^^^^^^^^─────────────────────────────────────────────────────────────────────╯
+
+  Move^       ^Keep^^            Diff^^              Misc
+╭───────────────────────────────────────────────────────────────^^^^^^^
+  [_J_] Next   [_b_]   Base      [_<_] Upper/Base    [_c_] Combine
+  [_K_] Prev   [_u_]   Upper     [_=_] Upper/Lower   [_r_] Resolve
+ ^^            [_l_]   Lower     [_>_] Base/Lower    [_d_] Kill Current
+ ^^            [_a_]   All       [_R_] Refine        [_q_] Quit Hydra
+ ^^            [_RET_] Current   [_E_] Ediff         [_Q_] Quit Smerge
+ ^^^^^^                                              [_TAB_] Uictl
+ ^^^^^^^^───────────────────────────────────────────────────────────────╯
 "
     ("J"  smerge-next)
     ("K"  smerge-prev)
@@ -2424,6 +2422,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (meow-global-mode 1))
 
 (elpaca-process-queues)
+
+(when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))
 
 (provide 'init)
 ;;; init.el ends here.

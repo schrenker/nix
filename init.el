@@ -198,7 +198,7 @@
     (exec-path-from-shell-initialize)))
 
 (use-package envrc
-  :if (executable-find "direnv")
+  :if (or (executable-find "direnv") (executable-find "nix"))
   :hook (after-init . envrc-global-mode)
   :init
   (defvar envrc-after-update-hook nil)
@@ -1555,25 +1555,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package run-command
   :bind ("C-x c" . run-command)
   :config
-  (setq run-command-default-runner 'run-command-runner-vterm)
-  (defun schrenker/yaegi:run-nix ()
-
-    (when-let ((file-name (buffer-file-name))
-               (yaegi-path (car (cl-member "yaegi" (split-string (getenv "PATH") ":") :test #'string-match-p))))
-      (when (and file-name
-                 yaegi-path
-                 (equal (file-name-extension file-name) "go"))
-        (list
-         (list
-          :command-name "yaegi:run-nix"
-          :runner 'run-command-runner-term
-          :command-line (format "%s %s" (concat yaegi-path "/yaegi") file-name)
-          :hook #'envrc-allow
-          :display
-          (format "Run `%s' go file with yaegi"
-                  (file-name-nondirectory file-name)))))))
-
-  (add-to-list 'run-command-recipes 'schrenker/yaegi:run-nix))
+  (load (concat user-emacs-directory "lisp/run-command.el") t t)
+  (setq run-command-default-runner 'run-command-runner-compile))
 
 (use-package flymake
   :elpaca nil

@@ -1686,9 +1686,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (progn
         (when (eq system-type 'darwin) (schrenker/set-alacritty-theme appearance))
 
-        (setq org-modern-todo-faces org-todo-keyword-faces
-              org-modern-priority-faces org-priority-faces
-              org-todo-keyword-faces
+        (setq org-todo-keyword-faces
               `(("NEXT" :foreground ,yellow :weight bold :inverse-video t)
                 ("TODO" :foreground ,magenta :weight bold :inverse-video t)
                 ("INPROGRESS" :foreground ,green :weight bold :inverse-video t)
@@ -1738,7 +1736,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                 (red . "#dc322f")
                 (teal . "#35a69c")
                 (violet . "#6c71c4")
-                (yellow . "#b58900")))
+                (yellow . "#b58900"))
+              org-modern-todo-faces org-todo-keyword-faces
+              org-modern-priority-faces org-priority-faces)
 
         (mapc #'disable-theme custom-enabled-themes)
         (pcase appearance

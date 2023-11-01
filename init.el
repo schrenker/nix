@@ -264,7 +264,8 @@
      (call-interactively ,form)))
 
 (use-package hydra
-  :bind ("M-o" . 'hydra-uictl/body)
+  :bind (("M-o" . 'hydra-uictl/body)
+         ("M-O" . 'schrenker/switch-hydra))
   :init
   (defun schrenker/zoom-frame (&optional amt frame)
     "Increaze FRAME font size by amount AMT. Defaults to selected
@@ -667,9 +668,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package with-editor)
 
 (use-package git-timemachine
-  :commands (git-timemachine)
-  :bind (:map git-timemachine-mode-map
-              ("M-O" . hydra-git-timemachine/body)))
+  :commands (git-timemachine))
 
 (use-package diff-hl
   :config
@@ -1107,7 +1106,6 @@ targets."
   :elpaca nil
   :bind (("C-c n n" . org-capture)
          :map org-mode-map
-         ("M-O" . hydra-org/body)
          ("M-j" . org-metadown)
          ("M-J" . org-shiftmetadown)
          ("M-k" . org-metaup)

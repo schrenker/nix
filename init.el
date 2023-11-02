@@ -360,18 +360,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (defhydra hydra-org (:hint nil)
       "
 
-  Refile^                 ^Movement             ^Misc
-╭───────────────────────────────────────────────────────────^^^^^^
-  [_b_] Tasks/Backlog      [_K_] Prev Heading    [_q_] Quit Hydra
-  [_a_] Tasks/Active       [_J_] Next Heading    [_TAB_] Uictl
-  [_c_] Tasks/Completed
- ^^^^^^───────────────────────────────────────────────────────────╯
+  Movement^           ^Refile^                ^Misc
+╭──────────────────────────────────────────────────────────^^^^^^
+  [_K_] Prev Heading   [_b_] Tasks/Backlog     [_s_] Sort
+  [_J_] Next Heading   [_a_] Tasks/Active      [_q_] Quit Hydra
+  ^^                   [_c_] Tasks/Completed   [_TAB_] Uictl
+ ^^^^^^──────────────────────────────────────────────────────────╯
 "
+      ("K" outline-previous-heading)
+      ("J" outline-next-heading)
       ("b" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
       ("a" (schrenker/refile (buffer-file-name) "Tasks/Active"))
       ("c" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
-      ("K" outline-previous-heading)
-      ("J" outline-next-heading)
+      ("s" (schrenker/sort-priority-then-state))
       ("TAB" hydra-uictl/body :color blue)
       ("q" nil :color blue)))
 

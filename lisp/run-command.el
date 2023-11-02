@@ -13,12 +13,13 @@
       (format "Run `%s' go file with yaegi"
               (file-name-nondirectory file-name))))
 
-   (when-let ((file-name (buffer-file-name))
-              (dos2unix-path (executable-find "dos2unix")))
-     (list
-      :command-name "dos2unix"
-      :command-line (format "dos2unix %s" file-name)
-      :display
-      (format "Run dos2unix on file `%s'" (file-name-nondirectory file-name))))))
+   ;; (when-let ((file-name (buffer-file-name))
+   ;;            (dos2unix-path (executable-find "dos2unix")))
+   ;;   (list
+   ;;    :command-name "dos2unix"
+   ;;    :command-line (format "dos2unix %s" file-name)
+   ;;    :display
+   ;;    (format "Run dos2unix on file `%s'" (file-name-nondirectory file-name))))
+   ))
 
 (add-to-list 'run-command-recipes 'schrenker/run-command-recipes-local)

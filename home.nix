@@ -23,7 +23,9 @@
     kubectl
     kubectx
     libgccjit
+    nil
     nix-direnv
+    nixfmt
     nodejs
     pinentry_mac
     ripgrep

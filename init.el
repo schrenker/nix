@@ -363,8 +363,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   Movement^           ^Refile^                ^Misc
 ╭──────────────────────────────────────────────────────────^^^^^^
   [_K_] Prev Heading   [_b_] Tasks/Backlog     [_s_] Sort
-  [_J_] Next Heading   [_a_] Tasks/Active      [_q_] Quit Hydra
-  ^^                   [_c_] Tasks/Completed   [_TAB_] Uictl
+  [_J_] Next Heading   [_a_] Tasks/Active      [_/_] Find
+  ^^                   [_c_] Tasks/Completed   [_q_] Quit Hydra
+  ^^^^                                         [_TAB_] Uictl
  ^^^^^^──────────────────────────────────────────────────────────╯
 "
       ("K" outline-previous-heading)
@@ -373,6 +374,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ("a" (schrenker/refile (buffer-file-name) "Tasks/Active"))
       ("c" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
       ("s" (schrenker/sort-priority-then-state))
+      ("/" consult-org-heading)
       ("TAB" hydra-uictl/body :color blue)
       ("q" nil :color blue)))
 

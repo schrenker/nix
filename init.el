@@ -198,7 +198,7 @@
     (exec-path-from-shell-initialize)))
 
 (use-package envrc
-  :if (or (executable-find "direnv") (executable-find "nix"))
+  :if (or (executable-find "direnv") (executable-find "nix") (eq system-type 'darwin))
   :hook (after-init . envrc-global-mode)
   :init
   (defvar envrc-after-update-hook nil)

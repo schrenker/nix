@@ -67,30 +67,38 @@
     plugins = [
       {
         name = "plugin-bang-bang";
-        src = builtins.fetchGit {
-          url = "https://github.com/oh-my-fish/plugin-bang-bang";
-          ref = "master";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-bang-bang";
+          rev = "ec991b8";
+          hash = "sha256-oPPCtFN2DPuM//c48SXb4TrFRjJtccg0YPXcAo0Lxq0=";
         };
       }
       {
         name = "plugin-foreign-env";
-        src = builtins.fetchGit {
-          url = "https://github.com/oh-my-fish/plugin-foreign-env";
-          ref = "master";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-foreign-env";
+          rev = "7f0cf09";
+          hash = "sha256-4+k5rSoxkTtYFh/lEjhRkVYa2S4KEzJ/IJbyJl+rJjQ=";
         };
       }
       {
         name = "theme-solarfish";
-        src = builtins.fetchGit {
-          url = "https://github.com/thesilican/theme-solarfish";
-          ref = "master";
+        src = pkgs.fetchFromGitHub {
+          owner = "thesilican";
+          repo = "theme-solarfish";
+          rev = "48d4f4c";
+          hash = "sha256-Zksi3+l/464il3IB3Rs05KSID6rhrglsZfNdfTaYYnA=";
         };
       }
       {
         name = "plugin-direnv";
-        src = builtins.fetchGit {
-          url = "https://github.com/oh-my-fish/plugin-direnv";
-          ref = "master";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-direnv";
+          rev = "0221a4d";
+          hash = "sha256-50tMKwtXtJBpgZ42JfJKyIWgusu4xZ9/yCiGKDfqyhE=";
         };
       }
     ];

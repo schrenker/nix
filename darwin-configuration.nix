@@ -1,6 +1,4 @@
 { pkgs, ... }: {
-  imports = [ <home-manager/nix-darwin> ];
-
   # environment.systemPackages = with pkgs;
   #   [
   #     # define packages available on system level for all users

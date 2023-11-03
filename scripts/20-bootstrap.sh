@@ -5,6 +5,7 @@ sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
 sudo mv /etc/shells /etc/shells.bkp
 
 echo "Linking certificates for the build time"
+sudo rm /etc/ssl/certs/ca-certificates.crt
 sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
 
 cd ~/.config/nix

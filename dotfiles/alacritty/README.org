@@ -1,0 +1,12 @@
+* Assume Unchanged
+theme.yml file is set to not detect any changes to it. It is because it's being changed directly whenever my theme switches on macos. Therefore it would trigger unnecessary changes in git repository, that I could potentially stage in as a mistake, only for it to be changed back again soon.
+
+Command ran:
+#+begin_src bash
+git update-index --assume-unchanged ./dotfiles/alacritty/theme.yml
+#+end_src
+
+To undo:
+#+begin_src bash
+git update-index --no-assume-unchanged ./dotfiles/alacritty/theme.yml
+#+end_src

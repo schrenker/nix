@@ -23,4 +23,7 @@ echo "/etc/profiles/per-user/sebastian/bin/fish" | sudo tee -a /etc/shells
 chsh -s /etc/profiles/per-user/sebastian/bin/fish
 
 echo "Activate the environment from PATH"
-darwin-rebuild switch --flake .#Macbook
+darwin-rebuild switch --flake .
+
+echo "Cleanup"
+rm -r result

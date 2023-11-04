@@ -1,6 +1,7 @@
 ulimit -n 1024
 
 fish_vi_key_bindings
+set -gx fish_key_bindings fish_vi_key_bindings
 
 function __nixos_path_fix -d "fix PATH value"
     set -l result (string replace '$HOME' "$HOME" $__nixos_path_original)
@@ -32,8 +33,11 @@ alias em='COLORTERM=TRUECOLOR emacs -nw'
 
 if [ "$INSIDE_EMACS" = vterm ]
     fish_default_key_bindings
+    set -gx fish_key_bindings fish_default_key_bindings
     function clear
         vterm_printf "51;Evterm-clear-scrollback"
         tput clear
     end
 end
+
+set -e -U fish_key_bindings

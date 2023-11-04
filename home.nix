@@ -50,6 +50,8 @@
       k = "kubectl";
       kx = "kubectx";
       kns = "kubens";
+      drs = "darwin-rebuild switch --flake ~/.config/nix";
+      nrs = "nixos-rebuild switch --flake ~/.config/nix";
     };
 
     functions = {

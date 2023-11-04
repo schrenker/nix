@@ -1,2 +1,0 @@
-secret/** filter=git-crypt diff=git-crypt
-emacs/secret/** filter=git-crypt diff=git-crypt

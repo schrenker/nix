@@ -310,8 +310,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ^_K_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_<_] prev
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
   _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
-      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
-      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] PvTerm     [_f_] findf
+      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] eat        [_B_] ibuffer
+      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] eat proj   [_f_] findf
      ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dired      [_S_] scratch
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
      ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
@@ -343,8 +343,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     ("." popper-toggle-latest)
     ("," popper-cycle)
     ("'" popper-toggle-type)
-    ("v" multi-vterm-dedicated-toggle)
-    ("V" multi-vterm-project)
+    ("v" eat)
+    ("V" eat-project)
     ("T" dirvish-dwim)
     ("<" previous-buffer)
     (">" next-buffer)
@@ -1892,6 +1892,27 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                (setq-local confirm-kill-processes nil)
                                (display-line-numbers-mode -1)
                                (corfu-mode -1))))
+
+(use-package eat
+  :elpaca
+  (eat :host "codeberg.org"
+       :repo "akib/emacs-eat"
+       :files ("*.el" ("term" "term/*.el") "*.texi"
+               "*.ti" ("terminfo/e" "terminfo/e/*")
+               ("terminfo/65" "terminfo/65/*")
+               ("integration" "integration/*")
+               (:exclude ".dir-locals.el" "*-tests.el")))
+  :config
+  (with-eval-after-load 'meow
+    (push '(eat-mode . insert) meow-mode-state-list)
+    (add-hook 'eat-mode-hook
+              (lambda ()
+                (add-hook 'meow-insert-enter-hook
+                          (lambda () (eat-semi-char-mode))
+                          nil t)
+                (add-hook 'meow-insert-exit-hook
+                          (lambda () (eat-line-mode))
+                          nil t)))))
 
 (use-package multi-vterm
   :if (not (eq system-type 'windows-nt))

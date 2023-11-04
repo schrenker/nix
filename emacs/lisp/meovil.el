@@ -52,7 +52,9 @@
 (defun schrenker/meow-yank-forward ()
   (interactive)
   (let ((current-prefix-arg '(4)))
-    (call-interactively 'meow-yank)))
+    (if (derived-mode-p 'vterm-mode)
+        (call-interactively 'vterm-yank)
+      (call-interactively 'meow-yank))))
 
 
 (defun schrenker/meow-append-to-eol ()

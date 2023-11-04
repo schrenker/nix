@@ -1868,12 +1868,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (defun schrenker/CC-out-of-copy-mode ()
     (interactive)
     (meow-normal-mode -1)
-    (call-interactively #'schrenker/meow-append-to-end-of-line)
+    (call-interactively #'schrenker/meow-append-to-eol)
     (vterm-send "C-c"))
   :bind*
   (:map vterm-copy-mode-map
-        ("C-c C-c" . schrenker/CC-out-of-copy-mode)
-        ("C-y" . vterm-yank))
+        ("C-c C-c" . schrenker/CC-out-of-copy-mode))
   :config
   (setq vterm-max-scrollback 10000
         vterm-kill-buffer-on-exit t)

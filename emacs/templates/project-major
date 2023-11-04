@@ -1,0 +1,38 @@
+#+title: ${title}
+#+startup: showeverything
+#+date: %U
+#+modified: [1970-01-01 Thu 00:00]
+#+filetags: :project:
+
+* TOC                                                                   :TOC:
+
+* Goals
+
+* Tasks
+
+** Backlog
+
+** Active
+
+** Completed
+
+* Notes
+
+* Repositories
+
+* Documentation
+
+* Investigations
+
+* Secrets                                                  :crypt:noexport_1:
+:PROPERTIES:
+:CRYPTKEY: 839AB1D6FFFBCA335D34F79EEB3A7B93512AAEEC
+:END:
+-----BEGIN PGP MESSAGE-----
+
+hF4DGCGFOnC1fLgSAQdASvl1zdNs80NWiQzNbk+jex5y54bEO/y4Ns0EGzuOlTcw
+S0J/3uX3gD182MgNrMeIfFjLfBFEi8Oy/yR8+g1XUcH7wv9l+R5j1QNnbJ3hG9vI
+0jsBqq9MUlKc/T2VZRX5An79kZ3MtneXCwRUE+xopOL5v7gPmEn7ei2aiaFDATAs
+C2+dSr0byxCqlWd2gw==
+=4iXA
+-----END PGP MESSAGE-----

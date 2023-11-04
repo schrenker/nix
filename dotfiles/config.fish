@@ -31,7 +31,7 @@ set -gx GOPATH ~/.local/go
 
 alias em='COLORTERM=TRUECOLOR emacs -nw'
 
-if [ "$INSIDE_EMACS" = vterm ]
+if [ -n $INSIDE_EMACS ]
     fish_default_key_bindings
     set -gx fish_key_bindings fish_default_key_bindings
     function clear

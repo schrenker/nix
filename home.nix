@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ lib, config, pkgs, ... }: {
   home.stateVersion = "23.05";
   home.username = "sebastian";
   home.homeDirectory = "/Users/sebastian";
@@ -121,25 +121,20 @@
 
   home.file = {
     ".config/alacritty/alacritty.yml".source =
-      config.lib.file.mkOutOfStoreSymlink ./dotfiles/darwin-alacritty.yml;
-    ".gnupg/gpg-agent.conf".source =
-      config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg-agent.conf;
-    ".gnupg/gpg.conf".source =
-      config.lib.file.mkOutOfStoreSymlink ./dotfiles/gpg.conf;
-    ".config/lulublock.txt".source =
-      config.lib.file.mkOutOfStoreSymlink ./dotfiles/lulublock.txt;
-    ".config/iterm2/com.googlecode.iterm2.plist".source =
-      config.lib.file.mkOutOfStoreSymlink
-      ./dotfiles/iterm2/com.googlecode.iterm2.plist;
-
-    "Library/Application Support/iTerm2/Scripts/AutoLaunch/auto_dark_mode.py".source =
-      config.lib.file.mkOutOfStoreSymlink ./dotfiles/iterm2/auto_dark_mode.py;
-
-    ".ssh/git".source = config.lib.file.mkOutOfStoreSymlink ./secrets/git;
-    ".ssh/default".source =
-      config.lib.file.mkOutOfStoreSymlink ./secrets/default;
-    ".ssh/config".source =
-      config.lib.file.mkOutOfStoreSymlink ./secrets/ssh_config;
+      ./dotfiles/alacritty/darwin-alacritty.yml;
+    ".gnupg/gpg-agent.conf".source = ./dotfiles/gpg-agent.conf;
+    ".gnupg/gpg.conf".source = ./dotfiles/gpg.conf;
+    ".config/lulublock.txt".source = ./dotfiles/lulublock.txt;
+    ".ssh/git".source = ./secrets/git;
+    ".ssh/default".source = ./secrets/default;
+    ".ssh/config".source = ./secrets/ssh_config;
   };
+
+  # Linking dynamic files that might change on the destination.
+  # While this doesn't guarantee immutability anymore, I am willing to make this sacrifice for these files.
+  # Note that this list should be kept as small as possible, and expanded only if there is no other way.
+  home.activation.copyFiles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ln -sf ~/.config/nix/dotfiles/alacritty/theme.yml ~/.config/alacritty/theme.yml
+  '';
 
 }

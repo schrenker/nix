@@ -21,6 +21,70 @@
         "type": "github"
       }
     },
+    "fish-plugin-bang-bang": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1690139185,
+        "narHash": "sha256-oPPCtFN2DPuM//c48SXb4TrFRjJtccg0YPXcAo0Lxq0=",
+        "owner": "oh-my-fish",
+        "repo": "plugin-bang-bang",
+        "rev": "ec991b80ba7d4dda7a962167b036efc5c2d79419",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oh-my-fish",
+        "repo": "plugin-bang-bang",
+        "type": "github"
+      }
+    },
+    "fish-plugin-direnv": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1613331528,
+        "narHash": "sha256-50tMKwtXtJBpgZ42JfJKyIWgusu4xZ9/yCiGKDfqyhE=",
+        "owner": "oh-my-fish",
+        "repo": "plugin-direnv",
+        "rev": "0221a4d9080b5f492f1b56ff7b2dc6287f58d47f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oh-my-fish",
+        "repo": "plugin-direnv",
+        "type": "github"
+      }
+    },
+    "fish-plugin-foreign-env": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1692819433,
+        "narHash": "sha256-4+k5rSoxkTtYFh/lEjhRkVYa2S4KEzJ/IJbyJl+rJjQ=",
+        "owner": "oh-my-fish",
+        "repo": "plugin-foreign-env",
+        "rev": "7f0cf099ae1e1e4ab38f46350ed6757d54471de7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oh-my-fish",
+        "repo": "plugin-foreign-env",
+        "type": "github"
+      }
+    },
+    "fish-plugin-theme-solarfish": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1640634548,
+        "narHash": "sha256-Zksi3+l/464il3IB3Rs05KSID6rhrglsZfNdfTaYYnA=",
+        "owner": "thesilican",
+        "repo": "theme-solarfish",
+        "rev": "48d4f4ce27085737d1a9a67689bf1e6e3527ad23",
+        "type": "github"
+      },
+      "original": {
+        "owner": "thesilican",
+        "repo": "theme-solarfish",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -60,6 +124,10 @@
     "root": {
       "inputs": {
         "darwin": "darwin",
+        "fish-plugin-bang-bang": "fish-plugin-bang-bang",
+        "fish-plugin-direnv": "fish-plugin-direnv",
+        "fish-plugin-foreign-env": "fish-plugin-foreign-env",
+        "fish-plugin-theme-solarfish": "fish-plugin-theme-solarfish",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs"
       }

@@ -1,7 +1,7 @@
-{ lib, config, pkgs, ... }: {
+{ inputs, lib, pkgs, vars, ... }: {
   home.stateVersion = "23.05";
   home.username = "sebastian";
-  home.homeDirectory = "/Users/sebastian";
+  home.homeDirectory = "/${vars.home}/sebastian";
 
   programs.home-manager.enable = true;
 
@@ -71,39 +71,19 @@
     plugins = [
       {
         name = "plugin-bang-bang";
-        src = pkgs.fetchFromGitHub {
-          owner = "oh-my-fish";
-          repo = "plugin-bang-bang";
-          rev = "ec991b8";
-          hash = "sha256-oPPCtFN2DPuM//c48SXb4TrFRjJtccg0YPXcAo0Lxq0=";
-        };
+        src = inputs.fish-plugin-bang-bang;
       }
       {
         name = "plugin-foreign-env";
-        src = pkgs.fetchFromGitHub {
-          owner = "oh-my-fish";
-          repo = "plugin-foreign-env";
-          rev = "7f0cf09";
-          hash = "sha256-4+k5rSoxkTtYFh/lEjhRkVYa2S4KEzJ/IJbyJl+rJjQ=";
-        };
+        src = inputs.fish-plugin-foreign-env;
       }
       {
         name = "theme-solarfish";
-        src = pkgs.fetchFromGitHub {
-          owner = "thesilican";
-          repo = "theme-solarfish";
-          rev = "48d4f4c";
-          hash = "sha256-Zksi3+l/464il3IB3Rs05KSID6rhrglsZfNdfTaYYnA=";
-        };
+        src = inputs.fish-plugin-theme-solarfish;
       }
       {
         name = "plugin-direnv";
-        src = pkgs.fetchFromGitHub {
-          owner = "oh-my-fish";
-          repo = "plugin-direnv";
-          rev = "0221a4d";
-          hash = "sha256-50tMKwtXtJBpgZ42JfJKyIWgusu4xZ9/yCiGKDfqyhE=";
-        };
+        src = inputs.fish-plugin-direnv;
       }
     ];
   };

@@ -974,19 +974,20 @@ targets."
         (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
           (if (popper--suppress-p buffer)
               (display-buffer-no-window buffer '((allow-no-window . t)))
-            (popper-select-popup-at-bottom buffer _act))))
-  (setq popper-reference-buffers
+            (popper-select-popup-at-bottom buffer _act)))
+        popper-reference-buffers
         '("\\*Messages\\*"
           "\\*Warnings\\*"
           "Output\\*$"
           "\\*Async Shell Command\\*"
           help-mode
           helpful-mode
-          compilation-mode))
-  (add-hook 'org-mode-hook
-            (lambda () (setq-local popper-reference-buffers (append
-                                                        (remove "\\*Warnings\\*" popper-reference-buffers)
-                                                        '(("\\*Warnings\\*" . hide))))))
+          compilation-mode)
+        popper-group-function #'popper-group-by-project)
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda () (setq-local popper-reference-buffers (append
+  ;;                                                       (remove "\\*Warnings\\*" popper-reference-buffers)
+  ;;                                                       '(("\\*Warnings\\*" . hide))))))
   (popper-mode 1)
   (popper-echo-mode 1))
 
@@ -1011,7 +1012,7 @@ targets."
   (add-to-list 'savehist-additional-variables 'perject--previous-collections)
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
-  (setq perject-load-at-startup '("dotfiles")
+  (setq perject-load-at-startup 'all
         perject-save-frames nil
         perject-frame-title-format nil
         perject-switch-to-new-collection t
@@ -1020,26 +1021,24 @@ targets."
         perject-close-default '(t nil t)
         perject-delete-default '(nil t nil t))
 
-  (setq popper-group-function #'popper-group-by-project)
-
   (perject-mode 1)
   :bind
   (:map perject-mode-map
-        ("C-<tab> C-<tab> c" . perject-create)
-        ("C-<tab> C-<tab> r" . perject-rename)
-        ("C-<tab> C-<tab> R" . perject-rename-collection)
-        ("C-<tab> C-<tab> K" . perject-delete)
-        ("C-<tab> C-<tab> e" . perject-open-close-or-reload)
-        ("C-<tab> C-<tab> s" . perject-sort)
-        ("C-<tab> C-<tab> n" . perject-next-project)
-        ("C-<tab> C-<tab> p" . perject-previous-project)
-        ("C-<tab> C-<tab> N" . perject-next-collection)
-        ("C-<tab> C-<tab> P" . perject-previous-collection)
-        ("C-<tab> C-<tab> TAB" . schrenker/perject-switch-project-global)
-        ("C-<tab> C-<tab> C-<tab>" . perject-switch)
-        ("C-<tab> C-<tab> a" . perject-add-buffer-to-project)
-        ("C-<tab> C-<tab> d" . perject-remove-buffer-from-project)
-        ("C-<tab> C-<tab> w" . perject-save)))
+        ("C-<tab> c" . perject-create)
+        ("C-<tab> r" . perject-rename)
+        ("C-<tab> R" . perject-rename-collection)
+        ("C-<tab> K" . perject-delete)
+        ("C-<tab> e" . perject-open-close-or-reload)
+        ("C-<tab> s" . perject-sort)
+        ("C-<tab> n" . perject-next-project)
+        ("C-<tab> p" . perject-previous-project)
+        ("C-<tab> N" . perject-next-collection)
+        ("C-<tab> P" . perject-previous-collection)
+        ("C-<tab> C-<tab>" . schrenker/perject-switch-project-global)
+        ("C-<tab> TAB" . perject-switch)
+        ("C-<tab> a" . perject-add-buffer-to-project)
+        ("C-<tab> d" . perject-remove-buffer-from-project)
+        ("C-<tab> w" . perject-save)))
 
 (use-package perject-consult
   :elpaca
@@ -1094,16 +1093,16 @@ targets."
                                               (call-interactively #'perject-tab-set)))))
   :bind
   (:map perject-tab-mode-map
-        ("C-<tab> o" . perject-tab-recent)
-        ("C-<tab> p" . perject-tab-previous)
-        ("C-<tab> n" . perject-tab-next)
-        ("C-<tab> S" . perject-tab-set)
-        ("C-<tab> s" . perject-tab-cycle-state)
-        ("C-<tab> t" . perject-tab-create)
-        ("C-<tab> T" . perject-tab-delete)
-        ("C-<tab> r" . perject-tab-reset)
-        ("C-<tab> i" . perject-tab-increment-index)
-        ("C-<tab> I" . perject-tab-decrement-index)))
+        ("C-<tab> t o" . perject-tab-recent)
+        ("C-<tab> t p" . perject-tab-previous)
+        ("C-<tab> t n" . perject-tab-next)
+        ("C-<tab> t S" . perject-tab-set)
+        ("C-<tab> t s" . perject-tab-cycle-state)
+        ("C-<tab> t t" . perject-tab-create)
+        ("C-<tab> t T" . perject-tab-delete)
+        ("C-<tab> t r" . perject-tab-reset)
+        ("C-<tab> t i" . perject-tab-increment-index)
+        ("C-<tab> t I" . perject-tab-decrement-index)))
 
 (use-package org
   :elpaca nil
@@ -1877,6 +1876,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq vterm-max-scrollback 10000
         vterm-kill-buffer-on-exit t)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  (with-eval-after-load 'perject
+    (add-hook 'vterm-mode-hook 'perject--auto-add-buffer))
   (with-eval-after-load 'meow
     (push '(vterm-mode . insert) meow-mode-state-list)
     (add-hook 'vterm-mode-hook

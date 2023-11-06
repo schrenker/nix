@@ -982,8 +982,9 @@ targets."
           "\\*Async Shell Command\\*"
           help-mode
           helpful-mode
-          compilation-mode)
-        popper-group-function #'popper-group-by-project)
+          compilation-mode))
+  (with-eval-after-load 'project
+    (setq popper-group-function #'popper-group-by-project))
   ;; (add-hook 'org-mode-hook
   ;;           (lambda () (setq-local popper-reference-buffers (append
   ;;                                                       (remove "\\*Warnings\\*" popper-reference-buffers)

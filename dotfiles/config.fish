@@ -28,6 +28,7 @@ end
 
 set -gx LESSHISTFILE -
 set -gx GOPATH ~/.local/go
+set -gx NIX_PATH "$NIX_PATH:nixpkgs=/run/current-system/sw/nixpkgs"
 
 alias em='COLORTERM=TRUECOLOR emacs -nw'
 

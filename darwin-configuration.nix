@@ -16,6 +16,10 @@
 
   environment.variables.EDITOR = "vi";
 
+  environment.postBuild = ''
+    ln -sv ${pkgs.path} $out/nixpkgs
+  '';
+
   # backwards compatibility, please read the changelog before changing
   # $ darwin-rebuild changelog
   system.stateVersion = 4;

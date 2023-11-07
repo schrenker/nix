@@ -1,7 +1,7 @@
 { inputs, lib, pkgs, vars, ... }: {
-  home.stateVersion = "23.05";
-  home.username = "sebastian";
-  home.homeDirectory = "/${vars.home}/sebastian";
+  home.stateVersion = "23.11";
+  home.username = "${vars.username}";
+  home.homeDirectory = "${vars.homePrefix}/${vars.username}";
 
   programs.home-manager.enable = true;
 
@@ -11,7 +11,6 @@
     arping
     cmake
     d2
-    # emacsCustom
     fd
     fish
     git
@@ -45,13 +44,13 @@
 
     shellAliases = {
       wget = "wget --hsts-file ~/.config/wget/wget-hsts";
-      nQ = "networkQuality";
-      docker = "podman";
+      nq = "networkQuality";
       k = "kubectl";
       kx = "kubectx";
       kns = "kubens";
-      drs = "darwin-rebuild switch --flake ~/.config/nix";
-      nrs = "nixos-rebuild switch --flake ~/.config/nix";
+      drs = "darwin-rebuild switch --flake ${vars.switchPath}";
+      nrs = "nixos-rebuild switch --flake ${vars.switchPath}";
+      hrs = "home-manager switch --flake ${vars.switchPath}";
     };
 
     functions = {

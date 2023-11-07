@@ -3,8 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -20,8 +22,16 @@
 
   outputs = { self, darwin, home-manager, nixpkgs, ... }@inputs:
     let
-      darwinVars = { home = "Users"; };
-      linuxVars = { home = "home"; };
+      darwinVars = {
+        username = "sebastian";
+        homePrefix = "/Users";
+        switchPath = "~/.config/nix";
+      };
+      wsl2Vars = {
+        username = "sebastian";
+        homePrefix = "/home";
+        switchPath = "~/.config/nix#WSL2";
+      };
     in {
       darwinConfigurations."Macbook" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
@@ -32,23 +42,35 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.sebastian = { imports = [ ./home.nix ]; };
-            home-manager.extraSpecialArgs = { vars = darwinVars; inherit inputs; };
+            home-manager.extraSpecialArgs = {
+              vars = darwinVars;
+              inherit inputs;
+            };
           }
         ];
       };
 
-      nixosConfigurations."GFT" = nixpkgs.lib.nixosSystem {
+      homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
         system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.sebastian = import ./home.nix;
-            home-manager.extraSpecialArgs = { vars = linuxVars; };
-          }
-        ];
+        modules = [ ./home.nix ];
+        extraSpecialArgs = {
+          vars = wsl2Vars;
+          inherit inputs;
+        };
       };
+
+      # nixosConfigurations."GFT" = nixpkgs.lib.nixosSystem {
+      #   system = "x86_64-linux";
+      #   modules = [
+      #     ./configuration.nix
+      #     home-manager.nixosModules.home-manager
+      #     {
+      #       home-manager.useGlobalPkgs = true;
+      #       home-manager.useUserPackages = true;
+      #       home-manager.users.sebastian = import ./home.nix;
+      #       home-manager.extraSpecialArgs = { vars = linuxVars; };
+      #     }
+      #   ];
+      # };
     };
 }

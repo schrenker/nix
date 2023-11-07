@@ -21,7 +21,7 @@ function fish_title
     pwd
 end
 
-if [ "$system" = aarch64-darwin ]
+if [ -d "/opt/homebrew/" ]
     fish_add_path /opt/homebrew/sbin
     fish_add_path /opt/homebrew/bin
 end

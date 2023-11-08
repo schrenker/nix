@@ -1,5 +1,9 @@
 ulimit -n 1024
 
+if [ (uname) = "Linux" ]
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+end
+
 fish_vi_key_bindings
 set -gx fish_key_bindings fish_vi_key_bindings
 

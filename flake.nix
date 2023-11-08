@@ -26,11 +26,13 @@
         username = "sebastian";
         homePrefix = "/Users";
         switchPath = "~/.config/nix";
+        secretDir = "personal";
       };
       wsl2Vars = {
         username = "sebastian";
         homePrefix = "/home";
         switchPath = "~/.config/nix#WSL2";
+        secretDir = "work";
       };
     in {
       darwinConfigurations."Macbook" = darwin.lib.darwinSystem {
@@ -51,13 +53,31 @@
       };
 
       homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
-        system = "x86_64-linux";
-        modules = [ ./home.nix ];
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./home.nix
+          {
+            home = {
+              username = "sebastian";
+              homeDirectory = "/home/sebastian";
+              stateVersion = "23.11";
+            };
+          }
+        ];
         extraSpecialArgs = {
           vars = wsl2Vars;
           inherit inputs;
         };
       };
+      # homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
+      #   system = "x86_64-linux";
+      #   pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #   modules = [ ./home.nix ];
+      #   extraSpecialArgs = {
+      #     vars = wsl2Vars;
+      #     inherit inputs;
+      #   };
+      # };
 
       # nixosConfigurations."GFT" = nixpkgs.lib.nixosSystem {
       #   system = "x86_64-linux";

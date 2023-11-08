@@ -26,7 +26,7 @@
     nix-direnv
     nixfmt
     nodejs
-    pinentry_mac
+    # pinentry_mac
     ripgrep
     tmux
     wget
@@ -104,9 +104,9 @@
     ".gnupg/gpg-agent.conf".source = ./dotfiles/gpg-agent.conf;
     ".gnupg/gpg.conf".source = ./dotfiles/gpg.conf;
     ".config/lulublock.txt".source = ./dotfiles/lulublock.txt;
-    ".ssh/git".source = ./secrets/git;
-    ".ssh/default".source = ./secrets/default;
-    ".ssh/config".source = ./secrets/ssh_config;
+    ".ssh/git".source = ./secrets/${vars.secretDir}/git;
+    ".ssh/default".source = ./secrets/${vars.secretDir}/default;
+    ".ssh/config".source = ./secrets/${vars.secretDir}/ssh_config;
   };
 
   # Linking dynamic files that might change on the destination.

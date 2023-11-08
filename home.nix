@@ -21,6 +21,7 @@
     kind
     kubectl
     kubectx
+    kubernetes-helm
     libgccjit
     nil
     nix-direnv

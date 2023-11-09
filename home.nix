@@ -23,14 +23,16 @@
     kubectx
     kubernetes-helm
     libgccjit
-    nil
+    # nil
     nix-direnv
     nixfmt
     nodejs
     ripgrep
     tmux
     wget
-  ] ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ];
+  ]
+  ++ [ inputs.nil.packages."${system}".nil ]
+  ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ];
 
   programs.direnv = {
     enable = true;

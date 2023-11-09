@@ -10,6 +10,9 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    nil.url = "github:oxalica/nil";
+    nil.inputs.nixpkgs.follows = "nixpkgs";
+
     fish-plugin-bang-bang.url = "github:oh-my-fish/plugin-bang-bang";
     fish-plugin-bang-bang.flake = false;
     fish-plugin-foreign-env.url = "github:oh-my-fish/plugin-foreign-env";

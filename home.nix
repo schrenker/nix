@@ -27,11 +27,10 @@
     nix-direnv
     nixfmt
     nodejs
-    # pinentry_mac
     ripgrep
     tmux
     wget
-  ];
+  ] ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ];
 
   programs.direnv = {
     enable = true;

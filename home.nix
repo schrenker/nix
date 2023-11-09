@@ -7,40 +7,60 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  home.packages = with pkgs; [
-    arping
-    cmake
-    d2
-    fd
-    fish
-    git
-    git-crypt
-    gnupg
-    gnutls
-    jq
-    kind
-    kubectl
-    kubectx
-    kubernetes-helm
-    libgccjit
-    # nil
-    nix-direnv
-    nixfmt
-    nodejs
-    ripgrep
-    tmux
-    wget
-  ]
-  ++ [ inputs.nil.packages."${system}".nil ]
-  ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ];
+  home.packages = with pkgs;
+    [
+      any-nix-shell
+      arping
+      cmake
+      d2
+      fd
+      fish
+      git
+      git-crypt
+      gnupg
+      gnutls
+      jq
+      kind
+      kubectl
+      kubectx
+      kubernetes-helm
+      libgccjit
+      nix-direnv
+      nixfmt
+      nodejs
+      ripgrep
+      tmux
+      wget
+    ] ++ [ inputs.nil.packages."${system}".nil ]
+    ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ];
 
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
   };
 
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+    # Configuration written to ~/.config/starship.toml
+    settings = {
+      # add_newline = false;
+
+      # character = {
+      #   success_symbol = "[➜](bold green)";
+      #   error_symbol = "[➜](bold red)";
+      # };
+
+      # package.disabled = true;
+    };
+  };
+
   programs.fish = {
     enable = true;
+
+    interactiveShellInit = ''
+      ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+    '';
 
     shellInit = builtins.readFile ./dotfiles/config.fish;
 
@@ -78,10 +98,10 @@
         name = "plugin-foreign-env";
         src = inputs.fish-plugin-foreign-env;
       }
-      {
-        name = "theme-solarfish";
-        src = inputs.fish-plugin-theme-solarfish;
-      }
+      # {
+      #   name = "theme-solarfish";
+      #   src = inputs.fish-plugin-theme-solarfish;
+      # }
       {
         name = "plugin-direnv";
         src = inputs.fish-plugin-direnv;

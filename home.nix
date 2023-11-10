@@ -39,22 +39,6 @@
     nix-direnv.enable = true;
   };
 
-  programs.starship = {
-    enable = true;
-    enableFishIntegration = true;
-    # Configuration written to ~/.config/starship.toml
-    settings = {
-      # add_newline = false;
-
-      # character = {
-      #   success_symbol = "[➜](bold green)";
-      #   error_symbol = "[➜](bold red)";
-      # };
-
-      # package.disabled = true;
-    };
-  };
-
   programs.fish = {
     enable = true;
 
@@ -98,10 +82,10 @@
         name = "plugin-foreign-env";
         src = inputs.fish-plugin-foreign-env;
       }
-      # {
-      #   name = "theme-solarfish";
-      #   src = inputs.fish-plugin-theme-solarfish;
-      # }
+      {
+        name = "theme-solarfish";
+        src = inputs.fish-plugin-theme-solarfish;
+      }
       {
         name = "plugin-direnv";
         src = inputs.fish-plugin-direnv;

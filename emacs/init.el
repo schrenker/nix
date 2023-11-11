@@ -2231,6 +2231,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (ws-butler-global-mode 1))
 
+(use-package expand-region
+  :commands (er/expand-region)
+  :init
+  (setq er/try-expand-list
+        '(er/mark-inside-quotes
+          er/mark-outside-quotes
+          er/mark-inside-pairs
+          er/mark-outside-pairs)))
+
 (use-package meow
   :config
   (load-file (concat user-emacs-directory "lisp/meovil.el"))
@@ -2371,7 +2380,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("." . meow-bounds-of-thing)
    '("<" . meow-beginning-of-thing)
    '(">" . meow-end-of-thing)
-   '("%" . meow-block)
+   '("%" . er/expand-region)
    '("g" . meow-cancel-selection)
    '("G" . meow-grab)
    '("m" . meow-mark-word)

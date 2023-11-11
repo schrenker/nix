@@ -717,7 +717,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            :repo "alphapapa/prism.el")
   :init
   (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
+  ;; (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
   :config

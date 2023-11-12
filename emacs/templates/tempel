@@ -15,3 +15,10 @@ yaml-mode
 (kpod "apiVersion: v1" n "kind: Pod" n
       "metadata:" n> "name: " (p "name" NAME) n> "labels:" n> "app: " NAME n
       "spec:" n> "containers:" n> "- name: " NAME n> "image: " (p "image"))
+
+(kdep "apiVersion: apps/v1" n "kind: Deployment" n
+      "metadata:" n> "name: " (p "name" NAME) n> "labels:" n> "app: " NAME n
+      "spec:" n> "replicas: 1" n> "selector:" n> "matchLabels:" n> "app: " NAME n
+      "  template:" n>
+      "metadata:" n> "labels:" n> "app: " NAME n
+      "    spec:" n> "containers:" n> "- name: " NAME n> "image: " (p "image"))

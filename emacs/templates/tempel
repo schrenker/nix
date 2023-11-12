@@ -9,3 +9,9 @@ org-mode
 (src "#+begin_src " (p "LANG") n> r> q n "#+end_src" :post (org-edit-src-code))
 (ex "#+begin_example " n> r> q n "#+end_example")
 (quo "#+begin_quote " n> r> q n "#+end_quote")
+
+yaml-mode
+
+(kpod "apiVersion: v1" n "kind: Pod" n
+      "metadata:" n> "name: " (p "name" NAME) n> "labels:" n> "app: " NAME n
+      "spec:" n> "containers:" n> "- name: " NAME n> "image: " (p "image"))

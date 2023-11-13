@@ -719,6 +719,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
   ;; (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
+  (add-hook 'python-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
   (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
   :config
   ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
@@ -2186,6 +2187,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                    (setq-local tab-width 4))))
 
 (use-package json-mode)
+
+(use-package rego-mode)
 
 (use-package fish-mode)
 

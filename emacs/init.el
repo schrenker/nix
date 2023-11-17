@@ -1561,10 +1561,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq run-command-default-runner 'run-command-runner-compile))
 
 (use-package flymake
-  :elpaca nil
-  :hook (prog-mode . flymake-mode)
+  ;; :elpaca nil
+  :hook ((prog-mode org-mode) . flymake-mode)
   :config
-  (setq flymake-mode-line-lighter "FM"))
+  (setq flymake-mode-line-lighter "FM"
+        flymake-show-diagnostics-at-end-of-line t))
 
 (use-package tempel
   ;; Require trigger prefix before template name when completing.
@@ -1935,7 +1936,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("C-c c i" . eglot-find-implementation)
    ("C-c c d" . eglot-find-declaration)
    ("C-c c t" . eglot-find-typeDefinition))
-
+  :init
+  (setq eglot-autoshutdown t)
   :config
   (add-to-list 'eglot-workspace-configuration
                '(:yaml . (schemas .

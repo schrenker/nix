@@ -373,7 +373,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ("b" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
       ("a" (schrenker/refile (buffer-file-name) "Tasks/Active"))
       ("c" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
-      ("s" (schrenker/sort-priority-then-state))
+      ("s" (schrenker/org-sort-dwim))
       ("/" consult-org-heading)
       ("TAB" hydra-uictl/body :color blue)
       ("q" nil :color blue)))
@@ -1121,13 +1121,18 @@ targets."
          ("C-c C-j" . nil)
          ("C-c C-f" . org-format-all-headings)
          ("C-c l" . org-store-link)
-         ("C-c C-^" . schrenker/sort-priority-then-state))
+         ("C-c C-^" . schrenker/org-sort-dwim))
   :init
-  (defun schrenker/sort-priority-then-state ()
+  (defun schrenker/org-sort-dwim ()
     (interactive)
-    (org-sort-entries nil ?a)
-    (org-sort-entries nil ?p)
-    (org-sort-entries nil ?o))
+    (cond ((string= (org-no-properties (org-get-heading t t t t)) "Notes")
+           (org-sort-entries nil ?A))
+          ((cl-some (lambda (x) (string= (org-no-properties (org-get-heading t t t t)) x)) '("Backlog" "Active" "Completed"))
+           (org-sort-entries nil ?a)
+           (org-sort-entries nil ?p)
+           (org-sort-entries nil ?o))
+          (t
+           (org-sort-entries nil ?a))))
 
   (defun schrenker/get-org-template (template)
     (with-temp-buffer

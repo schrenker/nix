@@ -19,6 +19,8 @@
     fish-plugin-foreign-env.flake = false;
     fish-plugin-theme-solarfish.url = "github:thesilican/theme-solarfish";
     fish-plugin-theme-solarfish.flake = false;
+    fish-plugin-z.url = "github:jethrokuan/z";
+    fish-plugin-z.flake = false;
     fish-plugin-direnv.url = "github:oh-my-fish/plugin-direnv";
     fish-plugin-direnv.flake = false;
   };

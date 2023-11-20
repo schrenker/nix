@@ -87,6 +87,10 @@
         src = inputs.fish-plugin-theme-solarfish;
       }
       {
+        name = "z";
+        src = inputs.fish-plugin-z;
+      }
+      {
         name = "plugin-direnv";
         src = inputs.fish-plugin-direnv;
       }

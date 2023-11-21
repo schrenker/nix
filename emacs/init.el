@@ -1195,6 +1195,7 @@ targets."
                         ("txt" . text)
                         ("typst" . typst-ts))
    org-priority-start-cycle-with-default t
+   org-use-fast-todo-selection 'expert
    org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
    org-capture-templates
    `(("i" "Inbox Note" entry (file+headline org-default-notes-file "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)

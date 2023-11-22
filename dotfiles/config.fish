@@ -37,7 +37,7 @@ set -gx NIX_PATH "$NIX_PATH:nixpkgs=/run/current-system/sw/nixpkgs"
 
 alias em='COLORTERM=TRUECOLOR emacs -nw'
 
-if [ -n $INSIDE_EMACS ]
+if [ -n "$INSIDE_EMACS" ]
     fish_default_key_bindings
     set -gx fish_key_bindings fish_default_key_bindings
     function clear

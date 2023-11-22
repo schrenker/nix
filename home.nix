@@ -32,7 +32,8 @@
       tmux
       wget
     ] ++ [ inputs.nil.packages."${system}".nil ]
-    ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ];
+    ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ]
+    ++ lib.optionals stdenv.isLinux [ pkgs.emacs29 ];
 
   programs.direnv = {
     enable = true;

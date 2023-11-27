@@ -33,7 +33,7 @@
       wget
     ] ++ [ inputs.nil.packages."${system}".nil ]
     ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ]
-    ++ lib.optionals stdenv.isLinux [ pkgs.emacs29 ];
+    ++ lib.optionals stdenv.isLinux [ pkgs.emacs29-pgtk ];
 
   programs.direnv = {
     enable = true;

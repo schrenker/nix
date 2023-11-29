@@ -369,21 +369,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ╭─────────────────────────────────────────────────────────────^^^^^^
   [_K_] Prev Heading^^                             [_s_] Sort
   [_J_] Next Heading^^                             [_/_] Find
-  [_B_] Tasks/Backlog      [_b_] Tasks/Backlog
-  [_A_] Tasks/Active       [_a_] Tasks/Active
-  [_C_] Tasks/Completed    [_c_] Tasks/Completed   [_q_] Quit Hydra
-  [_N_] Notes^^                                    [_TAB_] Uictl
+  [_b_] Tasks/Backlog      [_B_] Tasks/Backlog
+  [_a_] Tasks/Active       [_A_] Tasks/Active
+  [_c_] Tasks/Completed    [_C_] Tasks/Completed   [_q_] Quit Hydra
+  [_n_] Notes^^                                    [_TAB_] Uictl
  ^^^^^^─────────────────────────────────────────────────────────────╯
 "
       ("K" outline-previous-heading)
       ("J" outline-next-heading)
-      ("B" (schrenker/jump-to-heading "** Backlog"))
-      ("A" (schrenker/jump-to-heading "** Active"))
-      ("C" (schrenker/jump-to-heading "** Completed"))
-      ("N" (schrenker/jump-to-heading "* Notes"))
-      ("b" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
-      ("a" (schrenker/refile (buffer-file-name) "Tasks/Active"))
-      ("c" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
+      ("b" (schrenker/jump-to-heading "** Backlog"))
+      ("a" (schrenker/jump-to-heading "** Active"))
+      ("c" (schrenker/jump-to-heading "** Completed"))
+      ("n" (schrenker/jump-to-heading "* Notes"))
+      ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
+      ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
+      ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
       ("s" (schrenker/org-sort-dwim))
       ("/" consult-org-heading)
       ("TAB" hydra-uictl/body :color blue)

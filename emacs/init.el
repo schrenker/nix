@@ -290,6 +290,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         (shell-command "osascript -e 'tell application \"System Events\" to key down command'; osascript -e 'tell application \"System Events\" to key code 48';osascript -e 'tell application \"System Events\" to key up command'")
       (aw-flip-window)))
 
+  (defun schrenker/jump-to-heading (heading)
+    (interactive)
+    (goto-char (point-min))
+    (search-forward heading))
+
   :config
   (setq hydra-is-helpful t)
 
@@ -360,16 +365,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (defhydra hydra-org (:hint nil)
       "
 
-  Movement^           ^Refile^                ^Misc
-╭──────────────────────────────────────────────────────────^^^^^^
-  [_K_] Prev Heading   [_b_] Tasks/Backlog     [_s_] Sort
-  [_J_] Next Heading   [_a_] Tasks/Active      [_/_] Find
-  ^^                   [_c_] Tasks/Completed   [_q_] Quit Hydra
-  ^^^^                                         [_TAB_] Uictl
- ^^^^^^──────────────────────────────────────────────────────────╯
+  Movement^               ^Refile^                ^Misc
+╭─────────────────────────────────────────────────────────────^^^^^^
+  [_K_] Prev Heading^^                             [_s_] Sort
+  [_J_] Next Heading^^                             [_/_] Find
+  [_B_] Tasks/Backlog      [_b_] Tasks/Backlog
+  [_A_] Tasks/Active       [_a_] Tasks/Active
+  [_C_] Tasks/Completed    [_c_] Tasks/Completed   [_q_] Quit Hydra
+  [_N_] Notes^^                                    [_TAB_] Uictl
+ ^^^^^^─────────────────────────────────────────────────────────────╯
 "
       ("K" outline-previous-heading)
       ("J" outline-next-heading)
+      ("B" (schrenker/jump-to-heading "** Backlog"))
+      ("A" (schrenker/jump-to-heading "** Active"))
+      ("C" (schrenker/jump-to-heading "** Completed"))
+      ("N" (schrenker/jump-to-heading "* Notes"))
       ("b" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
       ("a" (schrenker/refile (buffer-file-name) "Tasks/Active"))
       ("c" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
@@ -382,13 +393,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (defhydra hydra-git-timemachine (:hint nil)
       "
 
- ^Rev-Movement        ^Commits^                 ^Misc
+ ^Rev-Movement        ^Commits^                ^Misc
 ╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_J_] Next Rev       [_b_] Blame               [_?_] Help
-  [_K_] Prev Rev       [_c_] Show Commit         [_S_] Write File
-  [_g_] Nth Rev        [_y_] Copy Short Hash     [_q_] Quit Hydra
-  [_T_] Fuzzy Rev      [_Y_] Copy Long Hash      [_Q_] Quit Timemachine
-  [_C_] Current Rev^^                            [_TAB_] Uictl
+  [_J_] Next Rev       [_b_] Blame              [_?_] Help
+  [_K_] Prev Rev       [_c_] Show Commit        [_S_] Write File
+  [_g_] Nth Rev        [_y_] Copy Short Hash    [_q_] Quit Hydra
+  [_T_] Fuzzy Rev      [_Y_] Copy Long Hash     [_Q_] Quit Timemachine
+  [_C_] Current Rev^^                           [_TAB_] Uictl
  ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
       ("J" git-timemachine-show-next-revision)

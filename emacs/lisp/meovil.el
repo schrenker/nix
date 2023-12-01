@@ -125,7 +125,8 @@
 
 (defun schrenker/meow-selection-p ()
   (and (region-active-p)
-       (meow--selection-type)))
+       ;; (meow--selection-type)
+       ))
 
 (defun schrenker/meow-kill-to-bol ()
   (interactive)

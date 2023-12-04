@@ -1582,7 +1582,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :hook ((prog-mode org-mode) . flymake-mode)
   :config
   (setq flymake-mode-line-lighter "FM"
-        flymake-show-diagnostics-at-end-of-line t))
+        flymake-show-diagnostics-at-end-of-line 'short))
 
 (use-package tempel
   ;; Require trigger prefix before template name when completing.

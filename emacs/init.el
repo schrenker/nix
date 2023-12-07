@@ -286,9 +286,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (defun schrenker/aw-flip-window ()
     (interactive)
-    (if (and (length< (window-list) 2) (eq system-type 'darwin))
-        (shell-command "osascript -e 'tell application \"System Events\" to key down command'; osascript -e 'tell application \"System Events\" to key code 48';osascript -e 'tell application \"System Events\" to key up command'")
-      (aw-flip-window)))
+    (let ((dv (dirvish-curr)))
+      (aw-flip-window)
+      (if (and dv (car (dv-layout dv)))
+          (aw--push-window (dv-root-window dv)))))
+
+  (advice-add #'dired-find-file-other-window
+              :before (lambda (&rest r) (when (car (dv-layout (dirvish-curr)))
+                                     (aw--push-window (dv-root-window (dirvish-curr))))))
 
   (defun schrenker/jump-to-heading (heading)
     (interactive)

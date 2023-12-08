@@ -2353,6 +2353,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (global-set-key (kbd "C-v") 'schrenker/meow-yank-forward)
     (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
 
+  (global-set-key (kbd "M-p") 'meow-yank-pop)
+
   (meow-thing-register 'angle
                        '(pair ("<") (">"))
                        '(pair ("<") (">")))
@@ -2432,7 +2434,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (meow-normal-define-key
    '("p" . schrenker/meow-yank-forward)
    '("P" . meow-yank)
-   '("M-p" . meow-yank-pop)
+   ;; '("M-p" . meow-yank-pop)
    '("y" . schrenker/meow-copy))
 
   ;;Selection

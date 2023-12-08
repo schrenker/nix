@@ -126,6 +126,17 @@
                             (seq-elt values index)
                             (- (window-body-width) 9)))))
 
+(defun block-undo (fn &rest args)
+  "Apply FN to ARGS in such a way that it can be undone in a single step."
+  (let ((marker (prepare-change-group)))
+    (unwind-protect (apply fn args)
+      (undo-amalgamate-change-group marker))))
+
+(dolist (fn '(kmacro-call-macro
+              kmacro-exec-ring-item
+              apply-macro-to-region-lines))
+  (advice-add fn :around #'block-undo))
+
 (defun schrenker/retry-until-success (func max-tries)
   "Run FUNC every second until it returns non-nil or MAX-TRIES is reached."
   (let ((counter 0)

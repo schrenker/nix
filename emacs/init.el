@@ -302,10 +302,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (if (and dv (car (dv-layout dv)))
           (aw--push-window (dv-root-window dv)))))
 
-  (advice-add #'dired-find-file-other-window
-              :before (lambda (&rest r) (when (car (dv-layout (dirvish-curr)))
-                                     (aw--push-window (dv-root-window (dirvish-curr))))))
-
   (defun schrenker/jump-to-heading (heading)
     (interactive)
     (goto-char (point-min))
@@ -1409,7 +1405,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                         t
                                       (not (or (member "archive" tags) (member "tag" tags))))))))
 
-
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
     (interactive)
@@ -1542,6 +1537,24 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :init
   (setq dired-use-ls-dired t
         dired-dwim-target t)
+
+  (defvar schrenker/last-dired-window-before-jump nil)
+
+  (defun schrenker/dired-find-file-other-window (orig-fun &rest args)
+    "Save current window, call ORIG-FUN with ARGS, and add saved window to aw-window-ring."
+    (setq schrenker/last-dired-window-before-jump (get-buffer-window))
+    (let ((result (apply orig-fun args)))
+      (when schrenker/last-dired-window-before-jump
+        (ring-insert aw--window-ring schrenker/last-dired-window-before-jump))
+      result))
+
+  (advice-add 'dired-find-file-other-window :around #'schrenker/dired-find-file-other-window)
+
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (setq-local display-buffer-base-action '((display-buffer-reuse-window
+                                                        ace-display-buffer))
+                          aw-ignore-current t)))
   (when (eq system-type 'darwin)
     (setq insert-directory-program "/opt/homebrew/bin/gls"
           dired-listing-switches "-aBhl --group-directories-first")))

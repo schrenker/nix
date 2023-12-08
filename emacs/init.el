@@ -1018,11 +1018,14 @@ targets."
 
 (use-package perject
   :demand t
-  :after (savehist popper dirvish)
+  :after dirvish
   :config
-  (advice-add 'perject-switch :before (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
-                                                     (when (eq visible (selected-window))
-                                                       (other-window 1)))))
+  (with-eval-after-load 'dirvish
+    (advice-add 'perject-switch :before
+                (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
+                               (when (eq visible (selected-window))
+                                 (other-window 1))))))
+
 
   (defun schrenker/perject-switch-project-global ()
     "Shows unfiltered list of all collections and projects to switch between them freely"
@@ -1034,7 +1037,9 @@ targets."
     (interactive)
     (schrenker/call-negative 'perject-switch))
 
-  (add-to-list 'savehist-additional-variables 'perject--previous-collections)
+  (with-eval-after-load 'savehist
+    (add-to-list 'savehist-additional-variables 'perject--previous-collections))
+
   ;; Make perject load the collections that were previously open.
   ;; This requires configuring `savehist' (see next code block).
   (setq perject-load-at-startup 'all
@@ -2493,8 +2498,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                 (?. . sentence)))
 
   (meow-global-mode 1))
-
-(elpaca-process-queues)
 
 (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))
 

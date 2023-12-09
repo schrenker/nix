@@ -1450,6 +1450,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                                ,fileslug
                                                ,(schrenker/get-org-template "resource"))
                                       :immediate-finish t :unnarrowed t)
+                                     ("rc" "Resource" plain "%?"
+                                      :target (file+head
+                                               ,fileslug
+                                               ,(schrenker/get-org-template "resource-culinary"))
+                                      :immediate-finish t :unnarrowed t)
                                      ("ri" "Investigation" plain "%?"
                                       :target (file+head
                                                ,fileslug

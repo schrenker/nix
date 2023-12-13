@@ -1184,6 +1184,7 @@ targets."
    org-log-done 'time
    org-refile-use-outline-path 'file
    org-outline-path-complete-in-steps nil
+   org-directory "~/org"
    org-refile-targets `((,(directory-files-recursively org-directory "[a-z0-9]*.org$") :maxlevel . 4))
    org-insert-heading-respect-content t
    org-fontify-whole-heading-line t
@@ -1191,7 +1192,6 @@ targets."
                                        "verb"
                                        "agenda")
    org-tags-column -77
-   org-directory "~/org"
    org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a."))
    org-roam-directory org-directory
    org-archive-location "archive/%s_archive::"
@@ -2506,7 +2506,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   (meow-global-mode 1))
 
-(when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))
+(add-hook 'elpaca-after-init-hook
+          (lambda ()
+            (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
 
 (provide 'init)
 ;;; init.el ends here.

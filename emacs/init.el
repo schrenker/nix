@@ -2236,6 +2236,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'go-ts-mode-hook (lambda ()
                                (add-hook 'envrc-after-update-hook 'flymake-golangci-load 0 t))))
 
+(use-package apparmor-mode)
+
 (use-package python-mode
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))

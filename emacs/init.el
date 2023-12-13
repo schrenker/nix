@@ -583,6 +583,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
               ("S-TAB" . corfu-previous)
               ("<backtab>" . corfu-previous)
               ("S-SPC" . corfu-insert-separator)
+              ("C-SPC" . corfu-insert-separator) ;for wsl
               ("C-S-n" . corfu-move-to-minibuffer)
               :map corfu-popupinfo-map
               ("M-j" . corfu-popupinfo-scroll-up)
@@ -598,7 +599,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (apply #'consult-completion-in-region completion-in-region--data)))
   ;; Auto-completion settings, must be set before calling `global-corfu-mode'.
   (setq corfu-auto t
-        corfu-auto-prefix 3
+        corfu-auto-prefix 4
         corfu-excluded-modes '(erc-mode
                                circe-mode
                                help-mode

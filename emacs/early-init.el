@@ -12,7 +12,13 @@
 (when (eq system-type 'darwin)
   (customize-set-variable 'native-comp-driver-options '("-Wl,-w"))
   (setq native-comp-async-jobs-number 8)
-  (setenv "LIBRARY_PATH" "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"))
+  ;;(setenv "LIBRARY_PATH" "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib")
+  (setenv "LIBRARY_PATH"
+	(string-join
+	 '("/opt/homebrew/opt/gcc/lib/gcc/13"
+	   "/opt/homebrew/opt/libgccjit/lib/gcc/13"
+	   "/opt/homebrew/opt/gcc/lib/gcc/13/gcc/aarch64-apple-darwin22/13")
+	 ":")))
 
 (provide 'early-init)
 ;;; early-init.el ends here.

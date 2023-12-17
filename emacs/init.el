@@ -2219,7 +2219,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                      :assignVariableTypes t
                      :compositeLiteralFields t
                      :compositeLiteralTypes t
-                     :constantValues t)))))
+                     :constantValues t))))
+  (with-eval-after-load 'flymake
+    (load-file (concat user-emacs-directory "lisp/meovil.el"))
+    (add-hook 'go-ts-mode-hook (lambda ()
+                                 (add-hook 'envrc-after-update-hook 'flymake-golangci-load 0 t))) ))
 
 (use-package go-eldoc)
 
@@ -2230,12 +2234,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package go-tag)
 
 (use-package go-gen-test)
-
-(use-package flymake-golangci
-  :after go-mode
-  :config
-  (add-hook 'go-ts-mode-hook (lambda ()
-                               (add-hook 'envrc-after-update-hook 'flymake-golangci-load 0 t))))
 
 (use-package apparmor-mode)
 

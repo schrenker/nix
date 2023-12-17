@@ -126,6 +126,15 @@
                             (seq-elt values index)
                             (- (window-body-width) 9)))))
 
+(defun schrenker/flip-first-two-elements (input)
+  "Flip the first two elements of INPUT list"
+  (if (and input (cdr input))
+      (let ((first (car input))
+            (second (cadr input)))
+        (setcar input second)
+        (setcar (cdr input) first)))
+  input)
+
 (defun block-undo (fn &rest args)
   "Apply FN to ARGS in such a way that it can be undone in a single step."
   (let ((marker (prepare-change-group)))
@@ -1017,124 +1026,6 @@ targets."
   (popper-mode 1)
   (popper-echo-mode 1))
 
-(use-package perject
-  :demand t
-  :after dirvish
-  :config
-  (with-eval-after-load 'dirvish
-    (advice-add 'perject-switch :before
-                (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
-                               (when (eq visible (selected-window))
-                                 (other-window 1))))))
-
-
-  (defun schrenker/perject-switch-project-global ()
-    "Shows unfiltered list of all collections and projects to switch between them freely"
-    (interactive)
-    (let ((current-prefix-arg '(4))) ;; emulate C-u
-      (call-interactively 'perject-switch)))
-
-  (defun schrenker/perject-switch-collection ()
-    (interactive)
-    (schrenker/call-negative 'perject-switch))
-
-  (with-eval-after-load 'savehist
-    (add-to-list 'savehist-additional-variables 'perject--previous-collections))
-
-  ;; Make perject load the collections that were previously open.
-  ;; This requires configuring `savehist' (see next code block).
-  (setq perject-load-at-startup 'all
-        perject-save-frames nil
-        perject-frame-title-format nil
-        perject-switch-to-new-collection t
-        perject-save-on-exit 'all
-        perject-reload-default '(keep t)
-        perject-close-default '(t nil t)
-        perject-delete-default '(nil t nil t))
-
-  (perject-mode 1)
-  :bind
-  (:map perject-mode-map
-        ("C-<tab> c" . perject-create)
-        ("C-<tab> r" . perject-rename)
-        ("C-<tab> R" . perject-rename-collection)
-        ("C-<tab> K" . perject-delete)
-        ("C-<tab> e" . perject-open-close-or-reload)
-        ("C-<tab> s" . perject-sort)
-        ("C-<tab> n" . perject-next-project)
-        ("C-<tab> p" . perject-previous-project)
-        ("C-<tab> N" . perject-next-collection)
-        ("C-<tab> P" . perject-previous-collection)
-        ("C-<tab> C-<tab>" . schrenker/perject-switch-project-global)
-        ("C-<tab> TAB" . perject-switch)
-        ("C-<tab> a" . perject-add-buffer-to-project)
-        ("C-<tab> d" . perject-remove-buffer-from-project)
-        ("C-<tab> w" . perject-save)))
-
-(use-package perject-consult
-  :elpaca
-  (perject-consult
-   :host "github.com"
-   :repo "overideal/perject"
-   :main "perject-consult.el")
-  :after (perject consult)
-  :config
-  ;; Hide the list of all buffers by default and set narrowing to all buffers to space.
-  (consult-customize consult--source-buffer :hidden t :narrow 32)
-  (consult-customize consult--source-hidden-buffer :narrow ?h)
-  (add-to-list 'consult-buffer-sources 'perject-consult--source-collection-buffer)
-  (add-to-list 'consult-buffer-sources 'perject-consult--source-project-buffer))
-
-(use-package perject-ibuffer
-  :elpaca
-  (perject-ibuffer
-   :host "github.com"
-   :repo "overideal/perject"
-   :main "perject-ibuffer.el")
-  :after perject
-  :init
-  ;; By default restrict ibuffer to the buffers of the current project.
-  (add-hook 'ibuffer-hook #'perject-ibuffer-enable-filter-by-project)
-  :bind
-  (:map ibuffer-mode-map
-        ("a" . perject-ibuffer-add-to-project)
-        ("K" . perject-ibuffer-remove-from-project)
-        ("SPC" . perject-ibuffer-print-buffer-projects)
-        ("/ y" . ibuffer-filter-by-collection)
-        ("/ u" . ibuffer-filter-by-project)))
-
-(use-package perject-tab
-  :elpaca
-  (perject-tab
-   :host "github.com"
-   :repo "overideal/perject"
-   :main "perject-tab.el")
-  :after perject
-  :init
-  (setq perject-tab-states '(("mutable" always "⟨" "⟩")
-                             ("dynamic" perject-tab--dynamic-state "[" "]")
-                             ("immutable" ignore "⟦" "⟧")))
-  (perject-tab-mode 1)
-  (add-hook 'perject-before-switch-hook (lambda (&rest orig new frame)
-                                          (let ((inhibit-message t)
-                                                (message-log-max nil))
-                                            (when (cdr (perject-current))
-                                              (unless (perject-tab-tabs)
-                                                (perject-tab-create))
-                                              (call-interactively #'perject-tab-set)))))
-  :bind
-  (:map perject-tab-mode-map
-        ("C-<tab> t o" . perject-tab-recent)
-        ("C-<tab> t p" . perject-tab-previous)
-        ("C-<tab> t n" . perject-tab-next)
-        ("C-<tab> t S" . perject-tab-set)
-        ("C-<tab> t s" . perject-tab-cycle-state)
-        ("C-<tab> t t" . perject-tab-create)
-        ("C-<tab> t T" . perject-tab-delete)
-        ("C-<tab> t r" . perject-tab-reset)
-        ("C-<tab> t i" . perject-tab-increment-index)
-        ("C-<tab> t I" . perject-tab-decrement-index)))
-
 (use-package org
   :elpaca nil
   :bind (("C-c n n" . org-capture)
@@ -1936,8 +1827,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq vterm-max-scrollback 10000
         vterm-kill-buffer-on-exit t)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-  (with-eval-after-load 'perject
-    (add-hook 'vterm-mode-hook 'perject--auto-add-buffer))
   (with-eval-after-load 'meow
     (push '(vterm-mode . insert) meow-mode-state-list)
     (add-hook 'vterm-mode-hook
@@ -2506,6 +2395,62 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                 (?. . sentence)))
 
   (meow-global-mode 1))
+
+(use-package tabspaces
+  :demand t
+  :bind
+  (("C-<tab>" . tabspaces-mode-map))
+  :commands (tabspaces-switch-or-create-workspace
+             tabspaces-open-or-create-project-and-workspace)
+  :init
+  (setq tabspaces-use-filtered-buffers-as-default t
+        tabspaces-default-tab "Default"
+        tabspaces-remove-to-default t
+        tabspaces-include-buffers '("*scratch*"
+                                    "*messages*"
+                                    "*Warnings*")
+        tabspaces-initialize-project-with-todo nil
+        tabspaces-session t
+        tabspaces-session-auto-restore nil
+        tabspaces-keymap-prefix "C-<tab>")
+  ;; Filter Buffers for Consult-Buffer
+  :config
+  (with-eval-after-load 'ibuffer
+    (require 'ibuf-ext)
+
+    (define-ibuffer-filter tabspace
+        "Filter by tabspace."
+      (:description "tabspace" :reader nil)
+      (with-current-buffer buf
+        (member buf (tabspaces--buffer-list))))
+
+    (define-key ibuffer-mode-map (kbd "/ t") #'ibuffer-filter-by-tabspace))
+
+  (with-eval-after-load 'consult
+    ;; hide full buffer list (still available with "b" prefix)
+    (consult-customize consult--source-buffer :hidden t :default nil)
+    ;; set consult-workspace buffer list
+    (defvar consult--source-workspace
+      (list :name     "Workspace Buffers"
+            :narrow   ?w
+            :history  'buffer-name-history
+            :category 'buffer
+            :state    #'consult--buffer-state
+            :default  t
+            :items    (lambda () (consult--buffer-query
+                             :predicate #'tabspaces--local-buffer-p
+                             :sort 'visibility
+                             :as #'buffer-name)))
+
+      "Set workspace buffer list for consult-buffer.")
+    (add-to-list 'consult-buffer-sources 'consult--source-workspace))
+
+  (add-hook 'elpaca-after-init-hook #'tabspaces-mode)
+  (add-hook 'elpaca-after-init-hook #'tabspaces--restore-session-on-startup)
+  ;; (when (member "*tabspaces--placeholder*" (tabspaces--list-tabspaces))
+  ;;   (tabspaces-switch-or-create-workspace "*tabspaces--placeholder*")
+  ;;   (tabspaces-kill-buffers-close-workspace))
+  )
 
 (add-hook 'elpaca-after-init-hook
           (lambda ()

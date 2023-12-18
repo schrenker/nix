@@ -2461,6 +2461,22 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
             (add-to-list 'schrenker/perject-loaded-buffer-list `(,pr . ,(list (perject-get-buffers pr))))
             (add-to-list 'schrenker/perject-visited-buffer-list `(,pr . ())))))))
 
+  (defun schrenker/perject-kill-unused-buffers ()
+    (let ((loaded schrenker/perject-loaded-buffer-list)
+          (vis schrenker/perject-visited-buffer-list))
+      (dolist (l loaded)
+        (let ((header (car l))
+              (body (cadr l)))
+          (unless (eq (cadr (assoc header vis)) nil)
+            (dolist (b body)
+              (unless (member b (cadr (assoc header vis)))
+                (ignore-errors (perject-remove-buffer-from-project b header))
+                (when (perject-anonymous-buffer-p b)
+                  (message "Perject cleanup: %s killed in %s" b header)
+                  (kill-buffer b))))))))
+    (perject-save (perject-get-collections)))
+
+  (add-hook 'kill-emacs-hook #'schrenker/perject-kill-unused-buffers)
 
   (add-hook 'elpaca-after-init-hook
             (lambda ()
@@ -2469,7 +2485,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 				(schrenker/perject-get-loaded-buffer-list)
                 (add-hook 'buffer-list-update-hook
                           (lambda ()
-                            (when (perject-current)
+                            (when (and (perject-current) (equal (car (buffer-local-value 'perject-buffer (car (buffer-list)))) (perject-current)))
                               (schrenker/add-to-sublist (perject-current) (car (buffer-list)) schrenker/perject-visited-buffer-list)))))))
 
   :bind

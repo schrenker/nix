@@ -2435,6 +2435,23 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   (perject-mode 1)
 
+  (defvar schrenker/perject-loaded-buffer-list nil)
+  (defvar schrenker/perject-visited-buffer-list nil)
+
+  (setq schrenker/perject-visited-buffer-list nil)
+
+  (defun schrenker/perject-get-loaded-buffer-list ()
+    (let ((collections (perject-get-collections)))
+      (dolist (col collections)
+        (let ((projects (perject-get-projects col)))
+          (dolist (pr projects)
+            (add-to-list 'schrenker/perject-loaded-buffer-list `(,pr . ,(perject-get-buffers pr))))))))
+
+  (add-hook 'buffer-list-update-hook
+            (lambda ()
+              (add-to-list 'schrenker/perject-visited-buffer-list
+                           `(,(perject-current) . ,(car (buffer-list))))))
+
   (add-hook 'elpaca-after-init-hook (lambda ()
                                       (when (and (not (bound-and-true-p perject-collections)) (not (eq perject-load-at-startup nil)))
                                         (perject--init))))

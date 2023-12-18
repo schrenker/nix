@@ -2461,13 +2461,17 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
             (add-to-list 'schrenker/perject-loaded-buffer-list `(,pr . ,(list (perject-get-buffers pr))))
             (add-to-list 'schrenker/perject-visited-buffer-list `(,pr . ())))))))
 
-  (add-hook 'buffer-list-update-hook
-            (lambda ()
-              (schrenker/add-to-sublist (perject-current) (car (buffer-list)) schrenker/perject-visited-buffer-list) ))
 
-  (add-hook 'elpaca-after-init-hook (lambda ()
-                                      (when (and (not (bound-and-true-p perject-collections)) (not (eq perject-load-at-startup nil)))
-                                        (perject--init))))
+  (add-hook 'elpaca-after-init-hook
+            (lambda ()
+              (when (and (not (bound-and-true-p perject-collections)) (not (eq perject-load-at-startup nil)))
+                (perject--init)
+				(schrenker/perject-get-loaded-buffer-list)
+                (add-hook 'buffer-list-update-hook
+                          (lambda ()
+                            (when (perject-current)
+                              (schrenker/add-to-sublist (perject-current) (car (buffer-list)) schrenker/perject-visited-buffer-list)))))))
+
   :bind
   (:map perject-mode-map
         ("C-<tab> c" . perject-create)

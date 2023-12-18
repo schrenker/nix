@@ -672,6 +672,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         which-key-show-remaining-keys t)
   (which-key-mode))
 
+(use-package transient
+  :config
+  (with-eval-after-load 'magit
+    (transient-append-suffix 'magit-fetch "-p"
+      '("-t" "Fetch all tags" ("-t" "--tags")))
+    (transient-append-suffix 'magit-pull "-r"
+      '("-a" "Autostash" "--autostash"))))
+
 (use-package magit
   :init
   (defun schrenker/magit-diff-visit-file-other-window ()
@@ -690,12 +698,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("M-K" . magit-section-backward-sibling)
          ("<escape>" . meow-cancel-selection))
   :config
-  (require 'transient)
-  (transient-append-suffix 'magit-fetch "-p"
-    '("-t" "Fetch all tags" ("-t" "--tags")))
-  (transient-append-suffix 'magit-pull "-r"
-    '("-a" "Autostash" "--autostash"))
-
   (defun schrenker/magit-status-with-prefix ()
     (interactive)
     (let ((current-prefix-arg '(4)))

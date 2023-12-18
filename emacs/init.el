@@ -126,6 +126,12 @@
                             (seq-elt values index)
                             (- (window-body-width) 9)))))
 
+;;(defun schrenker/add-to-sublist (key element list)
+;;  "Add ELEMENT to the sublist in LIST identified by KEY, if it doesn't already exist."
+;;  (let ((sublist (assoc key list)))  ; Search for the sublist
+;;    (unless (member element (cdr sublist))  ; Check if the element exists
+;;      (setcdr sublist (nconc (cdr sublist) (list element))))))
+
 (defun schrenker/flip-first-two-elements (input)
   "Flip the first two elements of INPUT list"
   (if (and input (cdr input))
@@ -2438,19 +2444,26 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (defvar schrenker/perject-loaded-buffer-list nil)
   (defvar schrenker/perject-visited-buffer-list nil)
 
-  (setq schrenker/perject-visited-buffer-list nil)
+  (defun schrenker/add-to-sublist (key element list)
+    "Add ELEMENT to the sublist in LIST identified by KEY, if it doesn't already exist."
+    (let* ((sublist (assoc key list))  ; Find the sublist
+           (buffers (cadr sublist)))   ; Get the second element of sublist
+      (unless (member element buffers)  ; Check if the element exists
+        (if (and sublist buffers)  ; Check if sublist and buffers are non-nil
+            (setcar (cdr sublist) (cons element buffers))  ; If yes, append element
+          (setcdr sublist (list (list element)))))))
 
   (defun schrenker/perject-get-loaded-buffer-list ()
     (let ((collections (perject-get-collections)))
       (dolist (col collections)
         (let ((projects (perject-get-projects col)))
           (dolist (pr projects)
-            (add-to-list 'schrenker/perject-loaded-buffer-list `(,pr . ,(perject-get-buffers pr))))))))
+            (add-to-list 'schrenker/perject-loaded-buffer-list `(,pr . ,(list (perject-get-buffers pr))))
+            (add-to-list 'schrenker/perject-visited-buffer-list `(,pr . ())))))))
 
   (add-hook 'buffer-list-update-hook
             (lambda ()
-              (add-to-list 'schrenker/perject-visited-buffer-list
-                           `(,(perject-current) . ,(car (buffer-list))))))
+              (schrenker/add-to-sublist (perject-current) (car (buffer-list)) schrenker/perject-visited-buffer-list) ))
 
   (add-hook 'elpaca-after-init-hook (lambda ()
                                       (when (and (not (bound-and-true-p perject-collections)) (not (eq perject-load-at-startup nil)))

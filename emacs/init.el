@@ -2401,7 +2401,16 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package tabspaces
   :demand t
   :bind
-  (("C-<tab>" . tabspaces-mode-map))
+  (("C-<tab> C" . tabspaces-clear-buffers)
+   ("C-<tab> b" . tabspaces-switch-to-buffer)
+   ("C-<tab> d" . tabspaces-close-workspace)
+   ("C-<tab> k" . tabspaces-kill-buffers-close-workspace)
+   ("C-<tab> o" . tabspaces-open-or-create-project-and-workspace)
+   ("C-<tab> r" . schrenker/tabspaces-remove-current-buffer)
+   ("C-<tab> R" . tabspaces-remove-selected-buffer)
+   ("C-<tab> s" . tabspaces-switch-or-create-workspace)
+   ("C-<tab> t" . tabspaces-switch-buffer-and-tab))
+
   :commands (tabspaces-switch-or-create-workspace
              tabspaces-open-or-create-project-and-workspace)
   :init
@@ -2415,7 +2424,17 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         tabspaces-session t
         tabspaces-session-auto-restore nil
         tabspaces-keymap-prefix "C-<tab>")
-  ;; Filter Buffers for Consult-Buffer
+
+  (defun schrenker/tabspaces-remove-current-buffer (&optional buffer-or-name)
+    "Bury and remove current buffer BUFFER-OR-NAME from the tabspace list.
+If `tabspaces-remove-to-default' is t then add the buffer to the
+default tabspace."
+    (interactive)
+    (let ((buffer (or buffer-or-name (current-buffer))))
+      (delete (frame-parameter nil 'buffer-list) (get-buffer buffer))
+      (bury-buffer buffer-or-name)
+      (tabspaces--add-to-default-tabspace buffer)))
+
   :config
   (with-eval-after-load 'ibuffer
     (require 'ibuf-ext)

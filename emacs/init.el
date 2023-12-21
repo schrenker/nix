@@ -126,12 +126,6 @@
                             (seq-elt values index)
                             (- (window-body-width) 9)))))
 
-;;(defun schrenker/add-to-sublist (key element list)
-;;  "Add ELEMENT to the sublist in LIST identified by KEY, if it doesn't already exist."
-;;  (let ((sublist (assoc key list)))  ; Search for the sublist
-;;    (unless (member element (cdr sublist))  ; Check if the element exists
-;;      (setcdr sublist (nconc (cdr sublist) (list element))))))
-
 (defun schrenker/flip-first-two-elements (input)
   "Flip the first two elements of INPUT list"
   (if (and input (cdr input))

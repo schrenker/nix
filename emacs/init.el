@@ -2486,7 +2486,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                 (add-hook 'buffer-list-update-hook
                           (lambda ()
                             (when (and (perject-current) (equal (car (buffer-local-value 'perject-buffer (car (buffer-list)))) (perject-current)))
-                              (schrenker/add-to-sublist (perject-current) (car (buffer-list)) schrenker/perject-visited-buffer-list)))))))
+                              (when (assoc (perject-current) schrenker/perject-visited-buffer-list)
+                                (schrenker/add-to-sublist (perject-current) (car (buffer-list)) schrenker/perject-visited-buffer-list))))))))
 
   :bind
   (:map perject-mode-map

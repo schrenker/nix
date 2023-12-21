@@ -2200,6 +2200,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           er/mark-inside-pairs
           er/mark-outside-pairs)))
 
+(use-package surround
+  :bind-keymap ("M-'" . surround-keymap))
+
 (use-package meow
   :config
   (load-file (concat user-emacs-directory "lisp/meovil.el"))
@@ -2257,19 +2260,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (meow-thing-register 'angle
                        '(pair ("<") (">"))
                        '(pair ("<") (">")))
-  (when (display-graphic-p)
-    (define-key global-map (kbd "M-[") 'insert-pair)
-    (define-key global-map (kbd "M-(") 'insert-pair)
-    (define-key global-map (kbd "M-{") 'insert-pair)
-    (define-key global-map (kbd "M-<") 'insert-pair)
-    (define-key global-map (kbd "M-\"") 'insert-pair)
-    (define-key global-map (kbd "M-\'") 'insert-pair))
-
-
-  (define-key global-map (kbd "M-]") (lambda () (interactive) (meow-bounds-of-thing ?s) (delete-pair)))
-  (define-key global-map (kbd "M-)") (lambda () (interactive) (meow-bounds-of-thing ?r) (delete-pair)))
-  (define-key global-map (kbd "M-}") (lambda () (interactive) (meow-bounds-of-thing ?c) (delete-pair)))
-  (define-key global-map (kbd "M->") (lambda () (interactive) (meow-bounds-of-thing ?a) (delete-pair)))
 
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key

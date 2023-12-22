@@ -33,7 +33,7 @@
       wget
     ] ++ [ inputs.nil.packages."${system}".nil ]
     ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ]
-    ++ lib.optionals stdenv.isLinux [ pkgs.emacs29-pgtk ];
+    ++ lib.optionals stdenv.isLinux [ pkgs.emacs29-pgtk pkgs.jetbrains-mono ];
 
   programs.direnv = {
     enable = true;

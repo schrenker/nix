@@ -2093,6 +2093,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'go-ts-mode-hook (lambda ()
                                (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
 
+(use-package powershell)
+
+(use-package ob-powershell
+  :after (powershell org))
+
 (use-package go-mode
   :after eglot
   :init

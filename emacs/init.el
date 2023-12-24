@@ -989,6 +989,23 @@ targets."
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+(use-package persistent-soft
+  :defer t)
+
+(use-package persistent-kmacro
+  :elpaca
+  (persistent-kmacro
+   :host "github.com"
+   :repo "artawower/persistent-kmacro.el")
+  :init
+  (with-eval-after-load 'meow
+    (meow-normal-define-key
+     '("SPC mm" . persistent-kmacro-execute-macro)
+     '("SPC ma" . persistent-kmacro-name-last-kbd-macro)
+     '("SPC mr" . persistent-kmacro-remove-macro)
+     '("SPC ms" . persistent-kmacro-save-session)
+     '("SPC ml" . persistent-kmacro-restore-sesstion))))
+
 (use-package posframe
   :if (display-graphic-p))
 

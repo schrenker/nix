@@ -69,6 +69,7 @@
       scroll-preserve-screen-position t
       scroll-step 1
       sentence-end-double-space nil
+      set-mark-command-repeat-pop t
       user-full-name "Sebastian Zawadzki"
       user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
       vc-follow-symlinks nil
@@ -608,12 +609,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (apply #'consult-completion-in-region completion-in-region--data)))
   ;; Auto-completion settings, must be set before calling `global-corfu-mode'.
   (setq corfu-auto t
-        corfu-auto-prefix 4
-        corfu-excluded-modes '(erc-mode
-                               circe-mode
-                               help-mode
-                               gud-mode
-                               vterm-mode)
+        corfu-auto-prefix 3
+        global-corfu-modes '((not
+                              erc-mode
+                              circe-mode
+                              help-mode
+                              gud-mode
+                              vterm-mode) t)
         corfu-cycle t
         corfu-separator ?\s
         corfu-preselect 'prompt
@@ -630,7 +632,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history)
   (require 'corfu-popupinfo)
-  (setq corfu-popupinfo-delay '(1.0 . 1.0))
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
@@ -996,15 +997,7 @@ targets."
   :elpaca
   (persistent-kmacro
    :host "github.com"
-   :repo "artawower/persistent-kmacro.el")
-  :init
-  (with-eval-after-load 'meow
-    (meow-normal-define-key
-     '("SPC mm" . persistent-kmacro-execute-macro)
-     '("SPC ma" . persistent-kmacro-name-last-kbd-macro)
-     '("SPC mr" . persistent-kmacro-remove-macro)
-     '("SPC ms" . persistent-kmacro-save-session)
-     '("SPC ml" . persistent-kmacro-restore-sesstion))))
+   :repo "artawower/persistent-kmacro.el"))
 
 (use-package posframe
   :if (display-graphic-p))
@@ -2115,6 +2108,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package ob-powershell
   :after (powershell org))
 
+(use-package bicep-mode
+  :elpaca
+  (bicep-mode
+   :host "github.com"
+   :repo "christiaan-janssen/bicep-mode"))
+
 (use-package go-mode
   :after eglot
   :init
@@ -2279,6 +2278,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
 
   (global-set-key (kbd "M-p") 'meow-yank-pop)
+  (global-set-key (kbd "C-o") (lambda ()
+                                (interactive)
+                                (let ((current-prefix-arg '(4))) ;; emulate C-u
+                                  (call-interactively 'set-mark-command))))
+
 
   (meow-thing-register 'angle
                        '(pair ("<") (">"))
@@ -2390,6 +2394,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("Q" . schrenker/meow-old-quit)
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC SPC" . consult-project-extra-find-other-window))
+
+  (with-eval-after-load 'persistent-kmacro
+    (meow-normal-define-key
+     '("SPC mm" . persistent-kmacro-execute-macro)
+     '("SPC ma" . persistent-kmacro-name-last-kbd-macro)
+     '("SPC mr" . persistent-kmacro-remove-macro)
+     '("SPC ms" . persistent-kmacro-save-session)
+     '("SPC ml" . persistent-kmacro-restore-sesstion)))
 
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
   (add-hook 'meow-switch-state-hook (lambda (&rest _) (when (symbol-value 'meow-beacon-mode) (corfu-quit))))

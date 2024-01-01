@@ -28,3 +28,4 @@ emacs/tree-sitter/
 emacs/server/
 emacs/dirvish/
 /emacs/tabsession.el
+/emacs/var/

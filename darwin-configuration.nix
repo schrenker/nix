@@ -16,6 +16,7 @@
 
   environment.variables.EDITOR = "vi";
 
+  # Link nix-darwin flake nixpkgs to system
   environment.postBuild = ''
     ln -sv ${pkgs.path} $out/nixpkgs
   '';
@@ -40,12 +41,9 @@
     "gcc"
     "libtool"
     "pngpaste"
-    "podman"
-    "podman-compose"
     "svn"
   ];
   homebrew.casks = [
-    "alacritty"
     "alt-tab"
     "bartender"
     "cloudflare-warp"
@@ -54,6 +52,7 @@
     "font-jetbrains-mono-nerd-font"
     "google-chrome"
     "hazeover"
+    "iterm2"
     "karabiner-elements"
     "logitech-options"
     "lulu"
@@ -126,7 +125,7 @@
 
   system.defaults.screencapture.location = "~/Pictures/Screenshots";
   system.activationScripts.preActivation.text = ''
-    rm -f /etc/shells
+    sudo rm -f /etc/shells /etc/bashrc /etc/zshrc
   '';
   security.pam.enableSudoTouchIdAuth = true;
 }

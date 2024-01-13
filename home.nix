@@ -9,29 +9,39 @@
 
   home.packages = with pkgs;
     [
+      # NIX
       any-nix-shell
-      arping
-      cmake
-      d2
-      fd
-      fish
-      git
-      git-crypt
-      gnupg
-      gnutls
-      jq
+      nix-direnv
+      nixfmt
+
+      # CONTAINERS
+      colima
+      docker-client
       kind
       kubectl
       kubectx
       kubernetes-helm
+
+      # GIT
+      git
+      git-crypt
+      gnupg
+      gnutls
+
+      # UTILS
+      arping
+      fd
+      fish
+      jq
+      wget
+
+      # DEPS
+      cmake
       libgccjit
-      nix-direnv
-      nixfmt
       nodejs
       ripgrep
-      tmux
-      wget
-    ] ++ [ inputs.nil.packages."${system}".nil ]
+    ]
+    ++ [ inputs.nil.packages."${system}".nil ] # INPUTS
     ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ]
     ++ lib.optionals stdenv.isLinux [ pkgs.emacs29-pgtk pkgs.jetbrains-mono ];
 
@@ -53,6 +63,8 @@
       wget = "wget --hsts-file ~/.config/wget/wget-hsts";
       nq = "networkQuality";
       k = "kubectl";
+      kg = "kubectl get";
+      kd = "kubectl describe";
       kx = "kubectx";
       kns = "kubens";
       drs = "darwin-rebuild switch --flake ${vars.switchPath}";
@@ -110,21 +122,22 @@
   };
 
   home.file = {
-    ".config/alacritty/alacritty.yml".source =
-      ./dotfiles/alacritty/darwin-alacritty.yml;
     ".gnupg/gpg-agent.conf".source = ./dotfiles/gpg-agent.conf;
     ".gnupg/gpg.conf".source = ./dotfiles/gpg.conf;
     ".config/lulublock.txt".source = ./dotfiles/lulublock.txt;
     ".ssh/git".source = ./secrets/${vars.secretDir}/git;
     ".ssh/default".source = ./secrets/${vars.secretDir}/default;
     ".ssh/config".source = ./secrets/${vars.secretDir}/ssh_config;
+    ".config/iterm2/com.googlecode.iterm2.plist".source = ./dotfiles/iterm2/com.googlecode.iterm2.plist;
+    "Library/Application Support/iTerm2/Scripts/AutoLaunch/auto_dark_mode.py".source = ./dotfiles/iterm2/auto_dark_mode.py;
+
   };
 
   # Linking dynamic files that might change on the destination.
   # While this doesn't guarantee immutability anymore, I am willing to make this sacrifice for these files.
   # Note that this list should be kept as small as possible, and expanded only if there is no other way.
   home.activation.copyFiles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ln -sf ~/.config/nix/dotfiles/alacritty/theme.yml ~/.config/alacritty/theme.yml
+    # ln -sf ~/.config/nix/dotfiles/alacritty/theme.yml ~/.config/alacritty/theme.yml
     ln -sfFn ~/.config/nix/emacs ~/.config/emacs
   '';
 

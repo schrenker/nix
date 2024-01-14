@@ -1584,26 +1584,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         solarized-height-plus-1 1.0
         solarized-height-plus-2 1.0
         solarized-height-plus-3 1.0
-        solarized-height-plus-4 1.0
-        alacritty-theme-path "~/.config/alacritty/theme.yml")
-
-  (defun schrenker/set-alacritty-theme (appearance)
-    (let ((buffer (find-file-noselect alacritty-theme-path)))
-      (with-current-buffer buffer
-        (goto-char (point-min))
-        (if (eq appearance 'light)
-            (when (string-prefix-p "#" (thing-at-point 'line t))
-              (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
-          (unless (string-prefix-p "#" (thing-at-point 'line t))
-            (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
-        (forward-line 1)
-        (if (eq appearance 'light)
-            (unless (string-prefix-p "#" (thing-at-point 'line t))
-              (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
-          (when (string-prefix-p "#" (thing-at-point 'line t))
-            (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
-        (save-buffer))
-      (kill-buffer buffer)))
+        solarized-height-plus-4 1.0)
 
   (defun schrenker/solarized-theme-overlay (appearance)
     ;; Function that is there just to make my life easier. Reapplies all visual updates, and that's it.
@@ -1632,8 +1613,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           (white "#ffffff")
           (black "#181818"))
       (progn
-        (when (eq system-type 'darwin) (schrenker/set-alacritty-theme appearance))
-
         (setq org-todo-keyword-faces
               `(("NEXT" :foreground ,yellow :weight bold :inverse-video t)
                 ("TODO" :foreground ,magenta :weight bold :inverse-video t)

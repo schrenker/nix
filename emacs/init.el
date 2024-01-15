@@ -1567,6 +1567,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :init
   (setq typst-ts-mode-watch-options "--open"))
 
+(use-package typst-preview
+  :after typst-ts-mode
+  :elpaca
+  (typst-preview
+   :host "github.com"
+   :repo "havarddj/typst-preview.el"))
+
 (use-package mood-line
   :config
   (setq mood-line-format mood-line-format-default)

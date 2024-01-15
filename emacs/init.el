@@ -1569,9 +1569,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package mood-line
   :config
-  (setq mood-line-show-eol-style t
-        mood-line-show-encoding-information t
-        mood-line-show-indentation-style t)
+  (setq mood-line-format mood-line-format-default)
   (mood-line-mode 1))
 
 (use-package solarized-theme

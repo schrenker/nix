@@ -1,4 +1,4 @@
-*** TODO %^{prompt}
+*** TODO [#D] %^{prompt}
 :LOGBOOK:
 - Created at %U
 :END:

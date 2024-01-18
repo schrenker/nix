@@ -3,6 +3,7 @@ ulimit -n 1024
 if [ (uname) = "Linux" ]
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
     fish_add_path ~/.local/state/home-manager/gcroots/current-home/home-path/bin
+    fish_add_path /snap/bin
 end
 
 fish_vi_key_bindings

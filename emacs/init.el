@@ -2082,6 +2082,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package nix-mode)
 
+(use-package nginx-mode)
+
 (use-package format-all
   :init
   (add-hook 'prog-mode 'format-all-mode)

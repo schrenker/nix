@@ -276,8 +276,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (if (schrenker/wsl2-p)
-    (set-frame-font "JetBrains Mono 10" nil t)
-  (set-frame-font "JetBrains Mono 13" nil t))
+    (set-frame-font "Jetbrains Mono NL 10" nil t)
+  (set-frame-font "JetBrains Mono NL 13" nil t))
 
 (defmacro schrenker/call-negative (form)
   "Macro for calling any command with negative argument. FORM in this case is function you want called."

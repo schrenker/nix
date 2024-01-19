@@ -43,7 +43,12 @@
     ]
     ++ [ inputs.nil.packages."${system}".nil ] # INPUTS
     ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ]
-    ++ lib.optionals stdenv.isLinux [ pkgs.emacs29-pgtk pkgs.jetbrains-mono ];
+    ++ lib.optionals stdenv.isLinux [
+      pkgs.emacs29-pgtk
+      pkgs.jetbrains-mono
+    ];
+
+  fonts.fontconfig.enable = true;
 
   programs.direnv = {
     enable = true;

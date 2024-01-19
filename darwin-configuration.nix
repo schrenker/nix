@@ -62,6 +62,7 @@
     "steam"
     "syncthing"
     "synologyassistant"
+    "wireshark"
     "zsa-wally"
   ];
   homebrew.taps = [

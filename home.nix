@@ -42,7 +42,10 @@
       ripgrep
     ]
     ++ [ inputs.nil.packages."${system}".nil ] # INPUTS
-    ++ lib.optionals stdenv.isDarwin [ pkgs.pinentry_mac ]
+    ++ lib.optionals stdenv.isDarwin [
+      pkgs.pinentry_mac
+      pkgs.utm
+    ]
     ++ lib.optionals stdenv.isLinux [
       pkgs.emacs29-pgtk
       pkgs.jetbrains-mono

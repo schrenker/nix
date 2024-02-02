@@ -30,12 +30,14 @@
       darwinVars = {
         username = "sebastian";
         homePrefix = "/Users";
+        switchType = "darwin-rebuild";
         switchPath = "~/.config/nix";
         secretDir = "personal";
       };
       wsl2Vars = {
         username = "sebastian";
         homePrefix = "/home";
+        switchType = "home-manager";
         switchPath = "~/.config/nix#WSL2";
         secretDir = "work";
       };
@@ -58,6 +60,7 @@
       };
 
       homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
+        system = "x86_64-linux";
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./home.nix

@@ -75,9 +75,7 @@
       kd = "kubectl describe";
       kx = "kubectx";
       kns = "kubens";
-      drs = "darwin-rebuild switch --flake ${vars.switchPath}";
-      nrs = "nixos-rebuild switch --flake ${vars.switchPath}";
-      hrs = "home-manager switch --flake ${vars.switchPath}";
+      sw = "${vars.switchType} switch --flake ${vars.switchPath}";
     };
 
     functions = {
@@ -145,7 +143,6 @@
   # While this doesn't guarantee immutability anymore, I am willing to make this sacrifice for these files.
   # Note that this list should be kept as small as possible, and expanded only if there is no other way.
   home.activation.copyFiles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    # ln -sf ~/.config/nix/dotfiles/alacritty/theme.yml ~/.config/alacritty/theme.yml
     ln -sfFn ~/.config/nix/emacs ~/.config/emacs
   '';
 

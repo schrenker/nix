@@ -30,9 +30,6 @@
     shell = pkgs.fish;
   };
 
-  home-manager.useUserPackages = true;
-  home-manager.users.sebastian = ./home.nix;
-
   homebrew.enable = true;
   homebrew.brews = [
     "aspell"

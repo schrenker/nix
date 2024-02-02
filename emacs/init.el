@@ -1758,6 +1758,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-to-list 'all-the-icons-extension-icon-alist '("groovy" all-the-icons-fileicon "groovy" :height 1.0 :face all-the-icons-cyan))
   (add-to-list 'all-the-icons-extension-icon-alist '("org_archive" all-the-icons-fileicon "org" :height 1.0 :face all-the-icons-dgreen))
   (add-to-list 'all-the-icons-regexp-icon-alist '("^flake.lock$" all-the-icons-fileicon "nix" :face all-the-icons-dblue))
+  (add-to-list 'all-the-icons-regexp-icon-alist '("postgresql.conf$" all-the-icons-alltheicon "postgresql" :face all-the-icons-blue))
   (add-to-list 'all-the-icons-regexp-icon-alist '("^nix.conf$" all-the-icons-fileicon "nix" :face all-the-icons-dpink)))
 
 (use-package all-the-icons-ibuffer

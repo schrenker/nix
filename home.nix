@@ -132,11 +132,13 @@
     ".gnupg/gpg.conf".source = ./dotfiles/gpg.conf;
     ".config/lulublock.txt".source = ./dotfiles/lulublock.txt;
     ".ssh/git".source = ./secrets/${vars.secretDir}/git;
-    ".ssh/default".source = ./secrets/${vars.secretDir}/default;
     ".ssh/config".source = ./secrets/${vars.secretDir}/ssh_config;
     ".config/iterm2/com.googlecode.iterm2.plist".source = ./dotfiles/iterm2/com.googlecode.iterm2.plist;
     "Library/Application Support/iTerm2/Scripts/AutoLaunch/auto_dark_mode.py".source = ./dotfiles/iterm2/auto_dark_mode.py;
 
+  }
+  // lib.optionalAttrs (vars.secretDir == "personal") {
+    ".ssh/default".source = ./secrets/${vars.secretDir}/default;
   };
 
   # Linking dynamic files that might change on the destination.

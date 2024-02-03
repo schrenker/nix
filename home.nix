@@ -33,6 +33,7 @@
       fd
       fish
       jq
+      yq-go
       wget
 
       # DEPS

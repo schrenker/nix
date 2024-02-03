@@ -340,7 +340,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
   _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
       ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
-      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] PvTerm     [_f_] findf
+      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] vTermO     [_f_] findf
      ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dired      [_S_] scratch
      ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
      ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
@@ -372,7 +372,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     ("." popper-toggle-latest)
     ("," popper-cycle)
     ("'" popper-toggle-type)
-    ("v" multi-vterm-dedicated-toggle)
+    ("v" schrenker/multi-vterm-project-here)
     ("V" multi-vterm-project)
     ("T" dirvish-dwim)
     ("<" previous-buffer)
@@ -1818,6 +1818,22 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :demand t
   :init
   (setq vterm-always-compile-module t)
+
+  (defun schrenker/multi-vterm-project-here ()
+    "Create new vterm buffer."
+    (interactive)
+    (if (multi-vterm-project-root)
+        (if (buffer-live-p (get-buffer (multi-vterm-project-get-buffer-name)))
+            (if (string-equal (buffer-name (current-buffer)) (multi-vterm-project-get-buffer-name))
+                (delete-window (selected-window))
+              (switch-to-buffer (multi-vterm-project-get-buffer-name)))
+          (let* ((vterm-buffer (multi-vterm-get-buffer 'project))
+                 (multi-vterm-buffer-list (nconc multi-vterm-buffer-list (list vterm-buffer))))
+            (set-buffer vterm-buffer)
+            (multi-vterm-internal)
+            (switch-to-buffer vterm-buffer)))
+      (message "This file is not in a project")))
+
   (defun schrenker/CC-out-of-copy-mode ()
     (interactive)
     (meow-normal-mode -1)

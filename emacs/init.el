@@ -1819,26 +1819,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :init
   (setq vterm-always-compile-module t)
 
-  (defun schrenker/multi-vterm-project-here ()
-    "Create new vterm buffer."
-    (interactive)
-    (if (multi-vterm-project-root)
-        (if (buffer-live-p (get-buffer (multi-vterm-project-get-buffer-name)))
-            (if (string-equal (buffer-name (current-buffer)) (multi-vterm-project-get-buffer-name))
-                (delete-window (selected-window))
-              (switch-to-buffer (multi-vterm-project-get-buffer-name)))
-          (let* ((vterm-buffer (multi-vterm-get-buffer 'project))
-                 (multi-vterm-buffer-list (nconc multi-vterm-buffer-list (list vterm-buffer))))
-            (set-buffer vterm-buffer)
-            (multi-vterm-internal)
-            (switch-to-buffer vterm-buffer)))
-      (message "This file is not in a project")))
-
   (defun schrenker/CC-out-of-copy-mode ()
     (interactive)
     (meow-normal-mode -1)
     (call-interactively #'schrenker/meow-append-to-eol)
     (vterm-send "C-c"))
+
   :bind*
   (:map vterm-copy-mode-map
         ("C-c C-c" . schrenker/CC-out-of-copy-mode))
@@ -1889,6 +1875,22 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :bind (("C-c t p" . multi-vterm-project)
          ("C-c t t" . multi-vterm-dedicated-toggle)
          ("C-c t T" . multi-vterm-dedicated-select))
+  :commands (multi-vterm-project-root)
+  :init
+  (defun schrenker/multi-vterm-project-here ()
+    "Create new vterm buffer."
+    (interactive)
+    (if (multi-vterm-project-root)
+        (if (buffer-live-p (get-buffer (multi-vterm-project-get-buffer-name)))
+            (if (string-equal (buffer-name (current-buffer)) (multi-vterm-project-get-buffer-name))
+                (delete-window (selected-window))
+              (switch-to-buffer (multi-vterm-project-get-buffer-name)))
+          (let* ((vterm-buffer (multi-vterm-get-buffer 'project))
+                 (multi-vterm-buffer-list (nconc multi-vterm-buffer-list (list vterm-buffer))))
+            (set-buffer vterm-buffer)
+            (multi-vterm-internal)
+            (switch-to-buffer vterm-buffer)))
+      (message "This file is not in a project")))
   :config
   (setq multi-vterm-dedicated-window-height-percent 30))
 
@@ -1921,7 +1923,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :elpaca
   (dape
    :host "github.com"
-   :repo "svaante/dape")
+   :repo "svaante/dape"
+   :pin t)
   :config
   ;; Add inline variable hints, this feature is highly experimental
   ;; (setq dape-inline-variables t)

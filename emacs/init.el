@@ -1531,6 +1531,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq flymake-mode-line-lighter "FM"
         flymake-show-diagnostics-at-end-of-line 'short))
 
+(use-package flymake-easy
+  :demand t)
+
 (use-package tempel
   ;; Require trigger prefix before template name when completing.
   ;; :custom
@@ -2147,7 +2150,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                      :compositeLiteralTypes t
                      :constantValues t))))
   (with-eval-after-load 'flymake
-    (load-file (concat user-emacs-directory "lisp/meovil.el"))
+    (load-file (concat user-emacs-directory "lisp/flymake-golangci.el"))
     (add-hook 'go-ts-mode-hook (lambda ()
                                  (add-hook 'envrc-after-update-hook 'flymake-golangci-load 0 t))) ))
 

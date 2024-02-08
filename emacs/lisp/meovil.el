@@ -202,6 +202,13 @@
   "$" #'schrenker/meow-copy-to-eol
   "0" #'schrenker/meow-copy-to-bol)
 
+(add-to-list 'meow--eldoc-commands 'schrenker/meow-left)
+(add-to-list 'meow--eldoc-commands 'schrenker/meow-right)
+(add-to-list 'meow--eldoc-commands 'schrenker/meow-prev)
+(add-to-list 'meow--eldoc-commands 'schrenker/meow-next)
+(add-to-list 'meow--eldoc-commands 'schrenker/meow-append-to-eol)
+(add-to-list 'meow--eldoc-commands 'schrenker/meow-smart-append)
+(add-to-list 'meow--eldoc-commands 'schrenker/meow-insert-at-bol)
 
 (provide 'meovil)
 ;;; meovil.el ends here.

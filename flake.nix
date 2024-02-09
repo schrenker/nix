@@ -17,7 +17,7 @@
     fish-plugin-bang-bang.flake = false;
     fish-plugin-foreign-env.url = "github:oh-my-fish/plugin-foreign-env";
     fish-plugin-foreign-env.flake = false;
-    fish-plugin-theme-solarfish.url = "github:thesilican/theme-solarfish";
+    fish-plugin-theme-solarfish.url = "github:schrenker/solarfish";
     fish-plugin-theme-solarfish.flake = false;
     fish-plugin-z.url = "github:jethrokuan/z";
     fish-plugin-z.flake = false;

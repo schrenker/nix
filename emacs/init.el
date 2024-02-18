@@ -1516,7 +1516,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("M-e" . dirvish-emerge-menu)
    ("M-j" . dirvish-fd-jump)))
 
-(use-package pdf-tools)
+(use-package pdf-tools
+  :init
+  (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1))))
 
 (use-package run-command
   :bind ("C-x c" . run-command)

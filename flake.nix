@@ -60,7 +60,7 @@
       };
 
       homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
-        system = "x86_64-linux";
+        # system = "x86_64-linux";
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./home.nix

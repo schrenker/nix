@@ -4,25 +4,45 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    darwin.url = "github:lnl7/nix-darwin/master";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
+    darwin = {
+      url = "github:lnl7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    nil.url = "github:oxalica/nil";
-    nil.inputs.nixpkgs.follows = "nixpkgs";
+    nil = {
+      url = "github:oxalica/nil";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    fish-plugin-bang-bang.url = "github:oh-my-fish/plugin-bang-bang";
-    fish-plugin-bang-bang.flake = false;
-    fish-plugin-foreign-env.url = "github:oh-my-fish/plugin-foreign-env";
-    fish-plugin-foreign-env.flake = false;
-    fish-plugin-theme-solarfish.url = "github:schrenker/solarfish";
-    fish-plugin-theme-solarfish.flake = false;
-    fish-plugin-z.url = "github:jethrokuan/z";
-    fish-plugin-z.flake = false;
-    fish-plugin-direnv.url = "github:oh-my-fish/plugin-direnv";
-    fish-plugin-direnv.flake = false;
+    fish-plugin-bang-bang = {
+      url = "github:oh-my-fish/plugin-bang-bang";
+      flake = false;
+    };
+
+    fish-plugin-foreign-env = {
+      url = "github:oh-my-fish/plugin-foreign-env";
+      flake = false;
+    };
+
+    fish-plugin-theme-solarfish = {
+      url = "github:schrenker/solarfish";
+      flake = false;
+    };
+
+    fish-plugin-z = {
+      url = "github:jethrokuan/z";
+      flake = false;
+    };
+
+    fish-plugin-direnv = {
+      url = "github:oh-my-fish/plugin-direnv";
+      flake = false;
+    };
   };
 
   outputs = { self, darwin, home-manager, nixpkgs, ... }@inputs:
@@ -77,28 +97,5 @@
           inherit inputs;
         };
       };
-      # homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
-      #   system = "x86_64-linux";
-      #   pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      #   modules = [ ./home.nix ];
-      #   extraSpecialArgs = {
-      #     vars = wsl2Vars;
-      #     inherit inputs;
-      #   };
-      # };
-
-      # nixosConfigurations."GFT" = nixpkgs.lib.nixosSystem {
-      #   system = "x86_64-linux";
-      #   modules = [
-      #     ./configuration.nix
-      #     home-manager.nixosModules.home-manager
-      #     {
-      #       home-manager.useGlobalPkgs = true;
-      #       home-manager.useUserPackages = true;
-      #       home-manager.users.sebastian = import ./home.nix;
-      #       home-manager.extraSpecialArgs = { vars = linuxVars; };
-      #     }
-      #   ];
-      # };
     };
 }

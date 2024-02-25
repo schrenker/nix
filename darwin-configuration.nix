@@ -56,7 +56,6 @@
     "numi"
     "onecast"
     "raycast"
-    "steam"
     "syncthing"
     "synologyassistant"
     "wireshark"

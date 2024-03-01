@@ -203,8 +203,8 @@
 (elpaca elpaca-use-package
   ;; Enable :elpaca use-package keyword.
   (elpaca-use-package-mode)
-  ;; Assume :elpaca t unless otherwise specified.
-  (setq elpaca-use-package-by-default t))
+  ;; Assume :ensure t unless otherwise specified.
+  (setq use-package-always-ensure t))
 
 (add-hook 'elpaca-ui-mode-hook (lambda ()
                                  (bind-key (kbd "/") 'elpaca-ui-search 'elpaca-ui-mode-map)))
@@ -512,7 +512,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package hydra-posframe
   :if (display-graphic-p)
-  :elpaca
+  :ensure
   (hydra-posframe
    :host "github.com"
    :repo "Ladicle/hydra-posframe")
@@ -540,7 +540,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; ;; A few more useful configurations...
 (use-package emacs
-  :elpaca nil
+  :ensure nil
   :init
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
@@ -587,7 +587,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (marginalia-mode))
 
 (use-package corfu
-  :elpaca (corfu :files (:defaults "extensions/*"))
+  :ensure (corfu :files (:defaults "extensions/*"))
   :demand t
   :bind (:map corfu-map
               ("TAB" . corfu-next)
@@ -661,7 +661,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package dabbrev
   :after corfu
-  :elpaca nil
+  :ensure nil
   :config
   (setq dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")
         read-extended-command-predicate #'command-completion-default-include-p))
@@ -750,7 +750,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package prism
   :commands (prism-set-colors prism-whitespace-mode prism-mode)
-  :elpaca (prism
+  :ensure (prism
            :host "github.com"
            :repo "alphapapa/prism.el")
   :init
@@ -996,7 +996,7 @@ targets."
   :defer t)
 
 (use-package persistent-kmacro
-  :elpaca
+  :ensure
   (persistent-kmacro
    :host "github.com"
    :repo "artawower/persistent-kmacro.el"))
@@ -1041,7 +1041,7 @@ targets."
   (popper-echo-mode 1))
 
 (use-package org
-  :elpaca nil
+  :ensure nil
   :bind (("C-c n n" . org-capture)
          :map org-mode-map
          ("M-j" . org-metadown)
@@ -1390,7 +1390,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq org-kanban/layout '("…" . 15)))
 
 (use-package org-appear
-  :elpaca (org-appear
+  :ensure (org-appear
            :host "github.com"
            :repo "awth13/org-appear")
   :config
@@ -1409,13 +1409,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package german-holidays)
 
 (use-package polish-holidays
-  :elpaca (polish-holidays
+  :ensure (polish-holidays
            :host "github.com"
            :repo "mikolajb/emacs-polish-holidays"
            :main "polish-holidays.el"))
 
 (use-package holidays
-  :elpaca nil
+  :ensure nil
   :after (org-agenda polish-holidays)
   :config
   (require 'polish-holidays)
@@ -1433,14 +1433,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                             holiday-german-holidays)))
 
 (use-package ox-confluence-modern
-  :elpaca
+  :ensure
   (ox-confluence-modern
    :host "github.com"
    :repo "nan0scho1ar/ox-confluence-modern"
    :files ("*.el")))
 
 (use-package ibuffer
-  :elpaca nil
+  :ensure nil
   :bind
   (("C-x C-b" . ibuffer)
    :map ibuffer-mode-map
@@ -1448,7 +1448,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("M-o" . nil)))
 
 (use-package dired
-  :elpaca nil
+  :ensure nil
   :bind
   (:map dired-mode-map
         ("M-+" . dired-create-empty-file)
@@ -1530,7 +1530,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq run-command-default-runner 'run-command-runner-compile))
 
 (use-package flymake
-  ;; :elpaca nil
+  ;; :ensure nil
   :hook ((prog-mode org-mode) . flymake-mode)
   :config
   (setq flymake-mode-line-lighter "FM"
@@ -1573,13 +1573,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   )
 
 (use-package typst-ts-mode
-  :elpaca (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+  :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
   :init
   (setq typst-ts-mode-watch-options "--open"))
 
 (use-package typst-preview
   :after typst-ts-mode
-  :elpaca
+  :ensure
   (typst-preview
    :host "github.com"
    :repo "havarddj/typst-preview.el"))
@@ -1858,7 +1858,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                (corfu-mode -1))))
 
 (use-package eat
-  :elpaca
+  :ensure
   (eat :host "codeberg.org"
        :repo "akib/emacs-eat"
        :files ("*.el" ("term" "term/*.el") "*.texi"
@@ -1903,7 +1903,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq multi-vterm-dedicated-window-height-percent 30))
 
 (use-package eglot
-  :elpaca nil
+  :ensure nil
   :commands (eglot eglot-ensure eglot-inlay-hints-mode)
   :bind
   (("C-c c c" . eglot)
@@ -1928,7 +1928,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
 
 (use-package dape
-  :elpaca
+  :ensure
   (dape
    :host "github.com"
    :repo "svaante/dape"
@@ -1987,7 +1987,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq-default goggles-pulse t)) ;; set to nil to disable pulsing
 
 (use-package woman
-  :elpaca nil
+  :ensure nil
   :bind
   (:map woman-mode-map
         ("M-j" . Man-next-section)
@@ -1998,7 +1998,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("J" . Man-goto-section)))
 
 (use-package info
-  :elpaca nil
+  :ensure nil
   :bind
   (:map Info-mode-map
         ("M-j" . Info-next)
@@ -2061,7 +2061,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (buffer-name-relative-mode))
 
 (use-package treesit
-  :elpaca nil
+  :ensure nil
   :init
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -2128,7 +2128,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :after (powershell org))
 
 (use-package bicep-mode
-  :elpaca
+  :ensure
   (bicep-mode
    :host "github.com"
    :repo "christiaan-janssen/bicep-mode"))
@@ -2192,7 +2192,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package bash-completion)
 
 (use-package sh-script
-  :elpaca nil
+  :ensure nil
   :init
   (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-ts-mode))
   (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
@@ -2211,7 +2211,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package ob-d2)
 
 (use-package verb
-  :elpaca
+  :ensure
   (verb :files (:defaults "ob-verb.el"))
   :after org
   :bind
@@ -2548,7 +2548,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("C-<tab> w" . perject-save)))
 
 (use-package perject-consult
-  :elpaca
+  :ensure
   (perject-consult
    :host "github.com"
    :repo "overideal/perject"
@@ -2562,7 +2562,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-to-list 'consult-buffer-sources 'perject-consult--source-project-buffer))
 
 (use-package perject-ibuffer
-  :elpaca
+  :ensure
   (perject-ibuffer
    :host "github.com"
    :repo "overideal/perject"
@@ -2580,7 +2580,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("/ u" . ibuffer-filter-by-project)))
 
 (use-package perject-tab
-  :elpaca
+  :ensure
   (perject-tab
    :host "github.com"
    :repo "overideal/perject"

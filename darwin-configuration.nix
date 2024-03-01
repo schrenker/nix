@@ -79,7 +79,6 @@
     "Bitwarden" = 1352778147;
     "DuckDuckGo Privacy for Safari" = 1482920575;
     "Equinox" = 1591510203;
-    "Flow" = 1423210932;
     "Hush" = 1544743900;
     "ImageFinder for Safari" = 1514863337;
     "Microsoft Remote Desktop" = 1295203466;

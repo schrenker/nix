@@ -1077,6 +1077,9 @@ targets."
         time-stamp-end "$"
         time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
   (add-hook 'before-save-hook 'time-stamp)
+
+  (add-hook 'org-mode-hook (lambda ()
+                             (setq-local completion-at-point-functions (delete 'pcomplete-completions-at-point completion-at-point-functions))))
   :config
   (require 'org-crypt)
   (require 'org-agenda)

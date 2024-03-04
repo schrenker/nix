@@ -1544,7 +1544,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; :custom
   ;; (tempel-trigger-prefix "<")
 
-  :bind (:map tempel-map
+  :bind* (:map tempel-map
               ("M-j" . tempel-next)
               ("M-k" . tempel-previous))
 

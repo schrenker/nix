@@ -133,6 +133,10 @@
   (meow-beginning-of-thing ?l)
   (call-interactively #'meow-kill))
 
+(defun schrenker/meow-kill-to-eol ()
+  (interactive)
+  (meow-end-of-thing ?l)
+  (call-interactively #'meow-kill))
 
 (defun schrenker/meow-change-line ()
   (interactive)
@@ -143,7 +147,6 @@
   (interactive)
   (meow-bounds-of-thing ?l)
   (call-interactively #'meow-kill))
-
 
 (defun schrenker/meow-change-to-bol ()
   (interactive)
@@ -189,7 +192,7 @@
 
 (defvar-keymap schrenker/meow-d
   "d" #'schrenker/meow-delete-line
-  "$" #'kill-line
+  "$" #'schrenker/meow-kill-to-eol
   "0" #'schrenker/meow-kill-to-bol)
 
 (defvar-keymap schrenker/meow-c

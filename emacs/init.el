@@ -2358,7 +2358,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("c" . schrenker/meow-change)
    '("C" . schrenker/meow-change-to-eol)
    '("d" . schrenker/meow-kill)
-   '("D" . kill-line)
+   '("D" . schrenker/meow-kill-to-eol)
    '("J" . schrenker/meow-join-below)
    '("s" . meow-change)
    '("S" . schrenker/meow-change-to-eol)

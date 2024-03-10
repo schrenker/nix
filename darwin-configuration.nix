@@ -47,7 +47,6 @@
     "crossover"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
-    "google-chrome"
     "hazeover"
     "iterm2"
     "karabiner-elements"

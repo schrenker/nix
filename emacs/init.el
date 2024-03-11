@@ -1271,6 +1271,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
          ("C-c n d" . org-roam-tag-remove)
          ("C-c n c" . org-id-get-create)
          ("C-c n u" . schrenker/update-tag-nodes)
+         ("C-c n s" . org-roam-db-sync)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
 

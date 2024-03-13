@@ -10,6 +10,7 @@ org-mode
 (ex "#+begin_example " n> r> q n "#+end_example")
 (quo "#+begin_quote " n> r> q n "#+end_quote")
 (nt "*Note*: " q)
+(wr "*Warning*: " q)
 (smm "*Summary*: " q)
 
 yaml-mode

@@ -5,8 +5,8 @@
 
 ;;; Code:
 
-(setq gc-cons-threshold (* 1024 1024 200)
-      gc-cons-percentage 0.6)
+(setopt gc-cons-threshold (* 1024 1024 200)
+        gc-cons-percentage 0.6)
 
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -16,12 +16,12 @@
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
 
-(setq-default indent-tabs-mode nil
-              truncate-string-ellipsis "…"
-              x-stretch-cursor t
-              window-combination-resize t
-              delete-by-moving-to-trash t
-              tab-width 4)
+(setopt indent-tabs-mode nil
+        truncate-string-ellipsis "…"
+        x-stretch-cursor t
+        window-combination-resize t
+        delete-by-moving-to-trash t
+        tab-width 4)
 
 (defvar emacs-appearance 'dark
   "This variable holds initial value for theme if there is no dynamic system in place (macos), or value of theme that has been switched to.")
@@ -33,49 +33,48 @@
         (shell-command-to-string "uname -a"))))
 
 (when (schrenker/wsl2-p)
-  (setq
-   emacs-appearance 'light
-   browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
-   browse-url-generic-args     '("/c" "start")
-   browse-url-browser-function #'browse-url-generic))
+  (setopt emacs-appearance 'light
+          browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+          browse-url-generic-args     '("/c" "start")
+          browse-url-browser-function #'browse-url-generic))
 
-(setq auto-window-vscroll nil
-      backup-by-copying t
-      backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
-      create-lockfiles nil
-      custom-file "/dev/null"
-      delete-old-versions t
-      delete-pair-blink-delay 0
-      display-line-numbers-type 'visual
-      electric-pair-open-newline-between-pairs t
-      frame-resize-pixelwise t
-      inhibit-startup-message t
-      inhibit-startup-screen t
-      initial-frame-alist (if (schrenker/wsl2-p) '((top . 1) (left . 1) (width . 120) (height . 40)) '((fullscreen . maximized)))
-      initial-major-mode 'org-mode
-      initial-scratch-message nil
-      kept-new-versions 6
-      kept-old-versions 2
-      load-prefer-newer t
-      mac-command-modifier 'meta
-      mac-option-modifier 'alt
-      mac-right-option-modifier nil
-      max-lisp-eval-depth 10000
-      native-comp-async-report-warnings-errors nil
-      require-final-newline t
-      savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
-      scroll-conservatively 1000
-      scroll-margin 10
-      scroll-preserve-screen-position t
-      scroll-step 1
-      sentence-end-double-space nil
-      set-mark-command-repeat-pop t
-      user-full-name "Sebastian Zawadzki"
-      user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
-      vc-follow-symlinks nil
-      version-control t
-      visible-bell (schrenker/wsl2-p)
-      visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+(setopt auto-window-vscroll nil
+        backup-by-copying t
+        backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
+        create-lockfiles nil
+        custom-file "/dev/null"
+        delete-old-versions t
+        delete-pair-blink-delay 0
+        display-line-numbers-type 'visual
+        electric-pair-open-newline-between-pairs t
+        frame-resize-pixelwise t
+        inhibit-startup-message t
+        inhibit-startup-screen t
+        initial-frame-alist (if (schrenker/wsl2-p) '((top . 1) (left . 1) (width . 120) (height . 40)) '((fullscreen . maximized)))
+        initial-major-mode 'org-mode
+        initial-scratch-message nil
+        kept-new-versions 6
+        kept-old-versions 2
+        load-prefer-newer t
+        mac-command-modifier 'meta
+        mac-option-modifier 'alt
+        mac-right-option-modifier nil
+        max-lisp-eval-depth 10000
+        native-comp-async-report-warnings-errors nil
+        require-final-newline t
+        savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
+        scroll-conservatively 1000
+        scroll-margin 10
+        scroll-preserve-screen-position t
+        scroll-step 1
+        sentence-end-double-space nil
+        set-mark-command-repeat-pop t
+        user-full-name "Sebastian Zawadzki"
+        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
+        vc-follow-symlinks nil
+        version-control t
+        visible-bell (schrenker/wsl2-p)
+        visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
@@ -206,7 +205,7 @@
   ;; Enable :elpaca use-package keyword.
   (elpaca-use-package-mode)
   ;; Assume :ensure t unless otherwise specified.
-  (setq use-package-always-ensure t))
+  (setopt use-package-always-ensure t))
 
 (add-hook 'elpaca-ui-mode-hook (lambda ()
                                  (bind-key (kbd "/") 'elpaca-ui-search 'elpaca-ui-mode-map)))
@@ -328,7 +327,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (search-forward heading))
 
   :config
-  (setq hydra-is-helpful t)
+  (setopt hydra-is-helpful t)
 
   (defun schrenker/switch-hydra ()
     (interactive)
@@ -526,15 +525,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    :repo "Ladicle/hydra-posframe")
   :config
   (require 'posframe)
-  (setq hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
+  (setopt hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
   (hydra-posframe-mode 1))
 
 (use-package vertico
   :init
   (vertico-mode)
-  (setq vertico-scroll-margin 3
-        vertico-count 15
-        vertico-cycle nil))
+  (setopt vertico-scroll-margin 3
+          vertico-count 15
+          vertico-cycle nil))
 
 (use-package emacs
   :ensure nil
@@ -551,21 +550,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
   ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (setopt minibuffer-prompt-properties
+          '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-  (setq enable-recursive-minibuffers t))
+  (setopt enable-recursive-minibuffers t))
 
 (use-package orderless
-  :init
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic partial-completion)))
-        orderless-matching-styles '(orderless-literal
-                                    orderless-regexp
-                                    orderless-prefixes
-                                    orderless-initialism)))
+  :config
+  (setopt completion-styles '(orderless basic)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles basic partial-completion)))
+          orderless-matching-styles '(orderless-literal
+                                      orderless-regexp
+                                      orderless-prefixes
+                                      orderless-initialism)))
 
 (use-package marginalia
   :bind (:map minibuffer-local-map
@@ -596,24 +595,24 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (let ((completion-extra-properties corfu--extra)
           completion-cycle-threshold completion-cycling)
       (apply #'consult-completion-in-region completion-in-region--data)))
-  (setq corfu-auto t
-        corfu-auto-prefix 3
-        global-corfu-modes '((not
-                              erc-mode
-                              circe-mode
-                              help-mode
-                              gud-mode
-                              vterm-mode) t)
-        corfu-cycle t
-        corfu-separator ?\s
-        corfu-preselect 'prompt
-        corfu-count 16
-        corfu-max-width 120
-        corfu-on-exact-match nil
-        corfu-preview-current 'insert
-        corfu-quit-at-boundary 'separator
-        corfu-quit-no-match 'separator
-        tab-always-indent 'complete)
+  (setopt corfu-auto t
+          corfu-auto-prefix 3
+          global-corfu-modes '((not
+                                erc-mode
+                                circe-mode
+                                help-mode
+                                gud-mode
+                                vterm-mode) t)
+          corfu-cycle t
+          corfu-separator ?\s
+          corfu-preselect 'prompt
+          corfu-count 16
+          corfu-max-width 120
+          corfu-on-exact-match nil
+          corfu-preview-current 'insert
+          corfu-quit-at-boundary 'separator
+          corfu-quit-no-match 'separator
+          tab-always-indent 'complete)
   (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
   (global-corfu-mode)
   (require 'corfu-history)
@@ -645,24 +644,24 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (add-hook 'corfu-margin-formatters #'kind-icon-margin-formatter)
   :config
-  (setq kind-icon-default-face 'corfu-default
-        kind-icon-blend-background t
-        kind-icon-blend-frac 0.2))
+  (setopt kind-icon-default-face 'corfu-default
+          kind-icon-blend-background t
+          kind-icon-blend-frac 0.2))
 
 (use-package dabbrev
   :after corfu
   :ensure nil
   :config
-  (setq dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")
-        read-extended-command-predicate #'command-completion-default-include-p))
+  (setopt dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")
+          read-extended-command-predicate #'command-completion-default-include-p))
 
 (use-package which-key
   ;; :diminish t
   :config
-  (setq which-key-sort-order 'which-key-local-then-key-order
-        which-key-add-column-padding 3
-        which-key-max-display-columns 8
-        which-key-show-remaining-keys t)
+  (setopt which-key-sort-order 'which-key-local-then-key-order
+          which-key-add-column-padding 3
+          which-key-max-display-columns 8
+          which-key-show-remaining-keys t)
   (which-key-mode))
 
 (use-package transient
@@ -753,10 +752,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
   (unless (display-graphic-p)
     (load (concat user-emacs-directory "lisp/prism-cl.el") 'noerror 'nomessage))
-  (setq prism-comments nil
-        prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
-                                        (python-ts-mode . python-indent-offset)
-                                        (t . 2))))
+  (setopt prism-comments nil
+          prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
+                                          (python-ts-mode . python-indent-offset)
+                                          (t . 2))))
 
 (use-package inheritenv
   :config
@@ -825,16 +824,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
+  (setopt register-preview-delay 0.5
+          register-preview-function #'consult-register-format)
 
   ;; Optionally tweak the register preview window.
   ;; This adds thin lines, sorting and hides the mode line of the window.
   (advice-add #'register-preview :override #'consult-register-window)
 
   ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+  (setopt xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
 
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
@@ -866,7 +865,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; "C-+"
+  (setopt consult-narrow-key "<") ;; "C-+"
 
   ;; Optionally make narrowing help available in the minibuffer.
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
@@ -875,7 +874,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; By default `consult-project-function' uses `project-root' from project.el.
   ;; Optionally configure a different project root function.
   ;;;; 1. project.el (the default)
-  (setq consult-project-function   #'consult--default-project-function))
+  (setopt consult-project-function   #'consult--default-project-function))
 
 (use-package consult-project-extra
   :commands (consult-project-extra-find
@@ -891,9 +890,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :bind (("C-c n b" . consult-org-roam-backlinks)
          ("C-c n w" . consult-org-roam-forward-links))
   :config
-  (setq consult-org-roam-grep-func #'consult-ripgrep
-        consult-org-roam-buffer-narrow-key ?r
-        consult-org-roam-buffer-enabled nil)
+  (setopt consult-org-roam-grep-func #'consult-ripgrep
+          consult-org-roam-buffer-narrow-key ?r
+          consult-org-roam-buffer-enabled nil)
   (consult-org-roam-mode 1)
   ;; Eventually suppress previewing for certain functions
   (consult-customize
@@ -921,11 +920,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           (org-toggle-checkbox))))
 
   ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
+  (setopt prefix-help-command #'embark-prefix-help-command)
 
   ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
   ;; strategy, if you want to see the documentation from multiple providers.
-  ;(add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+                                        ;(add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
   ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 
   :config
@@ -957,10 +956,10 @@ targets."
          nil nil t (lambda (binding)
                      (not (string-suffix-p "-argument" (cdr binding))))))))
 
-  (setq embark-indicators
-        '(embark-which-key-indicator
-          embark-highlight-indicator
-          embark-isearch-highlight-indicator))
+  (setopt embark-indicators
+          '(embark-which-key-indicator
+            embark-highlight-indicator
+            embark-isearch-highlight-indicator))
 
   (defun embark-hide-which-key-indicator (fn &rest args)
     "Hide the which-key indicator immediately when using the completing-read prompter."
@@ -1002,28 +1001,28 @@ targets."
     (let ((aw-ignore-current t))
       (ace-swap-window)))
   
-  (setq aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
+  (setopt aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
   (when (display-graphic-p)
     (with-eval-after-load 'posframe
       (ace-window-posframe-mode 1))))
 
 (use-package popper
   :init
-  (setq popper-display-function
-        (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
-          (if (popper--suppress-p buffer)
-              (display-buffer-no-window buffer '((allow-no-window . t)))
-            (popper-select-popup-at-bottom buffer _act)))
-        popper-reference-buffers
-        '("\\*Messages\\*"
-          "\\*Warnings\\*"
-          "Output\\*$"
-          "\\*Async Shell Command\\*"
-          help-mode
-          helpful-mode
-          compilation-mode))
+  (setopt popper-display-function
+          (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
+            (if (popper--suppress-p buffer)
+                (display-buffer-no-window buffer '((allow-no-window . t)))
+              (popper-select-popup-at-bottom buffer _act)))
+          popper-reference-buffers
+          '("\\*Messages\\*"
+            "\\*Warnings\\*"
+            "Output\\*$"
+            "\\*Async Shell Command\\*"
+            help-mode
+            helpful-mode
+            compilation-mode))
   (with-eval-after-load 'project
-    (setq popper-group-function #'popper-group-by-project))
+    (setopt popper-group-function #'popper-group-by-project))
   ;; (add-hook 'org-mode-hook
   ;;           (lambda () (setq-local popper-reference-buffers (append
   ;;                                                       (remove "\\*Warnings\\*" popper-reference-buffers)
@@ -1063,10 +1062,10 @@ targets."
     (with-temp-buffer
       (insert-file-contents (concat user-emacs-directory "templates/" template))
       (buffer-string)))
-  (setq time-stamp-active t
-        time-stamp-start "#\\+modified: [ \t]*"
-        time-stamp-end "$"
-        time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
+  (setopt time-stamp-active t
+          time-stamp-start "#\\+modified: [ \t]*"
+          time-stamp-end "$"
+          time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
   (add-hook 'before-save-hook 'time-stamp)
 
   (add-hook 'org-mode-hook (lambda ()
@@ -1078,21 +1077,20 @@ targets."
   (load-file (concat user-emacs-directory "lisp/org-format.el"))
   (setf epa-pinentry-mode 'loopback)
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
-  (setq
+  (setq-default org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a.")))
+  (setopt
    org-log-into-drawer "LOGBOOK"
    org-log-state-notes-insert-after-drawers t
    org-log-done 'time
    org-refile-use-outline-path 'file
    org-outline-path-complete-in-steps nil
    org-directory "~/org"
-   org-refile-targets `((,(directory-files-recursively org-directory "[a-z0-9]*.org$") :maxlevel . 4))
    org-insert-heading-respect-content t
    org-fontify-whole-heading-line t
    org-tags-exclude-from-inheritance '("crypt"
                                        "verb"
                                        "agenda")
    org-tags-column -77
-   org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a."))
    org-roam-directory org-directory
    org-archive-location "archive/%s_archive::"
    org-archive-tag "archive"
@@ -1131,6 +1129,10 @@ targets."
      ("a" "Area Note" entry (file+headline (lambda () (schrenker/get-node-file-by-tag "area")) "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
      ("p" "Project Note" entry (file+headline (lambda () (schrenker/get-node-file-by-tag "project")) "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
      ("P" "Project Task" entry (file+olp (lambda () (schrenker/get-node-file-by-tag "project")) "Tasks" "Backlog") ,(schrenker/get-org-template "task") :empty-lines 1 :prepend t)))
+
+  (with-eval-after-load 'org-roam
+    (let ((refile-targets (schrenker/fetch-refile-targets)))
+      (setopt org-refile-targets refile-targets)))
 
   (org-crypt-use-before-save-magic)
 
@@ -1314,15 +1316,30 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
     (interactive)
-    (setq org-agenda-files (seq-uniq
-                            (seq-map
-                             #'car
-                             (org-roam-db-query
-                              [:select [nodes:file]
-                                       :from tags
-                                       :left-join nodes
-                                       :on (= tags:node-id nodes:id)
-                                       :where (like tag (quote "%\"agenda\"%"))])))))
+    (setopt org-agenda-files (seq-uniq
+                              (seq-map
+                               #'car
+                               (org-roam-db-query
+                                [:select [nodes:file]
+                                         :from tags
+                                         :left-join nodes
+                                         :on (= tags:node-id nodes:id)
+                                         :where (like tag (quote "%\"agenda\"%"))])))))
+
+  (defun schrenker/fetch-refile-targets (&rest _)
+    "Get refile targets"
+    (delq nil (mapcar (lambda (item)
+                        (unless (string-match "/\\(archive\\|tags\\)/" item) `(,item :maxlevel . 3)))
+                      (seq-uniq
+                       (seq-map
+                        #'car
+                        (org-roam-db-query
+                         [:select [nodes:file]
+                                  :from tags
+                                  :left-join nodes
+                                  :on (= tags:node-id nodes:id)
+                                  :where (or (like tag (quote "%\"area\"%"))
+                                             (like tag (quote "%\"project\"%")))]))))))
 
   :config
   (schrenker/agenda-files-update)
@@ -1371,15 +1388,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :after org-roam
   :bind (("C-c n o" . org-roam-ui-open))
   :config
-  (setq org-roam-ui-sync-theme nil
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t)
+  (setopt org-roam-ui-sync-theme nil
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t)
   (advice-add 'org-roam-ui-open :after (lambda () (schrenker/retry-until-success #'org-roam-ui-sync-theme 15))))
 
 (use-package org-kanban
   :config
-  (setq org-kanban/layout '("…" . 15)))
+  (setopt org-kanban/layout '("…" . 15)))
 
 (use-package org-appear
   :ensure (org-appear
@@ -1390,12 +1407,12 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package org-modern
   :config
-  (setq org-modern-hide-stars nil
-        org-modern-table nil
-        org-modern-star nil
-        org-modern-checkbox nil
-        org-modern-block-fringe nil
-        org-modern-list nil)
+  (setopt org-modern-hide-stars nil
+          org-modern-table nil
+          org-modern-star nil
+          org-modern-checkbox nil
+          org-modern-block-fringe nil
+          org-modern-list nil)
   (global-org-modern-mode 1))
 
 (use-package german-holidays)
@@ -1412,17 +1429,17 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (require 'polish-holidays)
   (require 'german-holidays)
-  (setq calendar-holidays '((holiday-fixed 1 1 "New Year's Day")
-                            (holiday-fixed 2 14 "Valentine's Day")
-                            (holiday-fixed 4 1 "April Fools' Day")
-                            (holiday-fixed 10 31 "Halloween")
-                            (holiday-easter-etc)
-                            (holiday-fixed 12 25 "Christmas")
-                            (solar-equinoxes-solstices)
-                            ustawowo-wolne-od-pracy
-                            czas-letni
-                            swieta-panstwowe-pozostałe-święta
-                            holiday-german-holidays)))
+  (setopt calendar-holidays '((holiday-fixed 1 1 "New Year's Day")
+                              (holiday-fixed 2 14 "Valentine's Day")
+                              (holiday-fixed 4 1 "April Fools' Day")
+                              (holiday-fixed 10 31 "Halloween")
+                              (holiday-easter-etc)
+                              (holiday-fixed 12 25 "Christmas")
+                              (solar-equinoxes-solstices)
+                              ustawowo-wolne-od-pracy
+                              czas-letni
+                              swieta-panstwowe-pozostałe-święta
+                              holiday-german-holidays)))
 
 (use-package ox-confluence-modern
   :ensure
@@ -1446,8 +1463,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
         ("M-+" . dired-create-empty-file)
         ("J" . dired-goto-file))
   :init
-  (setq dired-use-ls-dired t
-        dired-dwim-target t)
+  (setopt dired-use-ls-dired t
+          dired-dwim-target t)
 
   (defvar schrenker/last-dired-window-before-jump nil)
 
@@ -1467,8 +1484,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                                         ace-display-buffer))
                           aw-ignore-current t)))
   (when (eq system-type 'darwin)
-    (setq insert-directory-program "/opt/homebrew/bin/gls"
-          dired-listing-switches "-aBhl --group-directories-first")))
+    (setopt insert-directory-program "/opt/homebrew/bin/gls"
+            dired-listing-switches "-aBhl --group-directories-first")))
 
 (use-package dirvish
   :init
@@ -1476,13 +1493,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   ;; (dirvish-peek-mode) ; Preview files in minibuffer
   (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
-  (setq dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
-        ;; Don't worry, Dirvish is still performant even if you enable all these attributes
-        dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-time file-size)
-        dirvish-path-separators '("~" "/" "/")
-        dirvish-default-layout '(1 0.1 0.5)
-        dirvish-layout-recipes '((0 0 0.4) (0 0 0.8) (1 0.08 0.8) (1 0.1 0.5))
-        dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
+  (setopt dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
+          ;; Don't worry, Dirvish is still performant even if you enable all these attributes
+          dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-time file-size)
+          dirvish-path-separators '("~" "/" "/")
+          dirvish-default-layout '(1 0.1 0.5)
+          dirvish-layout-recipes '((0 0 0.4) (0 0 0.8) (1 0.08 0.8) (1 0.1 0.5))
+          dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
 
   :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
   (("C-c f" . dirvish-fd)
@@ -1519,14 +1536,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :bind ("C-x c" . run-command)
   :config
   (load (concat user-emacs-directory "lisp/run-command.el") t t)
-  (setq run-command-default-runner 'run-command-runner-compile))
+  (setopt run-command-default-runner 'run-command-runner-compile))
 
 (use-package flymake
   ;; :ensure nil
   :hook ((prog-mode org-mode) . flymake-mode)
   :config
-  (setq flymake-mode-line-lighter "FM"
-        flymake-show-diagnostics-at-end-of-line 'short))
+  (setopt flymake-mode-line-lighter "FM"
+          flymake-show-diagnostics-at-end-of-line 'short))
 
 (use-package flymake-easy
   :demand t)
@@ -1537,11 +1554,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; (tempel-trigger-prefix "<")
 
   :bind* (:map tempel-map
-              ("M-j" . tempel-next)
-              ("M-k" . tempel-previous))
+               ("M-j" . tempel-next)
+               ("M-k" . tempel-previous))
 
   :init
-  (setq tempel-path (concat user-emacs-directory "templates/tempel"))
+  (setopt tempel-path (concat user-emacs-directory "templates/tempel"))
   ;; Setup completion at point
   (defun tempel-setup-capf ()
     ;; Add the Tempel Capf to `completion-at-point-functions'.
@@ -1567,7 +1584,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package typst-ts-mode
   :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
   :init
-  (setq typst-ts-mode-watch-options "--open"))
+  (setopt typst-ts-mode-watch-options "--open"))
 
 (use-package typst-preview
   :after typst-ts-mode
@@ -1578,20 +1595,20 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package mood-line
   :config
-  (setq mood-line-format mood-line-format-default)
+  (setopt mood-line-format mood-line-format-default)
   (mood-line-mode 1))
 
 (use-package solarized-theme
   :demand t
   :init
-  (setq solarized-use-more-italic t
-        solarized-scale-org-headlines nil
-        solarized-use-variable-pitch nil
-        solarized-height-minus-1 1.0
-        solarized-height-plus-1 1.0
-        solarized-height-plus-2 1.0
-        solarized-height-plus-3 1.0
-        solarized-height-plus-4 1.0)
+  (setopt solarized-use-more-italic t
+          solarized-scale-org-headlines nil
+          solarized-use-variable-pitch nil
+          solarized-height-minus-1 1.0
+          solarized-height-plus-1 1.0
+          solarized-height-plus-2 1.0
+          solarized-height-plus-3 1.0
+          solarized-height-plus-4 1.0)
 
   (defun schrenker/solarized-theme-overlay (appearance)
     ;; Function that is there just to make my life easier. Reapplies all visual updates, and that's it.
@@ -1620,59 +1637,59 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           (white "#ffffff")
           (black "#181818"))
       (progn
-        (setq org-todo-keyword-faces
-              `(("NEXT" :foreground ,yellow :weight bold :inverse-video t)
-                ("TODO" :foreground ,magenta :weight bold :inverse-video t)
-                ("INPROGRESS" :foreground ,green :weight bold :inverse-video t)
-                ("BLOCKED" :foreground ,orange :weight bold :inverse-video t)
-                ("ONHOLD" :foreground ,cyan :weight bold :inverse-video t)
-                ("REVIEW" :foreground ,blue :weight bold :inverse-video t)
-                ("DONE" :foreground ,fg-emph :weight bold :inverse-video t)
-                ("CANCELLED" :foreground ,fg-alt :weight bold :inverse-video t)
-                ("DELEGATED"  :foreground ,fg-main :weight bold :inverse-video t))
-              org-priority-faces
-              `((?A :foreground ,red :weight bold :inverse-video t)
-                (?B :foreground ,yellow :weight bold :inverse-video t)
-                (?C :foreground ,violet :weight bold :inverse-video t)
-                (?D :foreground ,fg-emph :weight bold :inverse-video t))
-              org-src-block-faces
-              `(("emacs-lisp" (:background ,magenta-bg :extend t))
-                ("python" (:background ,green-bg :extend t))
-                ("yaml" (:background ,cyan-bg :extend t))
-                ("json" (:background ,blue-bg :extend t))
-                ("bash" (:background ,green-bg :extend t))
-                ("sh" (:background ,green-bg :extend t))
-                ("shell" (:background ,green-bg :extend t))
-                ("fish" (:background ,green-bg :extend t))
-                ("nix" (:background ,blue-bg :extend t)))
-              org-roam-ui-custom-theme
-              `((base0 . ,(if (eq appearance 'light) "#FFFBF0" "#073642"))
-                (base1 . ,(if (eq appearance 'light) "#FCF8ED" "#03282F"))
-                (base2 . ,(if (eq appearance 'light) "#FCF7E8" "#00212C"))
-                (base3 . ,(if (eq appearance 'light) "#F2E6CE" "#13383C"))
-                (base4 . ,(if (eq appearance 'light) "#E1DBCD" "#56697A"))
-                (base5 . ,(if (eq appearance 'light) "#D6D6D6" "#405A61"))
-                (base6 . "#96A7A9")
-                (base7 . "#788484")
-                (base8 . "#626C6C")
-                (bg . ,(if (eq appearance 'light) "#FDF6E3" "#002b36"))
-                (bg-alt . ,(if (eq appearance 'light) "#EEE8D5" "#00212B"))
-                (fg . ,(if (eq appearance 'light) "#556b72" "#839496"))
-                (fg-alt . ,(if (eq appearance 'light) "#7B8787" "#657b83"))
-                (grey . ,(if (eq appearance 'light) "#E1DBCD" "#56697A"))
-                (blue . "#268bd2")
-                (cyan . "#2aa198")
-                (dark-blue . "#3F88AD")
-                (dark-cyan . "#204052")
-                (green . "#859900")
-                (magenta . "#d33682")
-                (orange . "#cb4b16")
-                (red . "#dc322f")
-                (teal . "#35a69c")
-                (violet . "#6c71c4")
-                (yellow . "#b58900"))
-              org-modern-todo-faces org-todo-keyword-faces
-              org-modern-priority-faces org-priority-faces)
+        (setq-default org-todo-keyword-faces
+                      `(("NEXT" :foreground ,yellow :weight bold :inverse-video t)
+                        ("TODO" :foreground ,magenta :weight bold :inverse-video t)
+                        ("INPROGRESS" :foreground ,green :weight bold :inverse-video t)
+                        ("BLOCKED" :foreground ,orange :weight bold :inverse-video t)
+                        ("ONHOLD" :foreground ,cyan :weight bold :inverse-video t)
+                        ("REVIEW" :foreground ,blue :weight bold :inverse-video t)
+                        ("DONE" :foreground ,fg-emph :weight bold :inverse-video t)
+                        ("CANCELLED" :foreground ,fg-alt :weight bold :inverse-video t)
+                        ("DELEGATED"  :foreground ,fg-main :weight bold :inverse-video t))
+                      org-priority-faces
+                      `((?A :foreground ,red :weight bold :inverse-video t)
+                        (?B :foreground ,yellow :weight bold :inverse-video t)
+                        (?C :foreground ,violet :weight bold :inverse-video t)
+                        (?D :foreground ,fg-emph :weight bold :inverse-video t))
+                      org-src-block-faces
+                      `(("emacs-lisp" (:background ,magenta-bg :extend t))
+                        ("python" (:background ,green-bg :extend t))
+                        ("yaml" (:background ,cyan-bg :extend t))
+                        ("json" (:background ,blue-bg :extend t))
+                        ("bash" (:background ,green-bg :extend t))
+                        ("sh" (:background ,green-bg :extend t))
+                        ("shell" (:background ,green-bg :extend t))
+                        ("fish" (:background ,green-bg :extend t))
+                        ("nix" (:background ,blue-bg :extend t)))
+                      org-roam-ui-custom-theme
+                      `((bg . ,(if (eq appearance 'light) "#FDF6E3" "#002b36"))
+                        (bg-alt . ,(if (eq appearance 'light) "#EEE8D5" "#00212B"))
+                        (fg . ,(if (eq appearance 'light) "#556b72" "#839496"))
+                        (fg-alt . ,(if (eq appearance 'light) "#7B8787" "#657b83"))
+                        (grey . ,(if (eq appearance 'light) "#E1DBCD" "#56697A"))
+                        (blue . "#268bd2")
+                        (cyan . "#2aa198")
+                        (dark-blue . "#3F88AD")
+                        (dark-cyan . "#204052")
+                        (green . "#859900")
+                        (magenta . "#d33682")
+                        (orange . "#cb4b16")
+                        (red . "#dc322f")
+                        (teal . "#35a69c")
+                        (violet . "#6c71c4")
+                        (yellow . "#b58900")
+                        (base0 . ,(if (eq appearance 'light) "#FFFBF0" "#073642"))
+                        (base1 . ,(if (eq appearance 'light) "#FCF8ED" "#03282F"))
+                        (base2 . ,(if (eq appearance 'light) "#FCF7E8" "#00212C"))
+                        (base3 . ,(if (eq appearance 'light) "#F2E6CE" "#13383C"))
+                        (base4 . ,(if (eq appearance 'light) "#E1DBCD" "#56697A"))
+                        (base5 . ,(if (eq appearance 'light) "#D6D6D6" "#405A61"))
+                        (base6 . "#96A7A9")
+                        (base7 . "#788484")
+                        (base8 . "#626C6C"))
+                      org-modern-todo-faces org-todo-keyword-faces
+                      org-modern-priority-faces org-priority-faces)
 
         (mapc #'disable-theme custom-enabled-themes)
         (pcase appearance
@@ -1764,36 +1781,36 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package all-the-icons-ibuffer
   :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
   :init
-  (setq all-the-icons-ibuffer-formats `((mark
-                                         modified
-                                         read-only
-                                         ,(if (>= emacs-major-version 26) 'locked "")
-                                         " "
-                                         (icon 2 2)
-                                         (name 48 48 :left :elide)
-                                         " "
-                                         (size-h 9 -1 :right)
-                                         " "
-                                         (mode+ 16 16 :left :elide)
-                                         " "
-                                         filename-and-process+)
-                                        (mark
-                                         modified
-                                         read-only
-                                         ,(if (>= emacs-major-version 26) 'locked "")
-                                         " "
-                                         (icon 2 2)
-                                         (name 30 30 :left :elide)
-                                         " "
-                                         filename-and-process+))))
+  (setopt all-the-icons-ibuffer-formats `((mark
+                                           modified
+                                           read-only
+                                           ,(if (>= emacs-major-version 26) 'locked "")
+                                           " "
+                                           (icon 2 2)
+                                           (name 48 48 :left :elide)
+                                           " "
+                                           (size-h 9 -1 :right)
+                                           " "
+                                           (mode+ 16 16 :left :elide)
+                                           " "
+                                           filename-and-process+)
+                                          (mark
+                                           modified
+                                           read-only
+                                           ,(if (>= emacs-major-version 26) 'locked "")
+                                           " "
+                                           (icon 2 2)
+                                           (name 30 30 :left :elide)
+                                           " "
+                                           filename-and-process+))))
 
 (use-package all-the-icons-completion
   :config
   (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
   (all-the-icons-completion-mode 1))
 
-(setq frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
-      ns-use-proxy-icon (display-graphic-p))
+(setopt frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
+        ns-use-proxy-icon (display-graphic-p))
 
 (use-package ligature
   :config
@@ -1817,7 +1834,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :if (not (eq system-type 'windows-nt))
   :demand t
   :init
-  (setq vterm-always-compile-module t)
+  (setopt vterm-always-compile-module t)
 
   (defun schrenker/CC-out-of-copy-mode ()
     (interactive)
@@ -1829,8 +1846,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (:map vterm-copy-mode-map
         ("C-c C-c" . schrenker/CC-out-of-copy-mode))
   :config
-  (setq vterm-max-scrollback 10000
-        vterm-kill-buffer-on-exit t)
+  (setopt vterm-max-scrollback 10000
+          vterm-kill-buffer-on-exit t)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   (with-eval-after-load 'perject
     (add-hook 'vterm-mode-hook 'perject--auto-add-buffer))
@@ -1892,7 +1909,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
             (switch-to-buffer vterm-buffer)))
       (message "This file is not in a project")))
   :config
-  (setq multi-vterm-dedicated-window-height-percent 30))
+  (setopt multi-vterm-dedicated-window-height-percent 30))
 
 (use-package eglot
   :ensure nil
@@ -1906,7 +1923,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("C-c c d" . eglot-find-declaration)
    ("C-c c t" . eglot-find-typeDefinition))
   :init
-  (setq eglot-autoshutdown t)
+  (setopt eglot-autoshutdown t)
   :config
   (add-to-list 'eglot-workspace-configuration
                '(:yaml . (schemas .
@@ -1960,14 +1977,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                  :program dape-cwd-fn))
 
   (add-to-list 'dape-configs
-             `(debugpy
-               modes (python-ts-mode python-mode)
-               command "python3"
-               command-args ("-m" "debugpy.adapter")
-               :type "executable"
-               :request "launch"
-               :cwd dape-cwd-fn
-               :program dape-find-file-buffer-default)))
+               `(debugpy
+                 modes (python-ts-mode python-mode)
+                 command "python3"
+                 command-args ("-m" "debugpy.adapter")
+                 :type "executable"
+                 :request "launch"
+                 :cwd dape-cwd-fn
+                 :program dape-find-file-buffer-default)))
 
 (use-package vundo
   :bind
@@ -1976,7 +1993,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package goggles
   :hook ((prog-mode text-mode) . goggles-mode)
   :config
-  (setq-default goggles-pulse t)) ;; set to nil to disable pulsing
+  (setopt goggles-pulse t)) ;; set to nil to disable pulsing
 
 (use-package woman
   :ensure nil
@@ -2035,7 +2052,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
        (t ;; `beg' not found.
         (cons path nil)))))
   (advice-add 'buffer-name-relative--abbrev-directory-impl :override #'schrenker/buffer-name-relative--abbrev-directory-impl)
-  (setq buffer-name-relative-abbrev-limit 24)
+  (setopt buffer-name-relative-abbrev-limit 24)
   (advice-add
    'buffer-name-relative--create-file-buffer-advice
    :before
@@ -2055,30 +2072,30 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package treesit
   :ensure nil
   :init
-  (setq treesit-language-source-alist
-        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-          (c "https://github.com/tree-sitter/tree-sitter-c")
-          (cmake "https://github.com/uyha/tree-sitter-cmake")
-          (common-lisp "https://github.com/theHamsta/tree-sitter-commonlisp")
-          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-          (css "https://github.com/tree-sitter/tree-sitter-css")
-          (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
-          (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-          (go "https://github.com/tree-sitter/tree-sitter-go")
-          (go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
-          (html "https://github.com/tree-sitter/tree-sitter-html")
-          (js . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-          (json "https://github.com/tree-sitter/tree-sitter-json")
-          (lua "https://github.com/Azganoth/tree-sitter-lua")
-          (make "https://github.com/alemuller/tree-sitter-make")
-          (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-          (python "https://github.com/tree-sitter/tree-sitter-python")
-          (r "https://github.com/r-lib/tree-sitter-r")
-          (rust "https://github.com/tree-sitter/tree-sitter-rust")
-          (toml "https://github.com/tree-sitter/tree-sitter-toml")
-          (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-          (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
-          (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src")))))
+  (setopt treesit-language-source-alist
+          '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+            (c "https://github.com/tree-sitter/tree-sitter-c")
+            (cmake "https://github.com/uyha/tree-sitter-cmake")
+            (common-lisp "https://github.com/theHamsta/tree-sitter-commonlisp")
+            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+            (css "https://github.com/tree-sitter/tree-sitter-css")
+            (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
+            (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+            (go "https://github.com/tree-sitter/tree-sitter-go")
+            (go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
+            (html "https://github.com/tree-sitter/tree-sitter-html")
+            (js . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+            (json "https://github.com/tree-sitter/tree-sitter-json")
+            (lua "https://github.com/Azganoth/tree-sitter-lua")
+            (make "https://github.com/alemuller/tree-sitter-make")
+            (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+            (python "https://github.com/tree-sitter/tree-sitter-python")
+            (r "https://github.com/r-lib/tree-sitter-r")
+            (rust "https://github.com/tree-sitter/tree-sitter-rust")
+            (toml "https://github.com/tree-sitter/tree-sitter-toml")
+            (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+            (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+            (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src")))))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
@@ -2129,7 +2146,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :after eglot
   :init
   (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
-  (setq go-ts-mode-indent-offset 4)
+  (setopt go-ts-mode-indent-offset 4)
   (add-hook 'go-ts-mode-hook (lambda ()
                                (eglot-inlay-hints-mode 1)
                                (go-eldoc-setup)
@@ -2166,7 +2183,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package python-mode
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  (setq python-indent-offset 4)
+  (setopt python-indent-offset 4)
   (add-hook 'python-ts-mode-hook (lambda ()
                                    (eglot-inlay-hints-mode 1)
                                    (setq-local tab-width 4))))
@@ -2188,8 +2205,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :init
   (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-ts-mode))
   (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
-  (setq-default sh-shell "bash")
-  (setq-default sh-shell-file "/bin/bash")
+  (setopt sh-shell "bash")
+  (setopt sh-shell-file "/bin/bash")
   :mode
   ("\\.sh\\'" . bash-ts-mode))
 
@@ -2227,11 +2244,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package expand-region
   :commands (er/expand-region)
   :init
-  (setq er/try-expand-list
-        '(er/mark-inside-quotes
-          er/mark-outside-quotes
-          er/mark-inside-pairs
-          er/mark-outside-pairs)))
+  (setopt er/try-expand-list
+          '(er/mark-inside-quotes
+            er/mark-outside-quotes
+            er/mark-inside-pairs
+            er/mark-outside-pairs)))
 
 (use-package surround
   :bind-keymap ("M-'" . surround-keymap))
@@ -2299,7 +2316,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                        '(pair ("<") (">"))
                        '(pair ("<") (">")))
 
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
+  (setopt meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key
    '("j" . schrenker/meow-next)
    '("k" . schrenker/meow-prev)
@@ -2417,45 +2434,45 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'meow-insert-exit-hook 'corfu-quit)
   (add-hook 'meow-switch-state-hook (lambda (&rest _) (when (symbol-value 'meow-beacon-mode) (corfu-quit))))
 
-  (setq meow-use-clipboard t
-        meow-use-cursor-position-hack t
-        meow-expand-exclude-mode-list nil
-        meow-use-enhanced-selection-effect t
-        meow-select-on-change nil
-        meow-motion-remap-prefix "A-C-M-"
-        meow-char-thing-table '((?r . round)
-                                (?s . square)
-                                (?c . curly)
-                                (?a . angle)
-                                (?S . string)
-                                (?o . symbol)
-                                (?w . window)
-                                (?b . buffer)
-                                (?p . paragraph)
-                                (?l . line)
-                                (?d . defun)
-                                (?. . sentence)))
+  (setopt meow-use-clipboard t
+          meow-use-cursor-position-hack t
+          meow-expand-exclude-mode-list nil
+          meow-use-enhanced-selection-effect t
+          meow-select-on-change nil
+          meow-motion-remap-prefix "A-C-M-"
+          meow-char-thing-table '((?r . round)
+                                  (?s . square)
+                                  (?c . curly)
+                                  (?a . angle)
+                                  (?S . string)
+                                  (?o . symbol)
+                                  (?w . window)
+                                  (?b . buffer)
+                                  (?p . paragraph)
+                                  (?l . line)
+                                  (?d . defun)
+                                  (?. . sentence)))
 
   (meow-global-mode 1))
 
 (use-package perject
   :demand t
   :config
-  (setq perject-load-at-startup 'all
-        perject-save-frames nil
-        perject-frame-title-format nil
-        perject-switch-to-new-collection t
-        perject-save-on-exit 'all
-        perject-reload-default '(keep t)
-        perject-close-default '(t nil t)
-        perject-delete-default '(nil t nil t))
+  (setopt perject-load-at-startup 'all
+          perject-save-frames '(nil)
+          perject-frame-title-format nil
+          perject-switch-to-new-collection t
+          perject-save-on-exit 'all
+          perject-reload-default '(keep t)
+          perject-close-default '(t nil t)
+          perject-delete-default '(nil t nil t))
 
 
   (with-eval-after-load 'dirvish
     (advice-add 'perject-switch :before
                 (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
-                               (when (eq visible (selected-window))
-                                 (other-window 1))))))
+                                    (when (eq visible (selected-window))
+                                      (other-window 1))))))
 
 
   (defun schrenker/perject-switch-project-global ()
@@ -2579,9 +2596,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    :main "perject-tab.el")
   :after perject
   :init
-  (setq perject-tab-states '(("mutable" always "⟨" "⟩")
-                             ("dynamic" perject-tab--dynamic-state "[" "]")
-                             ("immutable" ignore "⟦" "⟧")))
+  (setq-default perject-tab-states '(("mutable" always "⟨" "⟩")
+                                     ("dynamic" perject-tab--dynamic-state "[" "]")
+                                     ("immutable" ignore "⟦" "⟧")))
   (perject-tab-mode 1)
   (add-hook 'perject-before-switch-hook (lambda (&rest orig new frame)
                                           (let ((inhibit-message t)

@@ -275,6 +275,7 @@
 (global-set-key (kbd "<A-backspace>") 'schrenker/backward-kill-word)
 
 (unbind-key (kbd "M-r"))
+(unbind-key (kbd "C-x C-n")) ; annoying
 (unbind-key (kbd "C-z")) ; suspend emacs
 (unbind-key (kbd "C-x C-z")) ; suspend frame
 (unbind-key (kbd "<f2>"))

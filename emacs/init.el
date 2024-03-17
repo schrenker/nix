@@ -267,7 +267,12 @@
   (other-window 1))
 (global-set-key (kbd "C-x 3") 'schrenker/split-and-follow-vertically)
 
-(global-set-key (kbd "<A-backspace>") 'backward-kill-word)
+(defun schrenker/backward-kill-word ()
+  "Backward kill word without changing clipboard contents."
+  (interactive)
+  (delete-region (point) (progn (forward-word -1) (point))))
+
+(global-set-key (kbd "<A-backspace>") 'schrenker/backward-kill-word)
 
 (unbind-key (kbd "M-r"))
 (unbind-key (kbd "C-z")) ; suspend emacs

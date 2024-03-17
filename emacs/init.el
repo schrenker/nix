@@ -629,11 +629,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package cape
   :init
-  ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-elisp-block)
   :config
+  (add-hook 'emacs-lisp-mode-hook (lambda ()
+                                    (setq-local completion-at-point-functions
+                                                '(tempel-expand
+                                                  cape-elisp-symbol
+                                                  t))))
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
 
 (use-package kind-icon

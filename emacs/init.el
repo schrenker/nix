@@ -931,7 +931,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
 
   (with-eval-after-load 'embark-org
-    (keymap-set embark-org-item-map "RET" #'schrenker/org-cycle-checkbox))
+    (keymap-set embark-org-item-map "RET" #'schrenker/org-cycle-checkbox)
+    (keymap-set embark-org-link-map "RET" #'org-open-at-point))
 
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.

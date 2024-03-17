@@ -92,6 +92,12 @@
   (interactive)
   (schrenker/call-negative 'meow-till))
 
+(defun schrenker/meow-visit ()
+  "Meow visit, but with prompt preselection in vertico"
+  (interactive)
+  (let ((vertico-preselect 'prompt))
+    (call-interactively #'meow-visit)))
+
 (defun schrenker/meow-search (ARG)
   "Sometimes, when searching for a string that resides within truncated org link, it will add the search string to 'regexp-search-ring' with additional remnants of org link, making further search impossible. This function checks for problematic strings that appear within the car of regexp-search-string, and if they are found, it pops to a previous search string."
   (interactive "P")

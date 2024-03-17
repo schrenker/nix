@@ -528,24 +528,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
   (hydra-posframe-mode 1))
 
-;; Enable vertico
 (use-package vertico
   :init
   (vertico-mode)
+  (setq vertico-scroll-margin 3
+        vertico-count 15
+        vertico-cycle nil))
 
-  ;; Different scroll margin
-  (setq vertico-scroll-margin 3)
-
-  ;; Show more candidates
-  (setq vertico-count 15)
-
-  ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  (setq vertico-cycle nil))
-
-;; ;; A few more useful configurations...
 (use-package emacs
   :ensure nil
   :init
@@ -567,12 +556,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (setq enable-recursive-minibuffers t))
 
-;; Optionally use the `orderless' completion style.
 (use-package orderless
   :init
-  ;; Configure a custom style dispatcher (see the Consult wiki)
-  ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
-  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles basic partial-completion)))
@@ -581,16 +566,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                     orderless-prefixes
                                     orderless-initialism)))
 
-;; Enable rich annotations using the Marginalia package
 (use-package marginalia
-  ;; Either bind `marginalia-cycle' globally or only in the minibuffer
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle))
-
-  ;; The :init configuration is always executed (Not lazy!)
   :init
-  ;; Must be in the :init section of use-package such that the mode gets
-  ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
 
 (use-package corfu
@@ -616,7 +595,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (let ((completion-extra-properties corfu--extra)
           completion-cycle-threshold completion-cycling)
       (apply #'consult-completion-in-region completion-in-region--data)))
-  ;; Auto-completion settings, must be set before calling `global-corfu-mode'.
   (setq corfu-auto t
         corfu-auto-prefix 3
         global-corfu-modes '((not

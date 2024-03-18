@@ -2001,7 +2001,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (:map woman-mode-map
         ("M-j" . Man-next-section)
         ("M-k" . Man-previous-section)
-        ("/" . schrenker/meow-visit)
+        ("/" . meow-visit)
         ("s" . schrenker/meow-search)
         (";" . meow-reverse)
         ("J" . Man-goto-section)))
@@ -2334,7 +2334,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   ;;Movement
   (meow-normal-define-key
-   '("/" . schrenker/meow-visit)
+   '("/" . meow-visit)
    '(":" . meow-goto-line)
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)

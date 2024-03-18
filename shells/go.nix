@@ -13,7 +13,6 @@ mkShell {
     gotests
     gotools
     nodejs
-    rnix-lsp
     shellcheck
   ];
   shellHook = ''

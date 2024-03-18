@@ -5,7 +5,6 @@ with pkgs;
 mkShell {
   buildInputs = [
     python39
-    rnix-lsp
     shellcheck
     virtualenv
   ];

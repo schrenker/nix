@@ -54,6 +54,7 @@
     ++ lib.optionals stdenv.isLinux [
       pkgs.emacs29-pgtk
       pkgs.jetbrains-mono
+      pkgs.gitleaks
     ];
 
   fonts.fontconfig.enable = true;

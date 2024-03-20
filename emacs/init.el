@@ -1493,13 +1493,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   ;; (dirvish-peek-mode) ; Preview files in minibuffer
   (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
-  (setopt dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
-          ;; Don't worry, Dirvish is still performant even if you enable all these attributes
-          dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-time file-size)
-          dirvish-path-separators '("~" "/" "/")
-          dirvish-default-layout '(1 0.1 0.5)
-          dirvish-layout-recipes '((0 0 0.4) (0 0 0.8) (1 0.08 0.8) (1 0.1 0.5))
-          dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
+  (setq-default dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
+                ;; Don't worry, Dirvish is still performant even if you enable all these attributes
+                dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-time file-size)
+                dirvish-path-separators '("~" "/" "/")
+                dirvish-default-layout '(1 0.1 0.5)
+                dirvish-layout-recipes '((0 0 0.4) (0 0 0.8) (1 0.08 0.8) (1 0.1 0.5))
+                dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
 
   :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
   (("C-c f" . dirvish-fd)

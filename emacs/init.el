@@ -27,6 +27,7 @@
   "This variable holds initial value for theme if there is no dynamic system in place (macos), or value of theme that has been switched to.")
 
 (defun schrenker/wsl2-p ()
+  "Return t if ran inside Windows Subsystem for Linux."
   (and (eq system-type 'gnu/linux)
        (string-match
         "Linux.*Microsoft.*Linux"
@@ -97,8 +98,8 @@
 (set-keyboard-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
-;; Thanks to Xenodium https://xenodium.com/deleting-from-emacs-sequence-vars
 (defun schrenker/remove-from-list-variable ()
+  "Remove value from variable list interactively."
   (interactive)
   (let* ((var (intern
                (completing-read "From variable: "
@@ -119,7 +120,7 @@
          (index (progn
                   (when (seq-empty-p values) (error "Already empty"))
                   (seq-position values (completing-read "Delete: " values nil t)))))
-    (unless index (error "Eeek. Something's up."))
+    (unless index (error "Eeek. Something's up"))
     (set var (append (seq-take (symbol-value var) index)
                      (seq-drop (symbol-value var) (1+ index))))
     (message "Deleted: %s" (truncate-string-to-width
@@ -127,7 +128,7 @@
                             (- (window-body-width) 9)))))
 
 (defun schrenker/flip-first-two-elements (input)
-  "Flip the first two elements of INPUT list"
+  "Flip the first two elements of INPUT list."
   (if (and input (cdr input))
       (let ((first (car input))
             (second (cadr input)))
@@ -147,7 +148,7 @@
   (advice-add fn :around #'block-undo))
 
 (defun schrenker/retry-until-success (func max-tries)
-  "Run FUNC every second until it returns non-nil or MAX-TRIES is reached."
+  "Run FUNC every second, until non-nil is returned, or MAX-TRIES is reached."
   (let ((counter 0)
         (timer nil))
     (setq timer
@@ -227,6 +228,11 @@
   (advice-add #'envrc--update :after (lambda () (run-hooks 'envrc-after-update-hook))))
 
 (defun schrenker/kill-buffer--possibly-save (buffer)
+    "Ask the user to confirm killing of a modified BUFFER.
+
+If the user confirms, optionally save BUFFER that is about to be
+killed, or give a choice of showing diff from saved version."
+
   (let ((response
          (cadr
           (read-multiple-choice
@@ -283,8 +289,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (defun schrenker/zoom-frame (&optional amt frame)
-  "Increaze FRAME font size by amount AMT. Defaults to selected
-frame if FRAME is nil, and to 1 if AMT is nil."
+  "Increaze FRAME font size by amount AMT. Defaults to selected frame if FRAME is nil, and to 1 if AMT is nil."
   (interactive "p")
   (let* ((frame (or frame (selected-frame)))
          (font (face-attribute 'default :font frame))
@@ -295,7 +300,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (message "Frame's font new size: %d" new-size)))
 
 (defun schrenker/zoom-frame-out (&optional amt frame)
-  "Call `schrenker/zoom-frame' with negative argument."
+  "Decrease FRAME font size by amount AMT. Defaults to selected frame if FRAME is nil, and to 1 if AMT is nil."
   (interactive "p")
   (schrenker/zoom-frame (- (or amt 1)) frame))
 

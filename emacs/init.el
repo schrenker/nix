@@ -159,6 +159,16 @@
                  (cancel-timer timer)
                (setq counter (1+ counter))))))))
 
+
+(defmacro killing-new-buffers (&rest body)
+  "Run BODY and kill any buffers that were not already open."
+  (declare (debug t))
+  (cl-with-gensyms (initial-buffers)
+	`(let ((,initial-buffers (buffer-list)))
+	   (unwind-protect
+	       ,(macroexp-progn body)
+	     (dolist (b (buffer-list)) (unless (memq b ,initial-buffers) (kill-buffer b)))))))
+
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))

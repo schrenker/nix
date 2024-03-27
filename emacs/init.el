@@ -605,6 +605,8 @@ killed, or give a choice of showing diff from saved version."
   :config
   (unbind-key (kbd "M-n") 'corfu-map)
   (unbind-key (kbd "M-p") 'corfu-map)
+  (unbind-key (kbd "M-j") 'corfu-map)
+  (unbind-key (kbd "M-k") 'corfu-map)
   (defun corfu-move-to-minibuffer ()
     (interactive)
     (let ((completion-extra-properties corfu--extra)
@@ -1568,7 +1570,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;; :custom
   ;; (tempel-trigger-prefix "<")
 
-  :bind* (:map tempel-map
+  :bind (:map tempel-map
                ("M-j" . tempel-next)
                ("M-k" . tempel-previous))
 

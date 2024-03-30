@@ -13,15 +13,9 @@
             (message "*** Emacs loaded in %s with %d garbage collections."
                      (format "%.2f seconds"
                              (float-time
-                              (time-subtract after-init-time before-init-time)))
+                              (time-subtract elpaca-after-init-time before-init-time)))
                      gcs-done)))
 
-(setopt indent-tabs-mode nil
-        truncate-string-ellipsis "…"
-        x-stretch-cursor t
-        window-combination-resize t
-        delete-by-moving-to-trash t
-        tab-width 4)
 
 (defvar emacs-appearance 'dark
   "This variable holds initial value for theme if there is no dynamic system in place (macos), or value of theme that has been switched to.")
@@ -39,43 +33,51 @@
           browse-url-generic-args     '("/c" "start")
           browse-url-browser-function #'browse-url-generic))
 
-(setopt auto-window-vscroll nil
-        backup-by-copying t
-        backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
-        create-lockfiles nil
-        custom-file "/dev/null"
-        delete-old-versions t
-        delete-pair-blink-delay 0
-        display-line-numbers-type 'visual
-        electric-pair-open-newline-between-pairs t
-        frame-resize-pixelwise t
-        inhibit-startup-message t
-        inhibit-startup-screen t
-        initial-frame-alist (if (schrenker/wsl2-p) '((top . 1) (left . 1) (width . 120) (height . 40)) '((fullscreen . maximized)))
-        initial-major-mode 'org-mode
-        initial-scratch-message nil
-        kept-new-versions 6
-        kept-old-versions 2
-        load-prefer-newer t
-        mac-command-modifier 'meta
-        mac-option-modifier 'alt
-        mac-right-option-modifier nil
-        max-lisp-eval-depth 10000
-        native-comp-async-report-warnings-errors nil
-        require-final-newline t
-        savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
-        scroll-conservatively 1000
-        scroll-margin 10
-        scroll-preserve-screen-position t
-        scroll-step 1
-        sentence-end-double-space nil
-        set-mark-command-repeat-pop t
-        user-full-name "Sebastian Zawadzki"
-        user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
-        vc-follow-symlinks nil
-        version-control t
-        visible-bell (schrenker/wsl2-p)
-        visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+(setopt
+ auto-window-vscroll nil
+ backup-by-copying t
+ backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
+ create-lockfiles nil
+ custom-file null-device
+ delete-by-moving-to-trash t
+ delete-old-versions t
+ delete-pair-blink-delay 0
+ display-line-numbers-type 'visual
+ electric-pair-open-newline-between-pairs t
+ frame-resize-pixelwise t
+ indent-tabs-mode nil
+ inhibit-startup-message t
+ inhibit-startup-screen t
+ initial-frame-alist (if (schrenker/wsl2-p) '((top . 1) (left . 1) (width . 120) (height . 40)) '((fullscreen . maximized)))
+ initial-major-mode 'org-mode
+ initial-scratch-message nil
+ kept-new-versions 6
+ kept-old-versions 2
+ load-prefer-newer t
+ mac-command-modifier 'meta
+ mac-option-modifier 'alt
+ mac-right-option-modifier nil
+ max-lisp-eval-depth 10000
+ native-comp-async-report-warnings-errors nil
+ require-final-newline t
+ savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
+ scroll-conservatively 1000
+ scroll-margin 10
+ scroll-preserve-screen-position t
+ scroll-step 1
+ sentence-end-double-space nil
+ set-mark-command-repeat-pop t
+ tab-width 4
+ truncate-string-ellipsis "…"
+ user-full-name "Sebastian Zawadzki"
+ user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
+ vc-follow-symlinks nil
+ version-control t
+ visible-bell (schrenker/wsl2-p)
+ visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
+ window-combination-resize t
+ x-stretch-cursor t
+ )
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
@@ -2639,7 +2641,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (add-hook 'elpaca-after-init-hook
           (lambda ()
-            (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
+            (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))
+            (setopt gc-cons-threshold 800000
+                    gc-cons-percentage 0.1)))
+
+
 
 (provide 'init)
 ;;; init.el ends here.

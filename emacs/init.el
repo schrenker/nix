@@ -94,9 +94,7 @@
 (savehist-mode 1)
 (winner-mode 1)
 
-(prefer-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
+(set-language-environment 'utf-8)
 
 (defun schrenker/remove-from-list-variable ()
   "Remove value from variable list interactively."

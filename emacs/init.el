@@ -31,7 +31,6 @@
           browse-url-generic-args     '("/c" "start")
           browse-url-browser-function #'browse-url-generic))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (setopt
  auto-window-vscroll nil
  backup-by-copying t
@@ -58,7 +57,7 @@
  mac-right-option-modifier nil
  max-lisp-eval-depth 10000
  native-comp-async-report-warnings-errors nil
- require-final-newline t
+ require-final-newline t ;; POSIX 3.206: Definition of a 'Line'.
  savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
  scroll-conservatively 1000
  scroll-margin 10
@@ -68,7 +67,7 @@
  set-mark-command-repeat-pop t
  tab-width 4
  truncate-string-ellipsis "…"
- user-full-name "Sebastian Zawadzki"
+ user-full-name (rot13 "Fronfgvna Mnjnqmxv")
  user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
  vc-follow-symlinks nil
  version-control t
@@ -77,6 +76,7 @@
  window-combination-resize t
  x-stretch-cursor t
  )
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 

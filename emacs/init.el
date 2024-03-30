@@ -91,7 +91,6 @@
 (global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
 (global-prettify-symbols-mode 1)
-(pixel-scroll-mode 1)
 (savehist-mode 1)
 (winner-mode 1)
 

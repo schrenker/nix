@@ -5,9 +5,11 @@
 
 ;;; Code:
 
+;; Set gc-cons high for faster startup. Values are reset at the end of elpaca init.
 (setopt gc-cons-threshold (* 1024 1024 200)
         gc-cons-percentage 0.6)
 
+;; Measure startup time
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s with %d garbage collections."
@@ -29,6 +31,7 @@
           browse-url-generic-args     '("/c" "start")
           browse-url-browser-function #'browse-url-generic))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (setopt
  auto-window-vscroll nil
  backup-by-copying t

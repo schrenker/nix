@@ -69,5 +69,71 @@
 	       ,(macroexp-progn body)
 	     (dolist (b (buffer-list)) (unless (memq b ,initial-buffers) (kill-buffer b)))))))
 
+(defun schrenker/kill-buffer--possibly-save (buffer)
+    "Ask the user to confirm killing of a modified BUFFER.
+
+If the user confirms, optionally save BUFFER that is about to be
+killed, or give a choice of showing diff from saved version."
+
+  (let ((response
+         (cadr
+          (read-multiple-choice
+           (format "Buffer %s modified; kill anyway?"
+                   (buffer-name))
+           '((?y "kill" "kill buffer without saving")
+             (?n "cancel" "exit without doing anything")
+             (?s "save and then kill" "save the buffer and then kill it")
+             (?d "diff" "diff the buffer with original file" ))
+           nil nil (and (not use-short-answers)
+                        (not (use-dialog-box-p)))))))
+    (cond ((equal response "cancel") nil)
+          ((equal response "kill") t)
+          ((equal response "diff") (with-current-buffer buffer (diff-buffer-with-file buffer) nil))
+          (t (with-current-buffer buffer (save-buffer)) t))))
+
+(defun schrenker/kill-this-buffer ()
+  "Kill current buffer without confirmation."
+  (interactive) (kill-buffer (current-buffer)))
+
+(defun schrenker/split-and-follow-horizontally ()
+  "Split current window down, and then switch to the newly created window."
+  (interactive)
+  (split-window-below)
+  (balance-windows)
+  (other-window 1))
+
+(defun schrenker/split-and-follow-vertically ()
+  "Split current window right, and then switch to the newly created window."
+  (interactive)
+  (split-window-right)
+  (balance-windows)
+  (other-window 1))
+
+(defun schrenker/backward-kill-word ()
+  "Backward kill word without changing clipboard contents."
+  (interactive)
+  (delete-region (point) (progn (forward-word -1) (point))))
+
+(defun schrenker/zoom-frame (&optional amt frame)
+  "Increaze FRAME font size by amount AMT. Defaults to selected frame if FRAME is nil, and to 1 if AMT is nil."
+  (interactive "p")
+  (let* ((frame (or frame (selected-frame)))
+         (font (face-attribute 'default :font frame))
+         (size (font-get font :size))
+         (amt (or amt 1))
+         (new-size (+ size amt)))
+    (set-frame-font (font-spec :size new-size) t `(,frame))
+    (message "Frame's font new size: %d" new-size)))
+
+(defun schrenker/zoom-frame-out (&optional amt frame)
+  "Decrease FRAME font size by amount AMT. Defaults to selected frame if FRAME is nil, and to 1 if AMT is nil."
+  (interactive "p")
+  (schrenker/zoom-frame (- (or amt 1)) frame))
+
+(defmacro schrenker/call-negative (form)
+  "Macro for calling any command with negative argument. FORM in this case is function you want called."
+  `(let ((current-prefix-arg -1))
+     (call-interactively ,form)))
+
 (provide 'solarized-overlay)
 ;;; solarized-overlay.el ends here.

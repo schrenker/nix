@@ -45,6 +45,7 @@
  delete-pair-blink-delay 0
  display-line-numbers-type 'visual
  electric-pair-open-newline-between-pairs t
+ enable-recursive-minibuffers t
  frame-resize-pixelwise t
  indent-tabs-mode nil
  inhibit-startup-message t
@@ -58,6 +59,7 @@
  mac-option-modifier 'alt
  mac-right-option-modifier nil
  max-lisp-eval-depth 10000
+ minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
  native-comp-async-report-warnings-errors nil
  require-final-newline t ;; POSIX 3.206: Definition of a 'Line'.
  savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
@@ -104,6 +106,9 @@
   (advice-add fn :around #'schrenker/block-undo))
 
 (advice-add #'kill-buffer--possibly-save :override #'schrenker/kill-buffer--possibly-save)
+(advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode) ;; Do not allow the cursor in the minibuffer prompt
 
 (unbind-key (kbd "M-r"))
 (unbind-key (kbd "C-x C-n")) ; annoying
@@ -122,6 +127,11 @@
       (set-frame-font "Jetbrains Mono 10" nil t)
       (schrenker/zoom-frame))
   (set-frame-font "JetBrains Mono 14" nil t))
+
+;; (use-package emacs
+;;   :ensure nil
+;;   :init
+;;   )
 
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -417,26 +427,6 @@
           vertico-count 15
           vertico-cycle nil))
 
-(use-package emacs
-  :ensure nil
-  :init
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-  (defun crm-indicator (args)
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setopt minibuffer-prompt-properties
-          '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  (setopt enable-recursive-minibuffers t))
 
 (use-package orderless
   :config

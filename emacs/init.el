@@ -37,6 +37,9 @@
  backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
  create-lockfiles nil
  custom-file null-device
+ default-frame-alist (if (schrenker/wsl2-p)
+                         '((top . 1) (left . 1) (width . 120) (height . 40))
+                       '((fullscreen . maximized) (ns-transparent-titlebar . t)))
  delete-by-moving-to-trash t
  delete-old-versions t
  delete-pair-blink-delay 0
@@ -46,7 +49,6 @@
  indent-tabs-mode nil
  inhibit-startup-message t
  inhibit-startup-screen t
- initial-frame-alist (if (schrenker/wsl2-p) '((top . 1) (left . 1) (width . 120) (height . 40)) '((fullscreen . maximized)))
  initial-major-mode 'org-mode
  initial-scratch-message nil
  kept-new-versions 6
@@ -77,8 +79,6 @@
  x-stretch-cursor t
  )
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
 (menu-bar-mode -1)
 (when (display-graphic-p)

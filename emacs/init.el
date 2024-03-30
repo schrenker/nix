@@ -78,7 +78,6 @@
  window-combination-resize t
  x-stretch-cursor t
  )
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 
 (menu-bar-mode -1)
 (when (display-graphic-p)
@@ -96,77 +95,14 @@
 
 (set-language-environment 'utf-8)
 
-(defun schrenker/remove-from-list-variable ()
-  "Remove value from variable list interactively."
-  (interactive)
-  (let* ((var (intern
-               (completing-read "From variable: "
-                                (let (symbols)
-                                  (mapatoms
-                                   (lambda (sym)
-                                     (when (and (boundp sym)
-                                                (seqp (symbol-value sym)))
-                                       (push sym symbols))))
-                                  symbols) nil t)))
-         (values (mapcar (lambda (item)
-                           (setq item (prin1-to-string item))
-                           (concat (truncate-string-to-width
-                                    (nth 0 (split-string item "\n"))
-                                    (window-body-width))
-                                   (propertize item 'invisible t)))
-                         (symbol-value var)))
-         (index (progn
-                  (when (seq-empty-p values) (error "Already empty"))
-                  (seq-position values (completing-read "Delete: " values nil t)))))
-    (unless index (error "Eeek. Something's up"))
-    (set var (append (seq-take (symbol-value var) index)
-                     (seq-drop (symbol-value var) (1+ index))))
-    (message "Deleted: %s" (truncate-string-to-width
-                            (seq-elt values index)
-                            (- (window-body-width) 9)))))
-
-(defun schrenker/flip-first-two-elements (input)
-  "Flip the first two elements of INPUT list."
-  (if (and input (cdr input))
-      (let ((first (car input))
-            (second (cadr input)))
-        (setcar input second)
-        (setcar (cdr input) first)))
-  input)
-
-(defun block-undo (fn &rest args)
-  "Apply FN to ARGS in such a way that it can be undone in a single step."
-  (let ((marker (prepare-change-group)))
-    (unwind-protect (apply fn args)
-      (undo-amalgamate-change-group marker))))
+(load-file (concat user-emacs-directory "lisp/general-utils.el"))
 
 (dolist (fn '(kmacro-call-macro
               kmacro-exec-ring-item
               apply-macro-to-region-lines))
-  (advice-add fn :around #'block-undo))
+  (advice-add fn :around #'schrenker/block-undo))
 
-(defun schrenker/retry-until-success (func max-tries)
-  "Run FUNC every second, until non-nil is returned, or MAX-TRIES is reached."
-  (let ((counter 0)
-        (timer nil))
-    (setq timer
-          (run-with-timer
-           0 1
-           (lambda ()
-             (if (or (ignore-errors (funcall func)) (> counter max-tries))
-                 (cancel-timer timer)
-               (setq counter (1+ counter))))))))
-
-
-(defmacro killing-new-buffers (&rest body)
-  "Run BODY and kill any buffers that were not already open."
-  (declare (debug t))
-  (cl-with-gensyms (initial-buffers)
-	`(let ((,initial-buffers (buffer-list)))
-	   (unwind-protect
-	       ,(macroexp-progn body)
-	     (dolist (b (buffer-list)) (unless (memq b ,initial-buffers) (kill-buffer b)))))))
-
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))

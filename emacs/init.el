@@ -5,133 +5,129 @@
 
 ;;; Code:
 
-;; Set gc-cons high for faster startup. Values are reset at the end of elpaca init.
-(setopt gc-cons-threshold (* 1024 1024 200)
-        gc-cons-percentage 0.6)
+(use-package emacs
+  :ensure nil
+  :init
+  ;; Set gc-cons high for faster startup. Values are reset at the end of elpaca init.
+  (setopt gc-cons-threshold (* 1024 1024 200)
+          gc-cons-percentage 0.6)
 
-;; Measure startup time
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract elpaca-after-init-time before-init-time)))
-                     gcs-done)))
+  ;; Measure startup time
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (message "*** Emacs loaded in %s with %d garbage collections."
+                       (format "%.2f seconds"
+                               (float-time
+                                (time-subtract elpaca-after-init-time before-init-time)))
+                       gcs-done)))
 
-(defun schrenker/wsl2-p ()
-  "Return t if ran inside Windows Subsystem for Linux."
-  (and (eq system-type 'gnu/linux)
-       (string-match
-        "Linux.*Microsoft.*Linux"
-        (shell-command-to-string "uname -a"))))
+  (defun schrenker/wsl2-p ()
+    "Return t if ran inside Windows Subsystem for Linux."
+    (and (eq system-type 'gnu/linux)
+         (string-match
+          "Linux.*Microsoft.*Linux"
+          (shell-command-to-string "uname -a"))))
 
-(when (schrenker/wsl2-p)
-  (setopt emacs-appearance 'light
-          browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
-          browse-url-generic-args     '("/c" "start")
-          browse-url-browser-function #'browse-url-generic))
+  (when (schrenker/wsl2-p)
+    (setopt emacs-appearance 'light
+            browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+            browse-url-generic-args     '("/c" "start")
+            browse-url-browser-function #'browse-url-generic))
 
-(setopt
- auto-window-vscroll nil
- backup-by-copying t
- backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
- create-lockfiles nil
- custom-file null-device
- default-frame-alist (if (schrenker/wsl2-p)
-                         '((top . 1) (left . 1) (width . 120) (height . 40))
-                       '((fullscreen . maximized) (ns-transparent-titlebar . t)))
- delete-by-moving-to-trash t
- delete-old-versions t
- delete-pair-blink-delay 0
- display-line-numbers-type 'visual
- electric-pair-open-newline-between-pairs t
- enable-recursive-minibuffers t
- frame-resize-pixelwise t
- indent-tabs-mode nil
- inhibit-startup-message t
- inhibit-startup-screen t
- initial-major-mode 'org-mode
- initial-scratch-message nil
- kept-new-versions 6
- kept-old-versions 2
- load-prefer-newer t
- mac-command-modifier 'meta
- mac-option-modifier 'alt
- mac-right-option-modifier nil
- max-lisp-eval-depth 10000
- minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
- native-comp-async-report-warnings-errors nil
- require-final-newline t ;; POSIX 3.206: Definition of a 'Line'.
- savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
- scroll-conservatively 1000
- scroll-margin 10
- scroll-preserve-screen-position t
- scroll-step 1
- sentence-end-double-space nil
- set-mark-command-repeat-pop t
- tab-width 4
- truncate-string-ellipsis "…"
- user-full-name (rot13 "Fronfgvna Mnjnqmxv")
- user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
- vc-follow-symlinks nil
- version-control t
- visible-bell (schrenker/wsl2-p)
- visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
- window-combination-resize t
- x-stretch-cursor t
- )
+  (setopt auto-window-vscroll nil
+          backup-by-copying t
+          backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
+          create-lockfiles nil
+          custom-file null-device
+          default-frame-alist (if (schrenker/wsl2-p)
+                                  '((top . 1) (left . 1) (width . 120) (height . 40))
+                                '((fullscreen . maximized) (ns-transparent-titlebar . t)))
+          delete-by-moving-to-trash t
+          delete-old-versions t
+          delete-pair-blink-delay 0
+          display-line-numbers-type 'visual
+          electric-pair-open-newline-between-pairs t
+          enable-recursive-minibuffers t
+          frame-resize-pixelwise t
+          indent-tabs-mode nil
+          inhibit-startup-message t
+          inhibit-startup-screen t
+          initial-major-mode 'org-mode
+          initial-scratch-message nil
+          kept-new-versions 6
+          kept-old-versions 2
+          load-prefer-newer t
+          mac-command-modifier 'meta
+          mac-option-modifier 'alt
+          mac-right-option-modifier nil
+          max-lisp-eval-depth 10000
+          minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
+          native-comp-async-report-warnings-errors nil
+          require-final-newline t ;; POSIX 3.206: Definition of a 'Line'.
+          savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
+          scroll-conservatively 1000
+          scroll-margin 10
+          scroll-preserve-screen-position t
+          scroll-step 1
+          sentence-end-double-space nil
+          set-mark-command-repeat-pop t
+          tab-width 4
+          truncate-string-ellipsis "…"
+          user-full-name (rot13 "Fronfgvna Mnjnqmxv")
+          user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
+          vc-follow-symlinks nil
+          version-control t
+          visible-bell (schrenker/wsl2-p)
+          visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
+          window-combination-resize t
+          x-stretch-cursor t)
 
-(menu-bar-mode -1)
-(when (display-graphic-p)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1))
+  (menu-bar-mode -1)
+  (when (display-graphic-p)
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1))
 
-(column-number-mode 1)
-(electric-indent-mode 1)
-(electric-pair-mode 1)
-(global-display-line-numbers-mode 1)
-(global-hl-line-mode 1)
-(global-prettify-symbols-mode 1)
-(savehist-mode 1)
-(winner-mode 1)
+  (column-number-mode 1)
+  (electric-indent-mode 1)
+  (electric-pair-mode 1)
+  (global-display-line-numbers-mode 1)
+  (global-hl-line-mode 1)
+  (global-prettify-symbols-mode 1)
+  (savehist-mode 1)
+  (winner-mode 1)
 
-(set-language-environment 'utf-8)
-(defalias 'yes-or-no-p 'y-or-n-p)
+  (set-language-environment 'utf-8)
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
-(load-file (concat user-emacs-directory "lisp/general-utils.el"))
+  (load-file (concat user-emacs-directory "lisp/general-utils.el"))
 
-(dolist (fn '(kmacro-call-macro
-              kmacro-exec-ring-item
-              apply-macro-to-region-lines))
-  (advice-add fn :around #'schrenker/block-undo))
+  (dolist (fn '(kmacro-call-macro
+                kmacro-exec-ring-item
+                apply-macro-to-region-lines))
+    (advice-add fn :around #'schrenker/block-undo))
 
-(advice-add #'kill-buffer--possibly-save :override #'schrenker/kill-buffer--possibly-save)
-(advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+  (advice-add #'kill-buffer--possibly-save :override #'schrenker/kill-buffer--possibly-save)
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode) ;; Do not allow the cursor in the minibuffer prompt
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode) ;; Do not allow the cursor in the minibuffer prompt
 
-(unbind-key (kbd "M-r"))
-(unbind-key (kbd "C-x C-n")) ; annoying
-(unbind-key (kbd "C-z")) ; suspend emacs
-(unbind-key (kbd "C-x C-z")) ; suspend frame
-(unbind-key (kbd "<f2>"))
-(unbind-key (kbd "<f10>"))
+  (unbind-key (kbd "M-r"))
+  (unbind-key (kbd "C-x C-n")) ; annoying
+  (unbind-key (kbd "C-z")) ; suspend emacs
+  (unbind-key (kbd "C-x C-z")) ; suspend frame
+  (unbind-key (kbd "<f2>"))
+  (unbind-key (kbd "<f10>"))
 
-(global-set-key (kbd "C-x k") 'schrenker/kill-this-buffer)
-(global-set-key (kbd "C-x 2") 'schrenker/split-and-follow-horizontally)
-(global-set-key (kbd "C-x 3") 'schrenker/split-and-follow-vertically)
-(global-set-key (kbd "<A-backspace>") 'schrenker/backward-kill-word)
+  (global-set-key (kbd "C-x k") 'schrenker/kill-this-buffer)
+  (global-set-key (kbd "C-x 2") 'schrenker/split-and-follow-horizontally)
+  (global-set-key (kbd "C-x 3") 'schrenker/split-and-follow-vertically)
+  (global-set-key (kbd "<A-backspace>") 'schrenker/backward-kill-word)
 
-(if (schrenker/wsl2-p)
-    (progn
-      (set-frame-font "Jetbrains Mono 10" nil t)
-      (schrenker/zoom-frame))
-  (set-frame-font "JetBrains Mono 14" nil t))
-
-;; (use-package emacs
-;;   :ensure nil
-;;   :init
-;;   )
+  (if (schrenker/wsl2-p)
+      (progn
+        (set-frame-font "Jetbrains Mono 10" nil t)
+        (schrenker/zoom-frame))
+    (set-frame-font "JetBrains Mono 14" nil t)))
 
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))

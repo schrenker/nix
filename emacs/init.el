@@ -662,7 +662,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings (goto-map)
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g f" . consult-flycheck)               ;; Alternative: consult-flycheck
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-org-heading)
@@ -750,6 +750,8 @@
   ;; Optionally configure a different project root function.
   ;;;; 1. project.el (the default)
   (setopt consult-project-function   #'consult--default-project-function))
+
+(use-package consult-flycheck)
 
 (use-package consult-project-extra
   :commands (consult-project-extra-find
@@ -1413,15 +1415,20 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (load (concat user-emacs-directory "lisp/run-command.el") t t)
   (setopt run-command-default-runner 'run-command-runner-compile))
 
-(use-package flymake
-  ;; :ensure nil
-  :hook ((prog-mode org-mode) . flymake-mode)
+(use-package flycheck
   :config
-  (setopt flymake-mode-line-lighter "FM"
-          flymake-show-diagnostics-at-end-of-line 'short))
+  (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
 
-(use-package flymake-easy
-  :demand t)
+(use-package flycheck-eglot
+  :after (flycheck eglot)
+  :config
+  (setopt flycheck-eglot-exclusive nil)
+  (global-flycheck-eglot-mode 1))
+
+(use-package flycheck-pos-tip
+  :after (flycheck)
+  :config
+  (flycheck-pos-tip-mode))
 
 (use-package tempel
   ;; Require trigger prefix before template name when completing.

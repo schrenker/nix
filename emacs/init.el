@@ -202,14 +202,6 @@
   :init
   (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90))
 
-(use-package vertico
-  :init
-  (vertico-mode)
-  (setopt vertico-scroll-margin 3
-          vertico-count 15
-          vertico-cycle nil))
-
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package orderless
   :config
   (setopt completion-styles '(orderless basic)
@@ -220,6 +212,14 @@
                                       orderless-prefixes
                                       orderless-initialism)))
 
+(use-package vertico
+  :init
+  (vertico-mode)
+  (setopt vertico-scroll-margin 3
+          vertico-count 15
+          vertico-cycle nil))
+
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package marginalia
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle))

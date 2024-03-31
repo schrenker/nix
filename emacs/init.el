@@ -107,7 +107,7 @@
     (advice-add fn :around #'schrenker/block-undo))
 
   (advice-add #'kill-buffer--possibly-save :override #'schrenker/kill-buffer--possibly-save)
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+  (advice-add #'completing-read-multiple :filter-args #'schrenker/crm-indicator)
 
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode) ;; Do not allow the cursor in the minibuffer prompt
 
@@ -201,11 +201,6 @@
   :if (or (executable-find "direnv") (executable-find "nix") (eq system-type 'darwin))
   :init
   (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90))
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-
-
-
-
 
 (use-package vertico
   :init
@@ -214,7 +209,7 @@
           vertico-count 15
           vertico-cycle nil))
 
-
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package orderless
   :config
   (setopt completion-styles '(orderless basic)

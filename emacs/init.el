@@ -219,13 +219,13 @@
           vertico-count 15
           vertico-cycle nil))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package marginalia
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package corfu
   :ensure (corfu :files (:defaults "extensions/*"))
   :demand t

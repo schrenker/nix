@@ -203,223 +203,9 @@
   (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90))
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 
-(use-package hydra
-  :bind (("M-o" . 'hydra-uictl/body)
-         ("M-O" . 'schrenker/switch-hydra))
-  :init
-  (defun schrenker/aw-flip-window ()
-    (interactive)
-    (let ((dv (dirvish-curr)))
-      (aw-flip-window)
-      (if (and dv (car (dv-layout dv)))
-          (aw--push-window (dv-root-window dv)))))
 
-  (defun schrenker/jump-to-heading (heading)
-    (interactive)
-    (goto-char (point-min))
-    (search-forward heading))
 
-  :config
-  (setopt hydra-is-helpful t)
 
-  (defun schrenker/switch-hydra ()
-    (interactive)
-    (cond ((bound-and-true-p smerge-mode) (hydra-smerge/body))
-          ((bound-and-true-p dape--process) (hydra-dape/body))
-          ((bound-and-true-p git-timemachine-mode) (hydra-git-timemachine/body))
-          ((eq major-mode 'org-mode) (hydra-org/body))
-          (t (hydra-uictl/body))))
-
-  (defhydra hydra-uictl
-    (:hint nil)
-    "
-
-   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^          ^Buffer^
-╭──────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^
-      ^_K_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_<_] prev
-      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
-  _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
-      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
-      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] vTermO     [_f_] findf
-     ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dired      [_S_] scratch
-     ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
-     ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
-     ^^^^^^^^^^^^                                                                          [_TAB_] Hydra
- ^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
-"
-    ("K" windmove-up)
-    ("J" windmove-down)
-    ("H" windmove-left)
-    ("L" windmove-right)
-    ("M-k" shrink-window)
-    ("M-j" enlarge-window)
-    ("M-h" shrink-window-horizontally)
-    ("M-l" enlarge-window-horizontally)
-    ("o" schrenker/aw-flip-window)
-    ("O" ace-select-window)
-    ("2" schrenker/split-and-follow-horizontally)
-    ("3" schrenker/split-and-follow-vertically)
-    ("s" schrenker/ace-swap-window)
-    ("d" delete-window)
-    ("D" ace-delete-window)
-    ("X" delete-other-windows)
-    ("=" balance-windows)
-    ("m" maximize-window)
-    ("+" schrenker/zoom-frame)
-    ("-" schrenker/zoom-frame-out)
-    ("u" winner-undo)
-    ("r" winner-redo)
-    ("." popper-toggle-latest)
-    ("," popper-cycle)
-    ("'" popper-toggle-type)
-    ("v" schrenker/multi-vterm-project-here)
-    ("V" multi-vterm-project)
-    ("T" dirvish-dwim)
-    ("<" previous-buffer)
-    (">" next-buffer)
-    ("b" consult-buffer)
-    ("B" ibuffer :color blue)
-    ("f" find-file :color blue)
-    ("S" scratch-buffer)
-    ("Q" schrenker/kill-this-buffer)
-    ("TAB" schrenker/switch-hydra :color blue)
-    ("q" nil :color blue))
-
-  (with-eval-after-load 'org
-    (defhydra hydra-org (:hint nil)
-      "
-
-  Movement^               ^Refile^                ^Misc
-╭─────────────────────────────────────────────────────────────^^^^^^
-  [_K_] Prev Heading^^                             [_s_] Sort
-  [_J_] Next Heading^^                             [_/_] Find
-  [_b_] Tasks/Backlog      [_B_] Tasks/Backlog
-  [_a_] Tasks/Active       [_A_] Tasks/Active
-  [_c_] Tasks/Completed    [_C_] Tasks/Completed   [_q_] Quit Hydra
-  [_n_] Notes^^                                    [_TAB_] Uictl
- ^^^^^^─────────────────────────────────────────────────────────────╯
-"
-      ("K" outline-previous-heading)
-      ("J" outline-next-heading)
-      ("b" (schrenker/jump-to-heading "** Backlog"))
-      ("a" (schrenker/jump-to-heading "** Active"))
-      ("c" (schrenker/jump-to-heading "** Completed"))
-      ("n" (schrenker/jump-to-heading "* Notes"))
-      ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
-      ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
-      ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
-      ("s" (schrenker/org-sort-dwim))
-      ("/" consult-org-heading)
-      ("TAB" hydra-uictl/body :color blue)
-      ("q" nil :color blue)))
-
-  (with-eval-after-load 'git-timemachine
-    (defhydra hydra-git-timemachine (:hint nil)
-      "
-
- ^Rev-Movement        ^Commits^                ^Misc
-╭─────────────────────────────────────────────────────────────────^^^^^^
-  [_J_] Next Rev       [_b_] Blame              [_?_] Help
-  [_K_] Prev Rev       [_c_] Show Commit        [_S_] Write File
-  [_g_] Nth Rev        [_y_] Copy Short Hash    [_q_] Quit Hydra
-  [_T_] Fuzzy Rev      [_Y_] Copy Long Hash     [_Q_] Quit Timemachine
-  [_C_] Current Rev^^                           [_TAB_] Uictl
- ^^^^^^─────────────────────────────────────────────────────────────────╯
-"
-      ("J" git-timemachine-show-next-revision)
-      ("K" git-timemachine-show-previous-revision)
-      ("g" git-timemachine-show-nth-revision)
-      ("T" git-timemachine-show-revision-fuzzy)
-      ("C" git-timemachine-show-current-revision)
-      ("b" git-timemachine-blame)
-      ("c" git-timemachine-show-commit)
-      ("y" git-timemachine-kill-abbreviated-revision)
-      ("Y" git-timemachine-kill-revision)
-      ("?" git-timemachine-help)
-      ("TAB" hydra-uictl/body :color blue)
-      ("S" write-file)
-      ("q" nil :color blue)
-      ("Q" git-timemachine-quit :color blue)))
-
-  (with-eval-after-load 'dape
-    (defhydra hydra-dape (:hint nil)
-      "
-
-  Stepping^          ^Breakpoints^             ^Info
-╭─────────────────────────────────────────────────────────────^^^^^^
-  [_n_] Next          [_bb_] Toggle             [_si_] Info
-  [_i_] Step in       [_ba_] Add                [_sm_] Memory
-  [_o_] Step out      [_bd_] Delete             [_ss_] Select Stack
-  [_c_] Continue      [_bD_] Delete all         [_R_]  Repl
-  [_r_] Restart       [_bl_] Set log message    [_q_]  Quit Hydra
-  ^^^^                                          [_Q_]  Quit Dape
-  ^^^^                                          [_TAB_] Uictl
- ^^^^^^─────────────────────────────────────────────────────────────╯
-"
-      ("n" dape-next)
-      ("i" dape-step-in)
-      ("o" dape-step-out)
-      ("c" dape-continue)
-      ("r" dape-restart)
-      ("bb" dape-toggle-breakpoint)
-      ("ba" dape-expression-breakpoint)
-      ("bd" dape-remove-breakpoint-at-point)
-      ("bD" dape-remove-all-breakpoints)
-      ("bl" dape-log-breakpoint)
-      ("si" dape-info)
-      ("sm" dape-read-memory)
-      ("ss" dape-select-stack)
-      ("R"  dape-repl)
-      ("TAB" hydra-uictl/body :color blue)
-      ("q" nil :color blue)
-      ("Q" dape-quit :color blue)))
-
-  (defun schrenker/smerge-repeatedly ()
-    (interactive)
-    (smerge-mode 1)
-    (hydra-smerge/body))
-  (defhydra hydra-smerge (:hint nil)
-    "
-
-  Move^       ^Keep^^            Diff^^              Misc
-╭───────────────────────────────────────────────────────────────^^^^^^^
-  [_J_] Next   [_b_]   Base      [_<_] Upper/Base    [_c_] Combine
-  [_K_] Prev   [_u_]   Upper     [_=_] Upper/Lower   [_r_] Resolve
- ^^            [_l_]   Lower     [_>_] Base/Lower    [_d_] Kill Current
- ^^            [_a_]   All       [_R_] Refine        [_q_] Quit Hydra
- ^^            [_RET_] Current   [_E_] Ediff         [_Q_] Quit Smerge
- ^^^^^^                                              [_TAB_] Uictl
- ^^^^^^^^───────────────────────────────────────────────────────────────╯
-"
-    ("J"  smerge-next)
-    ("K"  smerge-prev)
-    ("b"  smerge-keep-base)
-    ("u"  smerge-keep-upper)
-    ("l"  smerge-keep-lower)
-    ("a"  smerge-keep-all)
-    ("RET" smerge-keep-current)
-    ("<"  smerge-diff-base-upper)
-    ("="  smerge-diff-upper-lower)
-    (">"  smerge-diff-base-lower)
-    ("R"  smerge-refine)
-    ("E"  smerge-ediff)
-    ("c"  smerge-combine-with-next)
-    ("r"  smerge-resolve)
-    ("d"  smerge-kill-current)
-    ("TAB" hydra-uictl/body :color blue)
-    ("q" nil :color blue)
-    ("Q" (lambda () (interactive)(smerge-auto-leave)) :color blue)))
-
-(use-package hydra-posframe
-  :if (display-graphic-p)
-  :ensure
-  (hydra-posframe
-   :host "github.com"
-   :repo "Ladicle/hydra-posframe")
-  :config
-  (require 'posframe)
-  (setopt hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
-  (hydra-posframe-mode 1))
 
 (use-package vertico
   :init
@@ -906,6 +692,224 @@ targets."
   ;;                                                       '(("\\*Warnings\\*" . hide))))))
   (popper-mode 1)
   (popper-echo-mode 1))
+
+(use-package hydra
+  :bind (("M-o" . 'hydra-uictl/body)
+         ("M-O" . 'schrenker/switch-hydra))
+  :init
+  (defun schrenker/aw-flip-window ()
+    (interactive)
+    (let ((dv (dirvish-curr)))
+      (aw-flip-window)
+      (if (and dv (car (dv-layout dv)))
+          (aw--push-window (dv-root-window dv)))))
+
+  (defun schrenker/jump-to-heading (heading)
+    (interactive)
+    (goto-char (point-min))
+    (search-forward heading))
+
+  :config
+  (setopt hydra-is-helpful t)
+
+  (defun schrenker/switch-hydra ()
+    (interactive)
+    (cond ((bound-and-true-p smerge-mode) (hydra-smerge/body))
+          ((bound-and-true-p dape--process) (hydra-dape/body))
+          ((bound-and-true-p git-timemachine-mode) (hydra-git-timemachine/body))
+          ((eq major-mode 'org-mode) (hydra-org/body))
+          (t (hydra-uictl/body))))
+
+  (defhydra hydra-uictl
+    (:hint nil)
+    "
+
+   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^          ^Buffer^
+╭──────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^
+      ^_K_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_<_] prev
+      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
+  _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
+      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
+      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] vTermO     [_f_] findf
+     ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dired      [_S_] scratch
+     ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
+     ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
+     ^^^^^^^^^^^^                                                                          [_TAB_] Hydra
+ ^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
+"
+    ("K" windmove-up)
+    ("J" windmove-down)
+    ("H" windmove-left)
+    ("L" windmove-right)
+    ("M-k" shrink-window)
+    ("M-j" enlarge-window)
+    ("M-h" shrink-window-horizontally)
+    ("M-l" enlarge-window-horizontally)
+    ("o" schrenker/aw-flip-window)
+    ("O" ace-select-window)
+    ("2" schrenker/split-and-follow-horizontally)
+    ("3" schrenker/split-and-follow-vertically)
+    ("s" schrenker/ace-swap-window)
+    ("d" delete-window)
+    ("D" ace-delete-window)
+    ("X" delete-other-windows)
+    ("=" balance-windows)
+    ("m" maximize-window)
+    ("+" schrenker/zoom-frame)
+    ("-" schrenker/zoom-frame-out)
+    ("u" winner-undo)
+    ("r" winner-redo)
+    ("." popper-toggle-latest)
+    ("," popper-cycle)
+    ("'" popper-toggle-type)
+    ("v" schrenker/multi-vterm-project-here)
+    ("V" multi-vterm-project)
+    ("T" dirvish-dwim)
+    ("<" previous-buffer)
+    (">" next-buffer)
+    ("b" consult-buffer)
+    ("B" ibuffer :color blue)
+    ("f" find-file :color blue)
+    ("S" scratch-buffer)
+    ("Q" schrenker/kill-this-buffer)
+    ("TAB" schrenker/switch-hydra :color blue)
+    ("q" nil :color blue))
+
+  (with-eval-after-load 'org
+    (defhydra hydra-org (:hint nil)
+      "
+
+  Movement^               ^Refile^                ^Misc
+╭─────────────────────────────────────────────────────────────^^^^^^
+  [_K_] Prev Heading^^                             [_s_] Sort
+  [_J_] Next Heading^^                             [_/_] Find
+  [_b_] Tasks/Backlog      [_B_] Tasks/Backlog
+  [_a_] Tasks/Active       [_A_] Tasks/Active
+  [_c_] Tasks/Completed    [_C_] Tasks/Completed   [_q_] Quit Hydra
+  [_n_] Notes^^                                    [_TAB_] Uictl
+ ^^^^^^─────────────────────────────────────────────────────────────╯
+"
+      ("K" outline-previous-heading)
+      ("J" outline-next-heading)
+      ("b" (schrenker/jump-to-heading "** Backlog"))
+      ("a" (schrenker/jump-to-heading "** Active"))
+      ("c" (schrenker/jump-to-heading "** Completed"))
+      ("n" (schrenker/jump-to-heading "* Notes"))
+      ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
+      ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
+      ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
+      ("s" (schrenker/org-sort-dwim))
+      ("/" consult-org-heading)
+      ("TAB" hydra-uictl/body :color blue)
+      ("q" nil :color blue)))
+
+  (with-eval-after-load 'git-timemachine
+    (defhydra hydra-git-timemachine (:hint nil)
+      "
+
+ ^Rev-Movement        ^Commits^                ^Misc
+╭─────────────────────────────────────────────────────────────────^^^^^^
+  [_J_] Next Rev       [_b_] Blame              [_?_] Help
+  [_K_] Prev Rev       [_c_] Show Commit        [_S_] Write File
+  [_g_] Nth Rev        [_y_] Copy Short Hash    [_q_] Quit Hydra
+  [_T_] Fuzzy Rev      [_Y_] Copy Long Hash     [_Q_] Quit Timemachine
+  [_C_] Current Rev^^                           [_TAB_] Uictl
+ ^^^^^^─────────────────────────────────────────────────────────────────╯
+"
+      ("J" git-timemachine-show-next-revision)
+      ("K" git-timemachine-show-previous-revision)
+      ("g" git-timemachine-show-nth-revision)
+      ("T" git-timemachine-show-revision-fuzzy)
+      ("C" git-timemachine-show-current-revision)
+      ("b" git-timemachine-blame)
+      ("c" git-timemachine-show-commit)
+      ("y" git-timemachine-kill-abbreviated-revision)
+      ("Y" git-timemachine-kill-revision)
+      ("?" git-timemachine-help)
+      ("TAB" hydra-uictl/body :color blue)
+      ("S" write-file)
+      ("q" nil :color blue)
+      ("Q" git-timemachine-quit :color blue)))
+
+  (with-eval-after-load 'dape
+    (defhydra hydra-dape (:hint nil)
+      "
+
+  Stepping^          ^Breakpoints^             ^Info
+╭─────────────────────────────────────────────────────────────^^^^^^
+  [_n_] Next          [_bb_] Toggle             [_si_] Info
+  [_i_] Step in       [_ba_] Add                [_sm_] Memory
+  [_o_] Step out      [_bd_] Delete             [_ss_] Select Stack
+  [_c_] Continue      [_bD_] Delete all         [_R_]  Repl
+  [_r_] Restart       [_bl_] Set log message    [_q_]  Quit Hydra
+  ^^^^                                          [_Q_]  Quit Dape
+  ^^^^                                          [_TAB_] Uictl
+ ^^^^^^─────────────────────────────────────────────────────────────╯
+"
+      ("n" dape-next)
+      ("i" dape-step-in)
+      ("o" dape-step-out)
+      ("c" dape-continue)
+      ("r" dape-restart)
+      ("bb" dape-toggle-breakpoint)
+      ("ba" dape-expression-breakpoint)
+      ("bd" dape-remove-breakpoint-at-point)
+      ("bD" dape-remove-all-breakpoints)
+      ("bl" dape-log-breakpoint)
+      ("si" dape-info)
+      ("sm" dape-read-memory)
+      ("ss" dape-select-stack)
+      ("R"  dape-repl)
+      ("TAB" hydra-uictl/body :color blue)
+      ("q" nil :color blue)
+      ("Q" dape-quit :color blue)))
+
+  (defun schrenker/smerge-repeatedly ()
+    (interactive)
+    (smerge-mode 1)
+    (hydra-smerge/body))
+  (defhydra hydra-smerge (:hint nil)
+    "
+
+  Move^       ^Keep^^            Diff^^              Misc
+╭───────────────────────────────────────────────────────────────^^^^^^^
+  [_J_] Next   [_b_]   Base      [_<_] Upper/Base    [_c_] Combine
+  [_K_] Prev   [_u_]   Upper     [_=_] Upper/Lower   [_r_] Resolve
+ ^^            [_l_]   Lower     [_>_] Base/Lower    [_d_] Kill Current
+ ^^            [_a_]   All       [_R_] Refine        [_q_] Quit Hydra
+ ^^            [_RET_] Current   [_E_] Ediff         [_Q_] Quit Smerge
+ ^^^^^^                                              [_TAB_] Uictl
+ ^^^^^^^^───────────────────────────────────────────────────────────────╯
+"
+    ("J"  smerge-next)
+    ("K"  smerge-prev)
+    ("b"  smerge-keep-base)
+    ("u"  smerge-keep-upper)
+    ("l"  smerge-keep-lower)
+    ("a"  smerge-keep-all)
+    ("RET" smerge-keep-current)
+    ("<"  smerge-diff-base-upper)
+    ("="  smerge-diff-upper-lower)
+    (">"  smerge-diff-base-lower)
+    ("R"  smerge-refine)
+    ("E"  smerge-ediff)
+    ("c"  smerge-combine-with-next)
+    ("r"  smerge-resolve)
+    ("d"  smerge-kill-current)
+    ("TAB" hydra-uictl/body :color blue)
+    ("q" nil :color blue)
+    ("Q" (lambda () (interactive)(smerge-auto-leave)) :color blue)))
+
+(use-package hydra-posframe
+  :if (display-graphic-p)
+  :ensure
+  (hydra-posframe
+   :host "github.com"
+   :repo "Ladicle/hydra-posframe")
+  :config
+  (require 'posframe)
+  (setopt hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
+  (hydra-posframe-mode 1))
 
 (use-package org
   :ensure nil

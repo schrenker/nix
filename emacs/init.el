@@ -199,10 +199,8 @@
 
 (use-package envrc
   :if (or (executable-find "direnv") (executable-find "nix") (eq system-type 'darwin))
-  :hook (elpaca-after-init . envrc-global-mode)
   :init
-  (defvar envrc-after-update-hook nil)
-  (advice-add #'envrc--update :after (lambda () (run-hooks 'envrc-after-update-hook))))
+  (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90))
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 
 (use-package hydra
@@ -1889,11 +1887,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                      :assignVariableTypes t
                      :compositeLiteralFields t
                      :compositeLiteralTypes t
-                     :constantValues t))))
-  (with-eval-after-load 'flymake
-    (load-file (concat user-emacs-directory "lisp/flymake-golangci.el"))
-    (add-hook 'go-ts-mode-hook (lambda ()
-                                 (add-hook 'envrc-after-update-hook 'flymake-golangci-load 0 t))) ))
+                     :constantValues t)))))
 
 (use-package go-eldoc)
 

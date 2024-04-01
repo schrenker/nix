@@ -323,7 +323,7 @@
       (call-interactively 'magit-diff-visit-file)))
   :bind (("C-x g" . magit-status)
          ("C-x G" . schrenker/magit-status-with-prefix)
-         ("C-c g s" . schrenker/smerge-repeatedly)
+         ("C-x C-g" . schrenker/smerge-repeatedly)
          :map magit-status-mode-map
          ("o" . schrenker/magit-diff-visit-file-other-window)
          ("K" . magit-discard)
@@ -338,7 +338,7 @@
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status))))
 
-(use-package with-editor)
+;(use-package with-editor)
 
 (use-package git-timemachine
   :commands (git-timemachine))

@@ -71,6 +71,7 @@
           scroll-step 1
           sentence-end-double-space nil
           set-mark-command-repeat-pop t
+          tab-always-indent 'complete
           tab-width 4
           truncate-string-ellipsis "…"
           user-full-name (rot13 "Fronfgvna Mnjnqmxv")
@@ -225,34 +226,16 @@
   :init
   (marginalia-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package corfu
-  :ensure (corfu :files (:defaults "extensions/*"))
   :demand t
   :bind (:map corfu-map
               ("TAB" . corfu-next)
               ("<tab>" . corfu-next)
               ("S-TAB" . corfu-previous)
               ("<backtab>" . corfu-previous)
-              ("S-SPC" . corfu-insert-separator)
-              ("C-SPC" . corfu-insert-separator) ;for wsl
-              ("C-S-n" . corfu-move-to-minibuffer)
-              :map corfu-popupinfo-map
-              ("M-j" . corfu-popupinfo-scroll-up)
-              ("M-k" . corfu-popupinfo-scroll-down))
-
+              ("C-SPC" . corfu-insert-separator))
   :config
-  (unbind-key (kbd "M-n") 'corfu-map)
-  (unbind-key (kbd "M-p") 'corfu-map)
-  (unbind-key (kbd "M-j") 'corfu-map)
-  (unbind-key (kbd "M-k") 'corfu-map)
-  (defun corfu-move-to-minibuffer ()
-    (interactive)
-    (let ((completion-extra-properties corfu--extra)
-          completion-cycle-threshold completion-cycling)
-      (apply #'consult-completion-in-region completion-in-region--data)))
   (setopt corfu-auto t
-          corfu-auto-prefix 3
           global-corfu-modes '((not
                                 erc-mode
                                 circe-mode
@@ -260,28 +243,34 @@
                                 gud-mode
                                 vterm-mode) t)
           corfu-cycle t
-          corfu-separator ?\s
           corfu-preselect 'prompt
           corfu-count 16
-          corfu-max-width 120
-          corfu-on-exact-match nil
-          corfu-preview-current 'insert
-          corfu-quit-at-boundary 'separator
-          corfu-quit-no-match 'separator
-          tab-always-indent 'complete)
-  (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
-  (global-corfu-mode)
-  (require 'corfu-history)
+          corfu-max-width 120)
+  (global-corfu-mode))
+
+(use-package corfu-history
+  :ensure nil
+  :after corfu
+  :config
   (corfu-history-mode 1)
-  (add-to-list 'savehist-additional-variables 'corfu-history)
-  (require 'corfu-popupinfo)
+  (add-to-list 'savehist-additional-variables 'corfu-history))
+
+(use-package corfu-popupinfo
+  :ensure nil
+  :after corfu
+  :bind (:map corfu-popupinfo-map
+              ("C-j" . corfu-popupinfo-scroll-up)
+              ("C-k" . corfu-popupinfo-scroll-down))
+  :config
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
   :if (not (display-graphic-p))
+  :after corfu
   :config
   (corfu-terminal-mode +1))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package cape
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
@@ -1655,6 +1644,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    ("C-c c t" . eglot-find-typeDefinition))
   :init
   (setopt eglot-autoshutdown t)
+  (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
   :config
   (add-to-list 'eglot-workspace-configuration
                '(:yaml . (schemas .

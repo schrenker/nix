@@ -204,6 +204,10 @@
   :init
   (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90))
 
+;; (use-package inheritenv
+;;   :config
+;;   (inheritenv-add-advice #'with-temp-buffer))
+
 (use-package orderless
   :config
   (setopt completion-styles '(orderless basic)
@@ -396,9 +400,6 @@
                                           (python-ts-mode . python-indent-offset)
                                           (t . 2))))
 
-(use-package inheritenv
-  :config
-  (inheritenv-add-advice #'with-temp-buffer))
 
 ;; Example configuration for Consult
 (use-package consult

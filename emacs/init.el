@@ -1409,11 +1409,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setopt flycheck-eglot-exclusive nil)
   (global-flycheck-eglot-mode 1))
 
-(use-package flycheck-pos-tip
-  :after (flycheck)
-  :config
-  (flycheck-pos-tip-mode))
-
 (use-package tempel
   ;; Require trigger prefix before template name when completing.
   ;; :custom

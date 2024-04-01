@@ -63,6 +63,7 @@
           max-lisp-eval-depth 10000
           minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
           native-comp-async-report-warnings-errors nil
+          read-extended-command-predicate #'command-completion-default-include-p
           require-final-newline t ;; POSIX 3.206: Definition of a 'Line'.
           savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
           scroll-conservatively 1000
@@ -270,36 +271,29 @@
   :config
   (corfu-terminal-mode +1))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
+(use-package kind-icon
+  :after corfu
+  :config
+  (setopt kind-icon-blend-background t
+          kind-icon-default-face 'corfu-default)
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 (use-package cape
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-elisp-block)
   :config
+  (setopt dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'"))
   (add-hook 'emacs-lisp-mode-hook (lambda ()
                                     (setq-local completion-at-point-functions
                                                 '(tempel-expand
                                                   cape-elisp-symbol
                                                   t))))
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
+  (with-eval-after-load 'eglot
+    (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)))
 
-(use-package kind-icon
-  :commands (kind-icon-margin-formatter kind-icon-reset-cache)
-  :init
-  (add-hook 'corfu-margin-formatters #'kind-icon-margin-formatter)
-  :config
-  (setopt kind-icon-default-face 'corfu-default
-          kind-icon-blend-background t
-          kind-icon-blend-frac 0.2))
-
-(use-package dabbrev
-  :after corfu
-  :ensure nil
-  :config
-  (setopt dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")
-          read-extended-command-predicate #'command-completion-default-include-p))
-
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package which-key
   ;; :diminish t
   :config

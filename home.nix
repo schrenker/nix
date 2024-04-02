@@ -157,6 +157,7 @@
   # Note that this list should be kept as small as possible, and expanded only if there is no other way.
   home.activation.copyFiles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ln -sfFn ~/.config/nix/emacs ~/.config/emacs
+    ln -sfFn ~/.config/nix/dotfiles/nvim ~/.config/nvim
   '';
 
 }

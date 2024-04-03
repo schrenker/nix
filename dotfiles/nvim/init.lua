@@ -23,28 +23,29 @@ vim.opt.autoread = true
 vim.opt.so = 7
 
 require("lazy").setup({
-    { 
-        'maxmx03/solarized.nvim',
-        lazy = true,
+    { 'maxmx03/solarized.nvim',
+        lazy = false,
         priority = 1000,
         config = function()
-            require('solarized').setup({
-                transparent = true,
-            })
-        end,
+            vim.o.background = 'light' -- or 'light'
+
+            vim.cmd.colorscheme 'solarized'
+    end,
     },
-    {
-        "NeogitOrg/neogit",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "sindrets/diffview.nvim",
-            "nvim-telescope/telescope.nvim",
-        },
-        config = true
+    { 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' },
+        config = function()
+            require('lualine').setup {
+                options = {
+                    theme = "solarized"
+                }
+            }
+        end
     },
+    { "NeogitOrg/neogit", dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "nvim-telescope/telescope.nvim", }, config = true },
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
 })
 
-vim.cmd("colorscheme solarized")
+
+

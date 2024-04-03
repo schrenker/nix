@@ -40,11 +40,6 @@
       yq-go
       wget
 
-      # EXPERIMENTAL
-      wezterm
-      neovim
-      tmux
-
       # DEPS
       cmake
       libgccjit

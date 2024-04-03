@@ -297,9 +297,7 @@
   (with-eval-after-load 'eglot
     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package which-key
-  ;; :diminish t
   :config
   (setopt which-key-sort-order 'which-key-local-then-key-order
           which-key-add-column-padding 3
@@ -307,6 +305,7 @@
           which-key-show-remaining-keys t)
   (which-key-mode))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package transient
   :config
   (with-eval-after-load 'magit

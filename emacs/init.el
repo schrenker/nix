@@ -360,8 +360,6 @@ If no repository is found, prompt user to create one."
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status))))
 
-;(use-package with-editor)
-
 (use-package git-timemachine
   :commands (git-timemachine))
 

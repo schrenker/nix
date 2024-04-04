@@ -326,11 +326,6 @@
       '("-a" "Autostash" "--autostash"))))
 
 (use-package magit
-  :init
-  (defun schrenker/magit-diff-visit-file-other-window ()
-    (interactive)
-    (let ((current-prefix-arg 4))
-      (call-interactively 'magit-diff-visit-file)))
   :bind (("C-x g" . magit-status)
          ("C-x G" . schrenker/magit-status-with-prefix)
          ("C-x C-g" . schrenker/smerge-repeatedly)
@@ -343,7 +338,15 @@
          ("M-K" . magit-section-backward-sibling)
          ("<escape>" . meow-cancel-selection))
   :config
+  (defun schrenker/magit-diff-visit-file-other-window ()
+    "From a diff visit the appropriate version of FILE. Display the buffer in another window."
+    (interactive)
+    (let ((current-prefix-arg 4))
+      (call-interactively 'magit-diff-visit-file)))
+
   (defun schrenker/magit-status-with-prefix ()
+    "Prompt for a path of a repository, and view it's status.
+If no repository is found, prompt user to create one."
     (interactive)
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status))))

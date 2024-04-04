@@ -45,7 +45,8 @@
             browse-url-generic-args     '("/c" "start")
             browse-url-browser-function #'browse-url-generic))
 
-  (setopt auto-window-vscroll nil
+  (setopt auto-revert-check-vc-info t
+          auto-window-vscroll nil
           backup-by-copying t
           backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
           create-lockfiles nil

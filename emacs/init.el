@@ -316,7 +316,6 @@
           which-key-show-remaining-keys t)
   (which-key-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package transient
   :config
   (with-eval-after-load 'magit
@@ -339,7 +338,7 @@
          ("M-J" . magit-section-forward-sibling)
          ("M-K" . magit-section-backward-sibling)
          ("<escape>" . meow-cancel-selection))
-  :config
+  :init
   (defun schrenker/magit-diff-with-commit-at-point ()
     "Invoke `magit-diff` from any magit buffer with the commit at point as its only argument. This produces a diff with the worktree."
     (interactive)
@@ -360,6 +359,7 @@ If no repository is found, prompt user to create one."
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status))))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package git-timemachine
   :commands (git-timemachine))
 

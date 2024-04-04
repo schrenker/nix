@@ -5,6 +5,17 @@
 
 ;;; Code:
 
+;; use-package properties order:
+;; :ensure
+;; :if
+;; :after
+;; :demand
+;; :commands
+;; :hooks
+;; :bind[*]
+;; :init
+;; :config
+
 (use-package emacs
   :ensure nil
   :init

@@ -323,7 +323,9 @@
     (transient-append-suffix 'magit-fetch "-p"
       '("-t" "Fetch all tags" ("-t" "--tags")))
     (transient-append-suffix 'magit-pull "-r"
-      '("-a" "Autostash" "--autostash"))))
+      '("-a" "Autostash" "--autostash"))
+    (transient-append-suffix `magit-diff "r"
+      '("W" "Diff worktree at point" schrenker/magit-diff-with-commit-at-point))))
 
 (use-package magit
   :bind (("C-x g" . magit-status)
@@ -338,6 +340,13 @@
          ("M-K" . magit-section-backward-sibling)
          ("<escape>" . meow-cancel-selection))
   :config
+  (defun schrenker/magit-diff-with-commit-at-point ()
+    "Invoke `magit-diff` from any magit buffer with the commit at point as its only argument. This produces a diff with the worktree."
+    (interactive)
+    (let* ((section (magit-current-section))
+           (value (oref section value)))
+      (magit-diff-range (magit-rev-parse value))))
+
   (defun schrenker/magit-diff-visit-file-other-window ()
     "From a diff visit the appropriate version of FILE. Display the buffer in another window."
     (interactive)

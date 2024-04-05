@@ -370,15 +370,15 @@ If no repository is found, prompt user to create one."
   (unless (window-system) (diff-hl-margin-mode))
   (global-diff-hl-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package helpful
   :bind
-  (("C-h f" . helpful-callable)
-   ("C-h v" . helpful-variable)
-   ("C-h k" . helpful-key)
-   ("C-h x" . helpful-command)
-   ("C-h F" . helpful-function))
+  (("C-h f" . helpful-callable) ;; describe-function
+   ("C-h k" . helpful-key)      ;; describe-key
+   ("C-h o" . helpful-symbol)   ;; describe-symbol
+   ("C-h v" . helpful-variable) ;; describe-variable
+   ("C-h x" . helpful-command)) ;; describe-command
   :init
+  ;; Override describe commands when called interactively
   (advice-add 'describe-variable :around
               (lambda (orig-fun variable &optional buffer frame)
                 (if (called-interactively-p 'interactive)
@@ -401,6 +401,12 @@ If no repository is found, prompt user to create one."
                   (funcall orig-fun command))))
   (advice-add 'describe-key :override 'helpful-key))
 
+(use-package elisp-demos
+  :after helpful
+  :config
+  (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package prism
   :commands (prism-set-colors prism-whitespace-mode prism-mode)
   :ensure (prism

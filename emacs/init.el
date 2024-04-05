@@ -407,27 +407,6 @@ If no repository is found, prompt user to create one."
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package prism
-  :commands (prism-set-colors prism-whitespace-mode prism-mode)
-  :ensure (prism
-           :host "github.com"
-           :repo "alphapapa/prism.el")
-  :init
-  (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
-  ;; (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'python-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
-  :config
-  ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
-  (unless (display-graphic-p)
-    (load (concat user-emacs-directory "lisp/prism-cl.el") 'noerror 'nomessage))
-  (setopt prism-comments nil
-          prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
-                                          (python-ts-mode . python-indent-offset)
-                                          (t . 2))))
-
-
 (use-package embark
   :bind
   (("M-." . embark-act)         ;; pick some comfortable binding
@@ -1480,6 +1459,26 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (typst-preview
    :host "github.com"
    :repo "havarddj/typst-preview.el"))
+
+(use-package prism
+  :commands (prism-set-colors prism-whitespace-mode prism-mode)
+  :ensure (prism
+           :host "github.com"
+           :repo "alphapapa/prism.el")
+  :init
+  (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
+  ;; (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
+  (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
+  (add-hook 'python-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
+  :config
+  ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
+  (unless (display-graphic-p)
+    (load (concat user-emacs-directory "lisp/prism-cl.el") 'noerror 'nomessage))
+  (setopt prism-comments nil
+          prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
+                                          (python-ts-mode . python-indent-offset)
+                                          (t . 2))))
 
 (use-package mood-line
   :config

@@ -15,8 +15,7 @@
       nixfmt
 
       # CONTAINERS
-      colima
-      docker-client
+      docker
       kind
       kubectl
       kubectx

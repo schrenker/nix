@@ -360,7 +360,6 @@ If no repository is found, prompt user to create one."
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status))))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package git-timemachine
   :commands (git-timemachine))
 
@@ -371,6 +370,7 @@ If no repository is found, prompt user to create one."
   (unless (window-system) (diff-hl-margin-mode))
   (global-diff-hl-mode))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package helpful
   :bind
   (("C-h f" . helpful-callable)

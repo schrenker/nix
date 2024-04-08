@@ -69,8 +69,8 @@
           kept-new-versions 6
           kept-old-versions 2
           load-prefer-newer t
-          mac-command-modifier 'none
-          mac-option-modifier 'meta
+          mac-command-modifier 'meta
+          mac-option-modifier 'alt
           mac-right-option-modifier nil
           max-lisp-eval-depth 10000
           minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)

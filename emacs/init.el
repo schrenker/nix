@@ -620,8 +620,7 @@ targets."
    :preview-key (kbd "M-.")))
 
 (use-package consult-dir
-  :bind (("C-x C-d" . consult-dir)
-         :map vertico-map
+  :bind (:map vertico-map
          ("C-x C-d" . consult-dir)
          ("C-x C-j" . consult-dir-jump-file)))
 
@@ -1370,10 +1369,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
   (("C-c f" . dirvish-fd)
-   ("C-c o o" . dirvish-dwim)
-   ("C-c o O" . dirvish)
-   ("C-c o t" . dirvish-side)
-
+   ("C-x C-d" . dirvish-dwim)
+   ("C-x C-D" . dirvish)
    :map dirvish-mode-map ; Dirvish inherits `dired-mode-map'
    ("a"   . dirvish-quick-access)
    ("f"   . dirvish-file-info-menu)

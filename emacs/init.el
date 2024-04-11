@@ -406,35 +406,12 @@ If no repository is found, prompt user to create one."
   :config
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package embark
   :bind
-  (("M-." . embark-act)         ;; pick some comfortable binding
-   ("C-." . embark-dwim)        ;; good alternative: M-.
-   ("C-h b" . embark-bindings)) ;; alternative for `describe-bindings'
-
-  :init
-  (defun schrenker/org-cycle-checkbox ()
-    (interactive)
-    (if (org-at-item-checkbox-p)
-        (if (org-list-at-regexp-after-bullet-p "\\(\\[[ ]\\]\\)[ \t]+")
-            (org-toggle-checkbox '(16))
-          (org-toggle-checkbox))))
-
-  ;; Optionally replace the key help with a completing-read interface
-  (setopt prefix-help-command #'embark-prefix-help-command)
-
-  ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
-  ;; strategy, if you want to see the documentation from multiple providers.
-                                        ;(add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
-
+  (("M-." . embark-act)
+   ("C-." . embark-dwim)
+   ("C-h b" . embark-bindings))
   :config
-
-  (with-eval-after-load 'embark-org
-    (keymap-set embark-org-item-map "RET" #'schrenker/org-cycle-checkbox)
-    (keymap-set embark-org-link-map "RET" #'org-open-at-point))
-
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the
@@ -479,6 +456,16 @@ targets."
                  nil
                  (window-parameters (mode-line-format . none)))))
 
+(use-package embark-org
+  :ensure nil
+  :after embark org
+  :bind (:map embark-org-item-map
+         ("RET" . schrenker/org-cycle-checkbox)
+         :map embark-org-link-map
+         ("RET" . org-open-at-point)))
+
+
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 ;; Example configuration for Consult
 (use-package consult
   :demand t
@@ -913,6 +900,12 @@ targets."
          ("C-c l" . org-store-link)
          ("C-c C-^" . schrenker/org-sort-dwim))
   :init
+  (defun schrenker/org-cycle-checkbox ()
+    (interactive)
+    (if (org-at-item-checkbox-p)
+        (if (org-list-at-regexp-after-bullet-p "\\(\\[[ ]\\]\\)[ \t]+")
+            (org-toggle-checkbox '(16))
+          (org-toggle-checkbox))))
   (defun schrenker/org-sort-dwim ()
     (interactive)
     (cond ((string= (org-no-properties (org-get-heading t t t t)) "Notes")

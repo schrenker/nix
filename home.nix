@@ -15,7 +15,6 @@
       nixfmt
 
       # CONTAINERS
-      docker
       kind
       kubectl
       kubectx
@@ -54,6 +53,7 @@
       pkgs.emacs29-pgtk
       pkgs.jetbrains-mono
       pkgs.gitleaks
+      pkgs.docker
     ];
 
   fonts.fontconfig.enable = true;

@@ -45,6 +45,7 @@
     "bartender"
     "cloudflare-warp"
     "crossover"
+    "docker"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
     "hazeover"

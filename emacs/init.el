@@ -511,16 +511,13 @@ targets."
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package persistent-soft
-  :defer t)
-
 (use-package persistent-kmacro
   :ensure
   (persistent-kmacro
    :host "github.com"
    :repo "artawower/persistent-kmacro.el"))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package posframe
   :if (display-graphic-p))
 

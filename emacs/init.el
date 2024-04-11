@@ -494,7 +494,6 @@ targets."
   :after eglot
   :bind (:map eglot-mode-map
               ("M-g c" . consult-eglot-symbols)))
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 
 (use-package consult-org-roam
   :after org-roam
@@ -502,25 +501,17 @@ targets."
          ("C-c n w" . consult-org-roam-forward-links))
   :config
   (setopt consult-org-roam-grep-func #'consult-ripgrep
-          consult-org-roam-buffer-narrow-key ?r
           consult-org-roam-buffer-enabled nil)
   (consult-org-roam-mode 1)
-  ;; Eventually suppress previewing for certain functions
   (consult-customize
    consult-org-roam-forward-links
    :preview-key (kbd "M-.")))
 
-(use-package consult-dir
-  :bind (:map vertico-map
-         ("C-x C-d" . consult-dir)
-         ("C-x C-j" . consult-dir-jump-file)))
-
-
-;; ;; Consult users will also want the embark-consult package.
 (use-package embark-consult
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package persistent-soft
   :defer t)
 

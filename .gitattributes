@@ -1,2 +1,2 @@
 secrets/** filter=git-crypt diff=git-crypt
-emacs/secret/** filter=git-crypt diff=git-crypt
+dotfiles/emacs/secret/** filter=git-crypt diff=git-crypt

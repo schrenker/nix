@@ -61,6 +61,7 @@
           electric-pair-open-newline-between-pairs t
           enable-recursive-minibuffers t
           frame-resize-pixelwise t
+          frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
           indent-tabs-mode nil
           inhibit-startup-message t
           inhibit-startup-screen t
@@ -75,6 +76,7 @@
           max-lisp-eval-depth 10000
           minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
           native-comp-async-report-warnings-errors nil
+          ns-use-proxy-icon (display-graphic-p)
           read-extended-command-predicate #'command-completion-default-include-p
           require-final-newline t ;; POSIX 3.206: Definition of a 'Line'.
           savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
@@ -250,7 +252,9 @@
               ("<tab>" . corfu-next)
               ("S-TAB" . corfu-previous)
               ("<backtab>" . corfu-previous)
-              ("C-SPC" . corfu-insert-separator))
+              ("C-SPC" . corfu-insert-separator)
+              ("M-n" . nil)
+              ("M-p" . nil))
   :config
   (setopt corfu-auto t
           global-corfu-modes '((not
@@ -275,10 +279,12 @@
 (use-package corfu-popupinfo
   :ensure nil
   :after corfu
+  :demand t
   :bind (:map corfu-popupinfo-map
               ("C-j" . corfu-popupinfo-scroll-up)
               ("C-k" . corfu-popupinfo-scroll-down))
   :config
+  (setopt corfu-popupinfo-delay '(1.0 . 0.5))
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
@@ -1427,9 +1433,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :config
   (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
   (all-the-icons-completion-mode 1))
-
-(setopt frame-title-format '(:eval (concat user-login-name "@" system-name (if buffer-file-truename " :: %f" " :|: [%b]")))
-        ns-use-proxy-icon (display-graphic-p))
 
 (use-package ligature
   :config

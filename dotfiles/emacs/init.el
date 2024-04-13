@@ -1266,8 +1266,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
   :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
   (("C-c f" . dirvish-fd)
-   ("C-x C-d" . dirvish-dwim)
-   ("C-x C-D" . dirvish)
+   ("C-x d" . dirvish-dwim)
+   ("C-x C-d" . dirvish)
    :map dirvish-mode-map ; Dirvish inherits `dired-mode-map'
    ("a"   . dirvish-quick-access)
    ("f"   . dirvish-file-info-menu)

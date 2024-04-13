@@ -512,15 +512,6 @@ If no repository is found, prompt user to create one."
                   (funcall orig-fun command))))
   (advice-add 'describe-key :override 'helpful-key))
 
-(use-package elisp-demos
-  :after helpful
-  :config
-  (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
-
-
-
-
-
 (use-package persistent-kmacro
   :ensure
   (persistent-kmacro

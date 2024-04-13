@@ -2012,7 +2012,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   ;;Clipboard
   (meow-normal-define-key
    '("p" . schrenker/meow-yank-forward)
-   '("P" . meow-yank)
+   '("P" . schrenker/meow-yank)
    ;; '("M-p" . meow-yank-pop)
    '("y" . schrenker/meow-copy))
 

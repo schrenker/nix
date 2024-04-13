@@ -36,12 +36,14 @@
 
 (defun schrenker/meow-left ()
   (interactive)
-  (cond ((schrenker/meow-selection-p)(call-interactively #'meow-left-expand))
+  (cond ((derived-mode-p 'vterm-mode)(vterm-send-key "<left>"))
+        ((schrenker/meow-selection-p)(call-interactively #'meow-left-expand))
         (t (call-interactively #'meow-left))))
 
 (defun schrenker/meow-right ()
   (interactive)
-  (cond ((schrenker/meow-selection-p)(call-interactively #'meow-right-expand))
+  (cond ((derived-mode-p 'vterm-mode)(vterm-send-key "<right>"))
+        ((schrenker/meow-selection-p)(call-interactively #'meow-right-expand))
         (t (call-interactively #'meow-right))))
 
 (defun schrenker/meow-visual ()
@@ -53,8 +55,24 @@
   (interactive)
   (let ((current-prefix-arg '(4)))
     (if (derived-mode-p 'vterm-mode)
-        (call-interactively 'vterm-yank)
+        (if (not (string= (meow--current-state) "insert"))
+            (progn
+              (meow-insert)
+              (vterm-yank)
+              (meow-insert-exit)))
+        (vterm-yank)
       (call-interactively 'meow-yank))))
+
+(defun schrenker/meow-yank ()
+  (interactive)
+    (if (derived-mode-p 'vterm-mode)
+        (if (not (string= (meow--current-state) "insert"))
+            (progn
+              (meow-insert)
+              (vterm-yank)
+              (meow-insert-exit)))
+        (vterm-yank)
+      (call-interactively 'meow-yank)))
 
 
 (defun schrenker/meow-append-to-eol ()

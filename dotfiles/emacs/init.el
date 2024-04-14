@@ -439,7 +439,7 @@
       '("W" "Diff worktree at point" schrenker/magit-diff-with-commit-at-point))))
 
 (use-package magit
-  :bind (("C-x g" . magit-status)
+  :bind (("C-x g" . schrenker/magit-status-rightmost-window)
          ("C-x G" . schrenker/magit-status-with-prefix)
          ("C-x C-g" . schrenker/smerge-repeatedly)
          :map magit-status-mode-map
@@ -470,6 +470,12 @@ If no repository is found, prompt user to create one."
     (interactive)
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status)))
+
+  (defun schrenker/magit-status-rightmost-window ()
+    (interactive)
+    (schrenker/rightmost-window-or-split)
+    (call-interactively #'magit-status))
+
   :config
   (setopt magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 

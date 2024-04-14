@@ -109,6 +109,19 @@ killed, or give a choice of showing diff from saved version."
   (balance-windows)
   (other-window 1))
 
+(defun schrenker/rightmost-window-p ()
+  "Check if window is the rightmost one in current frame."
+  (not (window-right (get-buffer-window))))
+
+(defun schrenker/rightmost-window-or-split ()
+  "If there is only one live window in the frame,
+ split right and go to the new window.
+Else go to the rightmost window in the frame."
+  (if (< (count-windows) 2)
+      (schrenker/split-and-follow-vertically)
+    (while (not (schrenker/rightmost-window-p))
+      (windmove-right))))
+
 (defun schrenker/backward-kill-word ()
   "Backward kill word without changing clipboard contents."
   (interactive)

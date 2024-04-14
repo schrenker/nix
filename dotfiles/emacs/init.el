@@ -408,7 +408,7 @@
 (use-package kind-icon
   :after corfu
   :config
-  (setopt kind-icon-blend-background t
+  (setopt kind-icon-blend-background nil
           kind-icon-default-face 'corfu-default)
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
@@ -469,7 +469,9 @@
 If no repository is found, prompt user to create one."
     (interactive)
     (let ((current-prefix-arg '(4)))
-      (call-interactively 'magit-status))))
+      (call-interactively 'magit-status)))
+  :config
+  (setopt magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package git-timemachine
   :commands (git-timemachine))

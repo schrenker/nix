@@ -595,9 +595,9 @@ If no repository is found, prompt user to create one."
   _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
       ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
       ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] vTermO     [_f_] findf
-     ^^   ^^       [_d_] win delete     [_M-j_] vEnlarge    ^^            [_T_] dired      [_S_] scratch
-     ^^   ^^       [_D_] aw delete      [_M-h_] hShrink     ^^^^                           [_Q_] kill
-     ^^   ^^       [_X_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
+     ^^   ^^       [_x_] win delete     [_M-j_] vEnlarge    ^^            [_d_] dired      [_S_] scratch
+     ^^   ^^       [_X_] aw delete      [_M-h_] hShrink     ^^            [_D_] dirvish    [_Q_] kill
+     ^^   ^^       [_1_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
      ^^^^^^^^^^^^                                                                          [_TAB_] Hydra
  ^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
 "
@@ -614,9 +614,9 @@ If no repository is found, prompt user to create one."
     ("2" schrenker/split-and-follow-horizontally)
     ("3" schrenker/split-and-follow-vertically)
     ("s" schrenker/ace-swap-window)
-    ("d" delete-window)
-    ("D" ace-delete-window)
-    ("X" delete-other-windows)
+    ("x" delete-window)
+    ("X" ace-delete-window)
+    ("1" delete-other-windows)
     ("=" balance-windows)
     ("m" maximize-window)
     ("+" schrenker/zoom-frame)
@@ -628,7 +628,8 @@ If no repository is found, prompt user to create one."
     ("'" popper-toggle-type)
     ("v" schrenker/multi-vterm-project-here)
     ("V" multi-vterm-project)
-    ("T" dirvish-dwim)
+    ("d" schrenker/mini-dirvish-here)
+    ("D" dirvish)
     ("<" previous-buffer)
     (">" next-buffer)
     ("b" consult-buffer)

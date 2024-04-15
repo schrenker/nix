@@ -118,9 +118,13 @@ killed, or give a choice of showing diff from saved version."
  split right and go to the new window.
 Else go to the rightmost window in the frame."
   (if (< (count-windows) 2)
-      (schrenker/split-and-follow-vertically)
+      (if (< (frame-width) 120)
+          (schrenker/split-and-follow-horizontally)
+        (schrenker/split-and-follow-vertically))
     (while (not (schrenker/rightmost-window-p))
-      (windmove-right))))
+      (if (< (frame-width) 120)
+          (windmove-down)
+        (windmove-right)))))
 
 (defun schrenker/backward-kill-word ()
   "Backward kill word without changing clipboard contents."

@@ -473,8 +473,11 @@ If no repository is found, prompt user to create one."
 
   (defun schrenker/magit-status-rightmost-window ()
     (interactive)
-    (schrenker/rightmost-window-or-split)
-    (call-interactively #'magit-status))
+    (let ((wcount (count-windows)))
+      (schrenker/rightmost-window-or-split)
+      (when (> (count-windows) wcount)
+        (set-window-parameter (get-buffer-window (current-buffer)) 'magit-dedicated t))
+      (call-interactively #'magit-status)))
 
   :config
   (setopt magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))

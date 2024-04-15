@@ -116,6 +116,7 @@
         (set-face-extend 'org-block-end-line t)
         (set-face-attribute 'link nil :foreground cyan :slant 'italic )
         (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt)
+        (set-face-attribute 'italic nil :slant 'italic :underline nil)
 
         (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
         (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)

@@ -432,7 +432,6 @@
   :config
   (setopt dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package transient
   :config
   (with-eval-after-load 'magit
@@ -530,6 +529,7 @@ If no repository is found, prompt user to create one."
                   (funcall orig-fun command))))
   (advice-add 'describe-key :override 'helpful-key))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package persistent-kmacro
   :ensure
   (persistent-kmacro

@@ -539,14 +539,27 @@ If no repository is found, prompt user to create one."
 (use-package posframe
   :if (display-graphic-p))
 
+(use-package transpose-frame)
+
 (use-package ace-window
-  :config
+  :init
   (defun schrenker/ace-swap-window ()
+    "Ace-swap-window but ignore current window for the execution time."
     (interactive)
     (let ((aw-ignore-current t))
       (ace-swap-window)))
-  
+
+  (defun schrenker/aw-flip-window ()
+    "Switch to the window you were previously in.
+ If you are switching from dirvish window, make sure the root window is added to aw--window-ring."
+    (interactive)
+    (let ((dv (dirvish-curr)))
+      (aw-flip-window)
+      (if (and dv (car (dv-layout dv)))
+          (aw--push-window (dv-root-window dv)))))
+  :config
   (setopt aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
+
   (when (display-graphic-p)
     (with-eval-after-load 'posframe
       (ace-window-posframe-mode 1))))
@@ -579,13 +592,6 @@ If no repository is found, prompt user to create one."
   :bind (("M-o" . 'hydra-uictl/body)
          ("M-O" . 'schrenker/switch-hydra))
   :init
-  (defun schrenker/aw-flip-window ()
-    (interactive)
-    (let ((dv (dirvish-curr)))
-      (aw-flip-window)
-      (if (and dv (car (dv-layout dv)))
-          (aw--push-window (dv-root-window dv)))))
-
   (defun schrenker/jump-to-heading (heading)
     (interactive)
     (goto-char (point-min))

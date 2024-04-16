@@ -529,7 +529,6 @@ If no repository is found, prompt user to create one."
                   (funcall orig-fun command))))
   (advice-add 'describe-key :override 'helpful-key))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package persistent-kmacro
   :ensure
   (persistent-kmacro
@@ -566,11 +565,15 @@ If no repository is found, prompt user to create one."
 
 (use-package popper
   :init
-  (setopt popper-display-function
-          (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
-            (if (popper--suppress-p buffer)
-                (display-buffer-no-window buffer '((allow-no-window . t)))
-              (popper-select-popup-at-bottom buffer _act)))
+  (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
+    "Display popups at the bottom of the screen.
+Mark buffer as shown without showing it, if it's supposed to be suppressed."
+    (if (popper--suppress-p buffer)
+        (display-buffer-no-window buffer '((allow-no-window . t)))
+      (popper-select-popup-at-bottom buffer _act)))
+  :config
+  (setopt popper-group-function #'popper-group-by-project
+          popper-display-function #'popper-select-popup-at-bottom-maybe-hide
           popper-reference-buffers
           '("\\*Messages\\*"
             "\\*Warnings\\*"
@@ -579,20 +582,17 @@ If no repository is found, prompt user to create one."
             help-mode
             helpful-mode
             compilation-mode))
-  (with-eval-after-load 'project
-    (setopt popper-group-function #'popper-group-by-project))
-  ;; (add-hook 'org-mode-hook
-  ;;           (lambda () (setq-local popper-reference-buffers (append
-  ;;                                                       (remove "\\*Warnings\\*" popper-reference-buffers)
-  ;;                                                       '(("\\*Warnings\\*" . hide))))))
   (popper-mode 1)
   (popper-echo-mode 1))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package hydra
   :bind (("M-o" . 'hydra-uictl/body)
          ("M-O" . 'schrenker/switch-hydra))
   :init
   (defun schrenker/jump-to-heading (heading)
+    "Jump to any string in the file. The purpose of this is to jump to org-mode headings.
+To jump to org-mode heading, pass in literal heading, like '** Notes'."
     (interactive)
     (goto-char (point-min))
     (search-forward heading))

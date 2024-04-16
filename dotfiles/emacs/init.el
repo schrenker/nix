@@ -619,10 +619,10 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
   _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
       ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
       ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] vTermO     [_f_] findf
-     ^^   ^^       [_x_] win delete     [_M-j_] vEnlarge    ^^            [_d_] dired      [_S_] scratch
-     ^^   ^^       [_X_] aw delete      [_M-h_] hShrink     ^^            [_D_] dirvish    [_Q_] kill
-     ^^   ^^       [_1_] single         [_M-l_] hEnlarge    ^^^^                           [_q_] quit
-     ^^^^^^^^^^^^                                                                          [_TAB_] Hydra
+     ^^   ^^       [_t_] transpose      [_M-j_] vEnlarge    ^^            [_d_] dired      [_S_] scratch
+     ^^   ^^       [_x_] win delete     [_M-h_] hShrink     ^^            [_D_] dirvish    [_Q_] kill
+     ^^   ^^       [_X_] aw delete      [_M-l_] hEnlarge    ^^^^                           [_q_] quit
+     ^^^^          [_1_] single                             ^^^^^^                         [_TAB_] Hydra
  ^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
 "
     ("K" windmove-up)
@@ -637,6 +637,7 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
     ("O" ace-select-window)
     ("2" schrenker/split-and-follow-horizontally)
     ("3" schrenker/split-and-follow-vertically)
+    ("t" (aw-transpose-frame (car (window-list))))
     ("s" schrenker/ace-swap-window)
     ("x" delete-window)
     ("X" ace-delete-window)

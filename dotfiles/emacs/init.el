@@ -450,6 +450,8 @@
          :map magit-status-mode-map
          ("o" . schrenker/magit-diff-visit-file-other-window)
          ("K" . magit-discard)
+         ("e" . nil)
+         ("E" . nil)
          ("M-j" . magit-section-forward)
          ("M-k" . magit-section-backward)
          ("M-J" . magit-section-forward-sibling)

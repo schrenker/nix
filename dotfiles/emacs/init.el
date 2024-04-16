@@ -102,6 +102,7 @@
   (when (display-graphic-p)
     (scroll-bar-mode -1)
     (tool-bar-mode -1))
+  (flymake-mode -1)
 
   (column-number-mode 1)
   (electric-indent-mode 1)
@@ -412,14 +413,12 @@
           kind-icon-default-face 'corfu-default)
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package cape
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-elisp-block)
   :config
-  (setopt dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'"))
   (add-hook 'emacs-lisp-mode-hook (lambda ()
                                     (setq-local completion-at-point-functions
                                                 '(tempel-expand
@@ -428,6 +427,12 @@
   (with-eval-after-load 'eglot
     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)))
 
+(use-package dabbrev
+  :ensure nil
+  :config
+  (setopt dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
+
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package transient
   :config
   (with-eval-after-load 'magit

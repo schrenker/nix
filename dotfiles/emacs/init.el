@@ -592,18 +592,12 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
 (use-package hydra
   :bind (("M-o" . 'hydra-uictl/body)
          ("M-O" . 'schrenker/switch-hydra))
-  :init
-  (defun schrenker/jump-to-heading (heading)
-    "Jump to any string in the file. The purpose of this is to jump to org-mode headings.
-To jump to org-mode heading, pass in literal heading, like '** Notes'."
-    (interactive)
-    (goto-char (point-min))
-    (search-forward heading))
-
   :config
   (setopt hydra-is-helpful t)
 
   (defun schrenker/switch-hydra ()
+    "Switch to appropriate hydra based on mode that is currently on.
+If no applicable mode is present, default to uictl."
     (interactive)
     (cond ((bound-and-true-p smerge-mode) (hydra-smerge/body))
           ((bound-and-true-p dape--process) (hydra-dape/body))
@@ -677,10 +671,10 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
 "
       ("K" outline-previous-heading)
       ("J" outline-next-heading)
-      ("b" (schrenker/jump-to-heading "** Backlog"))
-      ("a" (schrenker/jump-to-heading "** Active"))
-      ("c" (schrenker/jump-to-heading "** Completed"))
-      ("n" (schrenker/jump-to-heading "* Notes"))
+      ("b" (schrenker/org-jump-to-heading "** Backlog"))
+      ("a" (schrenker/org-jump-to-heading "** Active"))
+      ("c" (schrenker/org-jump-to-heading "** Completed"))
+      ("n" (schrenker/org-jump-to-heading "* Notes"))
       ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
       ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
       ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
@@ -814,7 +808,13 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
          ("C-c l" . org-store-link)
          ("C-c C-^" . schrenker/org-sort-dwim))
   :init
-  (defun schrenker/org-cycle-checkbox ()
+  (defun schrenker/org-jump-to-heading (heading)
+    "Jump to any string in the file. The purpose of this is to jump to org-mode headings.
+To jump to org-mode heading, pass in literal heading, like '** Notes'."
+    (interactive)
+    (goto-char (point-min))
+    (search-forward heading))
+
   (defun schrenker/org-fullcycle-checkbox ()
     "Cycle checkbox between all possible states, so [ ], [-] and [X]."
     (interactive)
@@ -822,7 +822,10 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
         (if (org-list-at-regexp-after-bullet-p "\\(\\[[ ]\\]\\)[ \t]+")
             (org-toggle-checkbox '(16))
           (org-toggle-checkbox))))
+
   (defun schrenker/org-sort-dwim ()
+    "Sort org heading. If heading is one of: [Backlog, Active, Completed], then sort by alpha -> priority -> TODO order.
+Else sort by Alpha."
     (interactive)
     (cond ((string= (org-no-properties (org-get-heading t t t t)) "Notes")
            (org-sort-entries nil ?A))
@@ -834,9 +837,11 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
            (org-sort-entries nil ?a))))
 
   (defun schrenker/get-org-template (template)
+    "Fetch contents of template file from templates dir in emacs config directory."
     (with-temp-buffer
       (insert-file-contents (concat user-emacs-directory "templates/" template))
       (buffer-string)))
+
   (setopt time-stamp-active t
           time-stamp-start "#\\+modified: [ \t]*"
           time-stamp-end "$"

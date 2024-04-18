@@ -609,23 +609,19 @@ If no applicable mode is present, default to uictl."
     (:hint nil)
     "
 
-   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Buffer^
-╭────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^
-      ^_K_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_<_] prev
-      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_>_] next
-  _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_b_] buffers
-      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_B_] ibuffer
-      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_f_] findf
-     ^^   ^^       [_t_] transpose      [_M-j_] vEnlarge    ^^            [_S_] scratch
-     ^^   ^^       [_x_] win delete     [_M-h_] hShrink     ^^            [_Q_] kill
-     ^^   ^^       [_X_] aw delete      [_M-l_] hEnlarge    ^^            [_q_] quit
-     ^^^^          [_1_] single                             ^^^^          [_TAB_] Hydra
- ^^^^^^^^^^^────────────────────────────────────────────────────────────────────────────╯
+  ^Layout^             ^Sizing^            ^Un/Redo^     ^Buffer^
+╭──────────────────────────────────────────────────────────────────^^^^^^^^^
+   [_o_] flip           [_=_]   balance     [_u_] undo    [_<_] prev
+   [_O_] select         [_m_]   maximize    [_r_] redo    [_>_] next
+   [_s_] swap           [_+_]   zoom in     ^^            [_b_] Buffers
+   [_2_] split down     [_-_]   zoom out    ^^            [_B_] iBuffer
+   [_3_] split right    [_M-k_] vShrink     ^^            [_S_] Scratch
+   [_t_] transpose      [_M-j_] vEnlarge    ^^            [_Q_] Kill
+   [_x_] win delete     [_M-h_] hShrink
+   [_X_] aw delete      [_M-l_] hEnlarge    ^^            [_q_] Quit Hydra
+   [_1_] single                             ^^^^          [_TAB_] Switch
+ ^^^^^^^───────────────────────────────────────────────────────────────────╯
 "
-    ("K" windmove-up)
-    ("J" windmove-down)
-    ("H" windmove-left)
-    ("L" windmove-right)
     ("M-k" shrink-window)
     ("M-j" enlarge-window)
     ("M-h" shrink-window-horizontally)

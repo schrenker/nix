@@ -1525,27 +1525,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                (display-line-numbers-mode -1)
                                (corfu-mode -1))))
 
-(use-package eat
-  :ensure
-  (eat :host "codeberg.org"
-       :repo "akib/emacs-eat"
-       :files ("*.el" ("term" "term/*.el") "*.texi"
-               "*.ti" ("terminfo/e" "terminfo/e/*")
-               ("terminfo/65" "terminfo/65/*")
-               ("integration" "integration/*")
-               (:exclude ".dir-locals.el" "*-tests.el")))
-  :config
-  (with-eval-after-load 'meow
-    (push '(eat-mode . insert) meow-mode-state-list)
-    (add-hook 'eat-mode-hook
-              (lambda ()
-                (add-hook 'meow-insert-enter-hook
-                          (lambda () (eat-semi-char-mode))
-                          nil t)
-                (add-hook 'meow-insert-exit-hook
-                          (lambda () (eat-line-mode))
-                          nil t)))))
-
 (use-package multi-vterm
   :if (not (eq system-type 'windows-nt))
   :bind (("C-c v" . schrenker/multi-vterm-project-here)

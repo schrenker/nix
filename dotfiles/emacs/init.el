@@ -609,38 +609,38 @@ If no applicable mode is present, default to uictl."
     (:hint nil)
     "
 
-  ^Layout^             ^Sizing^            ^Un/Redo^     ^Buffer^
-╭──────────────────────────────────────────────────────────────────^^^^^^^^^
-   [_o_] flip           [_=_]   balance     [_u_] undo    [_<_] prev
-   [_O_] select         [_m_]   maximize    [_r_] redo    [_>_] next
-   [_s_] swap           [_+_]   zoom in     ^^            [_b_] Buffers
-   [_2_] split down     [_-_]   zoom out    ^^            [_B_] iBuffer
-   [_3_] split right    [_M-k_] vShrink     ^^            [_S_] Scratch
-   [_t_] transpose      [_M-j_] vEnlarge    ^^            [_Q_] Kill
-   [_x_] win delete     [_M-h_] hShrink
-   [_X_] aw delete      [_M-l_] hEnlarge    ^^            [_q_] Quit Hydra
-   [_1_] single                             ^^^^          [_TAB_] Switch
- ^^^^^^^───────────────────────────────────────────────────────────────────╯
+   Movement     ^^Sizing           ^^Layout            ^^Buffer
+╭──────────────────────────────────────────────────────────────────^^^^^^
+   [_o_] flip     [_=_]   balance    [_u_] undo          [_<_] prev
+   [_O_] select   [_m_]   maximize   [_r_] redo          [_>_] next
+   [_s_] swap     [_+_]   zoom in    [_2_] split down    [_b_] Buffers
+   ^^             [_-_]   zoom out   [_3_] split right   [_B_] iBuffer
+   ^^             [_M-k_] vShrink    [_t_] transpose     [_S_] Scratch
+   ^^             [_M-j_] vEnlarge   [_x_] win delete    [_Q_] Kill
+   ^^             [_M-h_] hShrink    [_X_] aw delete
+   ^^             [_M-l_] hEnlarge   [_1_] single        [_q_] Quit Hydra
+   ^^                     ^^^^                           [_TAB_] Switch
+ ^^^^^^──────────────────────────────────────────────────────────────────╯
 "
-    ("M-k" shrink-window)
-    ("M-j" enlarge-window)
-    ("M-h" shrink-window-horizontally)
-    ("M-l" enlarge-window-horizontally)
     ("o" schrenker/aw-flip-window)
     ("O" ace-select-window)
-    ("2" schrenker/split-and-follow-horizontally)
-    ("3" schrenker/split-and-follow-vertically)
-    ("t" (aw-transpose-frame (car (window-list))))
     ("s" schrenker/ace-swap-window)
-    ("x" delete-window)
-    ("X" ace-delete-window)
-    ("1" delete-other-windows)
     ("=" balance-windows)
     ("m" maximize-window)
     ("+" schrenker/zoom-frame)
     ("-" schrenker/zoom-frame-out)
+    ("M-k" shrink-window)
+    ("M-j" enlarge-window)
+    ("M-h" shrink-window-horizontally)
+    ("M-l" enlarge-window-horizontally)
     ("u" winner-undo)
     ("r" winner-redo)
+    ("2" schrenker/split-and-follow-horizontally)
+    ("3" schrenker/split-and-follow-vertically)
+    ("t" (aw-transpose-frame (car (window-list))))
+    ("x" delete-window)
+    ("X" ace-delete-window)
+    ("1" delete-other-windows)
     ("<" previous-buffer)
     (">" next-buffer)
     ("b" consult-buffer)

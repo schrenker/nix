@@ -273,7 +273,7 @@
   :ensure nil
   :after embark org
   :bind (:map embark-org-item-map
-         ("RET" . schrenker/org-cycle-checkbox)
+         ("RET" . schrenker/org-fullcycle-checkbox)
          :map embark-org-link-map
          ("RET" . org-open-at-point)))
 
@@ -815,6 +815,8 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
          ("C-c C-^" . schrenker/org-sort-dwim))
   :init
   (defun schrenker/org-cycle-checkbox ()
+  (defun schrenker/org-fullcycle-checkbox ()
+    "Cycle checkbox between all possible states, so [ ], [-] and [X]."
     (interactive)
     (if (org-at-item-checkbox-p)
         (if (org-list-at-regexp-after-bullet-p "\\(\\[[ ]\\]\\)[ \t]+")

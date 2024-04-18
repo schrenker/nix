@@ -645,7 +645,6 @@ If no applicable mode is present, default to uictl."
     (">" next-buffer)
     ("b" consult-buffer)
     ("B" ibuffer :color blue)
-    ("f" find-file :color blue)
     ("S" scratch-buffer)
     ("Q" schrenker/kill-this-buffer)
     ("TAB" schrenker/switch-hydra :color blue)

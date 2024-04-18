@@ -217,7 +217,9 @@
 (use-package envrc
   :if (or (executable-find "direnv") (executable-find "nix") (eq system-type 'darwin))
   :init
-  (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90))
+  (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90)
+  :config
+  (setopt envrc-show-summary-in-minibuffer nil))
 
 (use-package orderless
   :config

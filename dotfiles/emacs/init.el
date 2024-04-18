@@ -615,18 +615,18 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
     (:hint nil)
     "
 
-   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Popup^          ^Buffer^
-╭──────────────────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^^^^
-      ^_K_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_._] show       [_<_] prev
-      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_,_] cycle      [_>_] next
-  _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_'_] type       [_b_] buffers
-      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_v_] vTerm      [_B_] ibuffer
-      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_V_] vTermO     [_f_] findf
-     ^^   ^^       [_t_] transpose      [_M-j_] vEnlarge    ^^            [_d_] dired      [_S_] scratch
-     ^^   ^^       [_x_] win delete     [_M-h_] hShrink     ^^            [_D_] dirvish    [_Q_] kill
-     ^^   ^^       [_X_] aw delete      [_M-l_] hEnlarge    ^^^^                           [_q_] quit
-     ^^^^          [_1_] single                             ^^^^^^                         [_TAB_] Hydra
- ^^^^^^^^^^^^^^──────────────────────────────────────────────────────────────────────────────────────────╯
+   ^Movement^^    ^Layout^             ^Sizing^            ^Un/Redo^     ^Buffer^
+╭────────────────────────────────────────────────────────────────────────────^^^^^^^^^^^
+      ^_K_^        [_o_] flip           [_=_]   balance     [_u_] undo    [_<_] prev
+      ^^↑^^        [_O_] select         [_m_]   maximize    [_r_] redo    [_>_] next
+  _H_ ←   → _L_    [_s_] swap           [_+_]   zoom in     ^^            [_b_] buffers
+      ^^↓^^        [_2_] split down     [_-_]   zoom out    ^^            [_B_] ibuffer
+      ^_J_^        [_3_] split right    [_M-k_] vShrink     ^^            [_f_] findf
+     ^^   ^^       [_t_] transpose      [_M-j_] vEnlarge    ^^            [_S_] scratch
+     ^^   ^^       [_x_] win delete     [_M-h_] hShrink     ^^            [_Q_] kill
+     ^^   ^^       [_X_] aw delete      [_M-l_] hEnlarge    ^^            [_q_] quit
+     ^^^^          [_1_] single                             ^^^^          [_TAB_] Hydra
+ ^^^^^^^^^^^────────────────────────────────────────────────────────────────────────────╯
 "
     ("K" windmove-up)
     ("J" windmove-down)
@@ -651,13 +651,6 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
     ("-" schrenker/zoom-frame-out)
     ("u" winner-undo)
     ("r" winner-redo)
-    ("." popper-toggle-latest)
-    ("," popper-cycle)
-    ("'" popper-toggle-type)
-    ("v" schrenker/multi-vterm-project-here)
-    ("V" multi-vterm-project)
-    ("d" schrenker/mini-dirvish-here)
-    ("D" dirvish)
     ("<" previous-buffer)
     (">" next-buffer)
     ("b" consult-buffer)
@@ -1553,9 +1546,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 
 (use-package multi-vterm
   :if (not (eq system-type 'windows-nt))
-  :bind (("C-c t p" . multi-vterm-project)
-         ("C-c t t" . multi-vterm-dedicated-toggle)
-         ("C-c t T" . multi-vterm-dedicated-select))
+  :bind (("C-c v" . schrenker/multi-vterm-project-here)
+         ("C-c V" . multi-vterm-project))
   :commands (multi-vterm-project-root)
   :init
   (defun schrenker/multi-vterm-project-here ()
@@ -1990,7 +1982,10 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("<escape>" . nil)
    '("SPC" . nil)
    '("SPC SPC" . consult-project-extra-find)
-   '("S-SPC S-SPC" . consult-project-extra-find-other-window))
+   '("S-SPC S-SPC" . consult-project-extra-find-other-window)
+   '("SPC ." . popper-toggle-latest)
+   '("SPC ," . popper-cycle)
+   '("SPC '" . popper-toggle-type))
 
   ;;Disable
   (meow-normal-define-key
@@ -1998,6 +1993,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("E" . ignore)
    '("q" . ignore)
    '("SPC" . nil))
+
+  ;;Leader
+  (meow-normal-define-key
+   '("SPC SPC" . consult-project-extra-find)
+   '("S-SPC SPC" . consult-project-extra-find-other-window)
+   '("SPC ." . popper-toggle-latest)
+   '("SPC ," . popper-cycle)
+   '("SPC '" . popper-toggle-type))
 
   ;;Movement
   (meow-normal-define-key
@@ -2086,9 +2089,8 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("K" . helpful-at-point)
    '("n" . schrenker/meow-search)
    '("N" . schrenker/meow-search-backwards)
-   '("Q" . schrenker/meow-old-quit)
-   '("SPC SPC" . consult-project-extra-find)
-   '("S-SPC SPC" . consult-project-extra-find-other-window))
+   '("Q" . schrenker/meow-old-quit))
+
 
   (with-eval-after-load 'persistent-kmacro
     (meow-normal-define-key

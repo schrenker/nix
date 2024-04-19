@@ -147,6 +147,13 @@
 
         (set-face-background 'hl-line bg-alt)
 
+        (set-face-attribute 'fringe nil :background bg-alt)
+        (set-face-attribute 'line-number nil :background bg-alt)
+        (set-face-attribute 'line-number-current-line nil :background bg-alt)
+        (set-face-attribute 'diff-hl-change nil :background blue-2bg :foreground (if (eq appearance 'light) blue-d blue-l))
+        (set-face-attribute 'diff-hl-insert nil :background green-2bg :foreground (if (eq appearance 'light) green-d green-l))
+        (set-face-attribute 'diff-hl-delete nil :background red-2bg :foreground (if (eq appearance 'light) red-d red-l))
+
         (set-face-attribute 'org-level-1 nil :background orange-2bg :foreground (if (eq appearance 'light) orange-d orange-l) :extend t)
         (set-face-attribute 'org-level-2 nil :background green-2bg  :foreground (if (eq appearance 'light) green-d green-l) :extend t)
         (set-face-attribute 'org-level-3 nil :background blue-2bg   :foreground (if (eq appearance 'light) blue-d blue-l) :extend t)

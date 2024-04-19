@@ -154,7 +154,9 @@
         (set-face-attribute 'diff-hl-insert nil :background green-2bg :foreground (if (eq appearance 'light) green-d green-l))
         (set-face-attribute 'diff-hl-delete nil :background red-2bg :foreground (if (eq appearance 'light) red-d red-l))
 
-        (set-face-attribute 'mode-line nil :background blue-2bg :foreground fg-emph :overline t)
+        (set-face-attribute 'mode-line nil :background blue-2bg :foreground fg-emph :overline blue-d :underline blue-d :box nil)
+        (set-face-attribute 'mode-line-active nil :background blue-2bg :foreground fg-emph :overline blue-d :underline blue-d :box nil)
+        (set-face-attribute 'mode-line-inactive nil :background bg-main :overline bg-alt :underline bg-alt :box nil)
 
         (set-face-attribute 'org-level-1 nil :background orange-2bg :foreground (if (eq appearance 'light) orange-d orange-l) :extend t)
         (set-face-attribute 'org-level-2 nil :background green-2bg  :foreground (if (eq appearance 'light) green-d green-l) :extend t)

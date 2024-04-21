@@ -1374,11 +1374,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   )
 
 (use-package typst-ts-mode
+  :disabled
   :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
   :init
   (setopt typst-ts-mode-watch-options "--open"))
 
 (use-package typst-preview
+  :disabled
   :after typst-ts-mode
   :ensure
   (typst-preview

@@ -1977,7 +1977,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    '("SPC" . nil)
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC S-SPC" . consult-project-extra-find-other-window)
-   '("SPC ." . popper-toggle-latest)
+   '("SPC ." . popper-toggle)
    '("SPC ," . popper-cycle)
    '("SPC '" . popper-toggle-type))
 
@@ -1992,7 +1992,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (meow-normal-define-key
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC SPC" . consult-project-extra-find-other-window)
-   '("SPC ." . popper-toggle-latest)
+   '("SPC ." . popper-toggle)
    '("SPC ," . popper-cycle)
    '("SPC '" . popper-toggle-type))
 

@@ -88,6 +88,10 @@
           set-mark-command-repeat-pop t
           tab-always-indent 'complete
           tab-width 4
+          time-stamp-active t
+          time-stamp-end "$"
+          time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]"
+          time-stamp-start "#\\+modified: [ \t]*"
           truncate-string-ellipsis "…"
           user-full-name (rot13 "Fronfgvna Mnjnqmxv")
           user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
@@ -126,6 +130,7 @@
   (advice-add #'kill-buffer--possibly-save :override #'schrenker/kill-buffer--possibly-save)
   (advice-add #'completing-read-multiple :filter-args #'schrenker/crm-indicator)
 
+  (add-hook 'before-save-hook 'time-stamp)
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode) ;; Do not allow the cursor in the minibuffer prompt
 
   (unbind-key (kbd "M-r"))
@@ -777,24 +782,38 @@ If no applicable mode is present, default to uictl."
     ("q" nil :color blue)
     ("Q" (lambda () (interactive)(smerge-auto-leave)) :color blue)))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package org
   :ensure nil
-  :bind (("C-c n n" . org-capture)
-         :map org-mode-map
-         ("M-j" . org-metadown)
-         ("M-J" . org-shiftmetadown)
-         ("M-k" . org-metaup)
-         ("M-K" . org-shiftmetaup)
-         ("M-h" . org-metaleft)
-         ("M-H" . org-shiftmetaleft)
-         ("M-l" . org-metaright)
-         ("M-L" . org-shiftmetaright)
-         ("C-c C-j" . nil)
-         ("C-c C-f" . org-format-all-headings)
-         ("C-c l" . org-store-link)
-         ("C-c C-^" . schrenker/org-sort-dwim))
+  :bind (:map org-mode-map
+              ("M-j" . org-metadown)
+              ("M-J" . org-shiftmetadown)
+              ("M-k" . org-metaup)
+              ("M-K" . org-shiftmetaup)
+              ("M-h" . org-metaleft)
+              ("M-H" . org-shiftmetaleft)
+              ("M-l" . org-metaright)
+              ("M-L" . org-shiftmetaright)
+              ("C-c C-j" . nil)
+              ("C-c C-f" . org-format-all-headings)
+              ("C-c l" . org-store-link)
+              ("C-c C-^" . schrenker/org-sort-dwim))
   :init
+  (defun schrenker/org-unarchive ()
+    "Restore an entry that has been archived.
+This function restores the entry to its original location, and
+removes the ARCHIVE_TIME, ARCHIVE_FILE, ARCHIVE_OLPATH,
+ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
+    (interactive)
+    (let ((orig-file (org-entry-get-with-inheritance "ARCHIVE_FILE"))
+          (orig-path (org-entry-get-with-inheritance "ARCHIVE_OLPATH")))
+      (org-delete-property "ARCHIVE_FILE")
+      (org-delete-property "ARCHIVE_OLPATH")
+      (org-delete-property "ARCHIVE_TIME")
+      (org-delete-property "ARCHIVE_CATEGORY")
+      (org-delete-property "ARCHIVE_TODO")
+      (org-delete-property "ARCHIVE_ITAGS")
+      (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
+
   (defun schrenker/org-jump-to-heading (heading)
     "Jump to any string in the file. The purpose of this is to jump to org-mode headings.
 To jump to org-mode heading, pass in literal heading, like '** Notes'."
@@ -829,138 +848,45 @@ Else sort by Alpha."
       (insert-file-contents (concat user-emacs-directory "templates/" template))
       (buffer-string)))
 
-  (setopt time-stamp-active t
-          time-stamp-start "#\\+modified: [ \t]*"
-          time-stamp-end "$"
-          time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
-  (add-hook 'before-save-hook 'time-stamp)
+  (defun schrenker/refile (file headline &optional arg)
+    "Refile target heading into target file, under possibly nested heading, like Tasks/Active."
+    (org-refile arg nil (list nil file nil (org-find-olp `(,file ,@(split-string headline "/")) nil))))
 
-  (add-hook 'org-mode-hook (lambda ()
-                             (setq-local completion-at-point-functions (delete 'pcomplete-completions-at-point completion-at-point-functions))))
   :config
-  (require 'org-crypt)
-  (require 'org-agenda)
-  (require 'org-capture)
   (load-file (concat user-emacs-directory "lisp/org-format.el"))
-  (setf epa-pinentry-mode 'loopback)
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
-  (setq-default org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "a.")))
-  (setopt
-   org-log-into-drawer "LOGBOOK"
-   org-log-state-notes-insert-after-drawers t
-   org-log-done 'time
-   org-refile-use-outline-path 'file
-   org-outline-path-complete-in-steps nil
-   org-directory "~/org"
-   org-insert-heading-respect-content t
-   org-fontify-whole-heading-line t
-   org-tags-exclude-from-inheritance '("crypt"
-                                       "verb"
-                                       "agenda")
-   org-tags-column -77
-   org-roam-directory org-directory
-   org-archive-location "archive/%s_archive::"
-   org-archive-tag "archive"
-   org-element-archive-tag "archive"
-   org-default-notes-file (concat org-directory "/20221222131538-inbox.org")
-   org-crypt-disable-auto-save t
-   org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu")
-   org-priority-highest '?A
-   org-priority-lowest  '?D
-   org-priority-default '?D
-   org-hide-emphasis-markers t
-   org-M-RET-may-split-line '((default . nil))
-   org-return-follows-link t
-   org-agenda-skip-unavailable-files t
-   org-fontify-quote-and-verse-blocks t
-   org-edit-src-content-indentation 0
-   org-src-preserve-indentation t
-   org-babel-shell-names '("bash" "fish" "sh" "zsh" "csh" "ash" "dash" "ksh" "mksh" "posh")
-   org-src-lang-modes '(("bash" . bash-ts)
-                        ("shell" . bash-ts)
-                        ("sh" . bash-ts)
-                        ("fish" . fish)
-                        ("elisp" . emacs-lisp)
-                        ("sqlite" . sql)
-                        ("go" . go-ts)
-                        ("python" . python-ts)
-                        ("py" . python-ts)
-                        ("txt" . text)
-                        ("typst" . typst-ts))
-   org-priority-start-cycle-with-default t
-   org-use-fast-todo-selection 'expert
-   org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
-   org-capture-templates
-   `(("i" "Inbox Note" entry (file+headline org-default-notes-file "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
-     ("I" "Inbox Task" entry (file+olp org-default-notes-file "Tasks" "Backlog") ,(schrenker/get-org-template "task") :empty-lines 1 :prepend t)
-     ("a" "Area Note" entry (file+headline (lambda () (schrenker/get-node-file-by-tag "area")) "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
-     ("p" "Project Note" entry (file+headline (lambda () (schrenker/get-node-file-by-tag "project")) "Notes") ,(schrenker/get-org-template "note") :empty-lines 1 :prepend t)
-     ("P" "Project Task" entry (file+olp (lambda () (schrenker/get-node-file-by-tag "project")) "Tasks" "Backlog") ,(schrenker/get-org-template "task") :empty-lines 1 :prepend t)))
+  (setopt org-M-RET-may-split-line '((default . nil))
+          org-archive-location "archive/%s_archive::"
+          org-archive-tag "archive"
+          org-default-notes-file (concat org-directory "/20221222131538-inbox.org")
+          org-directory "~/org"
+          org-element-archive-tag "archive"
+          org-fontify-quote-and-verse-blocks t
+          org-fontify-whole-heading-line t
+          org-hide-emphasis-markers t
+          org-insert-heading-respect-content t
+          org-list-allow-alphabetical t
+          org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("1." . "1)"))
+          org-log-done 'time
+          org-log-into-drawer "LOGBOOK"
+          org-log-state-notes-insert-after-drawers t
+          org-outline-path-complete-in-steps nil
+          org-priority-default '?D
+          org-priority-highest '?A
+          org-priority-lowest  '?D
+          org-priority-start-cycle-with-default t
+          org-refile-use-outline-path 'file
+          org-return-follows-link t
+          org-tags-column -77
+          org-tags-exclude-from-inheritance '("crypt" "verb" "agenda")
+          org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
+          org-use-fast-todo-selection 'expert)
 
   (with-eval-after-load 'org-roam
     (let ((refile-targets (schrenker/fetch-refile-targets)))
       (setopt org-refile-targets refile-targets)))
 
-  (org-crypt-use-before-save-magic)
-
-  (defadvice org-babel-execute-src-block (around load-language nil activate)
-    "Load language if needed"
-    (let ((language (org-element-property :language (org-element-at-point))))
-      (unless (cdr (assoc (intern language) org-babel-load-languages))
-        (add-to-list 'org-babel-load-languages (cons (intern language) t))
-        (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-      ad-do-it))
-
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((emacs-lisp . t)
-                                 (shell . t)))
-  (defun schrenker/org-unarchive ()
-    "Restore an entry that has been archived.
-This function restores the entry to its original location, and
-removes the ARCHIVE_TIME, ARCHIVE_FILE, ARCHIVE_OLPATH,
-ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
-    (interactive)
-    (let ((orig-file (org-entry-get-with-inheritance "ARCHIVE_FILE"))
-          (orig-path (org-entry-get-with-inheritance "ARCHIVE_OLPATH")))
-      (org-delete-property "ARCHIVE_FILE")
-      (org-delete-property "ARCHIVE_OLPATH")
-      (org-delete-property "ARCHIVE_TIME")
-      (org-delete-property "ARCHIVE_CATEGORY")
-      (org-delete-property "ARCHIVE_TODO")
-      (org-delete-property "ARCHIVE_ITAGS")
-      (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
-
-  (defun schrenker/trim-src-block ()
-    "Trim leading spaces in src block header and footer, and adjust contents accordingly."
-    (interactive)
-    (save-excursion
-      (let ((element (org-element-context)))
-        (when (eq (org-element-type element) 'src-block)
-          (goto-char (org-element-property :begin element))
-          (let* ((leading-spaces (skip-chars-forward " \t"))
-                 (start (org-element-property :begin element))
-                 (end (org-element-property :end element)))
-            (goto-char start)
-            (while (and (< (point) (- end 1))
-                        (not (eobp)))
-              (beginning-of-line)
-              (when (looking-at (format "^ \\{0,%d\\}" leading-spaces))
-                (let* ((current-leading-spaces (skip-chars-forward " \t")))
-                  (beginning-of-line)
-                  (delete-char
-                   (if (> leading-spaces current-leading-spaces)
-                       current-leading-spaces
-                     leading-spaces))))
-              (forward-line)))))))
-
-  (defun schrenker/trim-src-block-buffer ()
-    "Trim leading spaces in all src blocks header and footer, and adjust contents accordingly."
-    (interactive)
-    (org-babel-map-src-blocks nil
-      (save-excursion
-        (schrenker/trim-src-block))))
-
-  ;;Stolen from https://emacs.stackexchange.com/questions/17282/org-mode-logbook-note-entry-without-logbook-drawer
+  ;; Add note outside drawer workflow
   (defun schrenker/org-add-note (func &rest args)
     "Advisor function to go around `org-add-note'.  Takes optional
   count (c-u) and sets schrenker/org-log-into-drawer to be used by
@@ -995,28 +921,157 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setq schrenker/org-log-into-drawer nil)
   (advice-add 'org-log-into-drawer :around #'schrenker/org-log-into-drawer)
   (advice-add 'org-add-note :around #'schrenker/org-add-note)
+  ;; Add note outside drawer workflow end.
 
-  (defun schrenker/refile (file headline &optional arg)
-    (org-refile arg nil (list nil file nil (org-find-olp `(,file ,@(split-string headline "/")) nil))))
-
-
-
-
+  (add-hook 'org-mode-hook (lambda ()
+                             (setq-local
+                              completion-at-point-functions
+                              (delete 'pcomplete-completions-at-point completion-at-point-functions))))
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook (lambda () (org-format-on-save-mode 1)))
-  (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t)))
+  (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1))))
+
+(use-package org-crypt
+  :ensure nil
+  :after org
+  :config
+  (setopt epg-pinentry-mode 'loopback
+          org-crypt-disable-auto-save t
+          org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu"))
+  (org-crypt-use-before-save-magic))
+
+(use-package org-capture
+  :ensure nil
+  :after org
+  :bind (("C-c n n" . org-capture))
+  :config
+  (setopt org-capture-templates `(("i" "Inbox Note" entry
+                                   (file+headline org-default-notes-file "Notes")
+                                   ,(schrenker/get-org-template "note")
+                                   :empty-lines 1
+                                   :prepend t)
+                                  ("I" "Inbox Task" entry
+                                   (file+olp org-default-notes-file "Tasks" "Backlog")
+                                   ,(schrenker/get-org-template "task")
+                                   :empty-lines 1
+                                   :prepend t)
+                                  ("a" "Area Note" entry
+                                   (file+headline (lambda () (schrenker/get-node-file-by-tag "area")) "Notes")
+                                   ,(schrenker/get-org-template "note")
+                                   :empty-lines 1
+                                   :prepend t)
+                                  ("p" "Project Note" entry
+                                   (file+headline (lambda () (schrenker/get-node-file-by-tag "project")) "Notes")
+                                   ,(schrenker/get-org-template "note")
+                                   :empty-lines 1
+                                   :prepend t)
+                                  ("P" "Project Task" entry
+                                   (file+olp (lambda () (schrenker/get-node-file-by-tag "project")) "Tasks" "Backlog")
+                                   ,(schrenker/get-org-template "task")
+                                   :empty-lines 1
+                                   :prepend t))))
+
+(use-package org-agenda
+  :ensure nil
+  :after org
+  :config
+  (setopt org-agenda-skip-unavailable-files t))
+
+(use-package org-src
+  :ensure nil
+  :after org
+  :init
+  (defun schrenker/trim-src-block ()
+    "Trim leading spaces in src block header and footer, and adjust contents accordingly."
+    (interactive)
+    (save-excursion
+      (let ((element (org-element-context)))
+        (when (eq (org-element-type element) 'src-block)
+          (goto-char (org-element-property :begin element))
+          (let* ((leading-spaces (skip-chars-forward " \t"))
+                 (start (org-element-property :begin element))
+                 (end (org-element-property :end element)))
+            (goto-char start)
+            (while (and (< (point) (- end 1))
+                        (not (eobp)))
+              (beginning-of-line)
+              (when (looking-at (format "^ \\{0,%d\\}" leading-spaces))
+                (let* ((current-leading-spaces (skip-chars-forward " \t")))
+                  (beginning-of-line)
+                  (delete-char
+                   (if (> leading-spaces current-leading-spaces)
+                       current-leading-spaces
+                     leading-spaces))))
+              (forward-line)))))))
+
+  (defun schrenker/trim-src-block-buffer ()
+    "Trim leading spaces in all src blocks header and footer, and adjust contents accordingly."
+    (interactive)
+    (org-babel-map-src-blocks nil
+      (save-excursion
+        (schrenker/trim-src-block))))
+
+  :config
+  (setopt org-edit-src-content-indentation 0
+          org-src-preserve-indentation t
+          org-babel-shell-names '("bash" "fish" "sh" "zsh" "csh" "ash" "dash" "ksh" "mksh" "posh")
+          org-src-lang-modes '(("bash" . bash-ts)
+                               ("shell" . bash-ts)
+                               ("sh" . bash-ts)
+                               ("fish" . fish)
+                               ("elisp" . emacs-lisp)
+                               ("sqlite" . sql)
+                               ("go" . go-ts)
+                               ("python" . python-ts)
+                               ("py" . python-ts)
+                               ("txt" . text)
+                               ("typst" . typst-ts)))
+
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t)
+                                 (shell . t)))
+
+  (defadvice org-babel-execute-src-block (around load-language nil activate)
+    "Load language if needed"
+    (let ((language (org-element-property :language (org-element-at-point))))
+      (unless (cdr (assoc (intern language) org-babel-load-languages))
+        (add-to-list 'org-babel-load-languages (cons (intern language) t))
+        (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+      ad-do-it))
+
   (add-hook 'org-mode-hook
             (lambda ()
               (add-hook 'before-save-hook #'schrenker/trim-src-block-buffer nil t))))
+
+(use-package org-kanban
+  :after org
+  :config
+  (setopt org-kanban/layout '("…" . 15))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
+
+(use-package org-appear
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'org-appear-mode))
+
+(use-package org-modern
+  :config
+  (setopt org-modern-hide-stars nil
+          org-modern-table nil
+          org-modern-star nil
+          org-modern-checkbox nil
+          org-modern-block-fringe nil
+          org-modern-list nil)
+  (global-org-modern-mode 1))
 
 (use-package toc-org
   :init
   (add-hook 'org-mode-hook 'toc-org-mode)
   (add-hook 'markdown-mode-hook 'toc-org-mode))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package org-roam
   :commands (org-roam-capture-p)
   :after org
@@ -1145,7 +1200,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                                ,fileslug
                                                ,(schrenker/get-org-template "resource-investigation"))
                                       :immediate-finish t :unnarrowed t))
-        org-roam-directory (file-truename "~/org")
+        org-roam-directory org-directory
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
@@ -1172,27 +1227,6 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 ;;           org-roam-ui-update-on-save t
 ;;           org-roam-ui-open-on-start t)
 ;;   (advice-add 'org-roam-ui-open :after (lambda () (schrenker/retry-until-success #'org-roam-ui-sync-theme 15))))
-
-(use-package org-kanban
-  :config
-  (setopt org-kanban/layout '("…" . 15)))
-
-(use-package org-appear
-  :ensure (org-appear
-           :host "github.com"
-           :repo "awth13/org-appear")
-  :config
-  (add-hook 'org-mode-hook 'org-appear-mode))
-
-(use-package org-modern
-  :config
-  (setopt org-modern-hide-stars nil
-          org-modern-table nil
-          org-modern-star nil
-          org-modern-checkbox nil
-          org-modern-block-fringe nil
-          org-modern-list nil)
-  (global-org-modern-mode 1))
 
 (use-package german-holidays)
 

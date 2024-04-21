@@ -447,7 +447,6 @@
 (use-package magit
   :bind (("C-x g" . schrenker/magit-status-rightmost-window)
          ("C-x G" . schrenker/magit-status-with-prefix)
-         ("C-x C-g" . schrenker/smerge-repeatedly)
          :map magit-status-mode-map
          ("o" . schrenker/magit-diff-visit-file-other-window)
          ("K" . magit-discard)
@@ -588,10 +587,10 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
   (popper-mode 1)
   (popper-echo-mode 1))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package hydra
   :bind (("M-o" . 'hydra-uictl/body)
-         ("M-O" . 'schrenker/switch-hydra))
+         ("M-O" . 'schrenker/switch-hydra)
+         ("C-x C-g" . 'schrenker/smerge))
   :config
   (setopt hydra-is-helpful t
           hydra-hint-display-type 'posframe)
@@ -740,10 +739,12 @@ If no applicable mode is present, default to uictl."
       ("q" nil :color blue)
       ("Q" dape-quit :color blue)))
 
-  (defun schrenker/smerge-repeatedly ()
+  (defun schrenker/smerge ()
+    "Activate smerge mode, and enter smerge hydra."
     (interactive)
     (smerge-mode 1)
     (hydra-smerge/body))
+
   (defhydra hydra-smerge (:hint nil)
     "
 
@@ -776,6 +777,7 @@ If no applicable mode is present, default to uictl."
     ("q" nil :color blue)
     ("Q" (lambda () (interactive)(smerge-auto-leave)) :color blue)))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package org
   :ensure nil
   :bind (("C-c n n" . org-capture)

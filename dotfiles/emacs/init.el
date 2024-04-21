@@ -593,7 +593,8 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
   :bind (("M-o" . 'hydra-uictl/body)
          ("M-O" . 'schrenker/switch-hydra))
   :config
-  (setopt hydra-is-helpful t)
+  (setopt hydra-is-helpful t
+          hydra-hint-display-type 'posframe)
 
   (defun schrenker/switch-hydra ()
     "Switch to appropriate hydra based on mode that is currently on.
@@ -619,7 +620,7 @@ If no applicable mode is present, default to uictl."
    ^^             [_M-j_] vEnlarge   [_x_] win delete    [_Q_] Kill
    ^^             [_M-h_] hShrink    [_X_] aw delete
    ^^             [_M-l_] hEnlarge   [_1_] single        [_q_] Quit Hydra
-   ^^                     ^^^^                           [_TAB_] Switch
+   ^^^^^^                                                [_TAB_] Switch
  ^^^^^^──────────────────────────────────────────────────────────────────╯
 "
     ("o" schrenker/aw-flip-window)
@@ -774,17 +775,6 @@ If no applicable mode is present, default to uictl."
     ("TAB" hydra-uictl/body :color blue)
     ("q" nil :color blue)
     ("Q" (lambda () (interactive)(smerge-auto-leave)) :color blue)))
-
-(use-package hydra-posframe
-  :if (display-graphic-p)
-  :ensure
-  (hydra-posframe
-   :host "github.com"
-   :repo "Ladicle/hydra-posframe")
-  :config
-  (require 'posframe)
-  (setopt hydra-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
-  (hydra-posframe-mode 1))
 
 (use-package org
   :ensure nil

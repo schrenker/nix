@@ -202,6 +202,11 @@
         (with-eval-after-load 'embark
           (set-face-background 'embark-target (if (eq appearance 'light) white black)))
 
+        (with-eval-after-load 'hydra
+          (setopt hydra-posframe-show-params `(:internal-border-width 2
+                                               :internal-border-color ,fg-main
+                                               :poshandler posframe-poshandler-frame-bottom-center)))
+
         (run-with-idle-timer 0 nil (lambda ()(mapc (lambda (buffer) (with-current-buffer buffer (when (derived-mode-p 'org-mode)(font-lock-update)))) (buffer-list)))))))
 
 (defun schrenker/apply-overlay (appearance)

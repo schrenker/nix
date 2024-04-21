@@ -883,7 +883,7 @@ Else sort by Alpha."
           org-use-fast-todo-selection 'expert)
 
   (with-eval-after-load 'org-roam
-    (let ((refile-targets (schrenker/fetch-refile-targets)))
+    (let ((refile-targets (schrenker/org-roam-fetch-refile-targets)))
       (setopt org-refile-targets refile-targets)))
 
   ;; Add note outside drawer workflow
@@ -956,17 +956,17 @@ Else sort by Alpha."
                                    :empty-lines 1
                                    :prepend t)
                                   ("a" "Area Note" entry
-                                   (file+headline (lambda () (schrenker/get-node-file-by-tag "area")) "Notes")
+                                   (file+headline (lambda () (schrenker/org-roam-read-node-by-tag "area")) "Notes")
                                    ,(schrenker/get-org-template "note")
                                    :empty-lines 1
                                    :prepend t)
                                   ("p" "Project Note" entry
-                                   (file+headline (lambda () (schrenker/get-node-file-by-tag "project")) "Notes")
+                                   (file+headline (lambda () (schrenker/org-roam-read-node-by-tag "project")) "Notes")
                                    ,(schrenker/get-org-template "note")
                                    :empty-lines 1
                                    :prepend t)
                                   ("P" "Project Task" entry
-                                   (file+olp (lambda () (schrenker/get-node-file-by-tag "project")) "Tasks" "Backlog")
+                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tag "project")) "Tasks" "Backlog")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
                                    :prepend t))))
@@ -1071,7 +1071,6 @@ Else sort by Alpha."
   (add-hook 'org-mode-hook 'toc-org-mode)
   (add-hook 'markdown-mode-hook 'toc-org-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package org-roam
   :commands (org-roam-capture-p)
   :after org
@@ -1085,56 +1084,12 @@ Else sort by Alpha."
          ("C-c n a" . org-roam-tag-add)
          ("C-c n d" . org-roam-tag-remove)
          ("C-c n c" . org-id-get-create)
-         ("C-c n u" . schrenker/update-tag-nodes)
+         ("C-c n u" . schrenker/org-roam-update-tag-collection-nodes)
          ("C-c n s" . org-roam-db-sync)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
 
   :init
-  (defun schrenker/get-all-org-tags ()
-    (seq-uniq (seq-map #'car
-                       (org-roam-db-query [:select [tags:tag] :from tags]))))
-
-  (defun schrenker/get-nodes-by-tag (TAG)
-    (org-roam-db-query [:select [nodes:id nodes:title]
-                                :from tags
-                                :left-join nodes
-                                :on (= tags:node-id nodes:id)
-                                :where (and (like tags:tag $s1) (not (= nodes:title $s2)))
-                                :order-by [(asc title)]]
-                       TAG (concat "#" TAG)))
-
-  (defun schrenker/get-node-file-by-tag (tag)
-    (org-roam-node-file
-     (org-roam-node-read nil
-                         (lambda (node) (and
-                                         (member tag (org-roam-node-tags node))
-                                         (not (string= (concat "#" tag) (org-roam-node-title node))))))))
-
-  (defun schrenker/update-tag-nodes ()
-    (interactive)
-    (let ((taglist (schrenker/get-all-org-tags)))
-      (dolist (tag taglist)
-        (let ((nodes (schrenker/get-nodes-by-tag tag))
-              (tagfile (concat org-directory "/tags/tag:" tag ".org")))
-          (when (file-exists-p tagfile)
-            (with-current-buffer (find-file-noselect tagfile)
-              (goto-line 6)
-              (delete-region (point) (point-max))
-              (insert "\n" (mapconcat (lambda (x)
-                                        (format "[[id:%s][%s]]" (car x) (cadr x)))
-                                      nodes "\n"))
-              (save-buffer)
-              (schrenker/kill-this-buffer)))))))
-
-  (defun schrenker/org-roam-node-find-nonarchived ()
-    (interactive)
-    (org-roam-node-find nil nil (lambda (node)
-                                  (let ((tags (org-roam-node-tags node)))
-                                    (if (eq tags nil)
-                                        t
-                                      (not (or (member "archive" tags) (member "tag" tags))))))))
-
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
     (interactive)
@@ -1148,8 +1103,58 @@ Else sort by Alpha."
                                          :on (= tags:node-id nodes:id)
                                          :where (like tag (quote "%\"agenda\"%"))])))))
 
-  (defun schrenker/fetch-refile-targets (&rest _)
-    "Get refile targets"
+  (defun schrenker/org-roam-get-all-filetags ()
+    "Get all existing unique filetags from org-roam files."
+    (seq-uniq (seq-map #'car
+                       (org-roam-db-query [:select [tags:tag] :from tags]))))
+
+  (defun schrenker/org-roam-get-nodes-by-tag (TAG)
+    "Get all org-roam nodes, that have filetag TAG set."
+    (org-roam-db-query [:select [nodes:id nodes:title]
+                                :from tags
+                                :left-join nodes
+                                :on (= tags:node-id nodes:id)
+                                :where (and (like tags:tag $s1) (not (= nodes:title $s2)))
+                                :order-by [(asc title)]]
+                       TAG (concat "#" TAG)))
+
+  (defun schrenker/org-roam-read-node-by-tag (TAG)
+    "Select an org-roam node from a list filtered by their filetag TAG."
+    (org-roam-node-file
+     (org-roam-node-read nil
+                         (lambda (node) (and
+                                         (member TAG (org-roam-node-tags node))
+                                         (not (string= (concat "#" TAG) (org-roam-node-title node))))))))
+
+  (defun schrenker/org-roam-update-tag-collection-nodes ()
+    "Tags files are collection of links to all org-roam nodes with respective FILETAGS.
+Naming format of these files are: tag:FILETAG.org. Update these files."
+    (interactive)
+    (let ((taglist (schrenker/org-roam-get-all-filetags)))
+      (dolist (tag taglist)
+        (let ((nodes (schrenker/org-roam-get-nodes-by-tag tag))
+              (tagfile (concat org-directory "/tags/tag:" tag ".org")))
+          (when (file-exists-p tagfile)
+            (with-current-buffer (find-file-noselect tagfile)
+              (goto-line 6)
+              (delete-region (point) (point-max))
+              (insert "\n" (mapconcat (lambda (x)
+                                        (format "[[id:%s][%s]]" (car x) (cadr x)))
+                                      nodes "\n"))
+              (save-buffer)
+              (schrenker/kill-this-buffer)))))))
+
+  (defun schrenker/org-roam-node-find-nonarchived ()
+    "Just like org-roam-node-find, find and open an Org-roam node by its title or alias. Filter out any files have 'archive' or 'tag' filetags."
+    (interactive)
+    (org-roam-node-find nil nil (lambda (node)
+                                  (let ((tags (org-roam-node-tags node)))
+                                    (if (eq tags nil)
+                                        t
+                                      (not (or (member "archive" tags) (member "tag" tags))))))))
+
+  (defun schrenker/org-roam-fetch-refile-targets (&rest _)
+    "Return list of org-roam nodes with filetags of 'area' or 'project', but not 'archive' or 'tag', as refile targets."
     (delq nil (mapcar (lambda (item)
                         (unless (string-match "/\\(archive\\|tags\\)/" item) `(,item :maxlevel . 3)))
                       (seq-uniq
@@ -1164,48 +1169,50 @@ Else sort by Alpha."
                                              (like tag (quote "%\"project\"%")))]))))))
 
   :config
-  (schrenker/agenda-files-update)
-  (advice-add 'org-agenda :before #'schrenker/agenda-files-update)
-  (advice-add 'org-todo-list :before #'schrenker/agenda-files-update)
-  (setq fileslug "%<%Y%m%d%H%M%S>-${slug}.org"
-        org-roam-capture-templates `(("p" "Project")
-                                     ("pp" "Minor Project" plain "%?"
-                                      :target (file+head
-                                               ,fileslug
-                                               ,(schrenker/get-org-template "project-minor"))
-                                      :immediate-finish t :unnarrowed t)
-                                     ("pP" "Major Project" plain "%?"
-                                      :target (file+head
-                                               ,fileslug
-                                               ,(schrenker/get-org-template "project-major"))
-                                      :immediate-finish t :unnarrowed t)
-                                     ("a" "Area" plain "%?"
-                                      :target (file+head
-                                               ,fileslug
-                                               ,(schrenker/get-org-template "area"))
-                                      :immediate-finish t :unnarrowed t)
-                                     ("r" "Resource")
-                                     ("rr" "Resource" plain "%?"
-                                      :target (file+head
-                                               ,fileslug
-                                               ,(schrenker/get-org-template "resource"))
-                                      :immediate-finish t :unnarrowed t)
-                                     ("rc" "Culinary" plain "%?"
-                                      :target (file+head
-                                               ,fileslug
-                                               ,(schrenker/get-org-template "resource-culinary"))
-                                      :immediate-finish t :unnarrowed t)
-                                     ("ri" "Investigation" plain "%?"
-                                      :target (file+head
-                                               ,fileslug
-                                               ,(schrenker/get-org-template "resource-investigation"))
-                                      :immediate-finish t :unnarrowed t))
-        org-roam-directory org-directory
-        org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
+  (setopt schrenker/org-fileslug "%<%Y%m%d%H%M%S>-${slug}.org"
+          org-roam-capture-templates `(("p" "Project")
+                                       ("pp" "Minor Project" plain "%?"
+                                        :target (file+head
+                                                 ,schrenker/org-fileslug
+                                                 ,(schrenker/get-org-template "project-minor"))
+                                        :immediate-finish t :unnarrowed t)
+                                       ("pP" "Major Project" plain "%?"
+                                        :target (file+head
+                                                 ,schrenker/org-fileslug
+                                                 ,(schrenker/get-org-template "project-major"))
+                                        :immediate-finish t :unnarrowed t)
+                                       ("a" "Area" plain "%?"
+                                        :target (file+head
+                                                 ,schrenker/org-fileslug
+                                                 ,(schrenker/get-org-template "area"))
+                                        :immediate-finish t :unnarrowed t)
+                                       ("r" "Resource")
+                                       ("rr" "Resource" plain "%?"
+                                        :target (file+head
+                                                 ,schrenker/org-fileslug
+                                                 ,(schrenker/get-org-template "resource"))
+                                        :immediate-finish t :unnarrowed t)
+                                       ("rc" "Culinary" plain "%?"
+                                        :target (file+head
+                                                 ,schrenker/org-fileslug
+                                                 ,(schrenker/get-org-template "resource-culinary"))
+                                        :immediate-finish t :unnarrowed t)
+                                       ("ri" "Investigation" plain "%?"
+                                        :target (file+head
+                                                 ,schrenker/org-fileslug
+                                                 ,(schrenker/get-org-template "resource-investigation"))
+                                        :immediate-finish t :unnarrowed t))
+          org-roam-directory org-directory
+          org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))
 
+  (with-eval-after-load 'org-agenda
+    (schrenker/agenda-files-update)
+    (advice-add 'org-agenda :before #'schrenker/agenda-files-update)
+    (advice-add 'org-todo-list :before #'schrenker/agenda-files-update))
+
+  (org-roam-db-autosync-mode))
+
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package consult-org-roam
   :after org-roam
   :bind (("C-c n b" . consult-org-roam-backlinks)

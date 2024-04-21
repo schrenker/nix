@@ -1327,7 +1327,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package flycheck-eglot
   :after (flycheck eglot)
   :config
-  (setopt flycheck-eglot-exclusive nil)
+  (setopt flycheck-eglot-exclusive t)
   (global-flycheck-eglot-mode 1))
 
 (use-package consult-flycheck)
@@ -1813,7 +1813,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                      :assignVariableTypes t
                      :compositeLiteralFields t
                      :compositeLiteralTypes t
-                     :constantValues t)))))
+                     :constantValues t))))
+  (setopt eglot-workspace-configuration
+    '((:gopls .
+        ((staticcheck . t)
+         (matcher . "CaseSensitive"))))))
 
 (use-package go-eldoc)
 

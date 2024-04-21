@@ -36,13 +36,17 @@
 
 (defun schrenker/meow-left ()
   (interactive)
-  (cond ((derived-mode-p 'vterm-mode)(vterm-send-key "<left>"))
+  (cond ((derived-mode-p 'vterm-mode)(if (schrenker/prompt-line-p)
+                                         (vterm-send-key "<left>")
+                                       (call-interactively #'meow-left)))
         ((schrenker/meow-selection-p)(call-interactively #'meow-left-expand))
         (t (call-interactively #'meow-left))))
 
 (defun schrenker/meow-right ()
   (interactive)
-  (cond ((derived-mode-p 'vterm-mode)(vterm-send-key "<right>"))
+  (cond ((derived-mode-p 'vterm-mode)(if (schrenker/prompt-line-p)
+                                         (vterm-send-key "<right>")
+                                       (call-interactively #'meow-right)))
         ((schrenker/meow-selection-p)(call-interactively #'meow-right-expand))
         (t (call-interactively #'meow-right))))
 

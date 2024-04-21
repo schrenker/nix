@@ -1495,6 +1495,17 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :init
   (setopt vterm-always-compile-module t)
 
+  (defun schrenker/line-of-current-prompt ()
+    "Get the prompt line of current vterm buffer, and save it to a variable."
+    (save-excursion
+      (goto-char (point-max))
+      (search-backward-regexp "^\\$ ")
+      (setq-local schrenker/vterm-prompt-line (array-current-line))))
+
+  (defun schrenker/prompt-line-p ()
+    "Check if point is at prompt line or not. Do it by comparing to variable set by schrenker/line-of-current-prompt function."
+    (eq (array-current-line) schrenker/vterm-prompt-line))
+
   (defun schrenker/CC-out-of-copy-mode ()
     (interactive)
     (meow-normal-mode -1)
@@ -1518,7 +1529,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                           (lambda () (vterm-copy-mode -1))
                           nil t)
                 (add-hook 'meow-insert-exit-hook
-                          (lambda () (vterm-copy-mode 1))
+                          (lambda ()
+                            (vterm-copy-mode 1)
+                            (schrenker/line-of-current-prompt))
                           nil t))))
   (add-hook 'vterm-mode-hook (lambda ()
                                (setq-local confirm-kill-processes nil)

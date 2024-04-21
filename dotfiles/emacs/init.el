@@ -1171,15 +1171,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
    consult-org-roam-forward-links
    :preview-key (kbd "M-.")))
 
-(use-package org-roam-ui
-  :after org-roam
-  :bind (("C-c n o" . org-roam-ui-open))
-  :config
-  (setopt org-roam-ui-sync-theme nil
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t)
-  (advice-add 'org-roam-ui-open :after (lambda () (schrenker/retry-until-success #'org-roam-ui-sync-theme 15))))
+;; (use-package org-roam-ui
+;;   :after org-roam
+;;   :bind (("C-c n o" . org-roam-ui-open))
+;;   :config
+;;   (setopt org-roam-ui-sync-theme nil
+;;           org-roam-ui-follow t
+;;           org-roam-ui-update-on-save t
+;;           org-roam-ui-open-on-start t)
+;;   (advice-add 'org-roam-ui-open :after (lambda () (schrenker/retry-until-success #'org-roam-ui-sync-theme 15))))
 
 (use-package org-kanban
   :config

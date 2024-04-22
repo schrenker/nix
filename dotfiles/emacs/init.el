@@ -1466,6 +1466,12 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   (add-to-list 'all-the-icons-regexp-icon-alist '("postgresql.conf$" all-the-icons-alltheicon "postgresql" :face all-the-icons-blue))
   (add-to-list 'all-the-icons-regexp-icon-alist '("^nix.conf$" all-the-icons-fileicon "nix" :face all-the-icons-dpink)))
 
+;; (use-package rainbow-mode
+;;   :after solarized-theme
+;;   :demand t
+;;   :config
+;;   (setopt rainbow-x-colors nil))
+
 (use-package all-the-icons-ibuffer
   :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
   :init

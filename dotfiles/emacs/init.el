@@ -1226,32 +1226,6 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
    :preview-key (kbd "M-.")))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package german-holidays)
-
-(use-package polish-holidays
-  :ensure (polish-holidays
-           :host "github.com"
-           :repo "mikolajb/emacs-polish-holidays"
-           :main "polish-holidays.el"))
-
-(use-package holidays
-  :ensure nil
-  :after (org-agenda polish-holidays)
-  :config
-  (require 'polish-holidays)
-  (require 'german-holidays)
-  (setopt calendar-holidays '((holiday-fixed 1 1 "New Year's Day")
-                              (holiday-fixed 2 14 "Valentine's Day")
-                              (holiday-fixed 4 1 "April Fools' Day")
-                              (holiday-fixed 10 31 "Halloween")
-                              (holiday-easter-etc)
-                              (holiday-fixed 12 25 "Christmas")
-                              (solar-equinoxes-solstices)
-                              ustawowo-wolne-od-pracy
-                              czas-letni
-                              swieta-panstwowe-pozostałe-święta
-                              holiday-german-holidays)))
-
 (use-package ox-confluence-modern
   :ensure
   (ox-confluence-modern

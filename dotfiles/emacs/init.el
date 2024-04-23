@@ -1228,7 +1228,6 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
    consult-org-roam-forward-links
    :preview-key (kbd "M-.")))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package ox-confluence-modern
   :ensure
   (ox-confluence-modern
@@ -1238,12 +1237,16 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
 
 (use-package ibuffer
   :ensure nil
-  :bind
-  (("C-x C-b" . ibuffer)
-   :map ibuffer-mode-map
-   ("J" . ibuffer-jump-to-buffer)
-   ("M-o" . nil)))
+  :bind (("C-x C-b" . ibuffer)
+         :map ibuffer-mode-map
+         ("J" . ibuffer-jump-to-buffer)
+         ("M-o" . nil))
+  :config
+  (setopt ibuffer-eliding-string "…"
+          ibuffer-jump-offer-only-visible-buffers t)
+  (add-to-list 'ibuffer-help-buffer-modes 'helpful-mode))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package dired
   :ensure nil
   :bind

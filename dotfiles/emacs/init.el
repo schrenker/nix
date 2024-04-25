@@ -1246,7 +1246,6 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
           ibuffer-jump-offer-only-visible-buffers t)
   (add-to-list 'ibuffer-help-buffer-modes 'helpful-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package eat
   :ensure (eat :type git
                :host "codeberg.org"
@@ -1282,7 +1281,9 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
     (add-hook 'eat-mode-hook
               (lambda ()
                 (add-hook 'meow-insert-enter-hook
-                          (lambda () (eat-semi-char-mode))
+                          (lambda ()
+                            (when eat-terminal ;; throws "Process is not running" without this
+                              (eat-semi-char-mode)))
                           nil t)
                 (add-hook 'meow-insert-exit-hook
                           (lambda ()
@@ -1294,6 +1295,7 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
                              (corfu-mode -1)
                              (vi-tilde-fringe-mode -1))))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package dired
   :ensure nil
   :bind

@@ -1295,7 +1295,6 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
                              (corfu-mode -1)
                              (vi-tilde-fringe-mode -1))))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package dired
   :ensure nil
   :bind
@@ -1303,13 +1302,13 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
         ("M-+" . dired-create-empty-file)
         ("J" . dired-goto-file))
   :init
-  (setopt dired-use-ls-dired t
-          dired-dwim-target t)
-
+  ;; aw-flip-window dired workflow start
   (defvar schrenker/last-dired-window-before-jump nil)
 
   (defun schrenker/dired-find-file-other-window (orig-fun &rest args)
-    "Save current window, call ORIG-FUN with ARGS, and add saved window to aw-window-ring."
+    "Save current window, call ORIG-FUN with ARGS, and add saved window to aw-window-ring.
+
+Purpose of this is to be able to go back to Dired window with aw-flip-window, if Dired window was left by visiting the file in other window."
     (setq schrenker/last-dired-window-before-jump (get-buffer-window))
     (let ((result (apply orig-fun args)))
       (when schrenker/last-dired-window-before-jump
@@ -1317,36 +1316,26 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
       result))
 
   (advice-add 'dired-find-file-other-window :around #'schrenker/dired-find-file-other-window)
+  ;; aw-flip-window dired workflow end
 
   (add-hook 'dired-mode-hook
             (lambda ()
               (setq-local display-buffer-base-action '((display-buffer-reuse-window
                                                         ace-display-buffer))
-                          aw-ignore-current t)))
+                          aw-ignore-current t)
+              (display-line-numbers-mode -1)))
+
+  :config
+  (setopt dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group"
+          dired-dwim-target t)
+
   (when (eq system-type 'darwin)
     (setopt insert-directory-program "/opt/homebrew/bin/gls"
             dired-listing-switches "-aBhl --group-directories-first")))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package dirvish
-  :init
-  (dirvish-override-dired-mode)
-  (defun schrenker/mini-dirvish-here (&optional path)
-    "Open dired version of Dirvish in current window, without prompting for directory."
-    (interactive (list (and current-prefix-arg (read-directory-name "Dirvish: "))))
-    (dirvish--reuse-or-create
-     path (when dirvish--this (car (dv-layout dirvish--this)))))
-  :config
-  ;; (dirvish-peek-mode) ; Preview files in minibuffer
-  (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
-  (setq-default dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
-                ;; Don't worry, Dirvish is still performant even if you enable all these attributes
-                dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-time file-size)
-                dirvish-path-separators '("~" "/" "/")
-                dirvish-default-layout '(1 0.1 0.5)
-                dirvish-layout-recipes '((0 0 0.4) (0 0 0.8) (1 0.08 0.8) (1 0.1 0.5))
-                dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
-
-  :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
+  :bind
   (("C-c f" . dirvish-fd)
    ("C-x d" . schrenker/mini-dirvish-here)
    ("C-x C-d" . dirvish)
@@ -1369,7 +1358,30 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
    ("M-T" . dirvish-layout-switch)
    ("M-s" . dirvish-setup-menu)
    ("M-e" . dirvish-emerge-menu)
-   ("M-j" . dirvish-fd-jump)))
+   ("M-j" . dirvish-fd-jump))
+  :init
+  (defun schrenker/mini-dirvish-here (&optional path)
+    "Open dired version of Dirvish in current window, without prompting for directory."
+    (interactive (list (and current-prefix-arg (read-directory-name "Dirvish: "))))
+    (dirvish--reuse-or-create
+     path (when dirvish--this (car (dv-layout dirvish--this)))))
+
+  (dirvish-override-dired-mode)
+
+  :config
+  (dirvish-side-follow-mode)
+  (setopt dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-size)
+          dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
+          dirvish-path-separators '("~" "/" "/")
+          dirvish-default-layout '(1 0.1 0.6)
+          dirvish-layout-recipes '((0 0.0 0.5) (0 0.0 0.8) (1 0.08 0.8) (1 0.1 0.6))
+          dirvish-cache-dir (expand-file-name ".cache/dirvish/" user-emacs-directory)
+          dirvish-preview-environment '((inhibit-message . t)
+                                        (non-essential . t)
+                                        (delay-mode-hooks . nil)
+                                        (enable-dir-local-variables . nil)
+                                        (enable-local-variables . :safe)))
+  (add-to-list 'dirvish-preview-disabled-exts "DS_Store"))
 
 (use-package pdf-tools
   :init

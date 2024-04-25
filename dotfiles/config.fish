@@ -41,10 +41,6 @@ alias em='COLORTERM=TRUECOLOR emacs -nw'
 if [ -n "$INSIDE_EMACS" ]
     fish_default_key_bindings
     set -gx fish_key_bindings fish_default_key_bindings
-    function clear
-        vterm_printf "51;Evterm-clear-scrollback"
-        tput clear
-    end
 end
 
 set -e -U fish_key_bindings

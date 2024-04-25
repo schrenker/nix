@@ -63,8 +63,8 @@
             (progn
               (meow-insert)
               (vterm-yank)
-              (meow-insert-exit)))
-        (vterm-yank)
+              (meow-insert-exit))
+          (vterm-yank))
       (call-interactively 'meow-yank))))
 
 (defun schrenker/meow-yank ()

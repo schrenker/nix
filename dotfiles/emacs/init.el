@@ -1502,10 +1502,10 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   (global-ligature-mode t))
 
 (use-package vterm
+  :disabled
   :if (not (eq system-type 'windows-nt))
   :demand t
   :init
-  (setopt vterm-always-compile-module t)
 
   (defun schrenker/line-of-current-prompt ()
     "Get the prompt line of current vterm buffer, and save it to a variable."
@@ -1606,6 +1606,7 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
 
 
 (use-package dape
+  :disabled
   :ensure
   (dape
    :host "github.com"
@@ -1764,7 +1765,8 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
             (toml "https://github.com/tree-sitter/tree-sitter-toml")
             (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
             (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
-            (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src")))))
+            (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src"))
+            (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "master" "src")))))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.

@@ -54,6 +54,7 @@
       pkgs.jetbrains-mono
       pkgs.gitleaks
       pkgs.docker
+      pkgs.syncthing
     ];
 
   fonts.fontconfig.enable = true;

@@ -1247,6 +1247,53 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   (add-to-list 'ibuffer-help-buffer-modes 'helpful-mode))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
+(use-package eat
+  :ensure (eat :type git
+               :host "codeberg.org"
+               :repo "akib/emacs-eat"
+               :files ("*.el" ("term" "term/*.el") "*.texi"
+                       "*.ti" ("terminfo/e" "terminfo/e/*")
+                       ("terminfo/65" "terminfo/65/*")
+                       ("integration" "integration/*")
+                       (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind
+  (("C-c v" . eat-project)
+   ("C-c V" . eat-project-other-window)
+   :map eat-mode-map
+   ("C-c C-c" . eat-self-input))
+
+  :init
+  (defun schrenker/line-of-current-prompt ()
+    "Get the prompt line of current eat buffer, and save it to a variable."
+    (save-excursion
+      (goto-char (point-max))
+      (search-backward-regexp "^\\$ ")
+      (setq-local schrenker/eat-prompt-line (array-current-line))))
+
+  (defun schrenker/prompt-line-p ()
+    "Check if point is at prompt line or not. Do it by comparing to variable set by schrenker/line-of-current-prompt function."
+    (eq (array-current-line) schrenker/eat-prompt-line))
+
+  :config
+  (with-eval-after-load 'perject
+    (add-hook 'eat-mode-hook 'perject--auto-add-buffer))
+  (with-eval-after-load 'meow
+    (push '(eat-mode . insert) meow-mode-state-list)
+    (add-hook 'eat-mode-hook
+              (lambda ()
+                (add-hook 'meow-insert-enter-hook
+                          (lambda () (eat-semi-char-mode))
+                          nil t)
+                (add-hook 'meow-insert-exit-hook
+                          (lambda ()
+                            (eat-emacs-mode)
+                            (schrenker/line-of-current-prompt))
+                          nil t))))
+  (add-hook 'eat-mode-hook (lambda ()
+                             (display-line-numbers-mode -1)
+                             (corfu-mode -1)
+                             (vi-tilde-fringe-mode -1))))
+
 (use-package dired
   :ensure nil
   :bind
@@ -1501,78 +1548,78 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
-(use-package vterm
-  :disabled
-  :if (not (eq system-type 'windows-nt))
-  :demand t
-  :init
+;; (use-package vterm
+;;   :disabled
+;;   :if (not (eq system-type 'windows-nt))
+;;   :demand t
+;;   :init
 
-  (defun schrenker/line-of-current-prompt ()
-    "Get the prompt line of current vterm buffer, and save it to a variable."
-    (save-excursion
-      (goto-char (point-max))
-      (search-backward-regexp "^\\$ ")
-      (setq-local schrenker/vterm-prompt-line (array-current-line))))
+;;   (defun schrenker/line-of-current-prompt ()
+;;     "Get the prompt line of current vterm buffer, and save it to a variable."
+;;     (save-excursion
+;;       (goto-char (point-max))
+;;       (search-backward-regexp "^\\$ ")
+;;       (setq-local schrenker/vterm-prompt-line (array-current-line))))
 
-  (defun schrenker/prompt-line-p ()
-    "Check if point is at prompt line or not. Do it by comparing to variable set by schrenker/line-of-current-prompt function."
-    (eq (array-current-line) schrenker/vterm-prompt-line))
+;;   (defun schrenker/prompt-line-p ()
+;;     "Check if point is at prompt line or not. Do it by comparing to variable set by schrenker/line-of-current-prompt function."
+;;     (eq (array-current-line) schrenker/vterm-prompt-line))
 
-  (defun schrenker/CC-out-of-copy-mode ()
-    (interactive)
-    (meow-normal-mode -1)
-    (call-interactively #'schrenker/meow-append-to-eol)
-    (vterm-send "C-c"))
+;;   (defun schrenker/CC-out-of-copy-mode ()
+;;     (interactive)
+;;     (meow-normal-mode -1)
+;;     (call-interactively #'schrenker/meow-append-to-eol)
+;;     (vterm-send "C-c"))
 
-  :bind*
-  (:map vterm-copy-mode-map
-        ("C-c C-c" . schrenker/CC-out-of-copy-mode))
-  :config
-  (setopt vterm-max-scrollback 10000
-          vterm-kill-buffer-on-exit t)
-  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-  (with-eval-after-load 'perject
-    (add-hook 'vterm-mode-hook 'perject--auto-add-buffer))
-  (with-eval-after-load 'meow
-    (push '(vterm-mode . insert) meow-mode-state-list)
-    (add-hook 'vterm-mode-hook
-              (lambda ()
-                (add-hook 'meow-insert-enter-hook
-                          (lambda () (vterm-copy-mode -1))
-                          nil t)
-                (add-hook 'meow-insert-exit-hook
-                          (lambda ()
-                            (vterm-copy-mode 1)
-                            (schrenker/line-of-current-prompt))
-                          nil t))))
-  (add-hook 'vterm-mode-hook (lambda ()
-                               (setq-local confirm-kill-processes nil)
-                               (display-line-numbers-mode -1)
-                               (corfu-mode -1))))
+;;   :bind*
+;;   (:map vterm-copy-mode-map
+;;         ("C-c C-c" . schrenker/CC-out-of-copy-mode))
+;;   :config
+;;   (setopt vterm-max-scrollback 10000
+;;           vterm-kill-buffer-on-exit t)
+;;   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+;;   (with-eval-after-load 'perject
+;;     (add-hook 'vterm-mode-hook 'perject--auto-add-buffer))
+;;   (with-eval-after-load 'meow
+;;     (push '(vterm-mode . insert) meow-mode-state-list)
+;;     (add-hook 'vterm-mode-hook
+;;               (lambda ()
+;;                 (add-hook 'meow-insert-enter-hook
+;;                           (lambda () (vterm-copy-mode -1))
+;;                           nil t)
+;;                 (add-hook 'meow-insert-exit-hook
+;;                           (lambda ()
+;;                             (vterm-copy-mode 1)
+;;                             (schrenker/line-of-current-prompt))
+;;                           nil t))))
+;;   (add-hook 'vterm-mode-hook (lambda ()
+;;                                (setq-local confirm-kill-processes nil)
+;;                                (display-line-numbers-mode -1)
+;;                                (corfu-mode -1))))
 
-(use-package multi-vterm
-  :disabled
-  :if (not (eq system-type 'windows-nt))
-  :bind (("C-c v" . schrenker/multi-vterm-project-here)
-         ("C-c V" . multi-vterm-project))
-  :commands (multi-vterm-project-root)
-  :init
-  (defun schrenker/multi-vterm-project-here ()
-    "Create new vterm buffer."
-    (interactive)
-    (if (multi-vterm-project-root)
-        (if (buffer-live-p (get-buffer (multi-vterm-project-get-buffer-name)))
-            (if (string-equal (buffer-name (current-buffer)) (multi-vterm-project-get-buffer-name))
-                (delete-window (selected-window))
-              (switch-to-buffer (multi-vterm-project-get-buffer-name)))
-          (let* ((vterm-buffer (multi-vterm-get-buffer 'project))
-                 (multi-vterm-buffer-list (nconc multi-vterm-buffer-list (list vterm-buffer))))
-            (set-buffer vterm-buffer)
-            (multi-vterm-internal)
-            (switch-to-buffer vterm-buffer)))
-      (message "This file is not in a project")))
-  :config
-  (setopt multi-vterm-dedicated-window-height-percent 30))
+;; (use-package multi-vterm
+;;   :disabled
+;;   :if (not (eq system-type 'windows-nt))
+;;   :bind (("C-c v" . schrenker/multi-vterm-project-here)
+;;          ("C-c V" . multi-vterm-project))
+;;   :commands (multi-vterm-project-root)
+;;   :init
+;;   (defun schrenker/multi-vterm-project-here ()
+;;     "Create new vterm buffer."
+;;     (interactive)
+;;     (if (multi-vterm-project-root)
+;;         (if (buffer-live-p (get-buffer (multi-vterm-project-get-buffer-name)))
+;;             (if (string-equal (buffer-name (current-buffer)) (multi-vterm-project-get-buffer-name))
+;;                 (delete-window (selected-window))
+;;               (switch-to-buffer (multi-vterm-project-get-buffer-name)))
+;;           (let* ((vterm-buffer (multi-vterm-get-buffer 'project))
+;;                  (multi-vterm-buffer-list (nconc multi-vterm-buffer-list (list vterm-buffer))))
+;;             (set-buffer vterm-buffer)
+;;             (multi-vterm-internal)
+;;             (switch-to-buffer vterm-buffer)))
+;;       (message "This file is not in a project")))
+;;   :config
+;;   (setopt multi-vterm-dedicated-window-height-percent 30))
 
 (use-package eglot
   :ensure nil

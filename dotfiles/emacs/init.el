@@ -1259,19 +1259,30 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   (("C-c v" . eat-project)
    ("C-c V" . eat-project-other-window)
    :map eat-mode-map
-   ("C-c C-c" . eat-self-input))
+   ("C-c C-c" . eat-self-input)
+   ("RET" . schrenker/eat-ret-dwim))
 
   :init
   (defun schrenker/line-of-current-prompt ()
     "Get the prompt line of current eat buffer, and save it to a variable."
     (save-excursion
       (goto-char (point-max))
-      (search-backward-regexp "^\\$ ")
+      ;(search-backward-regexp "^\\$ ")
       (setq-local schrenker/eat-prompt-line (array-current-line))))
 
   (defun schrenker/prompt-line-p ()
     "Check if point is at prompt line or not. Do it by comparing to variable set by schrenker/line-of-current-prompt function."
     (eq (array-current-line) schrenker/eat-prompt-line))
+
+  (defun schrenker/eat-ret-dwim ()
+    "If currently in insert mode, send RET. If not in insert mode, enter insert mode, and go to the end of the command, regardless of cursor position."
+    (interactive)
+    (if eat--semi-char-mode
+        (eat-self-input 1)
+      (progn
+        (goto-line (point-max))
+        (eat-self-input 1 ?\C-e)
+        (call-interactively #'meow-insert))))
 
   :config
   (with-eval-after-load 'perject

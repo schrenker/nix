@@ -5,7 +5,6 @@ with pkgs;
 mkShell {
   buildInputs = [
     go
-    gocode
     golangci-lint
     gomodifytags
     gopls

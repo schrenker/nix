@@ -1551,6 +1551,7 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
                                (corfu-mode -1))))
 
 (use-package multi-vterm
+  :disabled
   :if (not (eq system-type 'windows-nt))
   :bind (("C-c v" . schrenker/multi-vterm-project-here)
          ("C-c V" . multi-vterm-project))

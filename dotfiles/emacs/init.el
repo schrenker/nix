@@ -2374,6 +2374,12 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         ("C-<tab> t i" . perject-tab-increment-index)
         ("C-<tab> t I" . perject-tab-decrement-index)))
 
+(use-package org-download
+  :after org
+  :config
+  (setopt org-download-image-dir (concat org-directory "/media"))
+  (add-hook 'dired-mode-hook 'org-download-enable))
+
 (add-hook 'elpaca-after-init-hook
           (lambda ()
             (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))

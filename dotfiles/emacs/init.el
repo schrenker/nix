@@ -1404,12 +1404,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1))))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package run-command
-  :bind ("C-x c" . run-command)
-  :config
-  (load (concat user-emacs-directory "lisp/run-command.el") t t)
-  (setopt run-command-default-runner 'run-command-runner-compile))
-
 (use-package flycheck
   :config
   (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))

@@ -1359,7 +1359,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
     "Get the prompt line of current eat buffer, and save it to a variable."
     (save-excursion
       (goto-char (point-max))
-      ;(search-backward-regexp "^\\$ ")
       (setq-local schrenker/eat-prompt-line (array-current-line))))
 
   (defun schrenker/prompt-line-p ()

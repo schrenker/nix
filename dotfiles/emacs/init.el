@@ -1372,6 +1372,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         (eat-self-input 1)
       (progn
         (goto-line (point-max))
+        (eat-self-input 1 ?\C-a)
         (eat-self-input 1 ?\C-e)
         (call-interactively #'meow-insert))))
 

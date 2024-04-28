@@ -36,6 +36,7 @@
       fd
       fish
       jq
+      poppler_utils
       yq-go
       wget
 

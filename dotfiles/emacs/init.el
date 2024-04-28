@@ -1399,11 +1399,11 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                              (corfu-mode -1)
                              (vi-tilde-fringe-mode -1))))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package pdf-tools
   :init
   (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1))))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package run-command
   :bind ("C-x c" . run-command)
   :config

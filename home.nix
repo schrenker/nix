@@ -32,6 +32,7 @@
 
       # UTILS
       arping
+      aspell
       fd
       fish
       jq

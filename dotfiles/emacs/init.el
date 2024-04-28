@@ -307,6 +307,7 @@
          ;; M-g bindings (goto-map)
          ("M-g e" . consult-compile-error)
          ("M-g f" . consult-flycheck)               ;; Alternative: consult-flycheck
+         ("M-g F" . consult-flyspell)
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-org-heading)
@@ -1421,6 +1422,18 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package consult-flycheck)
 
+(use-package flyspell
+  :ensure nil
+  :config
+  (setopt ispell-program-name "aspell"
+          ispell-silently-savep t)
+  (add-hook 'org-mode-hook #'flyspell-mode))
+
+(use-package flyspell-correct
+  :after flyspell)
+
+(use-package consult-flyspell)
+
 (use-package tempel
   ;; Require trigger prefix before template name when completing.
   ;; :custom
@@ -2075,7 +2088,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    '("S-SPC S-SPC" . consult-project-extra-find-other-window)
    '("SPC ." . popper-toggle)
    '("SPC ," . popper-cycle)
-   '("SPC '" . popper-toggle-type))
+   '("SPC '" . popper-toggle-type)
+   '("SPC f" . flyspell-correct-wrapper))
 
   ;;Disable
   (meow-normal-define-key
@@ -2090,7 +2104,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    '("S-SPC SPC" . consult-project-extra-find-other-window)
    '("SPC ." . popper-toggle)
    '("SPC ," . popper-cycle)
-   '("SPC '" . popper-toggle-type))
+   '("SPC '" . popper-toggle-type)
+   '("SPC f" . flyspell-correct-wrapper))
 
   ;;Movement
   (meow-normal-define-key
@@ -2140,7 +2155,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (meow-normal-define-key
    '("p" . schrenker/meow-yank-forward)
    '("P" . schrenker/meow-yank)
-   ;; '("M-p" . meow-yank-pop)
    '("y" . schrenker/meow-copy))
 
   ;;Selection

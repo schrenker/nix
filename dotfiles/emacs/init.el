@@ -1479,16 +1479,17 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
               #'schrenker/prepend-path-with-vc-dir)
   (buffer-name-relative-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package vundo
   :bind
   ("M-v" . vundo))
 
 (use-package goggles
-  :hook ((prog-mode text-mode) . goggles-mode)
   :config
-  (setopt goggles-pulse t)) ;; set to nil to disable pulsing
+  (setopt goggles-pulse t)
+  (add-hook 'prog-mode-hook #'goggles-mode)
+  (add-hook 'text-mode-hook #'goggles-mode))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package prism
   :commands (prism-set-colors prism-whitespace-mode prism-mode)
   :ensure (prism

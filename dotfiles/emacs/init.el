@@ -1491,16 +1491,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package prism
-  :commands (prism-set-colors prism-whitespace-mode prism-mode)
-  :ensure (prism
-           :host "github.com"
-           :repo "alphapapa/prism.el")
-  :init
-  (add-hook 'yaml-mode-hook (lambda () (prism-whitespace-mode 1)))
-  ;; (add-hook 'bash-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'shell-script-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'python-ts-mode-hook (lambda () (prism-whitespace-mode 1)))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (prism-mode 1)))
   :config
   ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
   (unless (display-graphic-p)
@@ -1508,7 +1498,12 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (setopt prism-comments nil
           prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
                                           (python-ts-mode . python-indent-offset)
-                                          (t . 2))))
+                                          (t . 2)))
+  (add-hook 'yaml-mode-hook #'prism-whitespace-mode)
+  (add-hook 'bash-ts-mode-hook #'prism-whitespace-mode)
+  (add-hook 'shell-script-mode-hook #'prism-whitespace-mode)
+  (add-hook 'python-ts-mode-hook #'prism-whitespace-mode)
+  (add-hook 'emacs-lisp-mode-hook #'prism-mode))
 
 (use-package mood-line
   :config

@@ -1406,30 +1406,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1))))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package flycheck
-  :config
-  (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
-
-(use-package flycheck-eglot
-  :after (flycheck eglot)
-  :config
-  (setopt flycheck-eglot-exclusive t)
-  (global-flycheck-eglot-mode 1))
-
-(use-package consult-flycheck)
-
-(use-package flyspell
-  :ensure nil
-  :config
-  (setopt ispell-program-name "aspell"
-          ispell-silently-savep t)
-  (add-hook 'org-mode-hook #'flyspell-mode))
-
-(use-package flyspell-correct
-  :after flyspell)
-
-(use-package consult-flyspell)
-
 (use-package tempel
   ;; Require trigger prefix before template name when completing.
   ;; :custom
@@ -2010,6 +1986,30 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package surround
   :bind-keymap ("M-'" . surround-keymap))
+
+(use-package flycheck
+  :config
+  (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
+
+(use-package flycheck-eglot
+  :after (flycheck eglot)
+  :config
+  (setopt flycheck-eglot-exclusive t)
+  (global-flycheck-eglot-mode 1))
+
+(use-package consult-flycheck)
+
+(use-package flyspell
+  :ensure nil
+  :config
+  (setopt ispell-program-name "aspell"
+          ispell-silently-savep t)
+  (add-hook 'org-mode-hook #'flyspell-mode))
+
+(use-package flyspell-correct
+  :after flyspell)
+
+(use-package consult-flyspell)
 
 (use-package meow
   :config

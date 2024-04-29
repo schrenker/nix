@@ -1405,53 +1405,89 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :init
   (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1))))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package tempel
-  ;; Require trigger prefix before template name when completing.
-  ;; :custom
-  ;; (tempel-trigger-prefix "<")
-
   :bind (:map tempel-map
                ("M-j" . tempel-next)
                ("M-k" . tempel-previous))
 
   :init
   (setopt tempel-path (concat user-emacs-directory "templates/tempel"))
-  ;; Setup completion at point
   (defun tempel-setup-capf ()
-    ;; Add the Tempel Capf to `completion-at-point-functions'.
-    ;; `tempel-expand' only triggers on exact matches. Alternatively use
-    ;; `tempel-complete' if you want to see all matches, but then you
-    ;; should also configure `tempel-trigger-prefix', such that Tempel
-    ;; does not trigger too often when you don't expect it. NOTE: We add
-    ;; `tempel-expand' *before* the main programming mode Capf, such
-    ;; that it will be tried first.
+    "Add the Tempel Capf to `completion-at-point-functions' before the main programming mode Capf, such that it will be tried first."
     (setq-local completion-at-point-functions
                 (cons #'tempel-expand
                       completion-at-point-functions)))
-
   (add-hook 'prog-mode-hook 'tempel-setup-capf)
-  (add-hook 'text-mode-hook 'tempel-setup-capf)
+  (add-hook 'text-mode-hook 'tempel-setup-capf))
 
-  ;; Optionally make the Tempel templates available to Abbrev,
-  ;; either locally or globally. `expand-abbrev' is bound to C-x '.
-  ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
-  ;; (global-tempel-abbrev-mode)
-  )
-
-(use-package typst-ts-mode
-  :disabled
-  :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+(use-package buffer-name-relative
   :init
-  (setopt typst-ts-mode-watch-options "--open"))
+  (defun schrenker/buffer-name-relative--abbrev-directory-impl (path overflow)
+    "Abbreviate PATH by OVERFLOW characters. Omitted characters are replaced by the value of truncate-string-ellipsis variable."
+    (let ((beg (string-match-p "[^/]" path)))
+      (cond
+       (beg
+        (let ((end (string-search "/" path beg)))
+          (cond
+           (end
+            (setq beg (1+ beg))
+            (let ((len 1)
+                  (trunc (- end beg)))
+              (setq overflow (- overflow trunc))
+              (when (< overflow 0)
+                (setq beg (- beg overflow))
+                (setq trunc (+ trunc overflow))
+                (setq len (- len overflow))
+                (setq overflow 0))
+              (cons
+               ;; The `head'.
+               (cond
+                ((< 1 len)
+                 (concat (substring path 0 (1- beg)) truncate-string-ellipsis))
+                (t
+                 (substring path 0 beg)))
+               ;; The `tail'.
+               (cond
+                ((zerop overflow)
+                 (cons (substring path end) nil))
+                (t
+                 (buffer-name-relative--abbrev-directory-impl (substring path end) overflow))))))
+           (t ;; `end' not found.
+            (cons path nil)))))
+       (t ;; `beg' not found.
+        (cons path nil)))))
 
-(use-package typst-preview
-  :disabled
-  :after typst-ts-mode
-  :ensure
-  (typst-preview
-   :host "github.com"
-   :repo "havarddj/typst-preview.el"))
+  (defun schrenker/prepend-path-with-vc-dir (&rest r)
+    (let ((vc-root (buffer-name-relative-root-path-from-vc (nth 1 r))))
+      (if vc-root
+          (setq buffer-name-relative-prefix
+                (concat "["
+                        (let ((vc-dir (file-name-nondirectory (directory-file-name (buffer-name-relative-root-path-from-vc (nth 1 r))))))
+                          (if (length> vc-dir 12)
+                              (concat (substring vc-dir 0 6) ".." (substring vc-dir -4))
+                            vc-dir))
+                        "]:"))
+        (setq buffer-name-relative-prefix ""))))
+
+  :config
+  (setopt buffer-name-relative-abbrev-limit 24)
+  (advice-add 'buffer-name-relative--abbrev-directory-impl
+              :override
+              #'schrenker/buffer-name-relative--abbrev-directory-impl)
+  (advice-add 'buffer-name-relative--create-file-buffer-advice
+              :before
+              #'schrenker/prepend-path-with-vc-dir)
+  (buffer-name-relative-mode))
+
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
+(use-package vundo
+  :bind
+  ("M-v" . vundo))
+
+(use-package goggles
+  :hook ((prog-mode text-mode) . goggles-mode)
+  :config
+  (setopt goggles-pulse t)) ;; set to nil to disable pulsing
 
 (use-package prism
   :commands (prism-set-colors prism-whitespace-mode prism-mode)
@@ -1563,79 +1599,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
-;; (use-package vterm
-;;   :disabled
-;;   :if (not (eq system-type 'windows-nt))
-;;   :demand t
-;;   :init
-
-;;   (defun schrenker/line-of-current-prompt ()
-;;     "Get the prompt line of current vterm buffer, and save it to a variable."
-;;     (save-excursion
-;;       (goto-char (point-max))
-;;       (search-backward-regexp "^\\$ ")
-;;       (setq-local schrenker/vterm-prompt-line (array-current-line))))
-
-;;   (defun schrenker/prompt-line-p ()
-;;     "Check if point is at prompt line or not. Do it by comparing to variable set by schrenker/line-of-current-prompt function."
-;;     (eq (array-current-line) schrenker/vterm-prompt-line))
-
-;;   (defun schrenker/CC-out-of-copy-mode ()
-;;     (interactive)
-;;     (meow-normal-mode -1)
-;;     (call-interactively #'schrenker/meow-append-to-eol)
-;;     (vterm-send "C-c"))
-
-;;   :bind*
-;;   (:map vterm-copy-mode-map
-;;         ("C-c C-c" . schrenker/CC-out-of-copy-mode))
-;;   :config
-;;   (setopt vterm-max-scrollback 10000
-;;           vterm-kill-buffer-on-exit t)
-;;   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-;;   (with-eval-after-load 'perject
-;;     (add-hook 'vterm-mode-hook 'perject--auto-add-buffer))
-;;   (with-eval-after-load 'meow
-;;     (push '(vterm-mode . insert) meow-mode-state-list)
-;;     (add-hook 'vterm-mode-hook
-;;               (lambda ()
-;;                 (add-hook 'meow-insert-enter-hook
-;;                           (lambda () (vterm-copy-mode -1))
-;;                           nil t)
-;;                 (add-hook 'meow-insert-exit-hook
-;;                           (lambda ()
-;;                             (vterm-copy-mode 1)
-;;                             (schrenker/line-of-current-prompt))
-;;                           nil t))))
-;;   (add-hook 'vterm-mode-hook (lambda ()
-;;                                (setq-local confirm-kill-processes nil)
-;;                                (display-line-numbers-mode -1)
-;;                                (corfu-mode -1))))
-
-;; (use-package multi-vterm
-;;   :disabled
-;;   :if (not (eq system-type 'windows-nt))
-;;   :bind (("C-c v" . schrenker/multi-vterm-project-here)
-;;          ("C-c V" . multi-vterm-project))
-;;   :commands (multi-vterm-project-root)
-;;   :init
-;;   (defun schrenker/multi-vterm-project-here ()
-;;     "Create new vterm buffer."
-;;     (interactive)
-;;     (if (multi-vterm-project-root)
-;;         (if (buffer-live-p (get-buffer (multi-vterm-project-get-buffer-name)))
-;;             (if (string-equal (buffer-name (current-buffer)) (multi-vterm-project-get-buffer-name))
-;;                 (delete-window (selected-window))
-;;               (switch-to-buffer (multi-vterm-project-get-buffer-name)))
-;;           (let* ((vterm-buffer (multi-vterm-get-buffer 'project))
-;;                  (multi-vterm-buffer-list (nconc multi-vterm-buffer-list (list vterm-buffer))))
-;;             (set-buffer vterm-buffer)
-;;             (multi-vterm-internal)
-;;             (switch-to-buffer vterm-buffer)))
-;;       (message "This file is not in a project")))
-;;   :config
-;;   (setopt multi-vterm-dedicated-window-height-percent 30))
-
 (use-package eglot
   :ensure nil
   :commands (eglot eglot-ensure eglot-inlay-hints-mode)
@@ -1666,7 +1629,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :after eglot
   :bind (:map eglot-mode-map
               ("M-g c" . consult-eglot-symbols)))
-
 
 (use-package dape
   :disabled
@@ -1719,15 +1681,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                  :cwd dape-cwd-fn
                  :program dape-find-file-buffer-default)))
 
-(use-package vundo
-  :bind
-  ("M-v" . vundo))
-
-(use-package goggles
-  :hook ((prog-mode text-mode) . goggles-mode)
-  :config
-  (setopt goggles-pulse t)) ;; set to nil to disable pulsing
-
 (use-package woman
   :ensure nil
   :bind
@@ -1746,61 +1699,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         ("M-j" . Info-next)
         ("M-k" . Info-prev)))
 
-(use-package buffer-name-relative
-  :config
-  (defun schrenker/buffer-name-relative--abbrev-directory-impl (path overflow)
-    "Abbreviate PATH by OVERFLOW characters."
-    ;; Skip leading slashes.
-    (let ((beg (string-match-p "[^/]" path)))
-      (cond
-       (beg
-        (let ((end (string-search "/" path beg)))
-          (cond
-           (end
-            (setq beg (1+ beg))
-            (let ((len 1)
-                  (trunc (- end beg)))
-              (setq overflow (- overflow trunc))
-              (when (< overflow 0)
-                (setq beg (- beg overflow))
-                (setq trunc (+ trunc overflow))
-                (setq len (- len overflow))
-                (setq overflow 0))
-              ;; The resulting abbreviated name.
-              (cons
-               ;; The `head'.
-               (cond
-                ((< 1 len)
-                 (concat (substring path 0 (1- beg)) "…"))
-                (t
-                 (substring path 0 beg)))
-               ;; The `tail'.
-               (cond
-                ((zerop overflow)
-                 (cons (substring path end) nil))
-                (t
-                 (buffer-name-relative--abbrev-directory-impl (substring path end) overflow))))))
-           (t ;; `end' not found.
-            (cons path nil)))))
-       (t ;; `beg' not found.
-        (cons path nil)))))
-  (advice-add 'buffer-name-relative--abbrev-directory-impl :override #'schrenker/buffer-name-relative--abbrev-directory-impl)
-  (setopt buffer-name-relative-abbrev-limit 24)
-  (advice-add
-   'buffer-name-relative--create-file-buffer-advice
-   :before
-   (lambda (&rest r)
-     (let ((vc-root (buffer-name-relative-root-path-from-vc (nth 1 r))))
-       (if vc-root
-           (setq buffer-name-relative-prefix
-                 (concat "["
-                         (let ((vc-dir (file-name-nondirectory (directory-file-name (buffer-name-relative-root-path-from-vc (nth 1 r))))))
-                           (if (length> vc-dir 12)
-                               (concat (substring vc-dir 0 6) ".." (substring vc-dir -4))
-                             vc-dir))
-                         "]:"))
-         (setq buffer-name-relative-prefix "")))))
-  (buffer-name-relative-mode))
+
 
 (use-package treesit
   :ensure nil
@@ -1830,6 +1729,20 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
             (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
             (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src"))
             (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "master" "src")))))
+
+(use-package typst-ts-mode
+  :disabled
+  :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+  :init
+  (setopt typst-ts-mode-watch-options "--open"))
+
+(use-package typst-preview
+  :disabled
+  :after typst-ts-mode
+  :ensure
+  (typst-preview
+   :host "github.com"
+   :repo "havarddj/typst-preview.el"))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.

@@ -1378,6 +1378,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         (call-interactively #'meow-insert))))
 
   :config
+  (setopt eat-kill-buffer-on-exit t)
   (with-eval-after-load 'perject
     (add-hook 'eat-mode-hook 'perject--auto-add-buffer))
   (with-eval-after-load 'meow

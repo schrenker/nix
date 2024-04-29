@@ -1489,7 +1489,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'prog-mode-hook #'goggles-mode)
   (add-hook 'text-mode-hook #'goggles-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package prism
   :config
   ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
@@ -1506,10 +1505,14 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'emacs-lisp-mode-hook #'prism-mode))
 
 (use-package mood-line
-  :config
-  (setopt mood-line-format mood-line-format-default)
+  :init
   (mood-line-mode 1))
 
+(use-package solaire-mode
+  :init
+  (solaire-global-mode))
+
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package solarized-theme
   :demand t
   :init
@@ -1526,10 +1529,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :config
   (schrenker/initial-apply-overlay))
 
-(use-package solaire-mode
-  :config
-  (solaire-global-mode +1))
-
 (use-package all-the-icons
   :config
   (add-to-list 'all-the-icons-extension-icon-alist '("jar" all-the-icons-alltheicon "java" :height 1.0 :face all-the-icons-dpurple))
@@ -1539,12 +1538,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-to-list 'all-the-icons-regexp-icon-alist '("^flake.lock$" all-the-icons-fileicon "nix" :face all-the-icons-dblue))
   (add-to-list 'all-the-icons-regexp-icon-alist '("postgresql.conf$" all-the-icons-alltheicon "postgresql" :face all-the-icons-blue))
   (add-to-list 'all-the-icons-regexp-icon-alist '("^nix.conf$" all-the-icons-fileicon "nix" :face all-the-icons-dpink)))
-
-;; (use-package rainbow-mode
-;;   :after solarized-theme
-;;   :demand t
-;;   :config
-;;   (setopt rainbow-x-colors nil))
 
 (use-package all-the-icons-ibuffer
   :hook (ibuffer-mode . all-the-icons-ibuffer-mode)

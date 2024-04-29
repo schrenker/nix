@@ -1353,6 +1353,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    ("C-c V" . eat-project-other-window)
    :map eat-mode-map
    ("C-c C-c" . eat-self-input)
+   ("C-d" . eat-self-input)
    ("RET" . schrenker/eat-ret-dwim))
 
   :init

@@ -1506,7 +1506,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package mood-line
   :init
-  (mood-line-mode 1))
+  (mood-line-mode))
 
 (use-package solaire-mode
   :init
@@ -1516,14 +1516,17 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package solarized-theme
   :demand t
   :init
-  (setopt solarized-use-more-italic t
-          solarized-scale-org-headlines nil
-          solarized-use-variable-pitch nil
+  (setopt solarized-distinct-doc-face t
+          solarized-distinct-fringe-background t
           solarized-height-minus-1 1.0
           solarized-height-plus-1 1.0
           solarized-height-plus-2 1.0
           solarized-height-plus-3 1.0
-          solarized-height-plus-4 1.0)
+          solarized-height-plus-4 1.0
+          solarized-scale-org-headlines nil
+          solarized-scale-outline-headlines nil
+          solarized-use-variable-pitch nil
+          solarized-use-more-italic t)
   (load-file (concat user-emacs-directory "lisp/solarized-overlay.el"))
 
   :config

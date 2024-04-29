@@ -76,42 +76,45 @@
         (green-1bg    (if (eq appearance 'light) "#efeac7" "#1d3732"))
         (green-1fg    (if (eq appearance 'light) "#657827" "#8c9a43"))
         (green-2bg    (if (eq appearance 'light) "#dbdb9c" "#2f4321"))
-        (green-2fg    (if (eq appearance 'light) "#5b6e35" "#97a35f")))
+        (green-2fg    (if (eq appearance 'light) "#5b6e35" "#97a35f"))
+
+        (org-box '(:weight bold :inverse-video t)))
     (progn
-      (setq-default org-todo-keyword-faces
-                    `(("NEXT" :foreground ,yellow :weight bold :inverse-video t)
-                      ("TODO" :foreground ,magenta :weight bold :inverse-video t)
-                      ("INPROGRESS" :foreground ,green :weight bold :inverse-video t)
-                      ("BLOCKED" :foreground ,orange :weight bold :inverse-video t)
-                      ("ONHOLD" :foreground ,cyan :weight bold :inverse-video t)
-                      ("REVIEW" :foreground ,blue :weight bold :inverse-video t)
-                      ("DONE" :foreground ,fg-emph :weight bold :inverse-video t)
-                      ("CANCELLED" :foreground ,fg-alt :weight bold :inverse-video t)
-                      ("DELEGATED"  :foreground ,fg-main :weight bold :inverse-video t))
-                    org-priority-faces
-                    `((?A :foreground ,red :weight bold :inverse-video t)
-                      (?B :foreground ,yellow :weight bold :inverse-video t)
-                      (?C :foreground ,violet :weight bold :inverse-video t)
-                      (?D :foreground ,fg-emph :weight bold :inverse-video t))
-                    org-src-block-faces
-                    `(("emacs-lisp" (:background ,magenta-1bg :extend t))
-                      ("python" (:background ,green-1bg :extend t))
-                      ("yaml" (:background ,cyan-1bg :extend t))
-                      ("json" (:background ,blue-1bg :extend t))
-                      ("bash" (:background ,green-1bg :extend t))
-                      ("sh" (:background ,green-1bg :extend t))
-                      ("shell" (:background ,green-1bg :extend t))
-                      ("fish" (:background ,green-1bg :extend t))
-                      ("nix" (:background ,blue-1bg :extend t)))
-                    org-modern-todo-faces org-todo-keyword-faces
-                    org-modern-priority-faces org-priority-faces)
+      (setopt org-todo-keyword-faces
+              `(("NEXT"       :foreground ,yellow  ,@org-box)
+                ("TODO"       :foreground ,magenta ,@org-box)
+                ("INPROGRESS" :foreground ,green   ,@org-box)
+                ("BLOCKED"    :foreground ,orange  ,@org-box)
+                ("ONHOLD"     :foreground ,cyan    ,@org-box)
+                ("REVIEW"     :foreground ,blue    ,@org-box)
+                ("DONE"       :foreground ,fg-emph ,@org-box)
+                ("CANCELLED"  :foreground ,fg-alt  ,@org-box)
+                ("DELEGATED"  :foreground ,fg-main ,@org-box))
+              org-priority-faces
+              `((?A :foreground ,red     ,@org-box)
+                (?B :foreground ,yellow  ,@org-box)
+                (?C :foreground ,violet  ,@org-box)
+                (?D :foreground ,fg-emph ,@org-box))
+              org-src-block-faces
+              `(("emacs-lisp" (:background ,magenta-1bg :extend t))
+                ("python"     (:background ,green-1bg   :extend t))
+                ("yaml"       (:background ,cyan-1bg    :extend t))
+                ("json"       (:background ,blue-1bg    :extend t))
+                ("bash"       (:background ,green-1bg   :extend t))
+                ("sh"         (:background ,green-1bg   :extend t))
+                ("shell"      (:background ,green-1bg   :extend t))
+                ("fish"       (:background ,green-1bg   :extend t))
+                ("nix"        (:background ,blue-1bg    :extend t)))
+              org-modern-todo-faces org-todo-keyword-faces
+              org-modern-priority-faces org-priority-faces)
 
       (mapc #'disable-theme custom-enabled-themes)
       (pcase appearance
         ('light (load-theme 'solarized-light t))
-        ('dark (load-theme 'solarized-dark t)))
+        ('dark  (load-theme 'solarized-dark  t)))
 
-      (kind-icon-reset-cache)
+      (with-eval-after-load 'kind-icon
+        (kind-icon-reset-cache))
 
       (with-eval-after-load 'prism
         (prism-set-colors
@@ -120,47 +123,70 @@
           :lightens '(0 -15 -30 -45 -60)
           :colors (list blue green cyan yellow)))
 
+      (with-eval-after-load 'hl-line
+        (set-face-background 'hl-line bg-alt))
 
-      (set-face-background 'hl-line bg-alt)
+      (with-eval-after-load 'diff-hl
+        (set-face-attribute 'diff-hl-change nil
+                            :background blue-2bg
+                            :foreground (if (eq appearance 'light) blue-d blue-l))
+        (set-face-attribute 'diff-hl-insert nil
+                            :background green-2bg
+                            :foreground (if (eq appearance 'light) green-d green-l))
+        (set-face-attribute 'diff-hl-delete nil
+                            :background red-2bg
+                            :foreground (if (eq appearance 'light) red-d red-l)))
 
-      (set-face-attribute 'fringe nil :background bg-alt)
-      (set-face-attribute 'line-number nil :background bg-alt)
-      (set-face-attribute 'line-number-current-line nil :background bg-alt)
-      (set-face-attribute 'diff-hl-change nil :background blue-2bg :foreground (if (eq appearance 'light) blue-d blue-l))
-      (set-face-attribute 'diff-hl-insert nil :background green-2bg :foreground (if (eq appearance 'light) green-d green-l))
-      (set-face-attribute 'diff-hl-delete nil :background red-2bg :foreground (if (eq appearance 'light) red-d red-l))
-
-      (set-face-attribute 'mode-line nil :background blue-2bg :foreground fg-emph :overline blue-d :underline nil :box '(:line-width 1 :color ,blue-d))
-      (set-face-attribute 'mode-line-active nil :background blue-2bg :foreground fg-emph :overline blue-d :underline nil :box `(:line-width 1 :color ,blue-d))
-      (set-face-attribute 'mode-line-inactive nil :background bg-main :overline bg-alt :underline nil :box `(:line-width 1 :color ,bg-alt))
-
-      (set-face-attribute 'org-level-1 nil :background orange-2bg :foreground (if (eq appearance 'light) orange-d orange-l) :extend t)
-      (set-face-attribute 'org-level-2 nil :background green-2bg  :foreground (if (eq appearance 'light) green-d green-l) :extend t)
-      (set-face-attribute 'org-level-3 nil :background blue-2bg   :foreground (if (eq appearance 'light) blue-d blue-l) :extend t)
-      (set-face-attribute 'org-level-4 nil :background yellow-2bg :foreground (if (eq appearance 'light) yellow-d yellow-l) :extend t)
-      (set-face-attribute 'org-level-5 nil :background cyan-2bg   :foreground (if (eq appearance 'light) cyan-d cyan-l) :extend t)
-      (set-face-attribute 'org-level-6 nil :background green-2bg  :foreground (if (eq appearance 'light) green-d green-l) :extend t)
-      (set-face-attribute 'org-level-7 nil :background red-2bg    :foreground (if (eq appearance 'light) red-d red-l) :extend t)
-      (set-face-attribute 'org-level-8 nil :background blue-2bg   :foreground (if (eq appearance 'light) blue-d blue-l) :extend t)
-      (set-face-background 'org-block bg-alt)
-      (set-face-extend 'org-block-begin-line t)
-      (set-face-extend 'org-block-end-line t)
-      (set-face-attribute 'link nil :foreground cyan :slant 'italic )
-      (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt)
       (set-face-attribute 'italic nil :slant 'italic :underline nil)
+      (set-face-attribute 'link nil :foreground cyan :slant 'italic )
 
-      (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
-      (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)
-      (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)
-      (set-face-attribute 'org-modern-time-active nil :foreground fg-emph :background bg-main :inverse-video t)
-      (set-face-attribute 'org-modern-time-inactive nil :foreground fg-alt :background bg-main :inverse-video t)
-      (custom-set-faces `(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground ,violet :inverse-video t)))))
-      (custom-set-faces `(org-modern-statistics ((t (:inherit org-modern-label :weight bold :background ,bg-alt :foreground ,green)))))
-      (advice-add
-       'org-modern--update-label-face
-       :override
-       (lambda (&rest r)
-         (set-face-attribute 'org-modern-label nil :height 1.0 :box nil)))
+      (set-face-attribute 'mode-line nil
+                          :background blue-2bg
+                          :foreground fg-emph
+                          :overline blue-d
+                          :underline nil
+                          :box '(:line-width 1 :color ,blue-d))
+      (set-face-attribute 'mode-line-active nil
+                          :background blue-2bg
+                          :foreground fg-emph
+                          :overline blue-d
+                          :underline nil
+                          :box `(:line-width 1 :color ,blue-d))
+      (set-face-attribute 'mode-line-inactive nil
+                          :background bg-main
+                          :overline bg-alt
+                          :underline nil
+                          :box `(:line-width 1 :color ,bg-alt))
+
+      (with-eval-after-load 'org
+        (set-face-attribute 'org-level-1 nil :background orange-2bg :foreground (if (eq appearance 'light) orange-d orange-l) :extend t)
+        (set-face-attribute 'org-level-2 nil :background green-2bg  :foreground (if (eq appearance 'light) green-d green-l) :extend t)
+        (set-face-attribute 'org-level-3 nil :background blue-2bg   :foreground (if (eq appearance 'light) blue-d blue-l) :extend t)
+        (set-face-attribute 'org-level-4 nil :background yellow-2bg :foreground (if (eq appearance 'light) yellow-d yellow-l) :extend t)
+        (set-face-attribute 'org-level-5 nil :background cyan-2bg   :foreground (if (eq appearance 'light) cyan-d cyan-l) :extend t)
+        (set-face-attribute 'org-level-6 nil :background green-2bg  :foreground (if (eq appearance 'light) green-d green-l) :extend t)
+        (set-face-attribute 'org-level-7 nil :background red-2bg    :foreground (if (eq appearance 'light) red-d red-l) :extend t)
+        (set-face-attribute 'org-level-8 nil :background blue-2bg   :foreground (if (eq appearance 'light) blue-d blue-l) :extend t)
+        (set-face-background 'org-block bg-alt)
+        (set-face-extend 'org-block-begin-line t)
+        (set-face-extend 'org-block-end-line t)
+        (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt)
+
+        (run-with-idle-timer 0 nil (lambda ()(mapc (lambda (buffer) (with-current-buffer buffer (when (derived-mode-p 'org-mode)(font-lock-update)))) (buffer-list)))))
+
+      (with-eval-after-load 'org-modern
+        (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
+        (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)
+        (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)
+        (set-face-attribute 'org-modern-time-active nil :foreground fg-emph :background bg-main :inverse-video t)
+        (set-face-attribute 'org-modern-time-inactive nil :foreground fg-alt :background bg-main :inverse-video t)
+        (custom-set-faces `(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground ,violet :inverse-video t)))))
+        (custom-set-faces `(org-modern-statistics ((t (:inherit org-modern-label :weight bold :background ,bg-alt :foreground ,green)))))
+        (advice-add
+         'org-modern--update-label-face
+         :override
+         (lambda (&rest r)
+           (set-face-attribute 'org-modern-label nil :height 1.0 :box nil))))
 
       (with-eval-after-load 'ace-window
         (custom-set-faces `(aw-leading-char-face ((t (:inherit org-modern-label :width expanded :weight bold :background ,magenta :foreground ,bg-main :height 3.0 ))))))
@@ -181,9 +207,7 @@
       (with-eval-after-load 'hydra
         (setopt hydra-posframe-show-params `(:internal-border-width 2
                                                                     :internal-border-color ,fg-main
-                                                                    :poshandler posframe-poshandler-frame-bottom-center)))
-
-      (run-with-idle-timer 0 nil (lambda ()(mapc (lambda (buffer) (with-current-buffer buffer (when (derived-mode-p 'org-mode)(font-lock-update)))) (buffer-list)))))))
+                                                                    :poshandler posframe-poshandler-frame-bottom-center))))))
 
 (defun schrenker/apply-overlay (appearance)
     (setq emacs-appearance appearance)

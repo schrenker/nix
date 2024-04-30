@@ -147,9 +147,9 @@
 
   (if (schrenker/wsl2-p)
       (progn
-        (set-frame-font "Jetbrains Mono 10" nil t)
+        (set-frame-font "JetBrainsMono Nerd Font 10" nil t)
         (schrenker/zoom-frame))
-    (set-frame-font "JetBrains Mono 14" nil t)))
+    (set-frame-font "JetBrainsMono Nerd Font 14" nil t)))
 
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))

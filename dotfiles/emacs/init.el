@@ -1530,7 +1530,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (load-file (concat user-emacs-directory "lisp/solarized-overlay.el"))
 
   :config
-  (schrenker/initial-apply-overlay))
+  (schrenker/setup-theme))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package all-the-icons

@@ -1034,9 +1034,7 @@ Else sort by Alpha."
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
                                  (shell . t)
-                                 (python . t)
-                                 (yaml . t)
-                                 (go . t)))
+                                 (python . t)))
 
   (defadvice org-babel-execute-src-block (around load-language nil activate)
     "Load language if needed"

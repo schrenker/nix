@@ -16,6 +16,7 @@
 ;; :init
 ;; :config
 
+;;;;;;;;;;;;;; HOOKATION POINT ;;;;;;;;;;;;;;
 (use-package emacs
   :ensure nil
   :init
@@ -1618,7 +1619,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
             (t ,(nerd-icons-codicon "nf-cod-code") :face font-lock-warning-face)))
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package ligature
   :config
   ;; Enable all JetBrains Mono ligatures in programming modes
@@ -1637,6 +1637,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package eglot
   :ensure nil
   :commands (eglot eglot-ensure eglot-inlay-hints-mode)

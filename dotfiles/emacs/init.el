@@ -1033,7 +1033,10 @@ Else sort by Alpha."
 
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
-                                 (shell . t)))
+                                 (shell . t)
+                                 (python . t)
+                                 (yaml . t)
+                                 (go . t)))
 
   (defadvice org-babel-execute-src-block (around load-language nil activate)
     "Load language if needed"
@@ -1787,7 +1790,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
   (setopt go-ts-mode-indent-offset 4)
   (add-hook 'go-ts-mode-hook (lambda ()
-                               (eglot-inlay-hints-mode 1)
+                    ;           (eglot-inlay-hints-mode 1)
                                (go-eldoc-setup)
                                (setq-local tab-width 4)
                                (setq-local indent-tabs-mode 1)))
@@ -1824,7 +1827,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (setopt python-indent-offset 4)
   (add-hook 'python-ts-mode-hook (lambda ()
-                                   (eglot-inlay-hints-mode 1)
+                                   ;(eglot-inlay-hints-mode 1)
                                    (setq-local tab-width 4))))
 
 (use-package json-mode)

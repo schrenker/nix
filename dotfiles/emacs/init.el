@@ -414,13 +414,6 @@
   :config
   (corfu-terminal-mode +1))
 
-(use-package kind-icon
-  :after corfu
-  :config
-  (setopt kind-icon-blend-background nil
-          kind-icon-default-face 'corfu-default)
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
 (use-package cape
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
@@ -1328,7 +1321,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
   :config
   (dirvish-side-follow-mode)
-  (setopt dirvish-attributes '(vc-state subtree-state all-the-icons collapse file-size)
+  (setopt dirvish-attributes '(vc-state subtree-state nerd-icons collapse file-size)
           dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
           dirvish-path-separators '("~" "/" "/")
           dirvish-default-layout '(1 0.1 0.6)
@@ -1532,26 +1525,29 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :config
   (schrenker/setup-theme))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package all-the-icons
+(use-package nerd-icons
   :config
-  (add-to-list 'all-the-icons-extension-icon-alist '("jar" all-the-icons-alltheicon "java" :height 1.0 :face all-the-icons-dpurple))
-  (add-to-list 'all-the-icons-extension-icon-alist '("jenkinsfile" all-the-icons-fileicon "jenkins" :height 1.0 :face all-the-icons-dpurple))
-  (add-to-list 'all-the-icons-extension-icon-alist '("groovy" all-the-icons-fileicon "groovy" :height 1.0 :face all-the-icons-cyan))
-  (add-to-list 'all-the-icons-extension-icon-alist '("org_archive" all-the-icons-fileicon "org" :height 1.0 :face all-the-icons-dgreen))
-  (add-to-list 'all-the-icons-regexp-icon-alist '("^flake.lock$" all-the-icons-fileicon "nix" :face all-the-icons-dblue))
-  (add-to-list 'all-the-icons-regexp-icon-alist '("postgresql.conf$" all-the-icons-alltheicon "postgresql" :face all-the-icons-blue))
-  (add-to-list 'all-the-icons-regexp-icon-alist '("^nix.conf$" all-the-icons-fileicon "nix" :face all-the-icons-dpink)))
+  (setopt nerd-icons-font-family "JetBrainsMono Nerd Font"
+          nerd-icons-scale-factor 1.1)
+  (add-to-list 'nerd-icons-extension-icon-alist '("jar"           nerd-icons-devicon "nf-dev-java"       :face nerd-icons-dpurple))
+  (add-to-list 'nerd-icons-extension-icon-alist '("jenkinsfile"   nerd-icons-devicon "nf-dev-jenkins"    :face nerd-icons-dpurple))
+  (add-to-list 'nerd-icons-extension-icon-alist '("groovy"        nerd-icons-devicon "nf-dev-groovy"     :face nerd-icons-cyan))
+  (add-to-list 'nerd-icons-extension-icon-alist '("org_archive"   nerd-icons-sucicon "nf-custom-orgmode" :face nerd-icons-dgreen))
 
-(use-package all-the-icons-ibuffer
-  :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
-  :init
-  (setopt all-the-icons-ibuffer-formats `((mark
+  (add-to-list 'nerd-icons-regexp-icon-alist '("postgresql.conf$" nerd-icons-devicon "nf-dev-postgresql" :face nerd-icons-blue))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("^flake.lock$"     nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dblue))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("^nix.conf$"       nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dpink)))
+
+(use-package nerd-icons-ibuffer
+  :config
+  (setopt nerd-icons-ibuffer-icon-size 1.1
+          nerd-icons-ibuffer-formats `((mark
                                            modified
                                            read-only
                                            ,(if (>= emacs-major-version 26) 'locked "")
                                            " "
                                            (icon 2 2)
+                                           " "
                                            (name 48 48 :left :elide)
                                            " "
                                            (size-h 9 -1 :right)
@@ -1565,15 +1561,64 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                                            ,(if (>= emacs-major-version 26) 'locked "")
                                            " "
                                            (icon 2 2)
+                                           " "
                                            (name 30 30 :left :elide)
                                            " "
-                                           filename-and-process+))))
+                                           filename-and-process+)))
+  (add-hook 'ibuffer-mode-hook #'nerd-icons-ibuffer-mode))
 
-(use-package all-the-icons-completion
+(use-package nerd-icons-completion
+  :after marginalia
   :config
-  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
-  (all-the-icons-completion-mode 1))
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
+(use-package kind-icon
+  :after corfu
+  :config
+  (setopt kind-icon-blend-background nil
+          kind-icon-default-face 'corfu-default
+          kind-icon-use-icons nil
+          kind-icon-mapping
+          `((array ,(nerd-icons-codicon "nf-cod-symbol_array") :face font-lock-type-face)
+            (boolean ,(nerd-icons-codicon "nf-cod-symbol_boolean") :face font-lock-builtin-face)
+            (class ,(nerd-icons-codicon "nf-cod-symbol_class") :face font-lock-type-face)
+            (color ,(nerd-icons-codicon "nf-cod-symbol_color") :face success)
+            (command ,(nerd-icons-codicon "nf-cod-terminal") :face default)
+            (constant ,(nerd-icons-codicon "nf-cod-symbol_constant") :face font-lock-constant-face)
+            (constructor ,(nerd-icons-codicon "nf-cod-triangle_right") :face font-lock-function-name-face)
+            (enummember ,(nerd-icons-codicon "nf-cod-symbol_enum_member") :face font-lock-builtin-face)
+            (enum-member ,(nerd-icons-codicon "nf-cod-symbol_enum_member") :face font-lock-builtin-face)
+            (enum ,(nerd-icons-codicon "nf-cod-symbol_enum") :face font-lock-builtin-face)
+            (event ,(nerd-icons-codicon "nf-cod-symbol_event") :face font-lock-warning-face)
+            (field ,(nerd-icons-codicon "nf-cod-symbol_field") :face font-lock-variable-name-face)
+            (file ,(nerd-icons-codicon "nf-cod-symbol_file") :face font-lock-string-face)
+            (folder ,(nerd-icons-codicon "nf-cod-folder") :face font-lock-doc-face)
+            (interface ,(nerd-icons-codicon "nf-cod-symbol_interface") :face font-lock-type-face)
+            (keyword ,(nerd-icons-codicon "nf-cod-symbol_keyword") :face font-lock-keyword-face)
+            (macro ,(nerd-icons-codicon "nf-cod-symbol_misc") :face font-lock-keyword-face)
+            (magic ,(nerd-icons-codicon "nf-cod-wand") :face font-lock-builtin-face)
+            (method ,(nerd-icons-codicon "nf-cod-symbol_method") :face font-lock-function-name-face)
+            (function ,(nerd-icons-codicon "nf-cod-symbol_method") :face font-lock-function-name-face)
+            (module ,(nerd-icons-codicon "nf-cod-file_submodule") :face font-lock-preprocessor-face)
+            (numeric ,(nerd-icons-codicon "nf-cod-symbol_numeric") :face font-lock-builtin-face)
+            (operator ,(nerd-icons-codicon "nf-cod-symbol_operator") :face font-lock-comment-delimiter-face)
+            (param ,(nerd-icons-codicon "nf-cod-symbol_parameter") :face default)
+            (property ,(nerd-icons-codicon "nf-cod-symbol_property") :face font-lock-variable-name-face)
+            (reference ,(nerd-icons-codicon "nf-cod-references") :face font-lock-variable-name-face)
+            (snippet ,(nerd-icons-codicon "nf-cod-symbol_snippet") :face font-lock-string-face)
+            (string ,(nerd-icons-codicon "nf-cod-symbol_string") :face font-lock-string-face)
+            (struct ,(nerd-icons-codicon "nf-cod-symbol_structure") :face font-lock-variable-name-face)
+            (text ,(nerd-icons-codicon "nf-cod-text_size") :face font-lock-doc-face)
+            (typeparameter ,(nerd-icons-codicon "nf-cod-list_unordered") :face font-lock-type-face)
+            (type-parameter ,(nerd-icons-codicon "nf-cod-list_unordered") :face font-lock-type-face)
+            (unit ,(nerd-icons-codicon "nf-cod-symbol_ruler") :face font-lock-constant-face)
+            (value ,(nerd-icons-codicon "nf-cod-symbol_field") :face font-lock-builtin-face)
+            (variable ,(nerd-icons-codicon "nf-cod-symbol_variable") :face font-lock-variable-name-face)
+            (t ,(nerd-icons-codicon "nf-cod-code") :face font-lock-warning-face)))
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package ligature
   :config
   ;; Enable all JetBrains Mono ligatures in programming modes

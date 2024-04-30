@@ -1515,7 +1515,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :init
   (solaire-global-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package solarized-theme
   :demand t
   :init
@@ -1535,6 +1534,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :config
   (schrenker/initial-apply-overlay))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package all-the-icons
   :config
   (add-to-list 'all-the-icons-extension-icon-alist '("jar" all-the-icons-alltheicon "java" :height 1.0 :face all-the-icons-dpurple))

@@ -8,7 +8,7 @@
   "This variable holds initial value for theme if there is no dynamic system in place (macos), or value of theme that has been switched to.")
 
 (defun schrenker/solarized-theme-overlay (appearance)
-  ;; Function that is there just to make my life easier. Reapplies all visual updates, and that's it.
+  "Apply collection of colors and faces to Emacs, based on solarized-theme colors and current APPEARANCE."
   (let ((yellow    "#b58900")
         (yellow-d  "#866300")
         (yellow-l  "#e1af4b")
@@ -207,14 +207,17 @@
       (with-eval-after-load 'hydra
         (setopt hydra-posframe-show-params `(:internal-border-width 2
                                                                     :internal-border-color ,fg-main
-                                                                    :poshandler posframe-poshandler-frame-bottom-center))))))
+                                                                    :poshandler posframe-poshandler-frame-bottom-center)))
+
+      t)))
 
 (defun schrenker/apply-overlay (appearance)
-    (setq emacs-appearance appearance)
-    (schrenker/solarized-theme-overlay appearance)
-    (ignore-errors (org-roam-ui-sync-theme)))
+  "Apply solarized theme overlay based on APPEARANCE."
+  (setopt emacs-appearance appearance)
+  (schrenker/solarized-theme-overlay appearance))
 
-(defun schrenker/initial-apply-overlay ()
+(defun schrenker/setup-theme ()
+  "Apply theme based on environment. Apply default appearance if graphical system is not present, or if no other condition is met. If system is darwin, then use ns-appearance symbol."
   (cond
    ((not (display-graphic-p))(schrenker/apply-overlay emacs-appearance))
    ((eq system-type 'darwin)(progn

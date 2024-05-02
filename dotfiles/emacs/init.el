@@ -1325,6 +1325,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (setopt dirvish-attributes '(vc-state subtree-state nerd-icons collapse file-size)
           dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
           dirvish-path-separators '("~" "/" "/")
+          dirvish-subtree-state-style 'nerd
+          dirvish-subtree-prefix " |"
           dirvish-default-layout '(1 0.1 0.6)
           dirvish-layout-recipes '((0 0.0 0.5) (0 0.0 0.8) (1 0.08 0.8) (1 0.1 0.6))
           dirvish-cache-dir (expand-file-name ".cache/dirvish/" user-emacs-directory)

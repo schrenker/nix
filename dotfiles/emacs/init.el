@@ -1541,6 +1541,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-to-list 'nerd-icons-regexp-icon-alist '("^flake.lock$"     nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dblue))
   (add-to-list 'nerd-icons-regexp-icon-alist '("^nix.conf$"       nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dpink)))
 
+  (setcdr (assoc "nf-dev-go" nerd-icons/devicon-alist) "󰟓"))
+
 (use-package nerd-icons-ibuffer
   :config
   (setopt nerd-icons-ibuffer-icon-size 1.1

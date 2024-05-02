@@ -1529,7 +1529,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package nerd-icons
   :config
   (setopt nerd-icons-font-family "JetBrainsMono Nerd Font"
-          nerd-icons-scale-factor 1.1)
+          nerd-icons-scale-factor 1.2)
   (add-to-list 'nerd-icons-extension-icon-alist '("jar"           nerd-icons-devicon "nf-dev-java"       :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("jenkinsfile"   nerd-icons-devicon "nf-dev-jenkins"    :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("groovy"        nerd-icons-devicon "nf-dev-groovy"     :face nerd-icons-cyan))

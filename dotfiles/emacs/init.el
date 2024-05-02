@@ -24,14 +24,13 @@
   (setopt gc-cons-threshold (* 1024 1024 200)
           gc-cons-percentage 0.6)
 
-  ;; Measure startup time
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message "*** Emacs loaded in %s with %d garbage collections."
-                       (format "%.2f seconds"
-                               (float-time
-                                (time-subtract elpaca-after-init-time before-init-time)))
-                       gcs-done)))
+  (defun schrenker/measure-startup-time ()
+    "Measure startup time."
+    (message "*** Emacs loaded in %s with %d garbage collections."
+             (format "%.2f seconds"
+                     (float-time
+                      (time-subtract elpaca-after-init-time before-init-time)))
+             gcs-done))
 
   (defun schrenker/wsl2-p ()
     "Return t if ran inside Windows Subsystem for Linux."
@@ -131,7 +130,8 @@
   (advice-add #'kill-buffer--possibly-save :override #'schrenker/kill-buffer--possibly-save)
   (advice-add #'completing-read-multiple :filter-args #'schrenker/crm-indicator)
 
-  (add-hook 'before-save-hook 'time-stamp)
+  (add-hook 'emacs-startup-hook #'schrenker/measure-startup-time)
+  (add-hook 'before-save-hook #'time-stamp)
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode) ;; Do not allow the cursor in the minibuffer prompt
 
   (unbind-key (kbd "M-r"))

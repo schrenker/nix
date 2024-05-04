@@ -1539,7 +1539,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
   (add-to-list 'nerd-icons-regexp-icon-alist '("postgresql.conf$" nerd-icons-devicon "nf-dev-postgresql" :face nerd-icons-blue))
   (add-to-list 'nerd-icons-regexp-icon-alist '("^flake.lock$"     nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dblue))
-  (add-to-list 'nerd-icons-regexp-icon-alist '("^nix.conf$"       nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dpink)))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("^nix.conf$"       nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dpink))
 
   (setcdr (assoc "nf-dev-go" nerd-icons/devicon-alist) "󰟓"))
 

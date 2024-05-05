@@ -1641,13 +1641,14 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package verb
   :config
   (with-eval-after-load 'org
     (define-key org-mode-map (kbd "C-c C-r") verb-command-map)))
 
-(use-package wgrep)
+(use-package wgrep
+  :config
+  (setopt wgrep-too-many-file-length 50))
 
 (use-package vlf
   :config
@@ -1657,6 +1658,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :config
   (global-vi-tilde-fringe-mode 1))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package ws-butler
   :config
   (ws-butler-global-mode 1))

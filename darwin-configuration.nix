@@ -56,8 +56,10 @@
     "numi"
     "onecast"
     "raycast"
+    "steam"
     "syncthing"
     "synologyassistant"
+    "ukelele"
     "wireshark"
     "zsa-wally"
   ];

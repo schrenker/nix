@@ -1682,7 +1682,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         ("M-j" . Man-next-section)
         ("M-k" . Man-previous-section)
         ("/" . meow-visit)
-        ("s" . schrenker/meow-search)
+        ("n" . schrenker/meow-search)
+        ("N" . schrenker/meow-search-backwards)
         (";" . meow-reverse)
         ("J" . Man-goto-section)))
 

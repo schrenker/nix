@@ -265,7 +265,7 @@
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
-  ;(setopt embark-verbose-indicator-display-action '(display-buffer-in-side-window (side . left)))
+                                        ;(setopt embark-verbose-indicator-display-action '(display-buffer-in-side-window (side . left)))
   (setopt embark-indicators '(embark-minimal-indicator
                               embark-highlight-indicator
                               embark-isearch-highlight-indicator))
@@ -279,9 +279,9 @@
   :ensure nil
   :after embark org
   :bind (:map embark-org-item-map
-         ("RET" . schrenker/org-fullcycle-checkbox)
-         :map embark-org-link-map
-         ("RET" . org-open-at-point)))
+              ("RET" . schrenker/org-fullcycle-checkbox)
+              :map embark-org-link-map
+              ("RET" . org-open-at-point)))
 
 (use-package consult
   :demand t
@@ -1404,8 +1404,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package tempel
   :bind (:map tempel-map
-               ("M-j" . tempel-next)
-               ("M-k" . tempel-previous))
+              ("M-j" . tempel-next)
+              ("M-k" . tempel-previous))
 
   :init
   (setopt tempel-path (concat user-emacs-directory "templates/tempel"))
@@ -1547,29 +1547,29 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :config
   (setopt nerd-icons-ibuffer-icon-size 1.1
           nerd-icons-ibuffer-formats `((mark
-                                           modified
-                                           read-only
-                                           ,(if (>= emacs-major-version 26) 'locked "")
-                                           " "
-                                           (icon 2 2)
-                                           " "
-                                           (name 48 48 :left :elide)
-                                           " "
-                                           (size-h 9 -1 :right)
-                                           " "
-                                           (mode+ 16 16 :left :elide)
-                                           " "
-                                           filename-and-process+)
-                                          (mark
-                                           modified
-                                           read-only
-                                           ,(if (>= emacs-major-version 26) 'locked "")
-                                           " "
-                                           (icon 2 2)
-                                           " "
-                                           (name 30 30 :left :elide)
-                                           " "
-                                           filename-and-process+)))
+                                        modified
+                                        read-only
+                                        ,(if (>= emacs-major-version 26) 'locked "")
+                                        " "
+                                        (icon 2 2)
+                                        " "
+                                        (name 48 48 :left :elide)
+                                        " "
+                                        (size-h 9 -1 :right)
+                                        " "
+                                        (mode+ 16 16 :left :elide)
+                                        " "
+                                        filename-and-process+)
+                                       (mark
+                                        modified
+                                        read-only
+                                        ,(if (>= emacs-major-version 26) 'locked "")
+                                        " "
+                                        (icon 2 2)
+                                        " "
+                                        (name 30 30 :left :elide)
+                                        " "
+                                        filename-and-process+)))
   (add-hook 'ibuffer-mode-hook #'nerd-icons-ibuffer-mode))
 
 (use-package nerd-icons-completion
@@ -1867,7 +1867,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
   (setopt go-ts-mode-indent-offset 4)
   (add-hook 'go-ts-mode-hook (lambda ()
-                    ;           (eglot-inlay-hints-mode 1)
+                                        ;           (eglot-inlay-hints-mode 1)
                                (go-eldoc-setup)
                                (setq-local tab-width 4)
                                (setq-local indent-tabs-mode 1)))
@@ -1883,9 +1883,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                      :compositeLiteralTypes t
                      :constantValues t))))
   (setopt eglot-workspace-configuration
-    '((:gopls .
-        ((staticcheck . t)
-         (matcher . "CaseSensitive"))))))
+          '((:gopls .
+                    ((staticcheck . t)
+                     (matcher . "CaseSensitive"))))))
 
 (use-package go-eldoc)
 
@@ -1904,7 +1904,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (setopt python-indent-offset 4)
   (add-hook 'python-ts-mode-hook (lambda ()
-                                   ;(eglot-inlay-hints-mode 1)
+                                        ;(eglot-inlay-hints-mode 1)
                                    (setq-local tab-width 4))))
 
 (use-package json-mode)

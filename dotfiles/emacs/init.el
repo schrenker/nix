@@ -1642,12 +1642,61 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (global-ligature-mode t))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
+(use-package verb
+  :config
+  (with-eval-after-load 'org
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map)))
+
+(use-package wgrep)
+
+(use-package vlf
+  :config
+  (require 'vlf-setup))
+
+(use-package vi-tilde-fringe
+  :config
+  (global-vi-tilde-fringe-mode 1))
+
+(use-package ws-butler
+  :config
+  (ws-butler-global-mode 1))
+
+(use-package expand-region
+  :commands (er/expand-region)
+  :init
+  (setopt er/try-expand-list
+          '(er/mark-inside-quotes
+            er/mark-outside-quotes
+            er/mark-inside-pairs
+            er/mark-outside-pairs)))
+
+(use-package surround
+  :bind-keymap ("M-'" . surround-keymap))
+
+(use-package woman
+  :ensure nil
+  :bind
+  (:map woman-mode-map
+        ("M-j" . Man-next-section)
+        ("M-k" . Man-previous-section)
+        ("/" . meow-visit)
+        ("s" . schrenker/meow-search)
+        (";" . meow-reverse)
+        ("J" . Man-goto-section)))
+
+(use-package info
+  :ensure nil
+  :bind
+  (:map Info-mode-map
+        ("M-j" . Info-next)
+        ("M-k" . Info-prev)))
+
 (use-package eglot
   :ensure nil
   :commands (eglot eglot-ensure eglot-inlay-hints-mode)
   :bind
   (("C-c c c" . eglot)
-   ("C-c c f" . eglot-format)
+                                        ;("C-c c f" . eglot-format)
    ("C-c c a" . eglot-code-actions)
    ("C-c c r" . eglot-rename)
    ("C-c c i" . eglot-find-implementation)
@@ -1724,26 +1773,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                  :cwd dape-cwd-fn
                  :program dape-find-file-buffer-default)))
 
-(use-package woman
-  :ensure nil
-  :bind
-  (:map woman-mode-map
-        ("M-j" . Man-next-section)
-        ("M-k" . Man-previous-section)
-        ("/" . meow-visit)
-        ("s" . schrenker/meow-search)
-        (";" . meow-reverse)
-        ("J" . Man-goto-section)))
-
-(use-package info
-  :ensure nil
-  :bind
-  (:map Info-mode-map
-        ("M-j" . Info-next)
-        ("M-k" . Info-prev)))
-
-
-
 (use-package treesit
   :ensure nil
   :init
@@ -1816,7 +1845,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package format-all
   :init
-  (add-hook 'prog-mode 'format-all-mode)
+  (add-hook 'prog-mode-hook 'format-all-mode)
   :config
   (add-hook 'go-ts-mode-hook (lambda ()
                                (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
@@ -1908,40 +1937,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package d2-mode)
 
 (use-package ob-d2)
-
-(use-package verb
-  :ensure
-  (verb :files (:defaults "ob-verb.el"))
-  :after org
-  :bind
-  (:map org-mode-map
-        ("C-c C-r" . verb-command-map)))
-
-(use-package wgrep)
-
-(use-package vlf
-  :config
-  (require 'vlf-setup))
-
-(use-package vi-tilde-fringe
-  :config
-  (global-vi-tilde-fringe-mode 1))
-
-(use-package ws-butler
-  :config
-  (ws-butler-global-mode 1))
-
-(use-package expand-region
-  :commands (er/expand-region)
-  :init
-  (setopt er/try-expand-list
-          '(er/mark-inside-quotes
-            er/mark-outside-quotes
-            er/mark-inside-pairs
-            er/mark-outside-pairs)))
-
-(use-package surround
-  :bind-keymap ("M-'" . surround-keymap))
 
 (use-package flycheck
   :config

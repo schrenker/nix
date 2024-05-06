@@ -1962,7 +1962,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'org-mode-hook #'flyspell-mode))
 
 (use-package flyspell-correct
-  :after flyspell)
+  :after flyspell
+  :config
+  (unbind-key (kbd "C-c $") 'flyspell-mode-map))
 
 (use-package consult-flyspell)
 

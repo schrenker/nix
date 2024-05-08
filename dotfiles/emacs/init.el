@@ -1323,6 +1323,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :config
   (dirvish-side-follow-mode)
   (setopt dirvish-attributes '(vc-state subtree-state nerd-icons collapse file-size)
+          dirvish-fd-bufname "/%s/%s/%s"
           dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
           dirvish-path-separators '("~" "/" "/")
           dirvish-subtree-state-style 'nerd

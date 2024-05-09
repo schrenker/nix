@@ -1323,7 +1323,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :config
   (dirvish-side-follow-mode)
   (setopt dirvish-attributes '(vc-state subtree-state nerd-icons collapse file-size)
-          dirvish-fd-bufname "/%s/%s/%s"
           dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
           dirvish-path-separators '("~" "/" "/")
           dirvish-subtree-state-style 'nerd
@@ -1335,7 +1334,10 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                                         (non-essential . t)
                                         (delay-mode-hooks . nil)
                                         (enable-dir-local-variables . nil)
-                                        (enable-local-variables . :safe))))
+                                        (enable-local-variables . :safe)))
+
+  (with-eval-after-load 'dirvish-fd
+    (setq dirvish-fd-bufname "fd Q:[%s] D:[%s] %s")))
 
 (use-package eat
   :ensure (eat :type git

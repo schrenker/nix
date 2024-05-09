@@ -1868,6 +1868,14 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    :host "github.com"
    :repo "christiaan-janssen/bicep-mode"))
 
+(use-package prometheus-mode)
+
+(use-package promql-mode
+  :ensure
+  (promql-mode
+   :host "github.com"
+   :repo "Andor/promql-mode"))
+
 (use-package go-mode
   :after eglot
   :init

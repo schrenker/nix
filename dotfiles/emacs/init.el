@@ -1679,6 +1679,12 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :bind-keymap ("M-t" . surround-keymap))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
+(use-package org-download
+  :after org
+  :config
+  (setopt org-download-image-dir (concat org-directory "/media"))
+  (add-hook 'dired-mode-hook 'org-download-enable))
+
 (use-package woman
   :ensure nil
   :bind
@@ -1698,286 +1704,12 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         ("M-j" . Info-next)
         ("M-k" . Info-prev)))
 
-(use-package eglot
-  :ensure nil
-  :commands (eglot eglot-ensure eglot-inlay-hints-mode)
-  :bind
-  (("C-c c c" . eglot)
-                                        ;("C-c c f" . eglot-format)
-   ("C-c c a" . eglot-code-actions)
-   ("C-c c r" . eglot-rename)
-   ("C-c c i" . eglot-find-implementation)
-   ("C-c c d" . eglot-find-declaration)
-   ("C-c c t" . eglot-find-typeDefinition))
-  :init
-  (setopt eglot-autoshutdown t)
-  (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
-  :config
-  (add-to-list 'eglot-workspace-configuration
-               '(:yaml . (schemas .
-                                  ((https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json "/*")))))
-
-  (defun schrenker/eglot-capf ()
-    (setq-local completion-at-point-functions
-                (list #'eglot-completion-at-point
-                      #'cape-file
-                      #'tempel-expand)))
-  (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
-
-(use-package consult-eglot
-  :after eglot
-  :bind (:map eglot-mode-map
-              ("M-g c" . consult-eglot-symbols)))
-
-(use-package dape
-  :disabled
-  :ensure
-  (dape
-   :host "github.com"
-   :repo "svaante/dape"
-   :pin t)
-  :config
-  ;; Add inline variable hints, this feature is highly experimental
-  ;; (setq dape-inline-variables t)
-
-  ;; To remove info buffer on startup
-  ;; (remove-hook 'dape-on-start-hooks 'dape-info)
-
-  ;; To remove repl buffer on startup
-  ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
-
-  ;; By default dape uses gdb keybinding prefix
-  ;; (setq dape-key-prefix "\C-x\C-a")
-
-  ;; Use n for next etc. in REPL
-  ;; (setq dape-repl-use-shorthand t)
-
-  ;; Kill compile buffer on build success
-  ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
-
-  ;; Projectile users
-  ;; (setq dape-cwd-fn 'projectile-project-root)
-  (add-to-list 'dape-configs
-               `(delve
-                 modes (go-mode go-ts-mode)
-                 command "dlv"
-                 command-args ("dap" "--listen" "127.0.0.1:55878")
-                 command-cwd dape-cwd-fn
-                 host "127.0.0.1"
-                 port 55878
-                 :type "debug"
-                 :request "launch"
-                 :cwd dape-cwd-fn
-                 :program dape-cwd-fn))
-
-  (add-to-list 'dape-configs
-               `(debugpy
-                 modes (python-ts-mode python-mode)
-                 command "python3"
-                 command-args ("-m" "debugpy.adapter")
-                 :type "executable"
-                 :request "launch"
-                 :cwd dape-cwd-fn
-                 :program dape-find-file-buffer-default)))
-
-(use-package treesit
-  :ensure nil
-  :init
-  (setopt treesit-language-source-alist
-          '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-            (c "https://github.com/tree-sitter/tree-sitter-c")
-            (cmake "https://github.com/uyha/tree-sitter-cmake")
-            (common-lisp "https://github.com/theHamsta/tree-sitter-commonlisp")
-            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-            (css "https://github.com/tree-sitter/tree-sitter-css")
-            (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
-            (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-            (go "https://github.com/tree-sitter/tree-sitter-go")
-            (go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
-            (html "https://github.com/tree-sitter/tree-sitter-html")
-            (js . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-            (json "https://github.com/tree-sitter/tree-sitter-json")
-            (lua "https://github.com/Azganoth/tree-sitter-lua")
-            (make "https://github.com/alemuller/tree-sitter-make")
-            (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-            (python "https://github.com/tree-sitter/tree-sitter-python")
-            (r "https://github.com/r-lib/tree-sitter-r")
-            (rust "https://github.com/tree-sitter/tree-sitter-rust")
-            (toml "https://github.com/tree-sitter/tree-sitter-toml")
-            (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-            (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
-            (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src"))
-            (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "master" "src")))))
-
-(use-package typst-ts-mode
-  :disabled
-  :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
-  :init
-  (setopt typst-ts-mode-watch-options "--open"))
-
-(use-package typst-preview
-  :disabled
-  :after typst-ts-mode
-  :ensure
-  (typst-preview
-   :host "github.com"
-   :repo "havarddj/typst-preview.el"))
-
-;; Major modes for text/programming
-(use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
-
-(use-package yaml-mode)
-
-(use-package yaml-pro
-  :demand t
-  :bind
-  (:map yaml-pro-mode-map
-        ("C-c C-'" . yaml-pro-edit-scalar)
-        ("C-c '" . nil)
-        ("M-J" . yaml-pro-move-subtree-down)
-        ("M-K" . yaml-pro-move-subtree-up)
-        ("M-j" . yaml-pro-next-subtree)
-        ("M-k" . yaml-pro-prev-subtree)
-        ("M-h" . yaml-pro-unindent-subtree)
-        ("M-l" . yaml-pro-indent-subtree)
-        ("M-?" . yaml-pro-convolute-tree))
-  :init
-  (add-hook 'yaml-mode-hook 'yaml-pro-mode))
-
-(use-package markdown-mode)
-
-(use-package nix-mode)
-
-(use-package nginx-mode)
-
 (use-package format-all
   :init
   (add-hook 'prog-mode-hook 'format-all-mode)
   :config
   (add-hook 'go-ts-mode-hook (lambda ()
                                (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
-
-(use-package powershell)
-
-(use-package ob-powershell
-  :after (powershell org))
-
-(use-package bicep-mode
-  :ensure
-  (bicep-mode
-   :host "github.com"
-   :repo "christiaan-janssen/bicep-mode"))
-
-(use-package prometheus-mode)
-
-(use-package promql-mode
-  :ensure
-  (promql-mode
-   :host "github.com"
-   :repo "Andor/promql-mode"))
-
-(use-package go-mode
-  :after eglot
-  :init
-  (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
-  (setopt go-ts-mode-indent-offset 4)
-  (add-hook 'go-ts-mode-hook (lambda ()
-                                        ;           (eglot-inlay-hints-mode 1)
-                               (go-eldoc-setup)
-                               (setq-local tab-width 4)
-                               (setq-local indent-tabs-mode 1)))
-  :config
-  (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
-          '("gopls" :initializationOptions
-            (:hints (
-                     :parameterNames t
-                     :rangeVariableTypes t
-                     :functionTypeParameters t
-                     :assignVariableTypes t
-                     :compositeLiteralFields t
-                     :compositeLiteralTypes t
-                     :constantValues t))))
-  (setopt eglot-workspace-configuration
-          '((:gopls .
-                    ((staticcheck . t)
-                     (matcher . "CaseSensitive"))))))
-
-(use-package go-eldoc)
-
-(use-package go-guru)
-
-(use-package gorepl-mode)
-
-(use-package go-tag)
-
-(use-package go-gen-test)
-
-(use-package apparmor-mode)
-
-(use-package python-mode
-  :init
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  (setopt python-indent-offset 4)
-  (add-hook 'python-ts-mode-hook (lambda ()
-                                        ;(eglot-inlay-hints-mode 1)
-                                   (setq-local tab-width 4))))
-
-(use-package json-mode)
-
-(use-package rego-mode)
-
-(use-package fish-mode)
-
-(use-package fish-completion
-  :config
-  (global-fish-completion-mode))
-
-(use-package bash-completion)
-
-(use-package sh-script
-  :ensure nil
-  :init
-  (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
-  (setopt sh-shell "bash")
-  (setopt sh-shell-file "/bin/bash")
-  :mode
-  ("\\.sh\\'" . bash-ts-mode))
-
-(use-package dockerfile-mode)
-
-(use-package jenkinsfile-mode
-  :mode "\\.jenkinsfile\\'")
-
-(use-package d2-mode)
-
-(use-package ob-d2)
-
-(use-package flycheck
-  :config
-  (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
-
-(use-package flycheck-eglot
-  :after (flycheck eglot)
-  :config
-  (setopt flycheck-eglot-exclusive t)
-  (global-flycheck-eglot-mode 1))
-
-(use-package consult-flycheck)
-
-(use-package flyspell
-  :ensure nil
-  :config
-  (setopt ispell-program-name "aspell"
-          ispell-silently-savep t)
-  (add-hook 'org-mode-hook #'flyspell-mode))
-
-(use-package flyspell-correct
-  :after flyspell
-  :config
-  (unbind-key (kbd "C-c $") 'flyspell-mode-map))
-
-(use-package consult-flyspell)
 
 (use-package meow
   :config
@@ -2357,11 +2089,280 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         ("C-<tab> t i" . perject-tab-increment-index)
         ("C-<tab> t I" . perject-tab-decrement-index)))
 
-(use-package org-download
-  :after org
+
+
+(use-package eglot
+  :ensure nil
+  :commands (eglot eglot-ensure eglot-inlay-hints-mode)
+  :bind
+  (("C-c c c" . eglot)
+                                        ;("C-c c f" . eglot-format)
+   ("C-c c a" . eglot-code-actions)
+   ("C-c c r" . eglot-rename)
+   ("C-c c i" . eglot-find-implementation)
+   ("C-c c d" . eglot-find-declaration)
+   ("C-c c t" . eglot-find-typeDefinition))
+  :init
+  (setopt eglot-autoshutdown t)
+  (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
   :config
-  (setopt org-download-image-dir (concat org-directory "/media"))
-  (add-hook 'dired-mode-hook 'org-download-enable))
+  (add-to-list 'eglot-workspace-configuration
+               '(:yaml . (schemas .
+                                  ((https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json "/*")))))
+
+  (defun schrenker/eglot-capf ()
+    (setq-local completion-at-point-functions
+                (list #'eglot-completion-at-point
+                      #'cape-file
+                      #'tempel-expand)))
+  (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
+
+(use-package consult-eglot
+  :after eglot
+  :bind (:map eglot-mode-map
+              ("M-g c" . consult-eglot-symbols)))
+(use-package flycheck
+  :config
+  (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
+
+(use-package flycheck-eglot
+  :after (flycheck eglot)
+  :config
+  (setopt flycheck-eglot-exclusive t)
+  (global-flycheck-eglot-mode 1))
+
+(use-package consult-flycheck)
+
+(use-package flyspell
+  :ensure nil
+  :config
+  (setopt ispell-program-name "aspell"
+          ispell-silently-savep t)
+  (add-hook 'org-mode-hook #'flyspell-mode))
+
+(use-package flyspell-correct
+  :after flyspell
+  :config
+  (unbind-key (kbd "C-c $") 'flyspell-mode-map))
+
+(use-package consult-flyspell)
+
+(use-package dape
+  :disabled
+  :ensure
+  (dape
+   :host "github.com"
+   :repo "svaante/dape"
+   :pin t)
+  :config
+  ;; Add inline variable hints, this feature is highly experimental
+  ;; (setq dape-inline-variables t)
+
+  ;; To remove info buffer on startup
+  ;; (remove-hook 'dape-on-start-hooks 'dape-info)
+
+  ;; To remove repl buffer on startup
+  ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
+
+  ;; By default dape uses gdb keybinding prefix
+  ;; (setq dape-key-prefix "\C-x\C-a")
+
+  ;; Use n for next etc. in REPL
+  ;; (setq dape-repl-use-shorthand t)
+
+  ;; Kill compile buffer on build success
+  ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
+
+  ;; Projectile users
+  ;; (setq dape-cwd-fn 'projectile-project-root)
+  (add-to-list 'dape-configs
+               `(delve
+                 modes (go-mode go-ts-mode)
+                 command "dlv"
+                 command-args ("dap" "--listen" "127.0.0.1:55878")
+                 command-cwd dape-cwd-fn
+                 host "127.0.0.1"
+                 port 55878
+                 :type "debug"
+                 :request "launch"
+                 :cwd dape-cwd-fn
+                 :program dape-cwd-fn))
+
+  (add-to-list 'dape-configs
+               `(debugpy
+                 modes (python-ts-mode python-mode)
+                 command "python3"
+                 command-args ("-m" "debugpy.adapter")
+                 :type "executable"
+                 :request "launch"
+                 :cwd dape-cwd-fn
+                 :program dape-find-file-buffer-default)))
+
+(use-package treesit
+  :ensure nil
+  :init
+  (setopt treesit-language-source-alist
+          '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+            (c "https://github.com/tree-sitter/tree-sitter-c")
+            (cmake "https://github.com/uyha/tree-sitter-cmake")
+            (common-lisp "https://github.com/theHamsta/tree-sitter-commonlisp")
+            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+            (css "https://github.com/tree-sitter/tree-sitter-css")
+            (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
+            (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+            (go "https://github.com/tree-sitter/tree-sitter-go")
+            (go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
+            (html "https://github.com/tree-sitter/tree-sitter-html")
+            (js . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+            (json "https://github.com/tree-sitter/tree-sitter-json")
+            (lua "https://github.com/Azganoth/tree-sitter-lua")
+            (make "https://github.com/alemuller/tree-sitter-make")
+            (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+            (python "https://github.com/tree-sitter/tree-sitter-python")
+            (r "https://github.com/r-lib/tree-sitter-r")
+            (rust "https://github.com/tree-sitter/tree-sitter-rust")
+            (toml "https://github.com/tree-sitter/tree-sitter-toml")
+            (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+            (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+            (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src"))
+            (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "master" "src")))))
+
+(use-package typst-ts-mode
+  :disabled
+  :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+  :init
+  (setopt typst-ts-mode-watch-options "--open"))
+
+(use-package typst-preview
+  :disabled
+  :after typst-ts-mode
+  :ensure
+  (typst-preview
+   :host "github.com"
+   :repo "havarddj/typst-preview.el"))
+
+;; Major modes for text/programming
+(use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
+
+(use-package yaml-mode)
+
+(use-package yaml-pro
+  :demand t
+  :bind
+  (:map yaml-pro-mode-map
+        ("C-c C-'" . yaml-pro-edit-scalar)
+        ("C-c '" . nil)
+        ("M-J" . yaml-pro-move-subtree-down)
+        ("M-K" . yaml-pro-move-subtree-up)
+        ("M-j" . yaml-pro-next-subtree)
+        ("M-k" . yaml-pro-prev-subtree)
+        ("M-h" . yaml-pro-unindent-subtree)
+        ("M-l" . yaml-pro-indent-subtree)
+        ("M-?" . yaml-pro-convolute-tree))
+  :init
+  (add-hook 'yaml-mode-hook 'yaml-pro-mode))
+
+(use-package markdown-mode)
+
+(use-package nix-mode)
+
+(use-package nginx-mode)
+
+(use-package powershell)
+
+(use-package ob-powershell
+  :after (powershell org))
+
+(use-package bicep-mode
+  :ensure
+  (bicep-mode
+   :host "github.com"
+   :repo "christiaan-janssen/bicep-mode"))
+
+(use-package prometheus-mode)
+
+(use-package promql-mode
+  :ensure
+  (promql-mode
+   :host "github.com"
+   :repo "Andor/promql-mode"))
+
+(use-package go-mode
+  :after eglot
+  :init
+  (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
+  (setopt go-ts-mode-indent-offset 4)
+  (add-hook 'go-ts-mode-hook (lambda ()
+                                        ;           (eglot-inlay-hints-mode 1)
+                               (go-eldoc-setup)
+                               (setq-local tab-width 4)
+                               (setq-local indent-tabs-mode 1)))
+  :config
+  (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
+          '("gopls" :initializationOptions
+            (:hints (
+                     :parameterNames t
+                     :rangeVariableTypes t
+                     :functionTypeParameters t
+                     :assignVariableTypes t
+                     :compositeLiteralFields t
+                     :compositeLiteralTypes t
+                     :constantValues t))))
+  (setopt eglot-workspace-configuration
+          '((:gopls .
+                    ((staticcheck . t)
+                     (matcher . "CaseSensitive"))))))
+
+(use-package go-eldoc)
+
+(use-package go-guru)
+
+(use-package gorepl-mode)
+
+(use-package go-tag)
+
+(use-package go-gen-test)
+
+(use-package apparmor-mode)
+
+(use-package python-mode
+  :init
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+  (setopt python-indent-offset 4)
+  (add-hook 'python-ts-mode-hook (lambda ()
+                                        ;(eglot-inlay-hints-mode 1)
+                                   (setq-local tab-width 4))))
+
+(use-package json-mode)
+
+(use-package rego-mode)
+
+(use-package fish-mode)
+
+(use-package fish-completion
+  :config
+  (global-fish-completion-mode))
+
+(use-package bash-completion)
+
+(use-package sh-script
+  :ensure nil
+  :init
+  (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
+  (setopt sh-shell "bash")
+  (setopt sh-shell-file "/bin/bash")
+  :mode
+  ("\\.sh\\'" . bash-ts-mode))
+
+(use-package dockerfile-mode)
+
+(use-package jenkinsfile-mode
+  :mode "\\.jenkinsfile\\'")
+
+(use-package d2-mode)
+
+(use-package ob-d2)
 
 (add-hook 'elpaca-after-init-hook
           (lambda ()

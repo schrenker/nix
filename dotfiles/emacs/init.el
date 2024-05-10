@@ -1662,13 +1662,12 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :config
   (global-vi-tilde-fringe-mode 1))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package ws-butler
   :config
   (ws-butler-global-mode 1))
 
 (use-package expand-region
-  :commands (er/expand-region)
+  :bind ("M-t" . er/expand-region)
   :init
   (setopt er/try-expand-list
           '(er/mark-inside-quotes
@@ -1677,8 +1676,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
             er/mark-outside-pairs)))
 
 (use-package surround
-  :bind-keymap ("M-'" . surround-keymap))
+  :bind-keymap ("C-t" . surround-keymap))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package woman
   :ensure nil
   :bind
@@ -2127,7 +2127,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    '("." . meow-bounds-of-thing)
    '("<" . meow-beginning-of-thing)
    '(">" . meow-end-of-thing)
-   '("%" . er/expand-region)
+   ;'("%" . er/expand-region)
    '("g" . meow-cancel-selection)
    '("G" . meow-grab)
    '("m" . meow-mark-word)

@@ -275,14 +275,6 @@
                  nil
                  (window-parameters (mode-line-format . none)))))
 
-(use-package embark-org
-  :ensure nil
-  :after embark org
-  :bind (:map embark-org-item-map
-              ("RET" . schrenker/org-fullcycle-checkbox)
-              :map embark-org-link-map
-              ("RET" . org-open-at-point)))
-
 (use-package consult
   :demand t
   :bind (;; C-c bindings (mode-specific-map)
@@ -1065,10 +1057,24 @@ Else sort by Alpha."
           org-modern-list nil)
   (global-org-modern-mode 1))
 
+(use-package org-download
+  :after org
+  :config
+  (setopt org-download-image-dir (concat org-directory "/media"))
+  (add-hook 'dired-mode-hook 'org-download-enable))
+
 (use-package toc-org
   :init
   (add-hook 'org-mode-hook 'toc-org-mode)
   (add-hook 'markdown-mode-hook 'toc-org-mode))
+
+(use-package embark-org
+  :ensure nil
+  :after embark org
+  :bind (:map embark-org-item-map
+              ("RET" . schrenker/org-fullcycle-checkbox)
+              :map embark-org-link-map
+              ("RET" . org-open-at-point)))
 
 (use-package org-roam
   :commands (org-roam-capture-p)
@@ -1679,12 +1685,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :bind-keymap ("M-t" . surround-keymap))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package org-download
-  :after org
-  :config
-  (setopt org-download-image-dir (concat org-directory "/media"))
-  (add-hook 'dired-mode-hook 'org-download-enable))
-
 (use-package woman
   :ensure nil
   :bind

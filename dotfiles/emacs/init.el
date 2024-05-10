@@ -1667,7 +1667,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (ws-butler-global-mode 1))
 
 (use-package expand-region
-  :bind ("M-t" . er/expand-region)
+  :bind ("C-t" . er/expand-region)
   :init
   (setopt er/try-expand-list
           '(er/mark-inside-quotes
@@ -1676,7 +1676,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
             er/mark-outside-pairs)))
 
 (use-package surround
-  :bind-keymap ("C-t" . surround-keymap))
+  :bind-keymap ("M-t" . surround-keymap))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package woman

@@ -1706,7 +1706,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
               (";" . meow-reverse)
               ("J" . Man-goto-section)))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package format-all
   :init
   (add-hook 'prog-mode-hook 'format-all-mode)
@@ -1714,6 +1713,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'go-ts-mode-hook (lambda ()
                                (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package meow
   :config
   (load-file (concat user-emacs-directory "lisp/meovil.el"))

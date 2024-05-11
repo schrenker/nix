@@ -1,4 +1,4 @@
-;;; meovil.el --- Evil actions for meow -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; meovim.el --- Vim actions for meow -*- lexical-binding: t; no-byte-compile: t; -*-
 
 ;;; Commentary:
 ;; I want to replicate part of Vi actions in meow. Why not use evil instead? Meow respects Emacs as it is much more than evil, integrating perfectly into it. Evil on the other hand changes way too much, to the point where you question if this is even Emacs anymore. Yet, I still want to use muscle memory of Vi motions to work in Emacs. Thus you will see a lot of garbage code, glued together with duct tape and sticks. This is what it is, and it works for me perfectly. And this is what matters really.
@@ -231,5 +231,5 @@
 (add-to-list 'meow--eldoc-commands 'schrenker/meow-smart-append)
 (add-to-list 'meow--eldoc-commands 'schrenker/meow-insert-at-bol)
 
-(provide 'meovil)
-;;; meovil.el ends here.
+(provide 'meovim)
+;;; meovim.el ends here.

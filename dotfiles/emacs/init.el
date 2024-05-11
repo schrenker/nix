@@ -1716,7 +1716,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package meow
   :config
-  (load-file (concat user-emacs-directory "lisp/meovil.el"))
+  (load-file (concat user-emacs-directory "lisp/meovim.el"))
   (global-unset-key (kbd "C-c SPC"))
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))

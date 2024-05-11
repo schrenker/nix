@@ -1673,7 +1673,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (ws-butler-global-mode 1))
 
 (use-package expand-region
-  :bind ("C-t" . er/expand-region)
+  :bind ("M-t" . er/expand-region)
   :init
   (setopt er/try-expand-list
           '(er/mark-inside-quotes
@@ -1682,28 +1682,31 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
             er/mark-outside-pairs)))
 
 (use-package surround
-  :bind-keymap ("M-t" . surround-keymap))
+  :bind-keymap ("C-t" . surround-keymap))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
+(use-package man
+  :ensure nil
+  :bind (:map Man-mode-map
+              ("M-j" . Man-next-section)
+              ("M-k" . Man-previous-section)
+              ("/" . meow-visit)
+              ("n" . schrenker/meow-search)
+              ("N" . schrenker/meow-search-backwards)
+              (";" . meow-reverse)
+              ("J" . Man-goto-section)))
+
 (use-package woman
   :ensure nil
-  :bind
-  (:map woman-mode-map
-        ("M-j" . Man-next-section)
-        ("M-k" . Man-previous-section)
-        ("/" . meow-visit)
-        ("n" . schrenker/meow-search)
-        ("N" . schrenker/meow-search-backwards)
-        (";" . meow-reverse)
-        ("J" . Man-goto-section)))
+  :bind (:map woman-mode-map
+              ("M-j" . Man-next-section)
+              ("M-k" . Man-previous-section)
+              ("/" . meow-visit)
+              ("n" . schrenker/meow-search)
+              ("N" . schrenker/meow-search-backwards)
+              (";" . meow-reverse)
+              ("J" . Man-goto-section)))
 
-(use-package info
-  :ensure nil
-  :bind
-  (:map Info-mode-map
-        ("M-j" . Info-next)
-        ("M-k" . Info-prev)))
-
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package format-all
   :init
   (add-hook 'prog-mode-hook 'format-all-mode)

@@ -86,6 +86,7 @@
 (defun schrenker/meow-join-below ()
   "Join line below to current line."
   (interactive)
+  (meow-end-of-thing ?l)
   (call-interactively #'meow-next)
   (call-interactively #'meow-join)
   (call-interactively #'meow-kill))

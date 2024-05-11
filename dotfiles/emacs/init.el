@@ -1781,6 +1781,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (meow-motion-overwrite-define-key
    '("j" . schrenker/meow-next)
    '("k" . schrenker/meow-prev)
+   '("C-M-O" . meow-normal-mode)
    '("<escape>" . nil)
    '("SPC" . nil)
    '("SPC SPC" . consult-project-extra-find)

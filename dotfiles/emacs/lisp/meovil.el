@@ -5,6 +5,8 @@
 
 ;;; Code:
 (defun schrenker/meow-expand-or-digit-argument (&optional n)
+  "Supply digit argument if there is no region selected.
+If there is region selected with meow navigation function, then expand it."
   (interactive)
   (if (and meow--expand-nav-function
            (region-active-p)
@@ -51,11 +53,13 @@
         (t (call-interactively #'meow-right))))
 
 (defun schrenker/meow-visual ()
+  "Start selection at point."
   (interactive)
   (meow--select (meow--make-selection '(expand . char) (point) (point))))
 
 
 (defun schrenker/meow-yank-forward ()
+  "Paste after point."
   (interactive)
   (let ((current-prefix-arg '(4)))
       (if (derived-mode-p 'eat-mode)
@@ -63,6 +67,7 @@
         (call-interactively 'meow-yank))))
 
 (defun schrenker/meow-yank ()
+  "Paste before point."
   (interactive)
   (if (derived-mode-p 'eat-mode)
       (eat-yank)

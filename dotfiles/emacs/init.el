@@ -639,8 +639,8 @@ If no applicable mode is present, default to uictl."
     ("<" previous-buffer)
     (">" next-buffer)
     ("b" consult-buffer)
-    ("B" ibuffer :color blue)
-    ("S" scratch-buffer)
+    ("B" (if persp-mode (call-interactively #'persp-ibuffer) (call-interactively #'ibuffer)) :color blue)
+    ("S" (if persp-mode (call-interactively #'persp-switch-to-scratch-buffer) (call-interactively #'scratch-buffer)))
     ("Q" schrenker/kill-this-buffer)
     ("TAB" schrenker/switch-hydra :color blue)
     ("q" nil :color blue))
@@ -1927,172 +1927,23 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (meow-global-mode 1))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package perject
-  :demand t
-  :config
-  (setopt perject-load-at-startup 'all
-          perject-save-frames '(nil)
-          perject-frame-title-format nil
-          perject-switch-to-new-collection t
-          perject-save-on-exit 'all
-          perject-reload-default '(keep t)
-          perject-close-default '(t nil t)
-          perject-delete-default '(nil t nil t))
-
-
-  (with-eval-after-load 'dirvish
-    (advice-add 'perject-switch :before
-                (lambda (&rest r) (let ((visible (dirvish-side--session-visible-p)))
-                                    (when (eq visible (selected-window))
-                                      (other-window 1))))))
-
-
-  (defun schrenker/perject-switch-project-global ()
-    "Shows unfiltered list of all collections and projects to switch between them freely"
-    (interactive)
-    (let ((current-prefix-arg '(4))) ;; emulate C-u
-      (call-interactively 'perject-switch)))
-
-  (defun schrenker/perject-switch-collection ()
-    (interactive)
-    (schrenker/call-negative 'perject-switch))
-
-  (with-eval-after-load 'savehist
-    (add-to-list 'savehist-additional-variables 'perject--previous-collections))
-
-  (perject-mode 1)
-
-  (defvar schrenker/perject-loaded-buffer-list nil)
-  (defvar schrenker/perject-visited-buffer-list nil)
-
-  (defun schrenker/add-to-sublist (key element list)
-    "Add ELEMENT to the sublist in LIST identified by KEY, if it doesn't already exist."
-    (let* ((sublist (assoc key list))  ; Find the sublist
-           (buffers (cadr sublist)))   ; Get the second element of sublist
-      (unless (member element buffers)  ; Check if the element exists
-        (if (and sublist buffers)  ; Check if sublist and buffers are non-nil
-            (setcar (cdr sublist) (cons element buffers))  ; If yes, append element
-          (setcdr sublist (list (list element)))))))
-
-  (defun schrenker/perject-get-loaded-buffer-list ()
-    (let ((collections (perject-get-collections)))
-      (dolist (col collections)
-        (let ((projects (perject-get-projects col)))
-          (dolist (pr projects)
-            (add-to-list 'schrenker/perject-loaded-buffer-list `(,pr . ,(list (perject-get-buffers pr))))
-            (add-to-list 'schrenker/perject-visited-buffer-list `(,pr . ())))))))
-
-  (defun schrenker/perject-kill-unused-buffers ()
-    (let ((loaded schrenker/perject-loaded-buffer-list)
-          (vis schrenker/perject-visited-buffer-list))
-      (dolist (l loaded)
-        (let ((header (car l))
-              (body (cadr l)))
-          (unless (eq (cadr (assoc header vis)) nil)
-            (dolist (b body)
-              (unless (member b (cadr (assoc header vis)))
-                (ignore-errors (perject-remove-buffer-from-project b header))
-                (when (perject-anonymous-buffer-p b)
-                  (message "Perject cleanup: %s killed in %s" b header)
-                  (kill-buffer b))))))))
-    (perject-save (perject-get-collections)))
-
-  (add-hook 'kill-emacs-hook #'schrenker/perject-kill-unused-buffers)
-
-  (add-hook 'elpaca-after-init-hook
-            (lambda ()
-              (when (and (not (bound-and-true-p perject-collections)) (not (eq perject-load-at-startup nil)))
-                (perject--init)
-				(schrenker/perject-get-loaded-buffer-list)
-                (add-hook 'buffer-list-update-hook
-                          (lambda ()
-                            (when (and (perject-current) (equal (car (buffer-local-value 'perject-buffer (car (buffer-list)))) (perject-current)))
-                              (when (assoc (perject-current) schrenker/perject-visited-buffer-list)
-                                (schrenker/add-to-sublist (perject-current) (car (buffer-list)) schrenker/perject-visited-buffer-list))))))))
-
+(use-package perspective
   :bind
-  (:map perject-mode-map
-        ("C-<tab> c" . perject-create)
-        ("C-<tab> r" . perject-rename)
-        ("C-<tab> R" . perject-rename-collection)
-        ("C-<tab> K" . perject-delete)
-        ("C-<tab> e" . perject-open-close-or-reload)
-        ("C-<tab> s" . perject-sort)
-        ("C-<tab> n" . perject-next-project)
-        ("C-<tab> p" . perject-previous-project)
-        ("C-<tab> N" . perject-next-collection)
-        ("C-<tab> P" . perject-previous-collection)
-        ("C-<tab> C-<tab>" . schrenker/perject-switch-project-global)
-        ("C-<tab> TAB" . perject-switch)
-        ("C-<tab> a" . perject-add-buffer-to-project)
-        ("C-<tab> d" . perject-remove-buffer-from-project)
-        ("C-<tab> w" . perject-save)))
-
-(use-package perject-consult
-  :ensure
-  (perject-consult
-   :host "github.com"
-   :repo "overideal/perject"
-   :main "perject-consult.el")
-  :after (perject consult)
-  :config
-  ;; Hide the list of all buffers by default and set narrowing to all buffers to space.
-  (consult-customize consult--source-buffer :hidden t :narrow 32)
-  (consult-customize consult--source-hidden-buffer :narrow ?h)
-  (add-to-list 'consult-buffer-sources 'perject-consult--source-collection-buffer)
-  (add-to-list 'consult-buffer-sources 'perject-consult--source-project-buffer))
-
-(use-package perject-ibuffer
-  :ensure
-  (perject-ibuffer
-   :host "github.com"
-   :repo "overideal/perject"
-   :main "perject-ibuffer.el")
-  :after perject
+  (("C-x C-b" . persp-ibuffer)
+   :map perspective-map
+   ("B" . nil)
+   ("S" . persp-switch-to-scratch-buffer)
+   ("s" . nil)
+   ("C-<tab>" . persp-switch))
   :init
-  ;; By default restrict ibuffer to the buffers of the current project.
-  (add-hook 'ibuffer-hook #'perject-ibuffer-enable-filter-by-project)
-  :bind
-  (:map ibuffer-mode-map
-        ("a" . perject-ibuffer-add-to-project)
-        ("K" . perject-ibuffer-remove-from-project)
-        ("SPC" . perject-ibuffer-print-buffer-projects)
-        ("/ y" . ibuffer-filter-by-collection)
-        ("/ u" . ibuffer-filter-by-project)))
-
-(use-package perject-tab
-  :ensure
-  (perject-tab
-   :host "github.com"
-   :repo "overideal/perject"
-   :main "perject-tab.el")
-  :after perject
-  :init
-  (setq-default perject-tab-states '(("mutable" always "⟨" "⟩")
-                                     ("dynamic" perject-tab--dynamic-state "[" "]")
-                                     ("immutable" ignore "⟦" "⟧")))
-  (perject-tab-mode 1)
-  (add-hook 'perject-before-switch-hook (lambda (&rest orig new frame)
-                                          (let ((inhibit-message t)
-                                                (message-log-max nil))
-                                            (when (cdr (perject-current))
-                                              (unless (perject-tab-tabs)
-                                                (perject-tab-create))
-                                              (call-interactively #'perject-tab-set)))))
-  :bind
-  (:map perject-tab-mode-map
-        ("C-<tab> t o" . perject-tab-recent)
-        ("C-<tab> t p" . perject-tab-previous)
-        ("C-<tab> t n" . perject-tab-next)
-        ("C-<tab> t S" . perject-tab-set)
-        ("C-<tab> t s" . perject-tab-cycle-state)
-        ("C-<tab> t t" . perject-tab-create)
-        ("C-<tab> t T" . perject-tab-delete)
-        ("C-<tab> t r" . perject-tab-reset)
-        ("C-<tab> t i" . perject-tab-increment-index)
-        ("C-<tab> t I" . perject-tab-decrement-index)))
-
-
+  (setopt persp-initial-frame-name "!Main"
+          persp-mode-prefix-key (kbd "C-<tab>")
+          persp-purge-initial-persp-on-save t
+          persp-show-modestring 'header
+          persp-state-default-file (concat user-emacs-directory "perspfile.el"))
+  (add-hook 'kill-emacs-hook #'persp-state-save)
+  (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
+  (persp-mode))
 
 (use-package eglot
   :ensure nil

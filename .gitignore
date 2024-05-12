@@ -29,3 +29,4 @@ dotfiles/emacs/server/
 dotfiles/emacs/dirvish/
 dotfiles/emacs/tabsession.el
 dotfiles/emacs/var/
+dotfiles/emacs/perspfile.el

@@ -217,7 +217,7 @@
                  "NIX_SSL_CERT_FILE"
                  "NIX_PATH"))
     (add-to-list 'exec-path-from-shell-variables var))
-  (when (or (memq window-system '(mac ns x)))
+  (when (or (memq system-type '(darwin gnu/linux)))
     (exec-path-from-shell-initialize)))
 
 (use-package envrc
@@ -489,7 +489,7 @@ If no repository is found, prompt user to create one."
   :config
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-  (unless (window-system) (diff-hl-margin-mode))
+  (unless (display-graphic-p) (diff-hl-margin-mode))
   (global-diff-hl-mode))
 
 (use-package helpful
@@ -1713,7 +1713,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'go-ts-mode-hook (lambda ()
                                (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package meow
   :config
   (load-file (concat user-emacs-directory "lisp/meovim.el"))
@@ -1927,6 +1926,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
   (meow-global-mode 1))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package perject
   :demand t
   :config

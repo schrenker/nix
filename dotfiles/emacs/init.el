@@ -1863,7 +1863,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    '("." . meow-bounds-of-thing)
    '("<" . meow-beginning-of-thing)
    '(">" . meow-end-of-thing)
-   ;'("%" . er/expand-region)
    '("g" . meow-cancel-selection)
    '("G" . meow-grab)
    '("m" . meow-mark-word)

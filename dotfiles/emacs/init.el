@@ -1934,7 +1934,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    ("B" . nil)
    ("S" . persp-switch-to-scratch-buffer)
    ("s" . nil)
-   ("C-<tab>" . persp-switch))
+   ("C-<tab>" . persp-switch)
+   ("TAB" . persp-switch-last))
   :init
   (setopt persp-initial-frame-name "!Main"
           persp-mode-prefix-key (kbd "C-<tab>")
@@ -1943,6 +1944,11 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
           persp-state-default-file (concat user-emacs-directory "perspfile.el"))
   (add-hook 'kill-emacs-hook #'persp-state-save)
   (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
+  (add-hook 'ibuffer-hook
+          (lambda ()
+            (persp-ibuffer-set-filter-groups)
+            (unless (eq ibuffer-sorting-mode 'alphabetic)
+              (ibuffer-do-sort-by-alphabetic))))
   (persp-mode))
 
 (use-package eglot

@@ -2150,6 +2150,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    :host "github.com"
    :repo "Andor/promql-mode"))
 
+(use-package jsonnet-mode)
+
 (use-package go-mode
   :after eglot
   :init

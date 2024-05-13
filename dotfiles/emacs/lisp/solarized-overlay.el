@@ -158,6 +158,19 @@
                           :underline nil
                           :box `(:line-width 1 :color ,bg-alt))
 
+      (set-face-attribute 'tab-bar nil
+                          :background bg-main
+                          :foreground fg-alt
+                          :box `(:line-width 3 :color ,bg-main :style nil))
+      (set-face-attribute 'tab-bar-tab-inactive nil
+                          :background bg-main
+                          :foreground fg-alt
+                          :box `(:line-width 3 :color ,bg-main :style nil))
+      (set-face-attribute 'tab-bar-tab nil
+                          :background bg-highlight
+                          :foreground fg-main
+                          :box `(:line-width 3 :color ,bg-highlight :style nil))
+
       (with-eval-after-load 'org
         (set-face-attribute 'org-level-1 nil :background orange-2bg :foreground (if (eq appearance 'light) orange-d orange-l) :extend t)
         (set-face-attribute 'org-level-2 nil :background green-2bg  :foreground (if (eq appearance 'light) green-d green-l) :extend t)

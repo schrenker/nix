@@ -87,7 +87,6 @@
           sentence-end-double-space nil
           set-mark-command-repeat-pop t
           tab-always-indent 'complete
-          tab-bar-new-tab-choice #'scratch-buffer
           tab-width 4
           time-stamp-active t
           time-stamp-end "$"
@@ -1520,6 +1519,32 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package solaire-mode
   :init
   (solaire-global-mode))
+
+(use-package tab-bar
+  :ensure nil
+  :init
+  (defun schrenker/tab-bar-name (tab i)
+    "Add a space on the sides of every tab."
+    (let ((current-p (eq (car tab) 'current-tab)))
+      (propertize
+       (concat "  "
+               (if tab-bar-tab-hints (format "%d  " i) "")
+               (alist-get 'name tab)
+               (or (and tab-bar-close-button-show
+                        (not (eq tab-bar-close-button-show
+                                 (if current-p 'non-selected 'selected)))
+                        tab-bar-close-button)
+                   "")
+               "  ")
+       'face (funcall tab-bar-tab-face-function tab))))
+
+  (setopt tab-bar-auto-width nil
+          tab-bar-close-button-show nil
+          tab-bar-format '(tab-bar-format-tabs tab-bar-separator)
+          tab-bar-new-button nil
+          tab-bar-new-tab-choice #'scratch-buffer
+          tab-bar-separator "\u200B"
+          tab-bar-tab-name-format-function #'schrenker/tab-bar-name))
 
 (use-package solarized-theme
   :demand t

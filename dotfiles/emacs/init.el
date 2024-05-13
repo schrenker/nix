@@ -87,6 +87,7 @@
           sentence-end-double-space nil
           set-mark-command-repeat-pop t
           tab-always-indent 'complete
+          tab-bar-new-tab-choice #'scratch-buffer
           tab-width 4
           time-stamp-active t
           time-stamp-end "$"
@@ -639,8 +640,10 @@ If no applicable mode is present, default to uictl."
     ("<" previous-buffer)
     (">" next-buffer)
     ("b" consult-buffer)
-    ("B" (if persp-mode (call-interactively #'persp-ibuffer) (call-interactively #'ibuffer)) :color blue)
-    ("S" (if persp-mode (call-interactively #'persp-switch-to-scratch-buffer) (call-interactively #'scratch-buffer)))
+    ;; ("B" (if persp-mode (call-interactively #'persp-ibuffer) (call-interactively #'ibuffer)) :color blue)
+    ;; ("S" (if persp-mode (call-interactively #'persp-switch-to-scratch-buffer) (call-interactively #'scratch-buffer)))
+    ("B" (if tabspaces-mode (call-interactively #'tabspaces-ibuffer) (call-interactively #'ibuffer)) :color blue)
+    ("S" scratch-buffer)
     ("Q" schrenker/kill-this-buffer)
     ("TAB" schrenker/switch-hydra :color blue)
     ("q" nil :color blue))
@@ -1927,7 +1930,76 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (meow-global-mode 1))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
+(use-package tabspaces
+  ;; :commands (tabspaces-switch-or-create-workspace
+  ;;            tabspaces-open-or-create-project-and-workspace)
+  :hook (elpaca-after-init . tabspaces-mode)
+  :bind
+  (("C-x C-b" . tabspaces-ibuffer)
+   :map tabspaces-mode-map
+   ("C-<tab> s" . nil)
+   ("C-<tab> t" . nil)
+   ("C-<tab> R" . nil)
+   ("C-<tab> r" . nil)
+   ("C-<tab> k" . nil)
+   ("C-<tab> C-<tab>" . tabspaces-switch-or-create-workspace)
+   ("C-<tab> TAB" . tabspaces-switch-buffer-and-tab)
+   ("C-<tab> d" . tabspaces-remove-selected-buffer)
+   ("C-<tab> D" . tabspaces-remove-current-buffer)
+   ("C-<tab> K" . tabspaces-kill-buffers-close-workspace)
+   ("C-<tab> c" . tabspaces-close-workspace))
+  :init
+  (setopt tabspaces-keymap-prefix "C-<tab>"
+          tabspaces-use-filtered-buffers-as-default t
+          tabspaces-default-tab "Default"
+          tabspaces-remove-to-default t
+          tabspaces-include-buffers '("*scratch*")
+          tabspaces-initialize-project-with-todo nil
+          tabspaces-session t
+          tabspaces-session-auto-restore t)
+
+  (with-eval-after-load 'consult
+    (consult-customize consult--source-buffer :hidden t :default nil)
+    (defvar consult--source-workspace
+      (list :name     "Workspace Buffers"
+            :narrow   ?w
+            :history  'buffer-name-history
+            :category 'buffer
+            :state    #'consult--buffer-state
+            :default  t
+            :items    (lambda () (consult--buffer-query
+                             :predicate #'tabspaces--local-buffer-p
+                             :sort 'visibility
+                             :as #'buffer-name)))
+
+      "Set workspace buffer list for consult-buffer.")
+    (add-to-list 'consult-buffer-sources 'consult--source-workspace))
+
+  (with-eval-after-load 'ibuf-ext
+    (define-ibuffer-filter tabspaces-local-buffers
+        "Limit current view to local buffers."
+      (:description "local buffers" :reader nil)
+      (tabspaces--local-buffer-p buf)))
+
+  (with-eval-after-load 'ibuffer
+      (require 'ibuf-ext)
+      (define-key ibuffer--filter-map (kbd "l")
+                  #'ibuffer-filter-by-tabspaces-local-buffers))
+
+  (defun tabspaces-ibuffer (&optional other-window-p noselect shrink)
+    (interactive)
+    (let ((name (or
+                 (seq-find (lambda (b)
+                             (string-match-p
+                              (concat "*Tabspaces IBuffer (" (tabspaces--current-tab-name) ") *")
+                              (buffer-name b)))
+                           (buffer-list))
+                 (generate-new-buffer-name (concat "*Tabspaces IBuffer (" (tabspaces--current-tab-name) ") *")))))
+      (ibuffer other-window-p name '((tabspaces-local-buffers . nil))
+               noselect shrink))))
+
 (use-package perspective
+  :disabled
   :bind
   (("C-x C-b" . persp-ibuffer)
    :map perspective-map

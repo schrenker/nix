@@ -1949,6 +1949,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
             (persp-ibuffer-set-filter-groups)
             (unless (eq ibuffer-sorting-mode 'alphabetic)
               (ibuffer-do-sort-by-alphabetic))))
+  (with-eval-after-load 'consult
+    (consult-customize consult--source-buffer :hidden t :default nil)
+    (add-to-list 'consult-buffer-sources persp-consult-source))
   (persp-mode))
 
 (use-package eglot

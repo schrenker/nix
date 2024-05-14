@@ -2113,7 +2113,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package flyspell-correct
   :after flyspell
   :config
-  (unbind-key (kbd "C-c $") 'flyspell-mode-map))
+  (unbind-key (kbd "C-c $") 'flyspell-mode-map)
+  (unbind-key (kbd "C-.") 'flyspell-mode-map))
 
 (use-package consult-flyspell)
 

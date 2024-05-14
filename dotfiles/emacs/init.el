@@ -2082,9 +2082,13 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package flyspell-correct
   :after flyspell
-  :config
-  (unbind-key (kbd "C-c $") 'flyspell-mode-map)
-  (unbind-key (kbd "C-.") 'flyspell-mode-map))
+  :bind
+  (:map flyspell-mode-map
+        ("C-c $" . nil)
+        ("C-." . nil)
+        ("C-M-i" . nil)
+        ("C-;" . nil)
+        ("M-," . flyspell-auto-correct-word)))
 
 (use-package consult-flyspell)
 

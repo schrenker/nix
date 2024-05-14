@@ -159,17 +159,17 @@
                           :box `(:line-width 1 :color ,bg-alt))
 
       (set-face-attribute 'tab-bar nil
-                          :background bg-main
-                          :foreground fg-alt
-                          :box `(:line-width 3 :color ,bg-main :style nil))
-      (set-face-attribute 'tab-bar-tab-inactive nil
-                          :background bg-main
-                          :foreground fg-alt
-                          :box `(:line-width 3 :color ,bg-main :style nil))
-      (set-face-attribute 'tab-bar-tab nil
-                          :background bg-highlight
+                          :background bg-alt
                           :foreground fg-main
-                          :box `(:line-width 3 :color ,bg-highlight :style nil))
+                          :box `(:line-width 3 :color ,bg-alt :style nil))
+      (set-face-attribute 'tab-bar-tab-inactive nil
+                          :background bg-alt
+                          :foreground fg-main
+                          :box `(:line-width 3 :color ,bg-alt :style nil))
+      (set-face-attribute 'tab-bar-tab nil
+                          :background (if (eq appearance 'light) bg-main bg-highlight)
+                          :foreground fg-emph
+                          :box `(:line-width 3 :color ,(if (eq appearance 'light) bg-main bg-highlight) :style nil))
 
       (with-eval-after-load 'org
         (set-face-attribute 'org-level-1 nil :background orange-2bg :foreground (if (eq appearance 'light) orange-d orange-l) :extend t)

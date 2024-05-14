@@ -1736,6 +1736,10 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
               ("J" . Man-goto-section)))
 
 (use-package format-all
+  :bind
+  (("C-c C-f" . format-all-region-or-buffer)
+   :map emacs-lisp-mode-map
+   ("C-c C-f" . format-all-region-or-buffer))
   :init
   (add-hook 'prog-mode-hook 'format-all-mode)
   :config
@@ -1980,9 +1984,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
       (persp-is-current-buffer buf nil)))
 
   (with-eval-after-load 'ibuffer
-      (require 'ibuf-ext)
-      (define-key ibuffer--filter-map (kbd "l")
-                  #'ibuffer-filter-by-perspective-local-buffers))
+    (require 'ibuf-ext)
+    (define-key ibuffer--filter-map (kbd "l")
+                #'ibuffer-filter-by-perspective-local-buffers))
 
   (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
     (interactive)

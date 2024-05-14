@@ -2014,66 +2014,43 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'persp-mode-hook #'perspective-tabs-mode))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
+(use-package eglot
+  :ensure nil
+  :commands (eglot eglot-ensure eglot-inlay-hints-mode)
+  :bind
+  (("C-c c c" . eglot)
+   ("C-c c a" . eglot-code-actions)
+   ("C-c c r" . eglot-rename)
+   ("C-c c i" . eglot-find-implementation)
+   ("C-c c d" . eglot-find-declaration)
+   ("C-c c t" . eglot-find-typeDefinition))
+
   :init
-  (defun schrenker/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless))) ;; Configure orderless
+  (defun schrenker/eglot-capf ()
+    (setq-local completion-at-point-functions
+                (list #'eglot-completion-at-point
+                      #'cape-file
+                      #'tempel-expand)))
+  (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf)
 
-  (add-hook 'lsp-completion-mode #'schrenker/lsp-mode-setup-completion)
-  (add-hook 'nix-mode-hook #'lsp-deferred)
-  (add-hook 'go-mode-hook #'lsp-deferred)
+  (setopt eglot-events-buffer-size 0)
+  (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
+  (add-to-list 'completion-category-overrides '(eglot-capf (styles orderless))))
 
-  (setopt lsp-completion-provider :none
-          lsp-keymap-prefix "C-c c"
-          lsp-modeline-code-action-fallback-icon ""
-          lsp-progress-function 'lsp-on-progress-legacy
-          lsp-progress-prefix " "))
-
-;; (use-package eglot
-;;   :disabled
-;;   :ensure nil
-;;   :commands (eglot eglot-ensure eglot-inlay-hints-mode)
-;;   :bind
-;;   (("C-c c c" . eglot)
-;;                                         ;("C-c c f" . eglot-format)
-;;    ("C-c c a" . eglot-code-actions)
-;;    ("C-c c r" . eglot-rename)
-;;    ("C-c c i" . eglot-find-implementation)
-;;    ("C-c c d" . eglot-find-declaration)
-;;    ("C-c c t" . eglot-find-typeDefinition))
-;;   :init
-;;   (setopt eglot-autoshutdown t)
-;;   (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
-;;   :config
-;;   (add-to-list 'eglot-workspace-configuration
-;;                '(:yaml . (schemas .
-;;                                   ((https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json "/*")))))
-
-;;   (defun schrenker/eglot-capf ()
-;;     (setq-local completion-at-point-functions
-;;                 (list #'eglot-completion-at-point
-;;                       #'cape-file
-;;                       #'tempel-expand)))
-;;   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf))
-
-;; (use-package consult-eglot
-;;   :disabled
-;;   :after eglot
-;;   :bind (:map eglot-mode-map
-;;               ("M-g c" . consult-eglot-symbols)))
+(use-package consult-eglot
+  :after eglot
+  :bind (:map eglot-mode-map
+              ("M-g c" . consult-eglot-symbols)))
 
 (use-package flycheck
   :config
   (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
 
-;; (use-package flycheck-eglot
-;;   :disabled
-;;   :after (flycheck eglot)
-;;   :config
-;;   (setopt flycheck-eglot-exclusive t)
-;;   (global-flycheck-eglot-mode 1))
+(use-package flycheck-eglot
+  :after (flycheck eglot)
+  :config
+  (setopt flycheck-eglot-exclusive t)
+  (global-flycheck-eglot-mode 1))
 
 (use-package consult-flycheck)
 
@@ -2242,16 +2219,16 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
     (add-to-list 'eglot-server-programs '(jsonnet-mode . ("jsonnet-language-server")))))
 
 (use-package go-mode
-  ;:after eglot
+                                        ;:after eglot
   :init
   (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
   (setopt go-ts-mode-indent-offset 4)
   (add-hook 'go-ts-mode-hook (lambda ()
                                         ;           (eglot-inlay-hints-mode 1)
-                               ;(go-eldoc-setup)
+                                        ;(go-eldoc-setup)
                                (setq-local tab-width 4)
                                (setq-local indent-tabs-mode 1)))
-  ;:config
+                                        ;:config
   ;; (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
   ;;         '("gopls" :initializationOptions
   ;;           (:hints (

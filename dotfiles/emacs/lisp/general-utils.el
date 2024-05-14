@@ -124,7 +124,8 @@ Else go to the rightmost window in the frame."
     (while (not (schrenker/rightmost-window-p))
       (if (< (frame-width) 120)
           (windmove-down)
-        (windmove-right)))))
+        (unless (ignore-errors (or (windmove-right) t))
+          (windmove-down))))))
 
 (defun schrenker/backward-kill-word ()
   "Backward kill word without changing clipboard contents."

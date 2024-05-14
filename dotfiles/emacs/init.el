@@ -639,10 +639,10 @@ If no applicable mode is present, default to uictl."
     ("<" previous-buffer)
     (">" next-buffer)
     ("b" consult-buffer)
-    ;; ("B" (if persp-mode (call-interactively #'persp-ibuffer) (call-interactively #'ibuffer)) :color blue)
-    ;; ("S" (if persp-mode (call-interactively #'persp-switch-to-scratch-buffer) (call-interactively #'scratch-buffer)))
-    ("B" (if tabspaces-mode (call-interactively #'tabspaces-ibuffer) (call-interactively #'ibuffer)) :color blue)
-    ("S" scratch-buffer)
+    ("B" (if persp-mode (call-interactively #'persp-ibuffer) (call-interactively #'ibuffer)) :color blue)
+    ("S" (if persp-mode (call-interactively #'persp-switch-to-scratch-buffer) (call-interactively #'scratch-buffer)))
+    ;; ("B" (if tabspaces-mode (call-interactively #'tabspaces-ibuffer) (call-interactively #'ibuffer)) :color blue)
+    ;; ("S" scratch-buffer)
     ("Q" schrenker/kill-this-buffer)
     ("TAB" schrenker/switch-hydra :color blue)
     ("q" nil :color blue))
@@ -1573,6 +1573,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-to-list 'nerd-icons-extension-icon-alist '("jenkinsfile"   nerd-icons-devicon "nf-dev-jenkins"    :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("groovy"        nerd-icons-devicon "nf-dev-groovy"     :face nerd-icons-cyan))
   (add-to-list 'nerd-icons-extension-icon-alist '("org_archive"   nerd-icons-sucicon "nf-custom-orgmode" :face nerd-icons-dgreen))
+  (add-to-list 'nerd-icons-extension-icon-alist '("jsonnet"       nerd-icons-mdicon  "nf-md-code_json"   :face nerd-icons-blue-alt))
+  (add-to-list 'nerd-icons-extension-icon-alist '("libsonnet"     nerd-icons-mdicon  "nf-md-code_json"   :face nerd-icons-blue))
 
   (add-to-list 'nerd-icons-regexp-icon-alist '("postgresql.conf$" nerd-icons-devicon "nf-dev-postgresql" :face nerd-icons-blue))
   (add-to-list 'nerd-icons-regexp-icon-alist '("^flake.lock$"     nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dblue))
@@ -1956,6 +1958,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package tabspaces
+  :disabled
   ;; :commands (tabspaces-switch-or-create-workspace
   ;;            tabspaces-open-or-create-project-and-workspace)
   :hook (elpaca-after-init . tabspaces-mode)
@@ -2024,7 +2027,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                noselect shrink))))
 
 (use-package perspective
-  :disabled
   :bind
   (("C-x C-b" . persp-ibuffer)
    :map perspective-map
@@ -2037,7 +2039,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (setopt persp-initial-frame-name "!Main"
           persp-mode-prefix-key (kbd "C-<tab>")
           persp-purge-initial-persp-on-save t
-          persp-show-modestring 'header
+          persp-show-modestring nil
           persp-state-default-file (concat user-emacs-directory "perspfile.el"))
   (add-hook 'kill-emacs-hook #'persp-state-save)
   (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
@@ -2046,10 +2048,18 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
             (persp-ibuffer-set-filter-groups)
             (unless (eq ibuffer-sorting-mode 'alphabetic)
               (ibuffer-do-sort-by-alphabetic))))
+  (persp-mode)
+
+  :config
   (with-eval-after-load 'consult
     (consult-customize consult--source-buffer :hidden t :default nil)
-    (add-to-list 'consult-buffer-sources persp-consult-source))
-  (persp-mode))
+    (add-to-list 'consult-buffer-sources persp-consult-source)))
+
+(use-package perspective-tabs
+  :after perspective
+  :ensure (perspective-tabs :host sourcehut :repo "woozong/perspective-tabs")
+  :init
+  (add-hook 'persp-mode-hook #'perspective-tabs-mode))
 
 (use-package eglot
   :ensure nil

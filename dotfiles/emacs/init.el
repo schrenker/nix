@@ -2223,25 +2223,25 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (setopt go-ts-mode-indent-offset 4)
   (add-hook 'go-ts-mode-hook (lambda ()
                                (eglot-inlay-hints-mode 1)
-                                        ;(go-eldoc-setup)
+                               (go-eldoc-setup)
                                (setq-local tab-width 4)
                                (setq-local indent-tabs-mode 1)))
-                                        ;:config
-  ;; (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
-  ;;         '("gopls" :initializationOptions
-  ;;           (:hints (
-  ;;                    :parameterNames t
-  ;;                    :rangeVariableTypes t
-  ;;                    :functionTypeParameters t
-  ;;                    :assignVariableTypes t
-  ;;                    :compositeLiteralFields t
-  ;;                    :compositeLiteralTypes t
-  ;;                    :constantValues t))))
-  ;; (setopt eglot-workspace-configuration
-  ;;         '((:gopls .
-  ;;                   ((staticcheck . t)
-  ;;                    (matcher . "CaseSensitive")))))
-  )
+  :config
+  (with-eval-after-load 'eglot
+    (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
+            '("gopls" :initializationOptions
+              (:hints (
+                       :parameterNames t
+                       :rangeVariableTypes t
+                       :functionTypeParameters t
+                       :assignVariableTypes t
+                       :compositeLiteralFields t
+                       :compositeLiteralTypes t
+                       :constantValues t))))
+    (setopt eglot-workspace-configuration
+            '((:gopls .
+                      ((staticcheck . t)
+                       (matcher . "CaseSensitive")))))))
 
 (use-package go-eldoc)
 

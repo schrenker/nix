@@ -107,7 +107,7 @@
   (when (display-graphic-p)
     (scroll-bar-mode -1)
     (tool-bar-mode -1))
-  ;; (flymake-mode -1)
+  (flymake-mode -1)
 
   (column-number-mode 1)
   (electric-indent-mode 1)
@@ -300,7 +300,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings (goto-map)
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g f" . consult-flymake)
          ("M-g F" . consult-flyspell)
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
@@ -2043,20 +2043,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :after eglot
   :bind (:map eglot-mode-map
               ("M-g c" . consult-eglot-symbols)))
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-
-;; (use-package flycheck
-;;   :config
-;;   (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
-
-;; (use-package flycheck-eglot
-;;   :after (flycheck eglot)
-;;   :config
-;;   (setopt flycheck-eglot-exclusive t)
-;;   (global-flycheck-eglot-mode 1))
-
-;; (use-package consult-flycheck)
-
 
 (use-package flymake
   :ensure nil
@@ -2065,6 +2051,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (setopt flymake-mode-line-lighter "FM"
           flymake-show-diagnostics-at-end-of-line 'short))
 
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package flyspell
   :ensure nil
   :config

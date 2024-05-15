@@ -561,7 +561,62 @@ If no repository is found, prompt user to create one."
     (with-eval-after-load 'posframe
       (ace-window-posframe-mode 1))))
 
+(use-package perspective
+  :bind
+  (("C-x C-b" . schrenker/persp-ibuffer)
+   :map perspective-map
+   ("B" . nil)
+   ("S" . persp-switch-to-scratch-buffer)
+   ("s" . nil)
+   ("C-<tab>" . persp-switch)
+   ("TAB" . persp-switch-last))
+  :init
+  (setopt persp-initial-frame-name "!Main"
+          persp-mode-prefix-key (kbd "C-<tab>")
+          persp-purge-initial-persp-on-save t
+          persp-show-modestring nil
+          persp-state-default-file (concat user-emacs-directory "perspfile.el"))
+  (add-hook 'kill-emacs-hook #'persp-state-save)
+  (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
+
+  (with-eval-after-load 'ibuf-ext
+    (define-ibuffer-filter perspective-local-buffers
+        "Limit current view to local buffers."
+      (:description "local buffers" :reader nil)
+      (persp-is-current-buffer buf nil)))
+
+  (with-eval-after-load 'ibuffer
+    (require 'ibuf-ext)
+    (define-key ibuffer--filter-map (kbd "l")
+                #'ibuffer-filter-by-perspective-local-buffers))
+
+  (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
+    (interactive)
+    (let ((name (or
+                 (seq-find (lambda (b)
+                             (string-match-p
+                              (concat "*Persp Ibuffer (" (persp-current-name) ") *")
+                              (buffer-name b)))
+                           (buffer-list))
+                 (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ") *")))))
+      (ibuffer other-window-p name '((perspective-local-buffers . nil))
+               noselect shrink)))
+
+  (persp-mode)
+
+  :config
+  (with-eval-after-load 'consult
+    (consult-customize consult--source-buffer :hidden t :default nil)
+    (add-to-list 'consult-buffer-sources persp-consult-source)))
+
+(use-package perspective-tabs
+  :after perspective
+  :ensure (perspective-tabs :host sourcehut :repo "woozong/perspective-tabs")
+  :init
+  (add-hook 'persp-mode-hook #'perspective-tabs-mode))
+
 (use-package popper
+  :after perspective
   :init
   (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
     "Display popups at the bottom of the screen.
@@ -570,7 +625,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
         (display-buffer-no-window buffer '((allow-no-window . t)))
       (popper-select-popup-at-bottom buffer _act)))
   :config
-  (setopt popper-group-function #'popper-group-by-project
+  (setopt popper-group-function #'popper-group-by-perspective
           popper-display-function #'popper-select-popup-at-bottom-maybe-hide
           popper-reference-buffers
           '("\\*Messages\\*"
@@ -1959,59 +2014,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
   (meow-global-mode 1))
 
-(use-package perspective
-  :bind
-  (("C-x C-b" . schrenker/persp-ibuffer)
-   :map perspective-map
-   ("B" . nil)
-   ("S" . persp-switch-to-scratch-buffer)
-   ("s" . nil)
-   ("C-<tab>" . persp-switch)
-   ("TAB" . persp-switch-last))
-  :init
-  (setopt persp-initial-frame-name "!Main"
-          persp-mode-prefix-key (kbd "C-<tab>")
-          persp-purge-initial-persp-on-save t
-          persp-show-modestring nil
-          persp-state-default-file (concat user-emacs-directory "perspfile.el"))
-  (add-hook 'kill-emacs-hook #'persp-state-save)
-  (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
-
-  (with-eval-after-load 'ibuf-ext
-    (define-ibuffer-filter perspective-local-buffers
-        "Limit current view to local buffers."
-      (:description "local buffers" :reader nil)
-      (persp-is-current-buffer buf nil)))
-
-  (with-eval-after-load 'ibuffer
-    (require 'ibuf-ext)
-    (define-key ibuffer--filter-map (kbd "l")
-                #'ibuffer-filter-by-perspective-local-buffers))
-
-  (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
-    (interactive)
-    (let ((name (or
-                 (seq-find (lambda (b)
-                             (string-match-p
-                              (concat "*Persp Ibuffer (" (persp-current-name) ") *")
-                              (buffer-name b)))
-                           (buffer-list))
-                 (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ") *")))))
-      (ibuffer other-window-p name '((perspective-local-buffers . nil))
-               noselect shrink)))
-
-  (persp-mode)
-
-  :config
-  (with-eval-after-load 'consult
-    (consult-customize consult--source-buffer :hidden t :default nil)
-    (add-to-list 'consult-buffer-sources persp-consult-source)))
-
-(use-package perspective-tabs
-  :after perspective
-  :ensure (perspective-tabs :host sourcehut :repo "woozong/perspective-tabs")
-  :init
-  (add-hook 'persp-mode-hook #'perspective-tabs-mode))
 
 (use-package eglot
   :ensure nil

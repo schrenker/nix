@@ -2013,7 +2013,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :init
   (add-hook 'persp-mode-hook #'perspective-tabs-mode))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 (use-package eglot
   :ensure nil
   :commands (eglot eglot-ensure eglot-inlay-hints-mode)
@@ -2026,6 +2025,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    ("C-c c t" . eglot-find-typeDefinition))
 
   :init
+  (fset #'jsonrpc--log-event #'ignore)
+
   (defun schrenker/eglot-capf ()
     (setq-local completion-at-point-functions
                 (list #'eglot-completion-at-point
@@ -2033,14 +2034,14 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                       #'tempel-expand)))
   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf)
 
-  (setopt eglot-events-buffer-size 0)
-  (add-to-list 'completion-category-overrides '(eglot (styles orderless)))
-  (add-to-list 'completion-category-overrides '(eglot-capf (styles orderless))))
+  (setopt eglot-events-buffer-size 0
+          eglot-menu-string "Eg"))
 
 (use-package consult-eglot
   :after eglot
   :bind (:map eglot-mode-map
               ("M-g c" . consult-eglot-symbols)))
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 
 (use-package flycheck
   :config

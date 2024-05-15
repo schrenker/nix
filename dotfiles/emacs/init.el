@@ -107,7 +107,7 @@
   (when (display-graphic-p)
     (scroll-bar-mode -1)
     (tool-bar-mode -1))
-  (flymake-mode -1)
+  ;; (flymake-mode -1)
 
   (column-number-mode 1)
   (electric-indent-mode 1)
@@ -300,7 +300,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings (goto-map)
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flycheck)               ;; Alternative: consult-flycheck
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
          ("M-g F" . consult-flyspell)
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
@@ -2043,17 +2043,25 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
               ("M-g c" . consult-eglot-symbols)))
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 
-(use-package flycheck
-  :config
-  (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
+;; (use-package flycheck
+;;   :config
+;;   (add-hook 'elpaca-after-init-hook #'global-flycheck-mode))
 
-(use-package flycheck-eglot
-  :after (flycheck eglot)
-  :config
-  (setopt flycheck-eglot-exclusive t)
-  (global-flycheck-eglot-mode 1))
+;; (use-package flycheck-eglot
+;;   :after (flycheck eglot)
+;;   :config
+;;   (setopt flycheck-eglot-exclusive t)
+;;   (global-flycheck-eglot-mode 1))
 
-(use-package consult-flycheck)
+;; (use-package consult-flycheck)
+
+
+(use-package flymake
+  :ensure nil
+  :hook ((prog-mode org-mode) . flymake-mode)
+  :config
+  (setopt flymake-mode-line-lighter "FM"
+          flymake-show-diagnostics-at-end-of-line 'short))
 
 (use-package flyspell
   :ensure nil
@@ -2225,7 +2233,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
   (setopt go-ts-mode-indent-offset 4)
   (add-hook 'go-ts-mode-hook (lambda ()
-                                        ;           (eglot-inlay-hints-mode 1)
+                               (eglot-inlay-hints-mode 1)
                                         ;(go-eldoc-setup)
                                (setq-local tab-width 4)
                                (setq-local indent-tabs-mode 1)))

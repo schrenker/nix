@@ -65,7 +65,7 @@
           indent-tabs-mode nil
           inhibit-startup-message t
           inhibit-startup-screen t
-          initial-major-mode 'org-mode
+          initial-major-mode 'fundamental-mode
           initial-scratch-message nil
           kept-new-versions 6
           kept-old-versions 2
@@ -604,7 +604,11 @@ If no repository is found, prompt user to create one."
 
   (persp-mode)
 
+  ;(persp-buffers (gethash (car (cdr (persp-all-names))) (perspectives-hash)))
+
   :config
+  (defalias 'persp-feature-flag-prevent-killing-last-buffer-in-perspective #'ignore)
+
   (with-eval-after-load 'consult
     (consult-customize consult--source-buffer :hidden t :default nil)
     (add-to-list 'consult-buffer-sources persp-consult-source)))

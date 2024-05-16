@@ -2170,6 +2170,10 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package yaml-mode)
 
+(use-package flymake-yamllint
+  :init
+  (add-hook 'yaml-mode-hook #'flymake-yamllint-setup))
+
 (use-package yaml-pro
   :demand t
   :bind

@@ -57,6 +57,7 @@
       pkgs.gitleaks
       pkgs.docker
       pkgs.syncthing
+      pkgs.yamllint
     ];
 
   fonts.fontconfig.enable = true;

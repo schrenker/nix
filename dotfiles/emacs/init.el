@@ -1062,17 +1062,12 @@ Else sort by Alpha."
   (setopt org-edit-src-content-indentation 0
           org-src-preserve-indentation t
           org-babel-shell-names '("bash" "fish" "sh" "zsh" "csh" "ash" "dash" "ksh" "mksh" "posh")
-          org-src-lang-modes '(("bash" . bash-ts)
-                               ("shell" . bash-ts)
-                               ("sh" . bash-ts)
+          org-src-lang-modes '(("shell" . bash)
+                               ("sh" . bash)
                                ("fish" . fish)
                                ("elisp" . emacs-lisp)
                                ("sqlite" . sql)
-                               ("go" . go-ts)
-                               ("python" . python-ts)
-                               ("py" . python-ts)
-                               ("txt" . text)
-                               ("typst" . typst-ts)))
+                               ("txt" . text)))
 
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
@@ -1559,12 +1554,12 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
     (load (concat user-emacs-directory "lisp/prism-cl.el") 'noerror 'nomessage))
   (setopt prism-comments nil
           prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
-                                          (python-ts-mode . python-indent-offset)
+                                          (python-mode . python-indent-offset)
                                           (t . 2)))
   (add-hook 'yaml-mode-hook #'prism-whitespace-mode)
-  (add-hook 'bash-ts-mode-hook #'prism-whitespace-mode)
+  (add-hook 'bash-mode-hook #'prism-whitespace-mode)
   (add-hook 'shell-script-mode-hook #'prism-whitespace-mode)
-  (add-hook 'python-ts-mode-hook #'prism-whitespace-mode)
+  (add-hook 'python-mode-hook #'prism-whitespace-mode)
   (add-hook 'emacs-lisp-mode-hook #'prism-mode))
 
 (use-package mood-line
@@ -1799,7 +1794,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :init
   (add-hook 'prog-mode-hook 'format-all-mode)
   :config
-  (add-hook 'go-ts-mode-hook (lambda ()
+  (add-hook 'go-mode-hook (lambda ()
                                (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
 
 (use-package meow
@@ -2057,48 +2052,19 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'text-mode-hook #'flymake-proselint-setup))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package treesit
-  :ensure nil
-  :init
-  (setopt treesit-language-source-alist
-          '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-            (c "https://github.com/tree-sitter/tree-sitter-c")
-            (cmake "https://github.com/uyha/tree-sitter-cmake")
-            (common-lisp "https://github.com/theHamsta/tree-sitter-commonlisp")
-            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-            (css "https://github.com/tree-sitter/tree-sitter-css")
-            (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
-            (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-            (go "https://github.com/tree-sitter/tree-sitter-go")
-            (go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
-            (html "https://github.com/tree-sitter/tree-sitter-html")
-            (js . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-            (json "https://github.com/tree-sitter/tree-sitter-json")
-            (lua "https://github.com/Azganoth/tree-sitter-lua")
-            (make "https://github.com/alemuller/tree-sitter-make")
-            (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-            (python "https://github.com/tree-sitter/tree-sitter-python")
-            (r "https://github.com/r-lib/tree-sitter-r")
-            (rust "https://github.com/tree-sitter/tree-sitter-rust")
-            (toml "https://github.com/tree-sitter/tree-sitter-toml")
-            (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-            (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
-            (typst . ("https://github.com/uben0/tree-sitter-typst" "master" "src"))
-            (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "master" "src")))))
+;; (use-package typst-ts-mode
+;;   :disabled
+;;   :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+;;   :init
+;;   (setopt typst-ts-mode-watch-options "--open"))
 
-(use-package typst-ts-mode
-  :disabled
-  :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
-  :init
-  (setopt typst-ts-mode-watch-options "--open"))
-
-(use-package typst-preview
-  :disabled
-  :after typst-ts-mode
-  :ensure
-  (typst-preview
-   :host "github.com"
-   :repo "havarddj/typst-preview.el"))
+;; (use-package typst-preview
+;;   :disabled
+;;   :after typst-ts-mode
+;;   :ensure
+;;   (typst-preview
+;;    :host "github.com"
+;;    :repo "havarddj/typst-preview.el"))
 
 ;; Major modes for text/programming
 (use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
@@ -2109,21 +2075,21 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :init
   (add-hook 'yaml-mode-hook #'flymake-yamllint-setup))
 
-(use-package yaml-pro
-  :demand t
-  :bind
-  (:map yaml-pro-mode-map
-        ("C-c C-'" . yaml-pro-edit-scalar)
-        ("C-c '" . nil)
-        ("M-J" . yaml-pro-move-subtree-down)
-        ("M-K" . yaml-pro-move-subtree-up)
-        ("M-j" . yaml-pro-next-subtree)
-        ("M-k" . yaml-pro-prev-subtree)
-        ("M-h" . yaml-pro-unindent-subtree)
-        ("M-l" . yaml-pro-indent-subtree)
-        ("M-?" . yaml-pro-convolute-tree))
-  :init
-  (add-hook 'yaml-mode-hook 'yaml-pro-mode))
+;; (use-package yaml-pro
+;;   :demand t
+;;   :bind
+;;   (:map yaml-pro-mode-map
+;;         ("C-c C-'" . yaml-pro-edit-scalar)
+;;         ("C-c '" . nil)
+;;         ("M-J" . yaml-pro-move-subtree-down)
+;;         ("M-K" . yaml-pro-move-subtree-up)
+;;         ("M-j" . yaml-pro-next-subtree)
+;;         ("M-k" . yaml-pro-prev-subtree)
+;;         ("M-h" . yaml-pro-unindent-subtree)
+;;         ("M-l" . yaml-pro-indent-subtree)
+;;         ("M-?" . yaml-pro-convolute-tree))
+;;   :init
+;;   (add-hook 'yaml-mode-hook 'yaml-pro-mode))
 
 (use-package markdown-mode)
 
@@ -2156,31 +2122,30 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
     (add-to-list 'eglot-server-programs '(jsonnet-mode . ("jsonnet-language-server")))))
 
 (use-package go-mode
-                                        ;:after eglot
   :init
-  (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
-  (setopt go-ts-mode-indent-offset 4)
-  (add-hook 'go-ts-mode-hook (lambda ()
+  (setopt go-mode-indent-offset 4)
+  (add-hook 'go-mode-hook (lambda ()
                                (eglot-inlay-hints-mode 1)
                                (go-eldoc-setup)
                                (setq-local tab-width 4)
                                (setq-local indent-tabs-mode 1)))
   :config
-  (with-eval-after-load 'eglot
-    (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
-            '("gopls" :initializationOptions
-              (:hints (
-                       :parameterNames t
-                       :rangeVariableTypes t
-                       :functionTypeParameters t
-                       :assignVariableTypes t
-                       :compositeLiteralFields t
-                       :compositeLiteralTypes t
-                       :constantValues t))))
-    (setopt eglot-workspace-configuration
-            '((:gopls .
-                      ((staticcheck . t)
-                       (matcher . "CaseSensitive")))))))
+  ;; (with-eval-after-load 'eglot
+  ;;   (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode) eglot-server-programs)
+  ;;           '("gopls" :initializationOptions
+  ;;             (:hints (
+  ;;                      :parameterNames t
+  ;;                      :rangeVariableTypes t
+  ;;                      :functionTypeParameters t
+  ;;                      :assignVariableTypes t
+  ;;                      :compositeLiteralFields t
+  ;;                      :compositeLiteralTypes t
+  ;;                      :constantValues t))))
+  ;;   (setopt eglot-workspace-configuration
+  ;;           '((:gopls .
+  ;;                     ((staticcheck . t)
+  ;;                      (matcher . "CaseSensitive"))))))
+  )
 
 (use-package go-eldoc)
 
@@ -2196,9 +2161,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package python-mode
   :init
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (setopt python-indent-offset 4)
-  (add-hook 'python-ts-mode-hook (lambda ()
+  (add-hook 'python-mode-hook (lambda ()
                                         ;(eglot-inlay-hints-mode 1)
                                    (setq-local tab-width 4))))
 
@@ -2217,12 +2181,12 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package sh-script
   :ensure nil
   :init
-  (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-mode))
+  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-mode))
   (setopt sh-shell "bash")
   (setopt sh-shell-file "/bin/bash")
   :mode
-  ("\\.sh\\'" . bash-ts-mode))
+  ("\\.sh\\'" . bash-mode))
 
 (use-package dockerfile-mode)
 

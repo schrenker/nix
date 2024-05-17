@@ -37,6 +37,7 @@
       fish
       jq
       poppler_utils
+      proselint
       yq-go
       wget
 

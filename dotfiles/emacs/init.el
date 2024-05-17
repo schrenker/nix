@@ -301,7 +301,6 @@
          ;; M-g bindings (goto-map)
          ("M-g e" . consult-compile-error)
          ("M-g f" . consult-flymake)
-         ("M-g F" . consult-flyspell)
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-org-heading)
@@ -603,8 +602,6 @@ If no repository is found, prompt user to create one."
                noselect shrink)))
 
   (persp-mode)
-
-  ;(persp-buffers (gethash (car (cdr (persp-all-names))) (perspectives-hash)))
 
   :config
   (defalias 'persp-feature-flag-prevent-killing-last-buffer-in-perspective #'ignore)
@@ -2050,31 +2047,16 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package flymake
   :ensure nil
-  :hook ((prog-mode org-mode) . flymake-mode)
+  :hook ((prog-mode text-mode org-mode) . flymake-mode)
   :config
   (setopt flymake-mode-line-lighter "FM"
           flymake-show-diagnostics-at-end-of-line 'short))
 
+(use-package flymake-proselint
+  :init
+  (add-hook 'text-mode-hook #'flymake-proselint-setup))
+
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package flyspell
-  :ensure nil
-  :config
-  (setopt ispell-program-name "aspell"
-          ispell-silently-savep t)
-  (add-hook 'org-mode-hook #'flyspell-mode))
-
-(use-package flyspell-correct
-  :after flyspell
-  :bind
-  (:map flyspell-mode-map
-        ("C-c $" . nil)
-        ("C-." . nil)
-        ("C-M-i" . nil)
-        ("C-;" . nil)
-        ("M-," . flyspell-auto-correct-word)))
-
-(use-package consult-flyspell)
-
 (use-package dape
   :disabled
   :ensure

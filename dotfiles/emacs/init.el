@@ -2033,7 +2033,20 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf)
 
   (setopt eglot-events-buffer-size 0
-          eglot-menu-string "Eg"))
+          eglot-menu-string "Eg")
+
+  (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
+            '("gopls" :initializationOptions
+              (:hints (
+                       :parameterNames t
+                       :rangeVariableTypes t
+                       :functionTypeParameters t
+                       :assignVariableTypes t
+                       :compositeLiteralFields t
+                       :compositeLiteralTypes t
+                       :constantValues t))))
+
+  (add-to-list 'eglot-server-programs '(jsonnet-mode . ("jsonnet-language-server"))))
 
 (use-package consult-eglot
   :after eglot
@@ -2051,56 +2064,15 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :init
   (add-hook 'text-mode-hook #'flymake-proselint-setup))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-;; (use-package typst-ts-mode
-;;   :disabled
-;;   :ensure (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
-;;   :init
-;;   (setopt typst-ts-mode-watch-options "--open"))
-
-;; (use-package typst-preview
-;;   :disabled
-;;   :after typst-ts-mode
-;;   :ensure
-;;   (typst-preview
-;;    :host "github.com"
-;;    :repo "havarddj/typst-preview.el"))
-
-;; Major modes for text/programming
-(use-package poly-ansible) ;pulls yaml-mode, ansible-mode, polymode, and allows jinja2 in yaml.
-
-(use-package yaml-mode)
-
 (use-package flymake-yamllint
   :init
   (add-hook 'yaml-mode-hook #'flymake-yamllint-setup))
 
-;; (use-package yaml-pro
-;;   :demand t
-;;   :bind
-;;   (:map yaml-pro-mode-map
-;;         ("C-c C-'" . yaml-pro-edit-scalar)
-;;         ("C-c '" . nil)
-;;         ("M-J" . yaml-pro-move-subtree-down)
-;;         ("M-K" . yaml-pro-move-subtree-up)
-;;         ("M-j" . yaml-pro-next-subtree)
-;;         ("M-k" . yaml-pro-prev-subtree)
-;;         ("M-h" . yaml-pro-unindent-subtree)
-;;         ("M-l" . yaml-pro-indent-subtree)
-;;         ("M-?" . yaml-pro-convolute-tree))
-;;   :init
-;;   (add-hook 'yaml-mode-hook 'yaml-pro-mode))
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
+;; Major modes for text/programming
+(use-package apparmor-mode)
 
-(use-package markdown-mode)
-
-(use-package nix-mode)
-
-(use-package nginx-mode)
-
-(use-package powershell)
-
-(use-package ob-powershell
-  :after (powershell org))
+(use-package bash-completion)
 
 (use-package bicep-mode
   :ensure
@@ -2108,18 +2080,15 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    :host "github.com"
    :repo "christiaan-janssen/bicep-mode"))
 
-(use-package prometheus-mode)
+(use-package d2-mode)
+(use-package ob-d2)
 
-(use-package promql-mode
-  :ensure
-  (promql-mode
-   :host "github.com"
-   :repo "Andor/promql-mode"))
+(use-package dockerfile-mode)
 
-(use-package jsonnet-mode
+(use-package fish-mode)
+(use-package fish-completion
   :config
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '(jsonnet-mode . ("jsonnet-language-server")))))
+  (global-fish-completion-mode))
 
 (use-package go-mode
   :init
@@ -2128,36 +2097,36 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                                (eglot-inlay-hints-mode 1)
                                (go-eldoc-setup)
                                (setq-local tab-width 4)
-                               (setq-local indent-tabs-mode 1)))
-  :config
-  ;; (with-eval-after-load 'eglot
-  ;;   (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode) eglot-server-programs)
-  ;;           '("gopls" :initializationOptions
-  ;;             (:hints (
-  ;;                      :parameterNames t
-  ;;                      :rangeVariableTypes t
-  ;;                      :functionTypeParameters t
-  ;;                      :assignVariableTypes t
-  ;;                      :compositeLiteralFields t
-  ;;                      :compositeLiteralTypes t
-  ;;                      :constantValues t))))
-  ;;   (setopt eglot-workspace-configuration
-  ;;           '((:gopls .
-  ;;                     ((staticcheck . t)
-  ;;                      (matcher . "CaseSensitive"))))))
-  )
+                               (setq-local indent-tabs-mode 1))))
 
 (use-package go-eldoc)
-
+(use-package go-gen-test)
 (use-package go-guru)
-
 (use-package gorepl-mode)
-
 (use-package go-tag)
 
-(use-package go-gen-test)
+(use-package jenkinsfile-mode
+  :mode "\\.jenkinsfile\\'")
 
-(use-package apparmor-mode)
+(use-package json-mode)
+(use-package jsonnet-mode)
+
+(use-package markdown-mode)
+
+(use-package nginx-mode)
+
+(use-package nix-mode)
+
+(use-package powershell)
+(use-package ob-powershell
+  :after (powershell org))
+
+(use-package prometheus-mode)
+(use-package promql-mode
+  :ensure
+  (promql-mode
+   :host "github.com"
+   :repo "Andor/promql-mode"))
 
 (use-package python-mode
   :init
@@ -2166,17 +2135,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                                         ;(eglot-inlay-hints-mode 1)
                                    (setq-local tab-width 4))))
 
-(use-package json-mode)
-
 (use-package rego-mode)
-
-(use-package fish-mode)
-
-(use-package fish-completion
-  :config
-  (global-fish-completion-mode))
-
-(use-package bash-completion)
 
 (use-package sh-script
   :ensure nil
@@ -2188,14 +2147,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :mode
   ("\\.sh\\'" . bash-mode))
 
-(use-package dockerfile-mode)
-
-(use-package jenkinsfile-mode
-  :mode "\\.jenkinsfile\\'")
-
-(use-package d2-mode)
-
-(use-package ob-d2)
+(use-package yaml-mode)
 
 (add-hook 'elpaca-after-init-hook
           (lambda ()

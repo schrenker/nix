@@ -2057,57 +2057,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'text-mode-hook #'flymake-proselint-setup))
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-(use-package dape
-  :disabled
-  :ensure
-  (dape
-   :host "github.com"
-   :repo "svaante/dape"
-   :pin t)
-  :config
-  ;; Add inline variable hints, this feature is highly experimental
-  ;; (setq dape-inline-variables t)
-
-  ;; To remove info buffer on startup
-  ;; (remove-hook 'dape-on-start-hooks 'dape-info)
-
-  ;; To remove repl buffer on startup
-  ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
-
-  ;; By default dape uses gdb keybinding prefix
-  ;; (setq dape-key-prefix "\C-x\C-a")
-
-  ;; Use n for next etc. in REPL
-  ;; (setq dape-repl-use-shorthand t)
-
-  ;; Kill compile buffer on build success
-  ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
-
-  ;; Projectile users
-  ;; (setq dape-cwd-fn 'projectile-project-root)
-  (add-to-list 'dape-configs
-               `(delve
-                 modes (go-mode go-ts-mode)
-                 command "dlv"
-                 command-args ("dap" "--listen" "127.0.0.1:55878")
-                 command-cwd dape-cwd-fn
-                 host "127.0.0.1"
-                 port 55878
-                 :type "debug"
-                 :request "launch"
-                 :cwd dape-cwd-fn
-                 :program dape-cwd-fn))
-
-  (add-to-list 'dape-configs
-               `(debugpy
-                 modes (python-ts-mode python-mode)
-                 command "python3"
-                 command-args ("-m" "debugpy.adapter")
-                 :type "executable"
-                 :request "launch"
-                 :cwd dape-cwd-fn
-                 :program dape-find-file-buffer-default)))
-
 (use-package treesit
   :ensure nil
   :init

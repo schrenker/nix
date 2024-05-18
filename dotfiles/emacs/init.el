@@ -437,7 +437,7 @@
       '("W" "Diff worktree at point" schrenker/magit-diff-with-commit-at-point))))
 
 (use-package magit
-  :bind (("C-x g" . schrenker/magit-status-rightmost-window)
+  :bind (("C-x g" . schrenker/magit-status-utility-window)
          ("C-x G" . schrenker/magit-status-with-prefix)
          :map magit-status-mode-map
          ("o" . schrenker/magit-diff-visit-file-other-window)
@@ -470,11 +470,11 @@ If no repository is found, prompt user to create one."
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status)))
 
-  (defun schrenker/magit-status-rightmost-window ()
+  (defun schrenker/magit-status-utility-window ()
     (interactive)
     (let ((wcount (count-windows))
           (dir (vc-root-dir)))
-      (schrenker/rightmost-window-or-split)
+      (schrenker/utility-buffer-placement)
       (when (> (count-windows) wcount)
         (set-window-parameter (get-buffer-window (current-buffer)) 'magit-dedicated t))
       (magit-status dir)))
@@ -2071,7 +2071,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'eglot-managed-mode-hook #'schrenker/eglot-capf)
 
   (setopt eglot-events-buffer-size 0
-          eglot-menu-string "Eg")
+          eglot-menu-string "󰿘")
 
   :config
   (add-to-list 'eglot-server-programs '((go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode)

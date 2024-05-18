@@ -111,21 +111,29 @@ killed, or give a choice of showing diff from saved version."
 
 (defun schrenker/rightmost-window-p ()
   "Check if window is the rightmost one in current frame."
-  (not (window-right (get-buffer-window))))
+    (save-window-excursion
+      (not (ignore-errors (windmove-right)))))
 
-(defun schrenker/rightmost-window-or-split ()
-  "If there is only one live window in the frame,
- split right and go to the new window.
-Else go to the rightmost window in the frame."
-  (if (< (count-windows) 2)
-      (if (< (frame-width) 120)
-          (schrenker/split-and-follow-horizontally)
-        (schrenker/split-and-follow-vertically))
-    (while (not (schrenker/rightmost-window-p))
-      (if (< (frame-width) 120)
-          (windmove-down)
-        (unless (ignore-errors (or (windmove-right) t))
-          (windmove-down))))))
+(defun schrenker/downmost-window-p ()
+  (save-window-excursion
+    (not (ignore-errors (windmove-down)))))
+
+(defun schrenker/upmost-window-p ()
+  (save-window-excursion
+    (not (ignore-errors (windmove-up)))))
+
+(defun schrenker/utility-buffer-placement ()
+  (let ((single-window (< (count-windows) 2))
+        (narrow-frame (< (frame-width) 120)))
+    (if single-window
+        (if narrow-frame
+            (schrenker/split-and-follow-horizontally)
+          (schrenker/split-and-follow-vertically))
+      (progn
+        (if narrow-frame
+            (while (not (schrenker/downmost-window-p)) (windmove-down))
+          (while (not (schrenker/upmost-window-p)) (windmove-up)))
+        (while (not (schrenker/rightmost-window-p)) (windmove-right))))))
 
 (defun schrenker/backward-kill-word ()
   "Backward kill word without changing clipboard contents."

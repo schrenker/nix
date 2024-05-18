@@ -2036,17 +2036,16 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
           eglot-menu-string "Eg")
 
   :config
-  (setcdr (assoc '(go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode) eglot-server-programs)
-            '("gopls" :initializationOptions
-              (:hints (
-                       :parameterNames t
-                       :rangeVariableTypes t
-                       :functionTypeParameters t
-                       :assignVariableTypes t
-                       :compositeLiteralFields t
-                       :compositeLiteralTypes t
-                       :constantValues t))))
-
+  (add-to-list 'eglot-server-programs '((go-mode go-dot-mod-mode go-dot-work-mode go-ts-mode go-mod-ts-mode)
+                                        . ("gopls" :initializationOptions
+                                           (:hints (
+                                                    :parameterNames t
+                                                    :rangeVariableTypes t
+                                                    :functionTypeParameters t
+                                                    :assignVariableTypes t
+                                                    :compositeLiteralFields t
+                                                    :compositeLiteralTypes t
+                                                    :constantValues t)))))
   (add-to-list 'eglot-server-programs '(jsonnet-mode . ("jsonnet-language-server"))))
 
 (use-package consult-eglot

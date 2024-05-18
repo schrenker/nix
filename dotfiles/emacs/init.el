@@ -1438,8 +1438,26 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
   :config
   (setopt eat-kill-buffer-on-exit t)
-  (with-eval-after-load 'perject
-    (add-hook 'eat-mode-hook 'perject--auto-add-buffer))
+
+  (with-eval-after-load 'perspective
+    (defun schrenker/eat-project (&optional arg)
+      (interactive "P")
+      (let* ((default-directory (project-root (project-current t)))
+             (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")")))
+        (eat nil arg)))
+
+    (defun schrenker/eat-project-other-window (&optional arg)
+      (interactive "P")
+      (require 'project)
+      (let* ((default-directory (project-root (project-current t)))
+             (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")")))
+        (eat-other-window nil arg)))
+
+    (advice-add 'eat-project :override
+                #'schrenker/eat-project)
+    (advice-add 'eat-project-other-window :override
+                #'schrenker/eat-project-other-window))
+
   (with-eval-after-load 'meow
     (push '(eat-mode . insert) meow-mode-state-list)
     (add-hook 'eat-mode-hook

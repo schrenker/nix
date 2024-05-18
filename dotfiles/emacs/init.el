@@ -578,6 +578,26 @@ If no repository is found, prompt user to create one."
   (add-hook 'kill-emacs-hook #'persp-state-save)
   (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
 
+  (defun schrenker/fix-scratch-buffer-default-directory ()
+    "Make sure that default-directory for scratch buffers doesn't leak from other perspectives.
+
+This function fetches list of all file-visiting buffers in a perspective, and gets project root from the topmost one of the list. Then it applies this project root to scratch buffer. This ensures, that utilities such as Eat, or Magit start in correct path in a perspective. This approach works, because I usually don't run more than a single vc project in a perspective.
+
+If anything fails, set path to home directory."
+    (let* ((realbufs (seq-filter (lambda (buf) (buffer-file-name buf)) (persp-current-buffers)))
+           (defdir (or (ignore-errors (with-current-buffer (car realbufs)
+                                        (project-root (project-current))))
+                       "~/"))
+           (scratch (persp-get-scratch-buffer)))
+      (with-current-buffer scratch
+        (setq-local default-directory defdir))))
+
+  (add-hook 'persp-state-after-load-hook (lambda ()
+                                           (add-hook 'persp-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
+                                           (add-hook 'project-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
+                                           (advice-add 'project-switch-project :after
+                                                       (lambda (&rest r) (run-hooks 'project-switch-hook)))))
+
   (with-eval-after-load 'ibuf-ext
     (define-ibuffer-filter perspective-local-buffers
         "Limit current view to local buffers."

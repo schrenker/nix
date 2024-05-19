@@ -2107,16 +2107,34 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :init
   (add-hook 'yaml-mode-hook #'flymake-yamllint-setup))
 
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
-;; Major modes for text/programming
+(use-package flymake-golangci
+  :ensure (flymake-golangci :host github :repo "storvik/flymake-golangci")
+  :init
+  (add-hook 'eglot-managed-mode-hook (lambda ()
+                                (when (derived-mode-p 'go-mode)
+                                  (flymake-golangci-load-backend)))))
 
 ;;;;;; CONFIGURATION LANGUAGES ;;;;;;
-(use-package apparmor-mode)
 ;(use-package json-mode)
 (use-package jsonnet-mode)
+(use-package yaml-mode)
+
+;;;;;; DOMAIN-SPECIFIC LANGUAGES ;;;;;;
+(use-package apparmor-mode)
+(use-package bicep-mode :ensure (bicep-mode :host "github.com" :repo "christiaan-janssen/bicep-mode"))
+(use-package dockerfile-mode)
+(use-package jenkinsfile-mode :mode "\\.jenkinsfile\\'")
+(use-package nginx-mode)
+(use-package nix-mode)
+(use-package prometheus-mode)
+(use-package promql-mode :ensure (promql-mode :host "github.com" :repo "Andor/promql-mode"))
+(use-package rego-mode)
 
 ;;;;;; SHELL ;;;;;;
 (use-package fish-mode)
+
+(use-package powershell)
+(use-package ob-powershell :after (powershell org))
 
 (use-package sh-script
   :ensure nil
@@ -2128,83 +2146,27 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :mode
   ("\\.sh\\'" . bash-ts-mode))
 
-;;;;;; TOOLS ;;;;;;
-
 ;;;;;; GO ;;;;;;
 (use-package go-mode
   :init
   (setopt go-mode-indent-offset 4)
-  (add-hook 'go-mode-hook (lambda ()
-                               (eglot-inlay-hints-mode 1)
-                               (setq-local tab-width 4)
-                               (setq-local indent-tabs-mode 1))))
+  (add-hook 'eglot-managed-mode-hook (lambda () (when (derived-mode-p 'go-mode) (eglot-inlay-hints-mode)))))
 (use-package go-gen-test)
 (use-package go-tag)
-(use-package flymake-golangci
-  :ensure (flymake-golangci :host github :repo "storvik/flymake-golangci")
-  :init
-  (add-hook 'eglot-managed-mode-hook (lambda ()
-                                (when (derived-mode-p 'go-mode)
-                                  (flymake-golangci-load-backend)))))
 
 
-
-
-
-
-
-(use-package bicep-mode
-  :ensure
-  (bicep-mode
-   :host "github.com"
-   :repo "christiaan-janssen/bicep-mode"))
-
-
-(use-package dockerfile-mode)
-
-
-
-
-
-(use-package jenkinsfile-mode
-  :mode "\\.jenkinsfile\\'")
-
-
-(use-package markdown-mode)
-
-(use-package nginx-mode)
-
-(use-package nix-mode)
-
-(use-package powershell)
-(use-package ob-powershell
-  :after (powershell org))
-
-(use-package prometheus-mode)
-(use-package promql-mode
-  :ensure
-  (promql-mode
-   :host "github.com"
-   :repo "Andor/promql-mode"))
-
+;;;;;; PYTHON ;;;;;;
 (use-package python-mode
   :init
-  (setopt python-indent-offset 4)
-  (add-hook 'python-mode-hook (lambda ()
-                                        ;(eglot-inlay-hints-mode 1)
-                                   (setq-local tab-width 4))))
+  (setopt python-indent-offset 4))
 
-(use-package rego-mode)
-
-
-
-(use-package yaml-mode)
+;;;;;; TEXT ;;;;;;
+(use-package markdown-mode)
 
 (add-hook 'elpaca-after-init-hook
           (lambda ()
             (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
 
-
-
 (provide 'init)
 ;;; init.el ends here.
+;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;

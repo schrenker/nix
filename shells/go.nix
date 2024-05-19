@@ -8,10 +8,8 @@ mkShell {
     golangci-lint
     gomodifytags
     gopls
-    gore
     gotests
     gotools
-    nodejs
     shellcheck
   ];
   shellHook = ''

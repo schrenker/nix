@@ -1082,8 +1082,9 @@ Else sort by Alpha."
   (setopt org-edit-src-content-indentation 0
           org-src-preserve-indentation t
           org-babel-shell-names '("bash" "fish" "sh" "zsh" "csh" "ash" "dash" "ksh" "mksh" "posh")
-          org-src-lang-modes '(("shell" . bash)
-                               ("sh" . bash)
+          org-src-lang-modes '(("shell" . bash-ts)
+                               ("sh" . bash-ts)
+                               ("bash" . bash-ts)
                                ("fish" . fish)
                                ("elisp" . emacs-lisp)
                                ("sqlite" . sql)
@@ -2108,9 +2109,49 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 ;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;
 ;; Major modes for text/programming
-(use-package apparmor-mode)
 
-(use-package bash-completion)
+;;;;;; CONFIGURATION LANGUAGES ;;;;;;
+(use-package apparmor-mode)
+;(use-package json-mode)
+(use-package jsonnet-mode)
+
+;;;;;; SHELL ;;;;;;
+(use-package fish-mode)
+
+(use-package sh-script
+  :ensure nil
+  :init
+  (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
+  (setopt sh-shell "bash")
+  (setopt sh-shell-file "/bin/bash")
+  :mode
+  ("\\.sh\\'" . bash-ts-mode))
+
+;;;;;; TOOLS ;;;;;;
+
+;;;;;; GO ;;;;;;
+(use-package go-mode
+  :init
+  (setopt go-mode-indent-offset 4)
+  (add-hook 'go-mode-hook (lambda ()
+                               (eglot-inlay-hints-mode 1)
+                               (setq-local tab-width 4)
+                               (setq-local indent-tabs-mode 1))))
+(use-package go-gen-test)
+(use-package go-tag)
+(use-package flymake-golangci
+  :ensure (flymake-golangci :host github :repo "storvik/flymake-golangci")
+  :init
+  (add-hook 'eglot-managed-mode-hook (lambda ()
+                                (when (derived-mode-p 'go-mode)
+                                  (flymake-golangci-load-backend)))))
+
+
+
+
+
+
 
 (use-package bicep-mode
   :ensure
@@ -2118,36 +2159,16 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    :host "github.com"
    :repo "christiaan-janssen/bicep-mode"))
 
-(use-package d2-mode)
-(use-package ob-d2)
 
 (use-package dockerfile-mode)
 
-(use-package fish-mode)
-(use-package fish-completion
-  :config
-  (global-fish-completion-mode))
 
-(use-package go-mode
-  :init
-  (setopt go-mode-indent-offset 4)
-  (add-hook 'go-mode-hook (lambda ()
-                               (eglot-inlay-hints-mode 1)
-                               (go-eldoc-setup)
-                               (setq-local tab-width 4)
-                               (setq-local indent-tabs-mode 1))))
 
-(use-package go-eldoc)
-(use-package go-gen-test)
-(use-package go-guru)
-(use-package gorepl-mode)
-(use-package go-tag)
+
 
 (use-package jenkinsfile-mode
   :mode "\\.jenkinsfile\\'")
 
-(use-package json-mode)
-(use-package jsonnet-mode)
 
 (use-package markdown-mode)
 
@@ -2175,15 +2196,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package rego-mode)
 
-(use-package sh-script
-  :ensure nil
-  :init
-  (add-to-list 'major-mode-remap-alist '(shell-script-mode . bash-mode))
-  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-mode))
-  (setopt sh-shell "bash")
-  (setopt sh-shell-file "/bin/bash")
-  :mode
-  ("\\.sh\\'" . bash-mode))
+
 
 (use-package yaml-mode)
 

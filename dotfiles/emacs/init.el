@@ -21,7 +21,7 @@
   :ensure nil
   :init
   ;; Set gc-cons high for faster startup. Values are reset at the end of elpaca init.
-  (setopt gc-cons-threshold (* 1024 1024 200)
+  (setopt gc-cons-threshold (* 1024 1024 100)
           gc-cons-percentage 0.6)
 
   (defun schrenker/measure-startup-time ()
@@ -2189,9 +2189,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (add-hook 'elpaca-after-init-hook
           (lambda ()
-            (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))
-            (setopt gc-cons-threshold 100000000
-                    gc-cons-percentage 0.1)))
+            (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
 
 
 

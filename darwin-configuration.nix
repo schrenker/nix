@@ -55,6 +55,7 @@
     "lulu"
     "numi"
     "onecast"
+    "raspberry-pi-imager"
     "raycast"
     "steam"
     "syncthing"

@@ -2116,7 +2116,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 ;;;;;; CONFIGURATION LANGUAGES ;;;;;;
 ;(use-package json-mode)
-(use-package jsonnet-mode)
+(use-package jsonnet-mode :bind (:map jsonnet-mode-map ("C-c C-f" . format-all-region-or-buffer)))
 (use-package yaml-mode)
 
 ;;;;;; DOMAIN-SPECIFIC LANGUAGES ;;;;;;

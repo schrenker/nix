@@ -2099,9 +2099,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (setopt flymake-mode-line-lighter "FM"
           flymake-show-diagnostics-at-end-of-line 'short))
 
-(use-package flymake-proselint
-  :init
-  (add-hook 'text-mode-hook #'flymake-proselint-setup))
+;; (use-package flymake-proselint
+;;   :init
+;;   (add-hook 'text-mode-hook #'flymake-proselint-setup))
 
 (use-package flymake-yamllint
   :init

@@ -62,6 +62,7 @@
     "synologyassistant"
     "ukelele"
     "wireshark"
+    "vmware-fusion"
     "zsa-wally"
   ];
   homebrew.taps = [

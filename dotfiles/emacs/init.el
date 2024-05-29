@@ -923,10 +923,10 @@ Else sort by Alpha."
   (load-file (concat user-emacs-directory "lisp/org-format.el"))
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
   (setopt org-M-RET-may-split-line '((default . nil))
-          org-archive-location "archive/%s_archive::"
+          org-archive-location (concat org-directory "03_archives/%s_archive::")
           org-archive-tag "archive"
-          org-default-notes-file (concat org-directory "/20221222131538-inbox.org")
-          org-directory "~/org"
+          org-default-notes-file (concat org-directory "inbox.org")
+          org-directory "~/org/"
           org-element-archive-tag "archive"
           org-fontify-quote-and-verse-blocks t
           org-fontify-whole-heading-line t
@@ -1133,7 +1133,7 @@ Else sort by Alpha."
 (use-package org-download
   :after org
   :config
-  (setopt org-download-image-dir (concat org-directory "/media"))
+  (setopt org-download-image-dir (concat org-directory "media"))
   (add-hook 'dired-mode-hook 'org-download-enable))
 
 (use-package toc-org
@@ -1211,7 +1211,7 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
     (let ((taglist (schrenker/org-roam-get-all-filetags)))
       (dolist (tag taglist)
         (let ((nodes (schrenker/org-roam-get-nodes-by-tag tag))
-              (tagfile (concat org-directory "/tags/tag:" tag ".org")))
+              (tagfile (concat org-directory "99_tags/tag:" tag ".org")))
           (when (file-exists-p tagfile)
             (with-current-buffer (find-file-noselect tagfile)
               (goto-line 6)
@@ -1231,6 +1231,16 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
                                         t
                                       (not (or (member "archive" tags) (member "tag" tags))))))))
 
+  (defun schrenker/org-roam-archive-file ()
+    "Add archive filetag to org node, and move it to archive directory. Re-visit the buffer, killing the old one."
+    (interactive)
+    (let ((bf (buffer-file-name)))
+      (org-roam-tag-add '("archive"))
+      (save-buffer)
+      (kill-buffer (current-buffer))
+      (rename-file bf (concat org-directory "03_archives/") nil)
+      (find-file (concat org-directory "03_archives/" (file-name-nondirectory bf)))))
+
   (defun schrenker/org-roam-fetch-refile-targets (&rest _)
     "Return list of org-roam nodes with filetags of 'area' or 'project', but not 'archive' or 'tag', as refile targets."
     (delq nil (mapcar (lambda (item)
@@ -1247,37 +1257,37 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
                                              (like tag (quote "%\"project\"%")))]))))))
 
   :config
-  (setopt schrenker/org-fileslug "%<%Y%m%d%H%M%S>-${slug}.org"
+  (setopt schrenker/org-fileslug "${slug}.org"
           org-roam-capture-templates `(("p" "Project")
                                        ("pp" "Minor Project" plain "%?"
                                         :target (file+head
-                                                 ,schrenker/org-fileslug
+                                                 ,(concat "00_projects/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "project-minor"))
                                         :immediate-finish t :unnarrowed t)
                                        ("pP" "Major Project" plain "%?"
                                         :target (file+head
-                                                 ,schrenker/org-fileslug
+                                                 ,(concat "00_projects/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "project-major"))
                                         :immediate-finish t :unnarrowed t)
                                        ("a" "Area" plain "%?"
                                         :target (file+head
-                                                 ,schrenker/org-fileslug
+                                                 ,(concat "01_areas/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "area"))
                                         :immediate-finish t :unnarrowed t)
                                        ("r" "Resource")
                                        ("rr" "Resource" plain "%?"
                                         :target (file+head
-                                                 ,schrenker/org-fileslug
+                                                 ,(concat "02_resources/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "resource"))
                                         :immediate-finish t :unnarrowed t)
                                        ("rc" "Culinary" plain "%?"
                                         :target (file+head
-                                                 ,schrenker/org-fileslug
+                                                 ,(concat "02_resources/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "resource-culinary"))
                                         :immediate-finish t :unnarrowed t)
                                        ("ri" "Investigation" plain "%?"
                                         :target (file+head
-                                                 ,schrenker/org-fileslug
+                                                 ,(concat "02_resources/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "resource-investigation"))
                                         :immediate-finish t :unnarrowed t))
           org-roam-directory org-directory
@@ -1352,12 +1362,11 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
               (display-line-numbers-mode -1)))
 
   :config
-  (setopt dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group"
+  (setopt dired-listing-switches "-l --almost-all --sort=extension --human-readable --group-directories-first --no-group"
           dired-dwim-target t)
 
   (when (eq system-type 'darwin)
-    (setopt insert-directory-program "/opt/homebrew/bin/gls"
-            dired-listing-switches "-aBhl --group-directories-first")))
+    (setopt insert-directory-program "/opt/homebrew/bin/gls")))
 
 (use-package dired-x
   :ensure nil
@@ -1596,7 +1605,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                                           (python-mode . python-indent-offset)
                                           (t . 2)))
   (add-hook 'yaml-mode-hook #'prism-whitespace-mode)
-  (add-hook 'bash-mode-hook #'prism-whitespace-mode)
+  (add-hook 'bash-ts-mode-hook #'prism-whitespace-mode)
   (add-hook 'shell-script-mode-hook #'prism-whitespace-mode)
   (add-hook 'python-mode-hook #'prism-whitespace-mode)
   (add-hook 'emacs-lisp-mode-hook #'prism-mode))

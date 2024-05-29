@@ -1179,7 +1179,8 @@ Else sort by Alpha."
                                          :from tags
                                          :left-join nodes
                                          :on (= tags:node-id nodes:id)
-                                         :where (like tag (quote "%\"agenda\"%"))])))))
+                                         :where (or (like tag (quote "%\"agenda\"%"))
+                                                    (like tag (quote "%\"project\"%")))])))))
 
   (defun schrenker/org-roam-get-all-filetags ()
     "Get all existing unique filetags from org-roam files."

@@ -42,10 +42,10 @@
   ];
   homebrew.casks = [
     "alt-tab"
-    "bartender"
     "cloudflare-warp"
     "crossover"
     "docker"
+    "dozer"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
     "hazeover"

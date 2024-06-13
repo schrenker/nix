@@ -922,11 +922,11 @@ Else sort by Alpha."
   :config
   (load-file (concat user-emacs-directory "lisp/org-format.el"))
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
-  (setopt org-M-RET-may-split-line '((default . nil))
+  (setopt org-directory "~/org/"
+          org-M-RET-may-split-line '((default . nil))
           org-archive-location (concat org-directory "03_archives/%s_archive::")
           org-archive-tag "archive"
           org-default-notes-file (concat org-directory "inbox.org")
-          org-directory "~/org/"
           org-element-archive-tag "archive"
           org-fontify-quote-and-verse-blocks t
           org-fontify-whole-heading-line t
@@ -1036,7 +1036,12 @@ Else sort by Alpha."
                                    (file+olp (lambda () (schrenker/org-roam-read-node-by-tag "project")) "Tasks" "Backlog")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
-                                   :prepend t))))
+                                   :prepend t)
+                                  ("j" "Journal")
+                                  ("j" "Inbox" plain
+                                   (file+olp+datetree org-default-notes-file "Journal")
+                                   ""
+                                   :tree-type week :unnarrowed t :empty-lines-after 2))))
 
 (use-package org-agenda
   :ensure nil

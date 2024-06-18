@@ -1024,7 +1024,7 @@ Else sort by Alpha."
                                    :empty-lines 1
                                    :prepend t)
                                   ("I" "Inbox Task" entry
-                                   (file+olp org-default-notes-file "Tasks")
+                                   (file+headline org-default-notes-file "Tasks")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
                                    :prepend t)

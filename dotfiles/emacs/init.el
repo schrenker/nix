@@ -1007,6 +1007,12 @@ Else sort by Alpha."
           org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu"))
   (org-crypt-use-before-save-magic))
 
+(use-package org-reverse-datetree
+  :config
+  (setq-default org-reverse-datetree-level-formats
+                '("%Y W%W"
+                  "%Y-%m-%d %A")))
+
 (use-package org-capture
   :ensure nil
   :after org
@@ -1039,7 +1045,10 @@ Else sort by Alpha."
                                    :prepend t)
                                   ("j" "Journal")
                                   ("j" "Inbox" plain
-                                   (file+olp+datetree org-default-notes-file "Journal")
+                                   (file+function org-default-notes-file
+                                                  (lambda ()
+                                                    (org-reverse-datetree-goto-date-in-file
+                                                     nil :olp '("Journal"))))
                                    ""
                                    :tree-type week :unnarrowed t :empty-lines-after 2))))
 

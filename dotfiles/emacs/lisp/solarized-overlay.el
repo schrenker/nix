@@ -183,7 +183,7 @@
         (set-face-background 'org-block bg-alt)
         (set-face-extend 'org-block-begin-line t)
         (set-face-extend 'org-block-end-line t)
-        (set-face-attribute 'org-checkbox nil :box `(:line-width (3 . 1) :color ,bg-alt) :background bg-alt)
+        (set-face-attribute 'org-checkbox nil :box nil :background bg-alt)
 
         (run-with-idle-timer 0 nil (lambda ()(mapc (lambda (buffer) (with-current-buffer buffer (when (derived-mode-p 'org-mode)(font-lock-update)))) (buffer-list)))))
 

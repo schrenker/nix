@@ -51,6 +51,7 @@
     "jordanbaird-ice"
     "iterm2"
     "karabiner-elements"
+    "knockknock"
     "logitech-options"
     "lulu"
     "numi"

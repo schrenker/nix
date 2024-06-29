@@ -902,7 +902,7 @@ Else sort by Alpha."
     (interactive)
     (cond ((string= (org-no-properties (org-get-heading t t t t)) "Notes")
            (org-sort-entries nil ?A))
-          ((cl-some (lambda (x) (string= (org-no-properties (org-get-heading t t t t)) x)) '("Backlog" "Active" "Completed"))
+          ((cl-some (lambda (x) (string= (org-no-properties (org-get-heading t t t t)) x)) '("Tasks" "Backlog" "Active" "Completed"))
            (org-sort-entries nil ?a)
            (org-sort-entries nil ?p)
            (org-sort-entries nil ?o))
@@ -1278,33 +1278,38 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
                                         :target (file+head
                                                  ,(concat "00_projects/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "project-minor"))
-                                        :immediate-finish t :unnarrowed t)
+                                        :unnarrowed t)
                                        ("pP" "Major Project" plain "%?"
                                         :target (file+head
                                                  ,(concat "00_projects/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "project-major"))
-                                        :immediate-finish t :unnarrowed t)
+                                        :unnarrowed t)
                                        ("a" "Area" plain "%?"
                                         :target (file+head
                                                  ,(concat "01_areas/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "area"))
-                                        :immediate-finish t :unnarrowed t)
+                                        :unnarrowed t)
                                        ("r" "Resource")
                                        ("rr" "Resource" plain "%?"
                                         :target (file+head
                                                  ,(concat "02_resources/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "resource"))
-                                        :immediate-finish t :unnarrowed t)
+                                        :unnarrowed t)
+                                       ("rR" "Runbook" plain "%?"
+                                        :target (file+head
+                                                 ,(concat "02_resources/" schrenker/org-fileslug)
+                                                 ,(schrenker/get-org-template "runbook"))
+                                        :unnarrowed t)
                                        ("rc" "Culinary" plain "%?"
                                         :target (file+head
                                                  ,(concat "02_resources/culinary/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "resource-culinary"))
-                                        :immediate-finish t :unnarrowed t)
+                                        :unnarrowed t)
                                        ("ri" "Investigation" plain "%?"
                                         :target (file+head
                                                  ,(concat "02_resources/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "resource-investigation"))
-                                        :immediate-finish t :unnarrowed t))
+                                        :unnarrowed t))
           org-roam-directory org-directory
           org-roam-node-display-template (concat "${title:*} " (propertize "${tags:50}" 'face 'org-tag)))
 

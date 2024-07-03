@@ -15,7 +15,6 @@
       nixfmt
 
       # CONTAINERS
-      kind
       kubectl
       kubectx
       kubernetes-helm

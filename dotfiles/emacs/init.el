@@ -2153,7 +2153,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                                   (flymake-golangci-load-backend)))))
 
 ;;;;;; CONFIGURATION LANGUAGES ;;;;;;
-;(use-package json-mode)
 (use-package jsonnet-mode :bind (:map jsonnet-mode-map ("C-c C-f" . format-all-region-or-buffer)))
 (use-package yaml-mode)
 
@@ -2197,6 +2196,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package python-mode
   :init
   (setopt python-indent-offset 4))
+
+;;;;;; MISC ;;;;;;
+(use-package lua-mode)
 
 ;;;;;; TEXT ;;;;;;
 (use-package markdown-mode)

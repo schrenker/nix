@@ -88,8 +88,6 @@
     "uBlacklist for Safari" = 1547912640;
   };
 
-  fonts.fontDir.enable = true;
-
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.finder.ShowStatusBar = true;
   system.defaults.finder.FXPreferredViewStyle = "clmv";

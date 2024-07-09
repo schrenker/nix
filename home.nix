@@ -31,7 +31,7 @@
 
       # UTILS
       arping
-      (aspellWithDicts (dicts: with dicts; [en en-computers en-science pl]))
+      (aspellWithDicts (dicts: with dicts; [en en-computers pl]))
       fd
       fish
       jq

@@ -1916,7 +1916,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'prog-mode-hook 'format-all-mode)
   :config
   (add-hook 'go-mode-hook (lambda ()
-                               (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
+                            (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
 
 (use-package meow
   :config
@@ -2208,8 +2208,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :ensure (flymake-golangci :host github :repo "storvik/flymake-golangci")
   :init
   (add-hook 'eglot-managed-mode-hook (lambda ()
-                                (when (derived-mode-p 'go-mode)
-                                  (flymake-golangci-load-backend)))))
+                                       (when (derived-mode-p 'go-mode)
+                                         (flymake-golangci-load-backend)))))
 
 ;;;;;; CONFIGURATION LANGUAGES ;;;;;;
 (use-package jsonnet-mode :bind (:map jsonnet-mode-map ("C-c C-f" . format-all-region-or-buffer)))

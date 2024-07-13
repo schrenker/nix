@@ -75,6 +75,7 @@
           mac-right-option-modifier nil
           max-lisp-eval-depth 10000
           minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
+          mode-line-position-column-line-format '("(%l,%c)")
           native-comp-async-report-warnings-errors nil
           ns-use-proxy-icon (display-graphic-p)
           read-extended-command-predicate #'command-completion-default-include-p
@@ -1487,6 +1488,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         (eat-self-input 1 ?\C-a)
         (eat-self-input 1 ?\C-e)
         (call-interactively #'meow-insert))))
+
+  (add-hook 'eat-mode-hook (lambda () (setq-local mode-line-process nil)))
 
   :config
   (setopt eat-kill-buffer-on-exit t)

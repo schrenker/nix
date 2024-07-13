@@ -648,6 +648,8 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
   :config
   (setopt popper-group-function #'popper-group-by-perspective
           popper-display-function #'popper-select-popup-at-bottom-maybe-hide
+          popper-mode-line '(:eval (propertize " POP " 'face 'mode-line-emphasis))
+          popper-mode-line-position 1
           popper-reference-buffers
           '("\\*Messages\\*"
             "\\*Warnings\\*"
@@ -1596,7 +1598,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         (setq buffer-name-relative-prefix ""))))
 
   :config
-  (setopt buffer-name-relative-abbrev-limit 24)
+  (setopt buffer-name-relative-abbrev-limit 20)
   (advice-add 'buffer-name-relative--abbrev-directory-impl
               :override
               #'schrenker/buffer-name-relative--abbrev-directory-impl)
@@ -1630,9 +1632,28 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'python-mode-hook #'prism-whitespace-mode)
   (add-hook 'emacs-lisp-mode-hook #'prism-mode))
 
-(use-package mood-line
+(use-package blackout
   :init
-  (mood-line-mode))
+  (with-eval-after-load 'format-all
+    (blackout 'format-all-mode))
+  (with-eval-after-load 'goggles
+    (blackout 'goggles-mode))
+  (with-eval-after-load 'ws-butler
+    (blackout 'ws-butler-mode))
+  (with-eval-after-load 'eldoc
+    (blackout 'eldoc-mode))
+  (with-eval-after-load 'consult-org-roam
+    (blackout 'consult-org-roam-mode))
+  (with-eval-after-load 'vi-tilde-fringe
+    (blackout 'vi-tilde-fringe-mode))
+  (with-eval-after-load 'autorevert
+    (blackout 'auto-revert-mode))
+  (with-eval-after-load 'meow
+    (blackout 'meow-beacon-mode)
+    (blackout 'meow-keypad-mode)
+    (blackout 'meow-motion-mode)
+    (blackout 'meow-normal-mode)
+    (blackout 'meow-insert-mode)))
 
 (use-package solaire-mode
   :init
@@ -2091,6 +2112,11 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
           meow-use-enhanced-selection-effect t
           meow-select-on-change nil
           meow-motion-remap-prefix "A-C-M-"
+          meow-replace-state-name-list '((normal . "N")
+                                         (motion . "M")
+                                         (keypad . "K")
+                                         (insert . "I")
+                                         (beacon . "B"))
           meow-char-thing-table '((?r . round)
                                   (?s . square)
                                   (?c . curly)
@@ -2104,7 +2130,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                                   (?d . defun)
                                   (?. . sentence)))
 
-  (meow-global-mode 1))
+  (meow-global-mode)
+  (meow-setup-indicator))
 
 
 (use-package eglot

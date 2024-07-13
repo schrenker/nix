@@ -222,6 +222,23 @@
                                                                     :internal-border-color ,fg-main
                                                                     :poshandler posframe-poshandler-frame-bottom-center)))
 
+      (with-eval-after-load 'meow
+        (set-face-attribute 'meow-normal-indicator nil
+                            :background (if (eq appearance 'light) blue blue-d)
+                            :foreground white)
+        (set-face-attribute 'meow-motion-indicator nil
+                            :background (if (eq appearance 'light) violet violet-d)
+                            :foreground white)
+        (set-face-attribute 'meow-keypad-indicator nil
+                            :background (if (eq appearance 'light) red red-d)
+                            :foreground white)
+        (set-face-attribute 'meow-insert-indicator nil
+                            :background (if (eq appearance 'light) green green-d)
+                            :foreground white)
+        (set-face-attribute 'meow-beacon-indicator nil
+                            :background (if (eq appearance 'light) yellow yellow-d)
+                            :foreground white))
+
       t)))
 
 (defun schrenker/apply-overlay (appearance)

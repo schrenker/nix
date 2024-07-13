@@ -1492,7 +1492,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (add-hook 'eat-mode-hook (lambda () (setq-local mode-line-process nil)))
 
   :config
-  (setopt eat-kill-buffer-on-exit t)
+  (setopt eat-kill-buffer-on-exit t
+          eat-term-name "xterm-256color")
 
   (with-eval-after-load 'perspective
     (defun schrenker/eat-project (&optional arg)

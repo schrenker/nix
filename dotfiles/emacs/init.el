@@ -57,6 +57,7 @@
           delete-by-moving-to-trash t
           delete-old-versions t
           delete-pair-blink-delay 0
+          display-line-numbers-grow-only t
           display-line-numbers-type 'visual
           electric-pair-open-newline-between-pairs t
           enable-recursive-minibuffers t

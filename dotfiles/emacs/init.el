@@ -549,14 +549,6 @@ If no repository is found, prompt user to create one."
     (let ((aw-ignore-current t))
       (ace-swap-window)))
 
-  (defun schrenker/aw-flip-window ()
-    "Switch to the window you were previously in.
- If you are switching from dirvish window, make sure the root window is added to aw--window-ring."
-    (interactive)
-    (let ((dv (dirvish-curr)))
-      (aw-flip-window)
-      (if (and dv (car (dv-layout dv)))
-          (aw--push-window (dv-root-window dv)))))
   :config
   (setopt aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
 
@@ -700,7 +692,7 @@ If no applicable mode is present, default to uictl."
    ^^^^^^                                                [_TAB_] Switch
  ^^^^^^──────────────────────────────────────────────────────────────────╯
 "
-    ("o" schrenker/aw-flip-window)
+    ("o" aw-flip-window)
     ("O" ace-select-window)
     ("s" schrenker/ace-swap-window)
     ("=" balance-windows)
@@ -1360,9 +1352,12 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
 (use-package dired
   :ensure nil
   :bind
-  (:map dired-mode-map
-        ("M-+" . dired-create-empty-file)
-        ("J" . dired-goto-file))
+  (("C-x d" . dired)
+   ("C-x C-d" . dired)
+   :map dired-mode-map
+   ("_" . dired-create-empty-file)
+   ("J" . dired-goto-file)
+   ("K" . dired-kill-subdir))
   :init
   ;; aw-flip-window dired workflow start
   (defvar schrenker/last-dired-window-before-jump nil)
@@ -1382,9 +1377,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
   (add-hook 'dired-mode-hook
             (lambda ()
-              (setq-local display-buffer-base-action '((display-buffer-reuse-window
-                                                        ace-display-buffer))
-                          aw-ignore-current t)
+              (auto-revert-mode)
               (display-line-numbers-mode -1)))
 
   :config
@@ -1397,61 +1390,43 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package dired-x
   :ensure nil
   :config
-  (setopt dired-omit-files (concat dired-omit-files "\\|^\\.DS_Store"))
-  (add-hook 'dired-mode-hook #'dired-omit-mode))
+  (setopt dired-omit-files (concat dired-omit-files "\\|^\\.DS_Store")))
 
-(use-package dirvish
-  :bind
-  (("C-c f" . dirvish-fd)
-   ("C-c F" . schrenker/dirvish-fd-project)
-   ("C-x d" . schrenker/mini-dirvish-here)
-   ("C-x C-d" . dirvish)
-   :map dirvish-mode-map
-   ("f"   . dirvish-file-info-menu)
-   ("y"   . dirvish-yank-menu)
-   ("N"   . dirvish-narrow)
-   ("h"   . dirvish-history-jump)
-   ("s"   . dirvish-quicksort)
-   ("v"   . dirvish-vc-menu)
-   ("TAB" . dirvish-subtree-toggle)
-   ("M-l" . dirvish-history-go-forward)
-   ("M-h" . dirvish-history-go-backward)
-   ("M-L" . dirvish-ls-switches-menu)
-   ("M-m" . dirvish-mark-menu)
-   ("M-t" . dirvish-layout-toggle)
-   ("M-T" . dirvish-layout-switch))
+(use-package dired-filter
   :init
-  (defun schrenker/dirvish-fd-project ()
-    "Run dirvish-fd in the root of current vc project. If not in vc project, run in current directory."
-    (interactive)
-    (dirvish-fd (dirvish--get-project-root) nil))
+  (define-key dired-mode-map (kbd "/") dired-filter-map))
 
-  (defun schrenker/mini-dirvish-here (&optional path)
-    "Open dired version of Dirvish in current window, without prompting for directory."
-    (interactive (list (and current-prefix-arg (read-directory-name "Dirvish: "))))
-    (dirvish--reuse-or-create
-     path (when dirvish--this (car (dv-layout dirvish--this)))))
-
-  (dirvish-override-dired-mode)
-
+(use-package dired-preview
+  :demand t
+  :bind
+  (:map dired-mode-map
+        ("C-c C-p" . dired-preview-mode))
+  :init
+  (setopt dired-preview-delay 0.1
+          dired-preview-max-size (expt 2 20)
+          dired-preview-ignored-extensions-regexp
+          (concat "\\."
+                  "\\(mkv\\|webm\\|mp4\\|mp3\\|ogg\\|m4a"
+                  "\\|gz\\|zst\\|tar\\|xz\\|rar\\|zip"
+                  "\\|iso\\|epub\\|pdf\\)"))
   :config
-  (dirvish-side-follow-mode)
-  (setopt dirvish-attributes '(vc-state subtree-state nerd-icons collapse file-size)
-          dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index))
-          dirvish-path-separators '("~" "/" "/")
-          dirvish-subtree-state-style 'nerd
-          dirvish-subtree-prefix " |"
-          dirvish-default-layout '(1 0.1 0.6)
-          dirvish-layout-recipes '((0 0.0 0.5) (0 0.0 0.8) (1 0.08 0.8) (1 0.1 0.6))
-          dirvish-cache-dir (expand-file-name ".cache/dirvish/" user-emacs-directory)
-          dirvish-preview-environment '((inhibit-message . t)
-                                        (non-essential . t)
-                                        (delay-mode-hooks . nil)
-                                        (enable-dir-local-variables . nil)
-                                        (enable-local-variables . :safe)))
+  (add-to-list 'dired-preview-trigger-commands 'schrenker/meow-next)
+  (add-to-list 'dired-preview-trigger-commands 'schrenker/meow-prev))
 
-  (with-eval-after-load 'dirvish-fd
-    (setq dirvish-fd-bufname "fd Q:[%s] D:[%s] %s")))
+(use-package dired-narrow
+  :bind
+  (:map dired-mode-map
+        ("C-c f" . dired-narrow)
+        ("C-c F" . dired-narrow-fuzzy)))
+
+(use-package dired-collapse
+  :init
+  (add-hook 'dired-mode-hook #'dired-collapse-mode))
+
+(use-package dired-subtree
+  :bind
+  (:map dired-mode-map
+        ("TAB" . dired-subtree-toggle)))
 
 (use-package eat
   :ensure (eat :type git
@@ -1660,7 +1635,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
     (blackout 'meow-keypad-mode)
     (blackout 'meow-motion-mode)
     (blackout 'meow-normal-mode)
-    (blackout 'meow-insert-mode)))
+    (blackout 'meow-insert-mode))
+  (with-eval-after-load 'nerd-icons-dired
+    (blackout 'nerd-icons-dired-mode)))
 
 (use-package solaire-mode
   :init
@@ -1713,8 +1690,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package nerd-icons
   :config
-  (setopt nerd-icons-font-family "JetBrainsMono Nerd Font"
-          nerd-icons-scale-factor 1.2)
+  (setopt nerd-icons-font-family "Symbols Nerd Font Mono"
+          nerd-icons-scale-factor 1.0)
   (add-to-list 'nerd-icons-extension-icon-alist '("jar"           nerd-icons-devicon "nf-dev-java"       :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("jenkinsfile"   nerd-icons-devicon "nf-dev-jenkins"    :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("groovy"        nerd-icons-devicon "nf-dev-groovy"     :face nerd-icons-cyan))
@@ -1758,6 +1735,13 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                                         filename-and-process+)))
   (add-hook 'ibuffer-mode-hook #'nerd-icons-ibuffer-mode))
 
+(use-package nerd-icons-dired
+  :init
+  (setopt nerd-icons-dired-v-adjust 0.2)
+  (add-hook 'dired-mode-hook #'nerd-icons-dired-mode))
+
+;; This is broken due to changes in marginalia
+;; https://github.com/rainstormstudio/nerd-icons-completion/issues/11
 (use-package nerd-icons-completion
   :after marginalia
   :config
@@ -1927,14 +1911,13 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (global-unset-key (kbd "C-c SPC"))
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
-  (add-to-list 'meow-mode-state-list '(dirvish-mode . motion))
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
   (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
 
   (defun schrenker/meow-old-quit ()
     "Quit current window or buffer."
     (interactive)
-    (if (> (seq-length (window-list (selected-frame))) (if (dirvish-side--session-visible-p) 2 1))
+    (if (> (seq-length (window-list (selected-frame))) 1)
         (delete-window)
       (previous-buffer)))
 

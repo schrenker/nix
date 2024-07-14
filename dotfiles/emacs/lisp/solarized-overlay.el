@@ -171,6 +171,14 @@
                           :foreground fg-emph
                           :box `(:line-width 3 :color ,(if (eq appearance 'light) bg-main bg-highlight) :style nil))
 
+      (with-eval-after-load 'dired
+        (set-face-attribute 'dired-subtree-depth-1-face nil :background bg-highlight)
+        (set-face-attribute 'dired-subtree-depth-2-face nil :background bg-highlight)
+        (set-face-attribute 'dired-subtree-depth-3-face nil :background bg-highlight)
+        (set-face-attribute 'dired-subtree-depth-4-face nil :background bg-highlight)
+        (set-face-attribute 'dired-subtree-depth-5-face nil :background bg-highlight)
+        (set-face-attribute 'dired-subtree-depth-6-face nil :background bg-highlight))
+
       (with-eval-after-load 'org
         (set-face-attribute 'org-level-1 nil :background orange-2bg :foreground (if (eq appearance 'light) orange-d orange-l) :extend t)
         (set-face-attribute 'org-level-2 nil :background green-2bg  :foreground (if (eq appearance 'light) green-d green-l) :extend t)
@@ -203,16 +211,6 @@
 
       (with-eval-after-load 'ace-window
         (custom-set-faces `(aw-leading-char-face ((t (:inherit org-modern-label :width expanded :weight bold :background ,magenta :foreground ,bg-main :height 3.0 ))))))
-
-      (with-eval-after-load 'dirvish
-        (custom-set-faces `(dired-header ((t (:weight bold :background "unspecified" :foreground ,blue)))))
-        (set-face-foreground 'vc-edited-state yellow)
-        (set-face-foreground 'vc-locally-added-state green)
-        (set-face-foreground 'vc-removed-state red)
-        (set-face-foreground 'vc-missing-state fg-alt)
-        (set-face-foreground 'vc-conflict-state orange)
-        (set-face-foreground 'vc-locked-state violet)
-        (set-face-foreground 'vc-needs-update-state blue))
 
       (with-eval-after-load 'embark
         (set-face-background 'embark-target (if (eq appearance 'light) white black)))

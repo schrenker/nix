@@ -1404,6 +1404,8 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   :init
   (setopt dired-preview-delay 0.1
           dired-preview-max-size (expt 2 20)
+          dired-preview-display-action-alist-function (lambda () '((display-buffer-reuse-window)
+                                                              (inhibit-same-window . t)))
           dired-preview-ignored-extensions-regexp
           (concat "\\."
                   "\\(mkv\\|webm\\|mp4\\|mp3\\|ogg\\|m4a"

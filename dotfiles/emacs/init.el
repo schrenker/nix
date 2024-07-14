@@ -646,7 +646,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
           popper-mode-line '(:eval (propertize " POP " 'face 'mode-line-emphasis))
           popper-mode-line-position 1
           popper-reference-buffers
-          '("\\*Messages\\*"
+          '(;"\\*Messages\\*"
             "\\*Warnings\\*"
             "Output\\*$"
             "\\*Async Shell Command\\*"

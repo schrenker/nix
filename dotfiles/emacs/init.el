@@ -483,7 +483,8 @@ If no repository is found, prompt user to create one."
       (magit-status dir)))
 
   :config
-  (setopt magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+  (setopt auto-revert-buffer-list-filter #'magit-auto-revert-repository-buffer-p
+          magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package git-timemachine
   :commands (git-timemachine))

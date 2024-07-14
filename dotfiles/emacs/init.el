@@ -103,7 +103,6 @@
           version-control t
           visible-bell (schrenker/wsl2-p)
           visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
-          window-combination-resize t
           x-stretch-cursor t)
 
   (menu-bar-mode -1)

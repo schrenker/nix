@@ -88,6 +88,7 @@
           scroll-step 1
           sentence-end-double-space nil
           set-mark-command-repeat-pop t
+          switch-to-buffer-obey-display-actions t
           tab-always-indent 'complete
           tab-width 4
           time-stamp-active t

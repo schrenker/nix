@@ -1412,7 +1412,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
                   "\\|iso\\|epub\\|pdf\\)"))
   :config
   (add-to-list 'dired-preview-trigger-commands 'schrenker/meow-next)
-  (add-to-list 'dired-preview-trigger-commands 'schrenker/meow-prev))
+  (add-to-list 'dired-preview-trigger-commands 'schrenker/meow-prev)
+
+  (advice-add 'dired-preview--delete-windows :override (lambda () t)))
 
 (use-package dired-narrow
   :bind

@@ -171,7 +171,7 @@
                           :foreground fg-emph
                           :box `(:line-width 3 :color ,(if (eq appearance 'light) bg-main bg-highlight) :style nil))
 
-      (with-eval-after-load 'dired
+      (with-eval-after-load 'dired-subtree
         (set-face-attribute 'dired-subtree-depth-1-face nil :background bg-highlight)
         (set-face-attribute 'dired-subtree-depth-2-face nil :background bg-highlight)
         (set-face-attribute 'dired-subtree-depth-3-face nil :background bg-highlight)

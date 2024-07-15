@@ -52,7 +52,7 @@
     ]
     ++ lib.optionals stdenv.isLinux [
       pkgs.emacs29-pgtk
-      (nerdfonts.override { fonts = [ "JetBrainsMono" "Symbols"]; })
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
       pkgs.gitleaks
       pkgs.docker
       pkgs.syncthing

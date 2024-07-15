@@ -439,7 +439,7 @@
       '("W" "Diff worktree at point" schrenker/magit-diff-with-commit-at-point))))
 
 (use-package magit
-  :bind (("C-x g" . schrenker/magit-status-utility-window)
+  :bind (("C-x g" . magit-status)
          ("C-x G" . schrenker/magit-status-with-prefix)
          :map magit-status-mode-map
          ("o" . schrenker/magit-diff-visit-file-other-window)
@@ -472,18 +472,10 @@ If no repository is found, prompt user to create one."
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status)))
 
-  (defun schrenker/magit-status-utility-window ()
-    (interactive)
-    (let ((wcount (count-windows))
-          (dir (vc-root-dir)))
-      (schrenker/utility-buffer-placement)
-      (when (> (count-windows) wcount)
-        (set-window-parameter (get-buffer-window (current-buffer)) 'magit-dedicated t))
-      (magit-status dir)))
-
   :config
   (setopt auto-revert-buffer-list-filter #'magit-auto-revert-repository-buffer-p
-          magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+          magit-display-buffer-function #'magit-display-buffer-fullframe-status-topleft-v1
+          magit-bury-buffer-function #'magit-restore-window-configuration))
 
 (use-package git-timemachine
   :commands (git-timemachine))

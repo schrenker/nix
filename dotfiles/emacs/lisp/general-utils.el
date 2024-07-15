@@ -109,32 +109,6 @@ killed, or give a choice of showing diff from saved version."
   (balance-windows)
   (other-window 1))
 
-(defun schrenker/rightmost-window-p ()
-  "Check if window is the rightmost one in current frame."
-    (save-window-excursion
-      (not (ignore-errors (windmove-right)))))
-
-(defun schrenker/downmost-window-p ()
-  (save-window-excursion
-    (not (ignore-errors (windmove-down)))))
-
-(defun schrenker/upmost-window-p ()
-  (save-window-excursion
-    (not (ignore-errors (windmove-up)))))
-
-(defun schrenker/utility-buffer-placement ()
-  (let ((single-window (< (count-windows) 2))
-        (narrow-frame (< (frame-width) 120)))
-    (if single-window
-        (if narrow-frame
-            (schrenker/split-and-follow-horizontally)
-          (schrenker/split-and-follow-vertically))
-      (progn
-        (if narrow-frame
-            (while (not (schrenker/downmost-window-p)) (windmove-down))
-          (while (not (schrenker/upmost-window-p)) (windmove-up)))
-        (while (not (schrenker/rightmost-window-p)) (windmove-right))))))
-
 (defun schrenker/backward-kill-word ()
   "Backward kill word without changing clipboard contents."
   (interactive)

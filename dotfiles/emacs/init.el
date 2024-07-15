@@ -1867,6 +1867,10 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package surround
   :bind-keymap ("C-t" . surround-keymap))
 
+(use-package avy
+  :bind
+  (("C-," . avy-goto-char-timer)))
+
 (use-package man
   :ensure nil
   :bind (:map Man-mode-map

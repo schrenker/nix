@@ -649,8 +649,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
   (popper-echo-mode 1))
 
 (use-package hydra
-  :bind (("M-o" . 'hydra-uictl/body)
-         ("M-O" . 'schrenker/switch-hydra)
+  :bind (("M-O" . 'hydra-uictl/body)
          ("C-x C-g" . 'schrenker/smerge))
   :config
   (setopt hydra-is-helpful t
@@ -674,12 +673,12 @@ If no applicable mode is present, default to uictl."
 ╭──────────────────────────────────────────────────────────────────^^^^^^
    [_o_] flip     [_=_]   balance    [_u_] undo          [_<_] prev
    [_O_] select   [_m_]   maximize   [_r_] redo          [_>_] next
-   [_s_] swap     [_+_]   zoom in    [_2_] split down    [_b_] Buffers
-   ^^             [_-_]   zoom out   [_3_] split right   [_B_] iBuffer
-   ^^             [_M-k_] vShrink    [_t_] transpose     [_S_] Scratch
-   ^^             [_M-j_] vEnlarge   [_x_] win delete    [_Q_] Kill
-   ^^             [_M-h_] hShrink    [_X_] aw delete
-   ^^             [_M-l_] hEnlarge   [_1_] single        [_q_] Quit Hydra
+   [_s_] swap     [_+_]   zoom in    [_t_] transpose
+   ^^             [_-_]   zoom out   [_x_] win delete
+   ^^             [_M-k_] vShrink    [_X_] aw delete
+   ^^             [_M-j_] vEnlarge
+   ^^             [_M-h_] hShrink
+   ^^             [_M-l_] hEnlarge^^                     [_q_] Quit Hydra
    ^^^^^^                                                [_TAB_] Switch
  ^^^^^^──────────────────────────────────────────────────────────────────╯
 "
@@ -696,18 +695,11 @@ If no applicable mode is present, default to uictl."
     ("M-l" enlarge-window-horizontally)
     ("u" winner-undo)
     ("r" winner-redo)
-    ("2" schrenker/split-and-follow-horizontally)
-    ("3" schrenker/split-and-follow-vertically)
     ("t" (aw-transpose-frame (car (window-list))))
     ("x" delete-window)
     ("X" ace-delete-window)
-    ("1" delete-other-windows)
     ("<" previous-buffer)
     (">" next-buffer)
-    ("b" consult-buffer)
-    ("B" (if persp-mode (call-interactively #'schrenker/persp-ibuffer) (call-interactively #'ibuffer)) :color blue)
-    ("S" (if persp-mode (call-interactively #'persp-switch-to-scratch-buffer) (call-interactively #'scratch-buffer)))
-    ("Q" schrenker/kill-this-buffer)
     ("TAB" schrenker/switch-hydra :color blue)
     ("q" nil :color blue))
 
@@ -1869,7 +1861,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package avy
   :bind
-  (("C-," . avy-goto-char-timer)))
+  (("M-o" . avy-goto-char-timer)))
 
 (use-package man
   :ensure nil

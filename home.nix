@@ -15,6 +15,7 @@
       nixfmt
 
       # CONTAINERS
+      kind
       kubectl
       kubectx
       kubernetes-helm
@@ -81,6 +82,8 @@
       nq = "networkQuality";
       k = "kubectl";
       kg = "kubectl get";
+      kgp = "kubectl get pods";
+      kdp = "kubectl describe pod";
       kd = "kubectl describe";
       kx = "kubectx";
       kns = "kubens";

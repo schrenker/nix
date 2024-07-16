@@ -50,6 +50,7 @@
     ++ [ inputs.nil.packages."${system}".nil ] # INPUTS
     ++ lib.optionals stdenv.isDarwin [
       pkgs.pinentry_mac
+      pkgs.docker-client
     ]
     ++ lib.optionals stdenv.isLinux [
       pkgs.emacs29-pgtk

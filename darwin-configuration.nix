@@ -34,6 +34,7 @@
   homebrew.brews = [
     "aspell"
     "coreutils"
+    "colima"
     "editorconfig"
     "gcc"
     "libtool"

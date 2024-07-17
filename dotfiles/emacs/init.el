@@ -669,22 +669,13 @@ If no applicable mode is present, default to uictl."
     (:hint nil)
     "
 
-   Movement     ^^Sizing           ^^Layout            ^^Buffer
 ╭──────────────────────────────────────────────────────────────────^^^^^^
-   [_o_] flip     [_=_]   balance    [_u_] undo          [_<_] prev
-   [_O_] select   [_m_]   maximize   [_r_] redo          [_>_] next
-   [_s_] swap     [_+_]   zoom in    [_t_] transpose
-   ^^             [_-_]   zoom out   [_x_] win delete
-   ^^             [_M-k_] vShrink    [_X_] aw delete
-   ^^             [_M-j_] vEnlarge
-   ^^             [_M-h_] hShrink
-   ^^             [_M-l_] hEnlarge^^                     [_q_] Quit Hydra
-   ^^^^^^                                                [_TAB_] Switch
+  [_=_] balance    [_m_] maximize    [_+_] zoom in    [_-_] zoom out
+  [_M-k_] vShrink  [_M-j_] vEnlarge  [_M-h_] hShrink  [_M-l_] hEnlarge
+
+                                     [_TAB_] Switch   [_q_] Quit Hydra
  ^^^^^^──────────────────────────────────────────────────────────────────╯
 "
-    ("o" aw-flip-window)
-    ("O" ace-select-window)
-    ("s" schrenker/ace-swap-window)
     ("=" balance-windows)
     ("m" maximize-window)
     ("+" schrenker/zoom-frame)
@@ -693,13 +684,6 @@ If no applicable mode is present, default to uictl."
     ("M-j" enlarge-window)
     ("M-h" shrink-window-horizontally)
     ("M-l" enlarge-window-horizontally)
-    ("u" winner-undo)
-    ("r" winner-redo)
-    ("t" (aw-transpose-frame (car (window-list))))
-    ("x" delete-window)
-    ("X" ace-delete-window)
-    ("<" previous-buffer)
-    (">" next-buffer)
     ("TAB" schrenker/switch-hydra :color blue)
     ("q" nil :color blue))
 
@@ -1970,7 +1954,17 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    '("SPC ." . popper-toggle)
    '("SPC ," . popper-cycle)
    '("SPC '" . popper-toggle-type)
-   '("SPC f" . flyspell-correct-wrapper))
+   '("SPC f" . flyspell-correct-wrapper)
+   '("SPC <" . previous-buffer)
+   '("SPC >" . next-buffer)
+   '("SPC u" . winner-undo)
+   '("SPC r" . winner-redo)
+   '("SPC t" . (lambda () (interactive) (aw-transpose-frame (car (window-list)))))
+   '("SPC x" . delete-window)
+   '("SPC X" . ace-delete-window)
+   '("SPC o" . aw-flip-window)
+   '("SPC O" . ace-select-window)
+   '("SPC s" . schrenker/ace-swap-window))
 
   ;;Disable
   (meow-normal-define-key
@@ -1986,7 +1980,17 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
    '("SPC ." . popper-toggle)
    '("SPC ," . popper-cycle)
    '("SPC '" . popper-toggle-type)
-   '("SPC f" . flyspell-correct-wrapper))
+   '("SPC f" . flyspell-correct-wrapper)
+   '("SPC <" . previous-buffer)
+   '("SPC >" . next-buffer)
+   '("SPC u" . winner-undo)
+   '("SPC r" . winner-redo)
+   '("SPC t" . (lambda () (interactive) (aw-transpose-frame (car (window-list)))))
+   '("SPC x" . delete-window)
+   '("SPC X" . ace-delete-window)
+   '("SPC o" . aw-flip-window)
+   '("SPC O" . ace-select-window)
+   '("SPC s" . schrenker/ace-swap-window))
 
   ;;Movement
   (meow-normal-define-key

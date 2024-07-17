@@ -552,8 +552,7 @@ If no repository is found, prompt user to create one."
   (("C-x C-b" . schrenker/persp-ibuffer)
    :map perspective-map
    ("B" . nil)
-   ("S" . persp-switch-to-scratch-buffer)
-   ("s" . nil)
+   ("s" . persp-switch-to-scratch-buffer)
    ("C-<tab>" . persp-switch)
    ("TAB" . persp-switch-last))
   :init
@@ -1845,7 +1844,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package avy
   :bind
-  (("M-o" . avy-goto-char-timer)))
+  (("M-o" . avy-goto-char-timer)
+   :map isearch-mode-map
+   ("M-o" . avy-isearch)))
 
 (use-package man
   :ensure nil

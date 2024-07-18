@@ -1358,6 +1358,9 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
   (add-hook 'dired-mode-hook
             (lambda ()
+              (setq-local display-buffer-base-action '((display-buffer-reuse-window
+                                                        ace-display-buffer))
+                          aw-ignore-current t)
               (auto-revert-mode)
               (display-line-numbers-mode -1)))
 

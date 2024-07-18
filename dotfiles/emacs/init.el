@@ -556,10 +556,7 @@ If no repository is found, prompt user to create one."
    ("B" . nil)
    ("s" . persp-switch-to-scratch-buffer)
    ("C-<tab>" . persp-switch)
-   ("TAB" . persp-switch-last)
-   :map ibuffer-mode-map
-   ("A" . schrenker/persp-ibuffer-add-to-perspective)
-   ("K" . schrenker/persp-ibuffer-remove-from-perspective))
+   ("TAB" . persp-switch-last))
   :init
   (setopt persp-initial-frame-name "!Main"
           persp-mode-prefix-key (kbd "C-<tab>")
@@ -1324,6 +1321,8 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   :ensure nil
   :bind (("C-x C-b" . ibuffer)
          :map ibuffer-mode-map
+         ("A" . schrenker/persp-ibuffer-add-to-perspective)
+         ("K" . schrenker/persp-ibuffer-remove-from-perspective)
          ("J" . ibuffer-jump-to-buffer)
          ("M-o" . nil))
   :config

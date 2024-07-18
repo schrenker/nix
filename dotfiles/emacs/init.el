@@ -153,7 +153,9 @@
       (progn
         (set-frame-font "JetBrainsMono Nerd Font 10" nil t)
         (schrenker/zoom-frame))
-    (set-frame-font "JetBrainsMono Nerd Font 14" nil t)))
+    (set-frame-font "JetBrainsMono Nerd Font 14" nil t))
+
+  (put 'upcase-region 'disabled nil))
 
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))

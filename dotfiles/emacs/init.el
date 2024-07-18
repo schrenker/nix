@@ -1453,7 +1453,10 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
         (eat-self-input 1 ?\C-e)
         (call-interactively #'meow-insert))))
 
-  (add-hook 'eat-mode-hook (lambda () (setq-local mode-line-process nil)))
+  (add-hook 'eat-mode-hook (lambda ()
+                             (setq-local
+                              mode-line-process nil
+                              mode-line-buffer-identification (propertized-buffer-identification "%b"))))
 
   :config
   (setopt eat-kill-buffer-on-exit t

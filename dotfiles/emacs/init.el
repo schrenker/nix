@@ -661,7 +661,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
   (popper-echo-mode 1))
 
 (use-package hydra
-  :bind (("M-O" . 'hydra-uictl/body)
+  :bind (("M-O" . 'schrenker/switch-hydra)
          ("C-x C-g" . 'schrenker/smerge))
   :config
   (setopt hydra-is-helpful t

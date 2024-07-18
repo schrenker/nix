@@ -599,6 +599,7 @@ If anything fails, set path to home directory."
                 #'ibuffer-filter-by-perspective-local-buffers))
 
   (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
+    "Create dedicated ibuffer instance for current perspective, filtering by current perspective buffers by default."
     (interactive)
     (let ((name (or
                  (seq-find (lambda (b)

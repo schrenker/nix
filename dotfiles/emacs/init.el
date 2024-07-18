@@ -554,7 +554,10 @@ If no repository is found, prompt user to create one."
    ("B" . nil)
    ("s" . persp-switch-to-scratch-buffer)
    ("C-<tab>" . persp-switch)
-   ("TAB" . persp-switch-last))
+   ("TAB" . persp-switch-last)
+   :map ibuffer-mode-map
+   ("A" . schrenker/persp-ibuffer-add-to-perspective)
+   ("K" . schrenker/persp-ibuffer-remove-from-perspective))
   :init
   (setopt persp-initial-frame-name "!Main"
           persp-mode-prefix-key (kbd "C-<tab>")
@@ -600,12 +603,22 @@ If anything fails, set path to home directory."
     (let ((name (or
                  (seq-find (lambda (b)
                              (string-match-p
-                              (concat "*Persp Ibuffer (" (persp-current-name) ") *")
+                              (concat "*Persp Ibuffer (" (persp-current-name) ")*")
                               (buffer-name b)))
                            (buffer-list))
-                 (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ") *")))))
+                 (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ")*")))))
       (ibuffer other-window-p name '((perspective-local-buffers . nil))
                noselect shrink)))
+
+  (defun schrenker/persp-ibuffer-add-to-perspective ()
+    "Add marked buffers to current perspective."
+    (interactive)
+    (dolist (buf (ibuffer-get-marked-buffers)) (persp-add-buffer buf)))
+
+  (defun schrenker/persp-ibuffer-remove-from-perspective ()
+    "Remove marked buffers from current perspective."
+    (interactive)
+    (dolist (buf (ibuffer-get-marked-buffers)) (persp-remove-buffer buf)))
 
   (persp-mode)
 

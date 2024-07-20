@@ -68,6 +68,7 @@
           inhibit-startup-screen t
           initial-major-mode 'fundamental-mode
           initial-scratch-message nil
+          isearch-wrap-pause 'no
           kept-new-versions 6
           kept-old-versions 2
           load-prefer-newer t

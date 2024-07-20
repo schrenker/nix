@@ -9,7 +9,6 @@
 ;; :ensure
 ;; :if
 ;; :after
-;; :demand
 ;; :commands
 ;; :hooks
 ;; :bind[*]
@@ -211,7 +210,6 @@
 (elpaca-wait)
 
 (use-package exec-path-from-shell
-  :demand t
   :config
   (dolist (var '("SSH_AUTH_SOCK"
                  "SSH_AGENT_PID"
@@ -279,7 +277,6 @@
                  (window-parameters (mode-line-format . none)))))
 
 (use-package consult
-  :demand t
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c M-x" . consult-mode-command)
          ("C-c h" . consult-history)
@@ -362,7 +359,6 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package corfu
-  :demand t
   :bind (:map corfu-map
               ("TAB" . corfu-next)
               ("<tab>" . corfu-next)
@@ -371,7 +367,7 @@
               ("C-SPC" . corfu-insert-separator)
               ("M-n" . nil)
               ("M-p" . nil))
-  :config
+  :init
   (setopt corfu-auto t
           global-corfu-modes '((not
                                 erc-mode
@@ -395,19 +391,17 @@
 (use-package corfu-popupinfo
   :ensure nil
   :after corfu
-  :demand t
+  :hook (global-corfu-mode . corfu-popupinfo-mode)
   :bind (:map corfu-popupinfo-map
               ("C-j" . corfu-popupinfo-scroll-up)
               ("C-k" . corfu-popupinfo-scroll-down))
   :config
-  (setopt corfu-popupinfo-delay '(1.0 . 0.5))
-  (corfu-popupinfo-mode 1))
+  (setopt corfu-popupinfo-delay '(1.0 . 0.5)))
 
 (use-package corfu-terminal
   :if (not (display-graphic-p))
   :after corfu
-  :config
-  (corfu-terminal-mode +1))
+  :hook (global-corfu-mode . corfu-terminal-mode))
 
 (use-package cape
   :init
@@ -1142,7 +1136,6 @@ Else sort by Alpha."
 (use-package org-roam
   :commands (org-roam-capture-p)
   :after org
-  :demand t
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . schrenker/org-roam-node-find-nonarchived)
          ("C-c n F" . org-roam-node-find)
@@ -1298,7 +1291,6 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
 
 (use-package consult-org-roam
   :after org-roam
-  :demand t
   :bind (("C-c n b" . consult-org-roam-backlinks)
          ("C-c n w" . consult-org-roam-forward-links))
   :config
@@ -1380,7 +1372,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
   (define-key dired-mode-map (kbd "/") dired-filter-map))
 
 (use-package dired-preview
-  :demand t
   :bind
   (:map dired-mode-map
         ("C-c C-p" . dired-preview-mode))
@@ -1660,7 +1651,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
           tab-bar-tab-name-format-function #'schrenker/tab-bar-name))
 
 (use-package solarized-theme
-  :demand t
   :init
   (setopt solarized-distinct-doc-face t
           solarized-distinct-fringe-background t

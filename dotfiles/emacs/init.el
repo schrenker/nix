@@ -267,9 +267,8 @@
    ("C-." . embark-dwim)
    ("C-h b" . embark-bindings))
   :init
-  (setq prefix-help-command #'embark-prefix-help-command)
+  (setopt prefix-help-command #'embark-prefix-help-command)
   :config
-                                        ;(setopt embark-verbose-indicator-display-action '(display-buffer-in-side-window (side . left)))
   (setopt embark-indicators '(embark-minimal-indicator
                               embark-highlight-indicator
                               embark-isearch-highlight-indicator))

@@ -20,9 +20,7 @@
 (use-package emacs
   :ensure nil
   :init
-  ;; Set gc-cons high for faster startup. Values are reset at the end of elpaca init.
-  (setopt gc-cons-threshold (* 1024 1024 100)
-          gc-cons-percentage 0.6)
+  (setopt gc-cons-threshold (* 1024 1024 100))
 
   (defun schrenker/measure-startup-time ()
     "Measure startup time."

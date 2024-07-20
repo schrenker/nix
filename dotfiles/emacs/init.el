@@ -1070,6 +1070,7 @@ Else sort by Alpha."
 
   :config
   (setopt org-edit-src-content-indentation 0
+          org-src-window-setup 'split-window-below
           org-src-preserve-indentation t
           org-babel-shell-names '("bash" "fish" "sh" "zsh" "csh" "ash" "dash" "ksh" "mksh" "posh")
           org-src-lang-modes '(("shell" . bash-ts)

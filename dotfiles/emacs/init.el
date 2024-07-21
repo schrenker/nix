@@ -1326,7 +1326,7 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   :ensure nil
   :bind
   (("C-x d" . dired)
-   ("C-x C-d" . dired)
+   ("C-x C-d" . (lambda () (interactive)(dired default-directory)))
    :map dired-mode-map
    ("_" . dired-create-empty-file)
    ("J" . dired-goto-file)

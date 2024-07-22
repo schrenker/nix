@@ -1366,11 +1366,15 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package dired-x
   :ensure nil
   :config
-  (setopt dired-omit-files (concat dired-omit-files "\\|^\\.DS_Store")))
+  (setopt dired-omit-files (concat dired-omit-files
+                                   "\\|^\\.DS_Store"
+                                   "\\|^\\.git"
+                                   "\\|^\\.stfolder")))
 
 (use-package dired-filter
   :init
-  (define-key dired-mode-map (kbd "/") dired-filter-map))
+  (define-key dired-mode-map (kbd "/") dired-filter-map)
+  (add-hook 'dired-mode-hook #'dired-filter-mode))
 
 (use-package dired-preview
   :bind

@@ -8,8 +8,6 @@
   services.nix-daemon.enable = true;
 
   # create /etc shell files that loads the nix-darwin environment
-  programs.bash.enable = true;
-  programs.zsh.enable = true;
   programs.fish.enable = true;
   environment.shells = with pkgs; [ bashInteractive fish zsh ];
   # first time requires 'chsh -s /etc/profiles/per-user/sebastian/bin/fish' after that to set up fish

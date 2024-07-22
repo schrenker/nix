@@ -620,7 +620,13 @@ If anything fails, set path to home directory."
 
   (with-eval-after-load 'consult
     (consult-customize consult--source-buffer :hidden t :default nil)
-    (add-to-list 'consult-buffer-sources persp-consult-source)))
+    (add-to-list 'consult-buffer-sources persp-consult-source))
+  (with-eval-after-load 'consult-project-extra
+    (setopt consult-project-extra-sources
+            '(consult-project-extra--source-buffer
+              consult-project-extra--source-file
+              persp-consult-source
+              consult-project-extra--source-project))))
 
 (use-package perspective-tabs
   :after perspective

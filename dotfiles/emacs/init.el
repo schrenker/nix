@@ -1675,8 +1675,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package nerd-icons
   :config
-  (setopt nerd-icons-font-family "Symbols Nerd Font Mono"
-          nerd-icons-scale-factor 1.0)
+  (setopt nerd-icons-font-family "Symbols Nerd Font Mono")
   (add-to-list 'nerd-icons-extension-icon-alist '("jar"           nerd-icons-devicon "nf-dev-java"       :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("jenkinsfile"   nerd-icons-devicon "nf-dev-jenkins"    :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("groovy"        nerd-icons-devicon "nf-dev-groovy"     :face nerd-icons-cyan))
@@ -1693,8 +1692,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package nerd-icons-ibuffer
   :config
-  (setopt nerd-icons-ibuffer-icon-size 1.1
-          nerd-icons-ibuffer-formats `((mark
+  (setopt nerd-icons-ibuffer-formats `((mark
                                         modified
                                         read-only
                                         ,(if (>= emacs-major-version 26) 'locked "")
@@ -1722,7 +1720,6 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 
 (use-package nerd-icons-dired
   :init
-  (setopt nerd-icons-dired-v-adjust 0.2)
   (add-hook 'dired-mode-hook #'nerd-icons-dired-mode))
 
 ;; This is broken due to changes in marginalia

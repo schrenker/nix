@@ -484,11 +484,11 @@ If no repository is found, prompt user to create one."
 
 (use-package helpful
   :bind
-  (("C-h f" . helpful-callable) ;; describe-function
-   ("C-h k" . helpful-key)      ;; describe-key
-   ("C-h o" . helpful-symbol)   ;; describe-symbol
-   ("C-h v" . helpful-variable) ;; describe-variable
-   ("C-h x" . helpful-command)) ;; describe-command
+  (([remap describe-key]      . helpful-key)
+   ([remap describe-command]  . helpful-command)
+   ([remap describe-variable] . helpful-variable)
+   ([remap describe-function] . helpful-callable)
+   ([remap describe-symbol]   . helpful-symbol))
   :init
   ;; Override describe commands when called interactively
   (advice-add 'describe-variable :around
@@ -513,6 +513,8 @@ If no repository is found, prompt user to create one."
                   (funcall orig-fun command))))
   (advice-add 'describe-key :override 'helpful-key)
 
+  :config
+  (setopt helpful-max-buffers 1))
 
 (use-package persistent-kmacro
   :ensure

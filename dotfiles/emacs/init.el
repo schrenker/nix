@@ -513,8 +513,6 @@ If no repository is found, prompt user to create one."
                   (funcall orig-fun command))))
   (advice-add 'describe-key :override 'helpful-key)
 
-  (with-eval-after-load 'perject
-    (add-hook 'helpful-mode-hook 'perject--auto-add-buffer)))
 
 (use-package persistent-kmacro
   :ensure

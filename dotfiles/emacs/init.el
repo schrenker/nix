@@ -587,8 +587,23 @@ If anything fails, set path to home directory."
 
   (with-eval-after-load 'ibuffer
     (require 'ibuf-ext)
+
     (define-key ibuffer--filter-map (kbd "l")
-                #'ibuffer-filter-by-perspective-local-buffers))
+                #'ibuffer-filter-by-perspective-local-buffers)
+
+    (define-ibuffer-op schrenker/persp-ibuffer-add-to-perspective ()
+      "Add marked buffers to current perspective."
+      (:opstring "added"
+       :active-opstring "add"
+       :complex t)
+      (persp-add-buffer buf))
+
+    (define-ibuffer-op schrenker/persp-ibuffer-remove-from-perspective ()
+      "Remove marked buffers from current perspective."
+      (:opstring "removed"
+       :active-opstring "remove"
+       :complex t)
+      (persp-remove-buffer buf)))
 
   (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
     "Create dedicated ibuffer instance for current perspective, filtering by current perspective buffers by default."
@@ -602,16 +617,6 @@ If anything fails, set path to home directory."
                  (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ")*")))))
       (ibuffer other-window-p name '((perspective-local-buffers . nil))
                noselect shrink)))
-
-  (defun schrenker/persp-ibuffer-add-to-perspective ()
-    "Add marked buffers to current perspective."
-    (interactive)
-    (dolist (buf (ibuffer-get-marked-buffers)) (persp-add-buffer buf)))
-
-  (defun schrenker/persp-ibuffer-remove-from-perspective ()
-    "Remove marked buffers from current perspective."
-    (interactive)
-    (dolist (buf (ibuffer-get-marked-buffers)) (persp-remove-buffer buf)))
 
   (persp-mode)
 
@@ -1319,8 +1324,8 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   :ensure nil
   :bind (("C-x C-b" . ibuffer)
          :map ibuffer-mode-map
-         ("A" . schrenker/persp-ibuffer-add-to-perspective)
-         ("K" . schrenker/persp-ibuffer-remove-from-perspective)
+         ("A" . ibuffer-do-schrenker/persp-ibuffer-add-to-perspective)
+         ("K" . ibuffer-do-schrenker/persp-ibuffer-remove-from-perspective)
          ("J" . ibuffer-jump-to-buffer)
          ("M-o" . nil))
   :config

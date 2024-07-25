@@ -595,6 +595,7 @@ If anything fails, set path to home directory."
       "Add marked buffers to current perspective."
       (:opstring "added"
        :active-opstring "add"
+       :dangerous t
        :complex t)
       (persp-add-buffer buf))
 
@@ -602,6 +603,7 @@ If anything fails, set path to home directory."
       "Remove marked buffers from current perspective."
       (:opstring "removed"
        :active-opstring "remove"
+       :dangerous t
        :complex t)
       (persp-remove-buffer buf)))
 

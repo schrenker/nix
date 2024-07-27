@@ -1351,11 +1351,15 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
   (defun schrenker/dired-find-file-other-window (orig-fun &rest args)
     "Save current window, call ORIG-FUN with ARGS, and add saved window to aw-window-ring.
 
-Purpose of this is to be able to go back to Dired window with aw-flip-window, if Dired window was left by visiting the file in other window."
+Purpose of this is to be able to go back to Dired window with aw-flip-window, if Dired window was left by visiting the file in other window.
+
+Additionally, disable dired-preview-mode, if target buffer is dired buffer."
     (setq schrenker/last-dired-window-before-jump (get-buffer-window))
     (let ((result (apply orig-fun args)))
       (when schrenker/last-dired-window-before-jump
         (ring-insert aw--window-ring schrenker/last-dired-window-before-jump))
+      (when (derived-mode-p 'dired-mode)
+        (dired-preview-mode -1))
       result))
 
   (advice-add 'dired-find-file-other-window :around #'schrenker/dired-find-file-other-window)
@@ -1392,7 +1396,7 @@ Purpose of this is to be able to go back to Dired window with aw-flip-window, if
 (use-package dired-preview
   :bind
   (:map dired-mode-map
-        ("C-c C-p" . dired-preview-mode))
+        ("C-c C-p" . dired-preview-global-mode))
   :init
   (setopt dired-preview-delay 0.1
           dired-preview-max-size (expt 2 20)

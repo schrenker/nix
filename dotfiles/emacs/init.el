@@ -1214,6 +1214,7 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
               (tagfile (concat org-directory "99_tags/tag:" tag ".org")))
           (when (file-exists-p tagfile)
             (with-current-buffer (find-file-noselect tagfile)
+              (setq-local before-save-hook nil)
               (goto-line 6)
               (delete-region (point) (point-max))
               (insert "\n" (mapconcat (lambda (x)

@@ -135,15 +135,15 @@ killed, or give a choice of showing diff from saved version."
   `(let ((current-prefix-arg -1))
      (call-interactively ,form)))
 
-  (defun schrenker/crm-indicator (args)
+(defun schrenker/crm-indicator (args)
   "Add prompt indicator to `completing-read-multiple'.
-   We display [CRM<separator>], e.g., [CRM,] if the separator is a comma."
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
+We display [CRM<separator>], e.g., [CRM,] if the separator is a comma."
+  (cons (format "[CRM%s] %s"
+                (replace-regexp-in-string
+                 "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                 crm-separator)
+                (car args))
+        (cdr args)))
 
-(provide 'solarized-overlay)
-;;; solarized-overlay.el ends here.
+(provide 'general-utils)
+;;; general-utils.el ends here.

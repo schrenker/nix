@@ -9,6 +9,7 @@
 ;; :ensure
 ;; :if
 ;; :after
+;; :autoload
 ;; :commands
 ;; :hooks
 ;; :bind[*]
@@ -1148,6 +1149,7 @@ Else sort by Alpha."
               ("RET" . org-open-at-point)))
 
 (use-package org-roam
+  :autoload (org-roam-db-query)
   :commands (org-roam-capture-p)
   :after org
   :bind (("C-c n l" . org-roam-buffer-toggle)

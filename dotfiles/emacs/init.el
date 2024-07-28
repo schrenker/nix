@@ -681,29 +681,25 @@ If no applicable mode is present, default to uictl."
     (cond ((bound-and-true-p smerge-mode) (hydra-smerge/body))
           ((bound-and-true-p dape--process) (hydra-dape/body))
           ((bound-and-true-p git-timemachine-mode) (hydra-git-timemachine/body))
-          ((eq major-mode 'org-mode) (hydra-org/body))
-          (t (hydra-uictl/body))))
+          ((eq major-mode 'org-mode) (hydra-org/body))))
 
   (defhydra hydra-uictl
     (:hint nil)
     "
-
 ╭──────────────────────────────────────────────────────────────────^^^^^^
-  [_=_] balance    [_m_] maximize    [_+_] zoom in    [_-_] zoom out
+  [_=_] balance    [___] maximize    [_+_] zoom in    [_-_] zoom out
   [_M-k_] vShrink  [_M-j_] vEnlarge  [_M-h_] hShrink  [_M-l_] hEnlarge
-
-                                     [_TAB_] Switch   [_q_] Quit Hydra
+ ^^^^^^                                               [_q_] Quit Hydra
  ^^^^^^──────────────────────────────────────────────────────────────────╯
 "
     ("=" balance-windows)
-    ("m" maximize-window)
+    ("_" maximize-window)
     ("+" schrenker/zoom-frame)
     ("-" schrenker/zoom-frame-out)
     ("M-k" shrink-window)
     ("M-j" enlarge-window)
     ("M-h" shrink-window-horizontally)
     ("M-l" enlarge-window-horizontally)
-    ("TAB" schrenker/switch-hydra :color blue)
     ("q" nil :color blue))
 
   (with-eval-after-load 'org
@@ -716,8 +712,8 @@ If no applicable mode is present, default to uictl."
   [_J_] Next Heading^^                             [_/_] Find
   [_b_] Tasks/Backlog      [_B_] Tasks/Backlog
   [_a_] Tasks/Active       [_A_] Tasks/Active
-  [_c_] Tasks/Completed    [_C_] Tasks/Completed   [_q_] Quit Hydra
-  [_n_] Notes^^                                    [_TAB_] Uictl
+  [_c_] Tasks/Completed    [_C_] Tasks/Completed
+  [_n_] Notes^^                                    [_q_] Quit Hydra
  ^^^^^^─────────────────────────────────────────────────────────────╯
 "
       ("K" outline-previous-heading)
@@ -731,7 +727,6 @@ If no applicable mode is present, default to uictl."
       ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
       ("s" (schrenker/org-sort-dwim))
       ("/" consult-org-heading)
-      ("TAB" hydra-uictl/body :color blue)
       ("q" nil :color blue)))
 
   (with-eval-after-load 'git-timemachine
@@ -744,7 +739,7 @@ If no applicable mode is present, default to uictl."
   [_K_] Prev Rev       [_c_] Show Commit        [_S_] Write File
   [_g_] Nth Rev        [_y_] Copy Short Hash    [_q_] Quit Hydra
   [_T_] Fuzzy Rev      [_Y_] Copy Long Hash     [_Q_] Quit Timemachine
-  [_C_] Current Rev^^                           [_TAB_] Uictl
+  [_C_] Current Rev^^
  ^^^^^^─────────────────────────────────────────────────────────────────╯
 "
       ("J" git-timemachine-show-next-revision)
@@ -757,7 +752,6 @@ If no applicable mode is present, default to uictl."
       ("y" git-timemachine-kill-abbreviated-revision)
       ("Y" git-timemachine-kill-revision)
       ("?" git-timemachine-help)
-      ("TAB" hydra-uictl/body :color blue)
       ("S" write-file)
       ("q" nil :color blue)
       ("Q" git-timemachine-quit :color blue)))
@@ -774,7 +768,6 @@ If no applicable mode is present, default to uictl."
   [_c_] Continue      [_bD_] Delete all         [_R_]  Repl
   [_r_] Restart       [_bl_] Set log message    [_q_]  Quit Hydra
   ^^^^                                          [_Q_]  Quit Dape
-  ^^^^                                          [_TAB_] Uictl
  ^^^^^^─────────────────────────────────────────────────────────────╯
 "
       ("n" dape-next)
@@ -791,7 +784,6 @@ If no applicable mode is present, default to uictl."
       ("sm" dape-read-memory)
       ("ss" dape-select-stack)
       ("R"  dape-repl)
-      ("TAB" hydra-uictl/body :color blue)
       ("q" nil :color blue)
       ("Q" dape-quit :color blue)))
 
@@ -811,7 +803,6 @@ If no applicable mode is present, default to uictl."
  ^^            [_l_]   Lower     [_>_] Base/Lower    [_d_] Kill Current
  ^^            [_a_]   All       [_R_] Refine        [_q_] Quit Hydra
  ^^            [_RET_] Current   [_E_] Ediff         [_Q_] Quit Smerge
- ^^^^^^                                              [_TAB_] Uictl
  ^^^^^^^^───────────────────────────────────────────────────────────────╯
 "
     ("J"  smerge-next)
@@ -829,7 +820,6 @@ If no applicable mode is present, default to uictl."
     ("c"  smerge-combine-with-next)
     ("r"  smerge-resolve)
     ("d"  smerge-kill-current)
-    ("TAB" hydra-uictl/body :color blue)
     ("q" nil :color blue)
     ("Q" (lambda () (interactive)(smerge-auto-leave)) :color blue)))
 

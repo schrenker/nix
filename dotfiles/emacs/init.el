@@ -1919,6 +1919,11 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
         (delete-window)
       (previous-buffer)))
 
+  (defun schrenker/meow-prefix-define-key (&rest keybinds)
+    "DRY function to define common MOTION and NORMAL mode keybinds."
+    (apply #'meow-define-keys 'normal keybinds)
+    (apply #'meow-define-keys 'motion keybinds))
+
   (when (schrenker/wsl2-p)
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
       "Copy region to Windows clipboard."
@@ -1970,34 +1975,17 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    '("j" . schrenker/meow-next)
    '("k" . schrenker/meow-prev)
    '("C-M-O" . meow-normal-mode)
-   '("<escape>" . nil)
-   '("SPC" . nil)
-   '("SPC SPC" . consult-project-extra-find)
-   '("S-SPC S-SPC" . consult-project-extra-find-other-window)
-   '("SPC ." . popper-toggle)
-   '("SPC ," . popper-cycle)
-   '("SPC '" . popper-toggle-type)
-   '("SPC f" . flyspell-correct-wrapper)
-   '("SPC <" . previous-buffer)
-   '("SPC >" . next-buffer)
-   '("SPC u" . winner-undo)
-   '("SPC r" . winner-redo)
-   '("SPC t" . (lambda () (interactive) (aw-transpose-frame (car (window-list)))))
-   '("SPC x" . delete-window)
-   '("SPC X" . ace-delete-window)
-   '("SPC o" . aw-flip-window)
-   '("SPC O" . ace-select-window)
-   '("SPC s" . schrenker/ace-swap-window))
+   '("<escape>" . nil))
 
   ;;Disable
   (meow-normal-define-key
    '("e" . ignore)
    '("E" . ignore)
-   '("q" . ignore)
-   '("SPC" . nil))
+   '("q" . ignore))
 
   ;;Leader
-  (meow-normal-define-key
+  (schrenker/meow-prefix-define-key
+   '("SPC" . nil)
    '("SPC SPC" . consult-project-extra-find)
    '("S-SPC SPC" . consult-project-extra-find-other-window)
    '("SPC ." . popper-toggle)
@@ -2013,7 +2001,11 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    '("SPC X" . ace-delete-window)
    '("SPC o" . aw-flip-window)
    '("SPC O" . ace-select-window)
-   '("SPC s" . schrenker/ace-swap-window))
+   '("SPC s" . schrenker/ace-swap-window)
+   '("SPC +" . hydra-uictl/schrenker/zoom-frame)
+   '("SPC -" . hydra-uictl/schrenker/zoom-frame-out)
+   '("SPC _" . hydra-uictl/maximize-window)
+   '("SPC =" . hydra-uictl/balance-windows))
 
   ;;Movement
   (meow-normal-define-key

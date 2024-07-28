@@ -1135,17 +1135,12 @@ Else sort by Alpha."
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . schrenker/org-roam-node-find-nonarchived)
          ("C-c n F" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n N" . org-roam-capture)
          ("C-c n a" . org-roam-tag-add)
          ("C-c n d" . org-roam-tag-remove)
-         ("C-c n c" . org-id-get-create)
          ("C-c n u" . schrenker/org-roam-update-tag-collection-nodes)
-         ("C-c n s" . org-roam-db-sync)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
-
+         ("C-c n s" . org-roam-db-sync))
   :init
   (defun schrenker/agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."

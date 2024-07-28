@@ -512,10 +512,7 @@ If no repository is found, prompt user to create one."
                 (if (called-interactively-p 'interactive)
                     (helpful-command command)
                   (funcall orig-fun command))))
-  (advice-add 'describe-key :override 'helpful-key)
-
-  :config
-  (setopt helpful-max-buffers 1))
+  (advice-add 'describe-key :override 'helpful-key))
 
 (use-package persistent-kmacro
   :ensure
@@ -1096,14 +1093,6 @@ Else sort by Alpha."
             (lambda ()
               (add-hook 'before-save-hook #'schrenker/trim-src-block-buffer nil t))))
 
-(use-package org-kanban
-  :after org
-  :config
-  (setopt org-kanban/layout '("…" . 15))
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook (lambda () (save-excursion (when (org-find-dblock "kanban") (org-update-dblock)))) nil t))))
-
 (use-package org-appear
   :after org
   :config
@@ -1125,10 +1114,11 @@ Else sort by Alpha."
   (setopt org-download-image-dir (concat org-directory "media"))
   (add-hook 'dired-mode-hook 'org-download-enable))
 
-(use-package toc-org
+(use-package org-make-toc
   :init
-  (add-hook 'org-mode-hook 'toc-org-mode)
-  (add-hook 'markdown-mode-hook 'toc-org-mode))
+  (setopt org-make-toc-insert-custom-ids nil
+          org-make-toc-link-type-fn #'org-make-toc--link-entry-org)
+  (add-hook 'org-mode-hook #'org-make-toc-mode))
 
 (use-package embark-org
   :ensure nil

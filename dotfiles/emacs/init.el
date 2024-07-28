@@ -1991,7 +1991,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    '("SPC ." . popper-toggle)
    '("SPC ," . popper-cycle)
    '("SPC '" . popper-toggle-type)
-   '("SPC f" . flyspell-correct-wrapper)
    '("SPC <" . previous-buffer)
    '("SPC >" . next-buffer)
    '("SPC u" . winner-undo)
@@ -2182,19 +2181,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   :config
   (setopt flymake-mode-line-lighter "FM"
           flymake-show-diagnostics-at-end-of-line 'short))
-
-(use-package flymake-proselint
-  ;; :init
-  ;; (add-hook 'text-mode-hook #'flymake-proselint-setup)
-  )
-
-(use-package flymake-aspell
-  :init
-  (setopt ispell-dictionary "en_US"
-          ispell-program-name "aspell"
-          ispell-silently-savep t)
-  ;; (add-hook 'text-mode-hook #'flymake-aspell-setup)
-  )
 
 (use-package flymake-yamllint
   :init

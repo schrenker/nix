@@ -1353,6 +1353,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
   :config
   (setopt dired-listing-switches "-l --almost-all --sort=extension --human-readable --group-directories-first --no-group"
+          dired-kill-when-opening-new-dired-buffer t
           dired-dwim-target t)
 
   (when (eq system-type 'darwin)

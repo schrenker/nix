@@ -1021,7 +1021,9 @@ Else sort by Alpha."
                                                     (org-reverse-datetree-goto-date-in-file
                                                      nil :olp '("Journal"))))
                                    ""
-                                   :tree-type week :unnarrowed t :empty-lines-after 2))))
+                                   :tree-type week :unnarrowed t :empty-lines-after 2)))
+
+  (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage)))
 
 (use-package org-agenda
   :ensure nil
@@ -2229,10 +2231,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
 ;;;;;; TEXT ;;;;;;
 (use-package markdown-mode)
-
-(add-hook 'elpaca-after-init-hook
-          (lambda ()
-            (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage))))
 
 (provide 'init)
 ;;; init.el ends here.

@@ -2016,7 +2016,11 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    '("SPC +" . hydra-uictl/schrenker/zoom-frame)
    '("SPC -" . hydra-uictl/schrenker/zoom-frame-out)
    '("SPC _" . hydra-uictl/maximize-window)
-   '("SPC =" . hydra-uictl/balance-windows))
+   '("SPC =" . hydra-uictl/balance-windows)
+   '("SPC M-j" . hydra-uictl/enlarge-window)
+   '("SPC M-k" . hydra-uictl/shrink-window)
+   '("SPC M-h" . hydra-uictl/shrink-window-horizontally)
+   '("SPC M-l" . hydra-uictl/enlarge-window-horizontally))
 
   ;;Movement
   (meow-normal-define-key

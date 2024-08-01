@@ -49,6 +49,7 @@
     "iterm2"
     "jordanbaird-ice"
     "karabiner-elements"
+    "keymapp"
     "knockknock"
     "logitech-options"
     "lulu"

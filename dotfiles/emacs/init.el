@@ -869,16 +869,19 @@ To jump to org-mode heading, pass in literal heading, like '** Notes'."
 
   (defun schrenker/org-sort-dwim ()
     "Sort org heading. If heading is one of: [Backlog, Active, Completed], then sort by alpha -> priority -> TODO order.
-Else sort by Alpha."
+Notes heading will be sorted by time created in reverse, while Tasks will be sorted by time created.
+If no criteria is met, call org-sort."
     (interactive)
     (cond ((string= (org-no-properties (org-get-heading t t t t)) "Notes")
-           (org-sort-entries nil ?A))
-          ((cl-some (lambda (x) (string= (org-no-properties (org-get-heading t t t t)) x)) '("Tasks" "Backlog" "Active" "Completed"))
+           (org-sort-entries nil ?T))
+          ((string= (org-no-properties (org-get-heading t t t t)) "Tasks")
+           (org-sort-entries nil ?t))
+          ((cl-some (lambda (x) (string= (org-no-properties (org-get-heading t t t t)) x)) '("Backlog" "Active" "Completed"))
            (org-sort-entries nil ?a)
            (org-sort-entries nil ?p)
            (org-sort-entries nil ?o))
           (t
-           (org-sort-entries nil ?a))))
+           (call-interactively #'org-sort))))
 
   (defun schrenker/get-org-template (template)
     "Fetch contents of template file from templates dir in emacs config directory."

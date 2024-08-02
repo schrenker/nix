@@ -993,7 +993,7 @@ Else sort by Alpha."
                                    (file+headline org-default-notes-file "Notes")
                                    ,(schrenker/get-org-template "note")
                                    :empty-lines 1
-                                   :prepend t)
+                                   :prepend nil)
                                   ("I" "Inbox Task" entry
                                    (file+headline org-default-notes-file "Tasks")
                                    ,(schrenker/get-org-template "task")

@@ -639,30 +639,6 @@ If anything fails, set path to home directory."
   :init
   (add-hook 'persp-mode-hook #'perspective-tabs-mode))
 
-(use-package midnight
-  :ensure nil
-  :config
-  (defvar clean-buffer-list-timer nil
-    "Stores clean-buffer-list timer if there is one. You can disable clean-buffer-list by (cancel-timer clean-buffer-list-timer).")
-
-  (defvar clean-buffer-list-kill-never-buffer-names-init
-    clean-buffer-list-kill-never-buffer-names
-    "Init value for clean-buffer-list-kill-never-buffer-names")
-
-  (defvar clean-buffer-list-kill-never-regexps-init
-    clean-buffer-list-kill-never-regexps
-    "Init value for clean-buffer-list-kill-never-regexps")
-
-  (setopt clean-buffer-list-delay-special 900
-          clean-buffer-list-timer (run-at-time t 7200 'clean-buffer-list)
-          clean-buffer-list-kill-regexps '("^.*$")
-          clean-buffer-list-kill-never-buffer-names
-          (append '("*Messages*" "*cmd*" "*scratch*" "*w3m*" "*w3m-cache*" "*Inferior Octave*")
-                  clean-buffer-list-kill-never-buffer-names-init)
-          clean-buffer-list-kill-never-regexps
-          (append '("^\\*EMMS Playlist\\*.*$" "-eat\\* \(")
-	              clean-buffer-list-kill-never-regexps-init)))
-
 (use-package popper
   :after perspective
   :init

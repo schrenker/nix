@@ -468,9 +468,10 @@ If no repository is found, prompt user to create one."
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status)))
 
+  (setopt auto-revert-buffer-list-filter #'magit-auto-revert-repository-buffer-p)
+
   :config
-  (setopt auto-revert-buffer-list-filter #'magit-auto-revert-repository-buffer-p
-          magit-display-buffer-function #'magit-display-buffer-fullframe-status-topleft-v1
+  (setopt magit-display-buffer-function #'magit-display-buffer-fullframe-status-topleft-v1
           magit-bury-buffer-function #'magit-restore-window-configuration))
 
 (use-package git-timemachine

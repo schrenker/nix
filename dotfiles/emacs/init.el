@@ -1724,8 +1724,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   :init
   (add-hook 'dired-mode-hook #'nerd-icons-dired-mode))
 
-;; This is broken due to changes in marginalia
-;; https://github.com/rainstormstudio/nerd-icons-completion/issues/11
 (use-package nerd-icons-completion
   :after marginalia
   :config

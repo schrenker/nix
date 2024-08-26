@@ -1099,6 +1099,11 @@ If no criteria is met, call org-sort."
             (lambda ()
               (add-hook 'before-save-hook #'schrenker/trim-src-block-buffer nil t))))
 
+(use-package corg
+  :ensure (:host github :repo "isamert/corg.el")
+  :init
+  (add-hook 'org-mode-hook #'corg-setup))
+
 (use-package org-appear
   :after org
   :config

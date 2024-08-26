@@ -76,7 +76,7 @@
       ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
     '';
 
-    shellInit = builtins.readFile ./dotfiles/config.fish;
+    shellInit = builtins.readFile ./dotfiles/fish/config.fish;
 
     shellAliases = {
       wget = "wget --hsts-file ~/.config/wget/wget-hsts";
@@ -125,6 +125,10 @@
       {
         name = "plugin-direnv";
         src = inputs.fish-plugin-direnv;
+      }
+      {
+        name = "emacs-eat-integration";
+        src = ./dotfiles/fish/eat-integration;
       }
     ];
   };

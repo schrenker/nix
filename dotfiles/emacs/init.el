@@ -1469,15 +1469,18 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (with-eval-after-load 'perspective
     (defun schrenker/eat-project (&optional arg)
       (interactive "P")
-      (let* ((default-directory (project-root (project-current t)))
-             (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")")))
+      (let* ((default-directory-old default-directory)
+             (default-directory (project-root (project-current t)))
+             (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")"))
+             (default-directory default-directory-old))
         (eat nil arg)))
 
     (defun schrenker/eat-project-other-window (&optional arg)
       (interactive "P")
-      (require 'project)
-      (let* ((default-directory (project-root (project-current t)))
-             (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")")))
+      (let* ((default-directory-old default-directory)
+             (default-directory (project-root (project-current t)))
+             (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")"))
+             (default-directory default-directory-old))
         (eat-other-window nil arg)))
 
     (advice-add 'eat-project :override

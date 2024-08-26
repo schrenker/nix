@@ -380,7 +380,8 @@
           corfu-cycle t
           corfu-preselect 'prompt
           corfu-count 16
-          corfu-max-width 120)
+          corfu-max-width 120
+          global-corfu-minibuffer nil)
   (global-corfu-mode))
 
 (use-package corfu-history

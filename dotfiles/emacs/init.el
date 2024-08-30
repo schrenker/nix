@@ -1317,6 +1317,50 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
    :repo "nan0scho1ar/ox-confluence-modern"
    :files ("*.el")))
 
+(use-package ox-icalendar
+  :after org
+  :ensure nil
+  :init
+  (defun schrenker/org-icalendar--vevent
+      (entry timestamp uid summary location description categories timezone class)
+    "Create a VEVENT component just like 'org-icalendar--vevent' does,
+but instead of fetching UID from ID property in org, generate one on the fly,
+based on file name relative to org directory + heading name.
+That way I can avoid org-icalendar-store-UID property completely, and avoid
+littering my org mode with ton of PROPERTY drawers under each heading."
+    (org-icalendar-fold-string
+     (if (eq (org-element-property :type timestamp) 'diary)
+         (org-icalendar-transcode-diary-sexp
+	      (org-element-property :raw-value timestamp) uid summary)
+       (concat "BEGIN:VEVENT\n"
+	           (org-icalendar-dtstamp) "\n"
+	           "UID:" (concat (file-relative-name (buffer-file-name) org-directory) "---" (org-element-property :raw-value entry) ) "\n"
+	           (org-icalendar-convert-timestamp timestamp "DTSTART" nil timezone) "\n"
+	           (org-icalendar-convert-timestamp timestamp "DTEND" t timezone) "\n"
+	           ;; RRULE.
+	           (when (org-element-property :repeater-type timestamp)
+	             (format "RRULE:FREQ=%s;INTERVAL=%d\n"
+		                 (cl-case (org-element-property :repeater-unit timestamp)
+			               (hour "HOURLY") (day "DAILY") (week "WEEKLY")
+			               (month "MONTHLY") (year "YEARLY"))
+		                 (org-element-property :repeater-value timestamp)))
+	           "SUMMARY:" summary "\n"
+	           (and (org-string-nw-p location) (format "LOCATION:%s\n" location))
+	           (and (org-string-nw-p class) (format "CLASS:%s\n" class))
+	           (and (org-string-nw-p description)
+		            (format "DESCRIPTION:%s\n" description))
+	           "CATEGORIES:" categories "\n"
+	           ;; VALARM.
+	           (org-icalendar--valarm entry timestamp summary)
+	           "END:VEVENT"))))
+
+  (setopt org-icalendar-combined-agenda-file (concat org-directory "emacs.ics")
+          org-icalendar-combined-name "Emacs"
+          org-icalendar-deadline-summary-prefix "D: "
+          org-icalendar-store-UID nil)
+
+  (advice-add 'org-icalendar--vevent :override #'schrenker/org-icalendar--vevent))
+
 (use-package ibuffer
   :ensure nil
   :bind (("C-x C-b" . ibuffer)

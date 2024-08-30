@@ -1160,15 +1160,18 @@ If no criteria is met, call org-sort."
     "Update the value of `org-agenda-files'."
     (interactive)
     (setopt org-agenda-files (seq-uniq
-                              (seq-map
-                               #'car
-                               (org-roam-db-query
-                                [:select [nodes:file]
-                                         :from tags
-                                         :left-join nodes
-                                         :on (= tags:node-id nodes:id)
-                                         :where (or (like tag (quote "%\"agenda\"%"))
-                                                    (like tag (quote "%\"project\"%")))])))))
+                              (seq-filter
+                               (lambda (EL) (not (or (string-match "03_archives" EL)
+                                                (string-match "99_tags" EL))))
+                               (seq-map
+                                #'car
+                                (org-roam-db-query
+                                 [:select [nodes:file]
+                                          :from tags
+                                          :left-join nodes
+                                          :on (= tags:node-id nodes:id)
+                                          :where (or (like tag (quote "%\"agenda\"%"))
+                                                     (like tag (quote "%\"project\"%")))]))))))
 
   (defun schrenker/org-roam-get-all-filetags ()
     "Get all existing unique filetags from org-roam files."

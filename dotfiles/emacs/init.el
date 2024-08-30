@@ -1334,7 +1334,7 @@ littering my org mode with ton of PROPERTY drawers under each heading."
 	      (org-element-property :raw-value timestamp) uid summary)
        (concat "BEGIN:VEVENT\n"
 	           (org-icalendar-dtstamp) "\n"
-	           "UID:" (concat (file-relative-name (buffer-file-name) org-directory) "---" (org-element-property :raw-value entry) ) "\n"
+	           "UID:" (md5 (concat (file-relative-name (buffer-file-name) org-directory) "/" (org-element-property :raw-value entry))) "\n"
 	           (org-icalendar-convert-timestamp timestamp "DTSTART" nil timezone) "\n"
 	           (org-icalendar-convert-timestamp timestamp "DTEND" t timezone) "\n"
 	           ;; RRULE.

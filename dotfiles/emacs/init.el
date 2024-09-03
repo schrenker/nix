@@ -1356,7 +1356,7 @@ littering my org mode with ton of PROPERTY drawers under each heading."
 
   (setopt org-icalendar-combined-agenda-file (concat org-directory "emacs.ics")
           org-icalendar-combined-name "Emacs"
-          org-icalendar-deadline-summary-prefix "D: "
+          org-icalendar-deadline-summary-prefix ""
           org-icalendar-store-UID nil)
 
   (advice-add 'org-icalendar--vevent :override #'schrenker/org-icalendar--vevent))

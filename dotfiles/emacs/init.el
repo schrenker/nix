@@ -670,7 +670,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
 
 (use-package hydra
   :bind (("M-O" . 'schrenker/switch-hydra)
-         ("C-x C-g" . 'schrenker/smerge))
+         ("C-c g" . 'schrenker/smerge))
   :config
   (setopt hydra-is-helpful t
           hydra-hint-display-type 'posframe)

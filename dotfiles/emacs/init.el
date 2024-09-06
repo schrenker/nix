@@ -1022,7 +1022,7 @@ If no criteria is met, call org-sort."
                                    :empty-lines 1
                                    :prepend t)
                                   ("j" "Journal")
-                                  ("j" "Inbox" plain
+                                  ("ji" "Inbox" plain
                                    (file+function org-default-notes-file
                                                   (lambda ()
                                                     (org-reverse-datetree-goto-date-in-file

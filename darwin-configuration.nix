@@ -4,6 +4,10 @@
   #     # define packages available on system level for all users
   #   ];
 
+  nix.package = pkgs.nix;
+  nix.linux-builder.enable = true;
+  nix.settings.trusted-users = [ "@admin" ];
+
   # auto upgrade nix package and the daemon service
   services.nix-daemon.enable = true;
 
@@ -35,7 +39,6 @@
     "editorconfig"
     "gcc"
     "libtool"
-    "lima"
     "pngpaste"
     "svn"
   ];

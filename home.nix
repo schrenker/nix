@@ -51,6 +51,7 @@
     ++ lib.optionals stdenv.isDarwin [
       pkgs.pinentry_mac
       pkgs.docker-client
+      pkgs.utm
     ]
     ++ lib.optionals stdenv.isLinux [
       pkgs.emacs29-pgtk

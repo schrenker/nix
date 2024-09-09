@@ -20,10 +20,6 @@
       kubectx
       kubernetes-helm
 
-      # GCP
-      (google-cloud-sdk.withExtraComponents
-        [ google-cloud-sdk.components.beta ])
-
       # GIT
       git
       git-crypt

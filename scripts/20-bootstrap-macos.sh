@@ -41,8 +41,9 @@ main() {
     echo "Activate the environment from PATH"
     darwin-rebuild switch --flake .
 
-    echo "Cleanup"
-    rm -r result
+    nix-env -e nix
+    # echo "Cleanup"
+    # rm -r result
 }
 
 main "$@"

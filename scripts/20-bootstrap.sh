@@ -1,29 +1,48 @@
 #!/usr/bin/env bash
 
-echo "Backing up /etc/nix/nix.conf and shells"
-sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
-sudo mv /etc/shells /etc/shells.bkp
+set -o errexit
+set -o nounset
+set -o pipefail
+if [[ "${TRACE-0}" == "1" ]] || [[ "${TRACE-0}" == true ]]; then
+    set -o xtrace
+fi
 
-echo "Linking certificates for the build time"
-sudo rm /etc/ssl/certs/ca-certificates.crt
-sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
+if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
+    echo 'Usage: ./20-bootstrap.sh
+'
+    exit
+fi
 
-cd ~/.config/nix
+cd "$(dirname "$0")"
 
-echo "Building flake"
-nix build .#darwinConfigurations.Macbook.system
+main() {
+    echo "Backing up /etc/nix/nix.conf and shells"
+    sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
+    sudo mv /etc/shells /etc/shells.bkp
 
-echo "Activate first environment"
-sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
-sudo unlink /etc/ssl/certs/ca-certificates.crt
-./result/sw/bin/darwin-rebuild switch --flake .#Macbook
+    echo "Linking certificates for the build time"
+    sudo rm /etc/ssl/certs/ca-certificates.crt
+    sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
 
-echo "Changing current user login shell to fish"
-echo "/etc/profiles/per-user/sebastian/bin/fish" | sudo tee -a /etc/shells
-chsh -s /etc/profiles/per-user/sebastian/bin/fish
+    cd ~/.config/nix
 
-echo "Activate the environment from PATH"
-darwin-rebuild switch --flake .
+    echo "Building flake"
+    nix build .#darwinConfigurations.Macbook.system
 
-echo "Cleanup"
-rm -r result
+    echo "Activate first environment"
+    sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
+    sudo unlink /etc/ssl/certs/ca-certificates.crt
+    ./result/sw/bin/darwin-rebuild switch --flake .#Macbook
+
+    echo "Changing current user login shell to fish"
+    echo "/etc/profiles/per-user/sebastian/bin/fish" | sudo tee -a /etc/shells
+    chsh -s /etc/profiles/per-user/sebastian/bin/fish
+
+    echo "Activate the environment from PATH"
+    darwin-rebuild switch --flake .
+
+    echo "Cleanup"
+    rm -r result
+}
+
+main "$@"

@@ -11,7 +11,7 @@
 :CONTENTS:
 :END:
 
-* Goal
+* ${title}
 DEADLINE: %^{When the project should end?}t
 
 * Journal

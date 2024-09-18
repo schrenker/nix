@@ -10,6 +10,7 @@ fi
 if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
     echo 'Usage: ./00-pre_install.sh.sh
 
+Sanity check, for whether you really should proceed with other scripts.
 '
     exit
 fi

@@ -10,6 +10,7 @@ fi
 if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
     echo 'Usage: ./10-install_base.sh
 
+Install nix, and brew (if on macos).
 '
     exit
 fi
@@ -17,14 +18,23 @@ fi
 cd "$(dirname "$0")"
 
 main() {
-    git clone git@github.com:schrenker/nix.git ~/.config/nix
+    if [[ ! -d "~/.config/nix" ]]; then
+        git clone git@github.com:schrenker/nix.git ~/.config/nix
+    fi
 
     if [[ $(uname) == "Linux" ]]; then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
     else
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install macos
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        /opt/homebrew/bin/brew install git-crypt
+
+        if [[ ! $(which brew) ]]; then
+            bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
+
+        if [[ ! $(which git-crypt) ]]; then
+            /opt/homebrew/bin/brew install git-crypt
+        fi
+
     fi
 }
 

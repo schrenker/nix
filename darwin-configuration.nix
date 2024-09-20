@@ -4,7 +4,7 @@
   #     # define packages available on system level for all users
   #   ];
 
-  nix.package = pkgs.nix;
+  #nix.package = pkgs.nix;
   nix.linux-builder.enable = true;
   nix.settings.trusted-users = [ "@admin" ];
 

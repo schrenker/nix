@@ -91,6 +91,8 @@
     "uBlacklist for Safari" = 1547912640;
   };
 
+  ids.uids.nixbld = 450;
+
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.finder.ShowStatusBar = true;
   system.defaults.finder.FXPreferredViewStyle = "clmv";

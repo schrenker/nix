@@ -25,7 +25,7 @@ main() {
     if [[ $(uname) == "Linux" ]]; then
         curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
     else
-        curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install macos
+        curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install macos --nix-build-user-id-base 450 --nix-build-group-id 450
 
         if [[ ! $(which brew) ]]; then
             bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

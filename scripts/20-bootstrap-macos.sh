@@ -17,12 +17,12 @@ cd "$(dirname "$0")"
 
 main() {
     echo "Backing up /etc/nix/nix.conf and shells"
-    sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
-    sudo mv /etc/shells /etc/shells.bkp
+    #sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
+    #sudo mv /etc/shells /etc/shells.bkp
 
     echo "Linking certificates for the build time"
-    sudo rm /etc/ssl/certs/ca-certificates.crt
-    sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
+    #sudo rm /etc/ssl/certs/ca-certificates.crt
+    #sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
 
     cd ~/.config/nix
 
@@ -30,20 +30,23 @@ main() {
     nix build .#darwinConfigurations.Macbook.system
 
     echo "Activate first environment"
-    sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
-    sudo unlink /etc/ssl/certs/ca-certificates.crt
+    #sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
+    #sudo /etc/bashrc /etc/bashrc.before-nix-darwin
+    #sudo unlink /etc/ssl/certs/ca-certificates.crt
     ./result/sw/bin/darwin-rebuild switch --flake .#Macbook
 
     echo "Changing current user login shell to fish"
     echo "/etc/profiles/per-user/sebastian/bin/fish" | sudo tee -a /etc/shells
     chsh -s /etc/profiles/per-user/sebastian/bin/fish
 
-    echo "Activate the environment from PATH"
-    darwin-rebuild switch --flake .
+    # echo "Activate the environment from PATH"
+    # darwin-rebuild switch --flake .
 
-    nix-env -e nix
-    # echo "Cleanup"
-    # rm -r result
+    sudo nix-env -e nix
+    echo "Cleanup"
+    rm -r result
+
+    nix-collect-garbage -d
 }
 
 main "$@"

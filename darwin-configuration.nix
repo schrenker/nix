@@ -19,7 +19,7 @@
   environment.variables.EDITOR = "vi";
 
   # Link nix-darwin flake nixpkgs to system
-  environment.postBuild = ''
+  environment.extraSetup = ''
     ln -sv ${pkgs.path} $out/nixpkgs
   '';
 

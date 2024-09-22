@@ -126,6 +126,7 @@
   home.file = {
     ".gnupg/gpg-agent.conf".source = ./dotfiles/gpg-agent.conf;
     ".gnupg/gpg.conf".source = ./dotfiles/gpg.conf;
+    ".npmrc".source = ./dotfiles/.npmrc;
   };
 
   # Linking dynamic files that might change on the destination.

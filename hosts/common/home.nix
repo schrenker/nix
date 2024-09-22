@@ -56,7 +56,7 @@
       ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
     '';
 
-    shellInit = builtins.readFile ../../dotfiles/fish/config.fish;
+    shellInit = builtins.readFile ./dotfiles/fish/config.fish;
 
     shellAliases = {
       wget = "wget --hsts-file ~/.config/wget/wget-hsts";
@@ -107,7 +107,7 @@
       }
       {
         name = "emacs-eat-integration";
-        src = ../../dotfiles/fish/eat-integration;
+        src = ./dotfiles/fish/eat-integration;
       }
     ];
   };
@@ -123,11 +123,16 @@
     ignores = [ ".DS_Store" ];
   };
 
+  home.file = {
+    ".gnupg/gpg-agent.conf".source = ./dotfiles/gpg-agent.conf;
+    ".gnupg/gpg.conf".source = ./dotfiles/gpg.conf;
+  };
+
   # Linking dynamic files that might change on the destination.
   # While this doesn't guarantee immutability anymore, I am willing to make this sacrifice for these files.
   # Note that this list should be kept as small as possible, and expanded only if there is no other way.
   home.activation.copyFiles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ln -sfFn ~/.config/nix/dotfiles/emacs ~/.config/emacs
+    ln -sfFn ~/.config/nix/hosts/common/dotfiles/emacs ~/.config/emacs
   '';
 
 }

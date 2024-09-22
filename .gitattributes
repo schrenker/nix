@@ -1,4 +1,5 @@
 secrets/** filter=git-crypt diff=git-crypt
 hosts/macbook/secrets/** filter=git-crypt diff=git-crypt
 hosts/wsl2/secrets/** filter=git-crypt diff=git-crypt
-dotfiles/emacs/secret/** filter=git-crypt diff=git-crypt
+hosts/common/dotfiles/emacs/secret/** filter=git-crypt diff=git-crypt
+hosts/common/secrets/** filter=git-crypt diff=git-crypt

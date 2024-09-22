@@ -97,5 +97,11 @@
           inherit inputs;
         };
       };
+
+      devShells.aarch64-darwin.default =
+        let pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        in pkgs.mkShell {
+          packages = with pkgs; [ inputs.nil.packages.${system}.nil ];
+        };
     };
 }

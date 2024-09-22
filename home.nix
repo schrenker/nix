@@ -43,7 +43,6 @@
       nodejs
       ripgrep
     ]
-    ++ [ inputs.nil.packages."${system}".nil ] # INPUTS
     ++ lib.optionals stdenv.isDarwin [
       pkgs.pinentry_mac
       pkgs.docker-client

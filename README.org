@@ -1,3 +1,8 @@
 #+title: Nix dotfiles
 
-Under construction
+- hosts/ :: host configuration. Each host has his own secrets and dotfiles. There is also a common directory
+  + hosts/*/secrets/ :: encrypted files used for the host
+  + hosts/*/dotfiles/ :: non-encrypted configuration files for other software
+- scripts/ :: scripts used within the system, like git hooks
+  + setup/ ::  scripts to get going from scratch
+- shells/ :: actual starter files to get nix-direnv going for other projects

@@ -4,8 +4,20 @@
   #     # define packages available on system level for all users
   #   ];
 
-  #nix.package = pkgs.nix;
-  nix.linux-builder.enable = true;
+  nix.linux-builder = {
+    enable = true;
+    ephemeral = true;
+    maxJobs = 4;
+    config = {
+      virtualisation = {
+        darwin-builder = {
+          diskSize = 60 * 1024;
+          memorySize = 8 * 1024;
+        };
+        cores = 6;
+      };
+    };
+  };
   nix.settings.trusted-users = [ "@admin" ];
 
   # auto upgrade nix package and the daemon service

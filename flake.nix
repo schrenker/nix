@@ -60,7 +60,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.sebastian = {
-                imports = [ ./hosts/macbook/home.nix ];
+                imports = [ ./hosts/common/home.nix ./hosts/macbook/home.nix ];
               };
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
@@ -71,6 +71,7 @@
           # system = "x86_64-linux";
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
+            ./hosts/common/home.nix
             ./hosts/wsl2/home.nix
             {
               home = {

@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     darwin = {
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,70 +47,47 @@
     };
   };
 
-  outputs = { self, darwin, home-manager, nixpkgs, ... }@inputs:
-    let
-      darwinVars = {
-        username = "sebastian";
-        homePrefix = "/Users";
-        switchType = "darwin-rebuild";
-        switchPath = "~/.config/nix";
-        secretDir = "personal";
-      };
-      wsl2Vars = {
-        username = "sebastian";
-        homePrefix = "/home";
-        switchType = "home-manager";
-        switchPath = "~/.config/nix#WSL2";
-        secretDir = "work";
-      };
-    in {
-      darwinConfigurations."Macbook" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules = [
-          ./darwin-configuration.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.sebastian = { imports = [ ./home.nix ]; };
-            home-manager.extraSpecialArgs = {
-              vars = darwinVars;
-              inherit inputs;
-            };
-          }
-        ];
-      };
+  outputs = inputs@{ self, flake-parts, darwin, home-manager, nixpkgs, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" "aarch64-darwin" ];
+      flake = {
+        darwinConfigurations."Macbook" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            ./hosts/macbook/darwin-configuration.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.sebastian = {
+                imports = [ ./hosts/macbook/home.nix ];
+              };
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
+        };
 
-      homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
-        # system = "x86_64-linux";
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [
-          ./home.nix
-          {
-            home = {
-              username = "sebastian";
-              homeDirectory = "/home/sebastian";
-              stateVersion = "23.11";
-            };
-          }
-        ];
-        extraSpecialArgs = {
-          vars = wsl2Vars;
-          inherit inputs;
+        homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
+          # system = "x86_64-linux";
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          modules = [
+            ./hosts/wsl2/home.nix
+            {
+              home = {
+                username = "sebastian";
+                homeDirectory = "/home/sebastian";
+                stateVersion = "23.11";
+              };
+            }
+          ];
+          extraSpecialArgs = { inherit inputs; };
         };
       };
 
-      devShells.aarch64-darwin.default =
-        let pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        in pkgs.mkShell {
-          packages = with pkgs; [ inputs.nil.packages.${system}.nil ];
+      perSystem = { config, self', inputs', pkgs, system, ... }: {
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = with pkgs; [ inputs.nil.packages.${system}.nil ];
         };
-
-      devShells.x86_64-linux.default =
-        let pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        in pkgs.mkShell {
-          packages = with pkgs; [ inputs.nil.packages.${system}.nil ];
-        };
-
+      };
     };
 }

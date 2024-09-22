@@ -1,7 +1,7 @@
-{ inputs, lib, pkgs, vars, ... }: {
+{ inputs, lib, pkgs, ... }: {
   home.stateVersion = "23.11";
-  home.username = "${vars.username}";
-  home.homeDirectory = "${vars.homePrefix}/${vars.username}";
+  home.username = "sebastian";
+  home.homeDirectory = "/home/sebastian";
 
   programs.home-manager.enable = true;
 
@@ -42,20 +42,15 @@
       libgccjit
       nodejs
       ripgrep
-    ]
-    ++ lib.optionals stdenv.isDarwin [
-      pkgs.pinentry_mac
-      pkgs.docker-client
-      pkgs.utm
-    ]
-    ++ lib.optionals stdenv.isLinux [
-      pkgs.emacs29-pgtk
+
+      # Linux excl
+      emacs29-pgtk
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-      pkgs.gitleaks
-      pkgs.docker
-      pkgs.syncthing
-      pkgs.shfmt
-      pkgs.yamllint
+      gitleaks
+      docker
+      syncthing
+      shfmt
+      yamllint
     ];
 
   fonts.fontconfig.enable = true;
@@ -84,7 +79,7 @@
       kd = "kubectl describe";
       kx = "kubectx";
       kns = "kubens";
-      sw = "${vars.switchType} switch --flake ${vars.switchPath}";
+      sw = "home-manager switch --flake ~/.config/nix#WSL2";
     };
 
     functions = {
@@ -143,15 +138,8 @@
   home.file = {
     ".gnupg/gpg-agent.conf".source = ./dotfiles/gpg-agent.conf;
     ".gnupg/gpg.conf".source = ./dotfiles/gpg.conf;
-    ".config/lulublock.txt".source = ./dotfiles/lulublock.txt;
-    ".ssh/git".source = ./secrets/${vars.secretDir}/git;
-    ".ssh/config".source = ./secrets/${vars.secretDir}/ssh_config;
-    ".config/iterm2/com.googlecode.iterm2.plist".source = ./dotfiles/iterm2/com.googlecode.iterm2.plist;
-    "Library/Application Support/iTerm2/Scripts/AutoLaunch/auto_dark_mode.py".source = ./dotfiles/iterm2/auto_dark_mode.py;
-
-  }
-  // lib.optionalAttrs (vars.secretDir == "personal") {
-    ".ssh/default".source = ./secrets/${vars.secretDir}/default;
+    ".ssh/git".source = ./secrets/git;
+    ".ssh/config".source = ./secrets/ssh_config;
   };
 
   # Linking dynamic files that might change on the destination.

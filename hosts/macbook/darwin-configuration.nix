@@ -56,7 +56,6 @@
   ];
   homebrew.casks = [
     "alt-tab"
-    "cloudflare-warp"
     "crossover"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"

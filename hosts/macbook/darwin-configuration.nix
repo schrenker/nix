@@ -56,6 +56,7 @@
   ];
   homebrew.casks = [
     "alt-tab"
+    "betterdisplay"
     "crossover"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"

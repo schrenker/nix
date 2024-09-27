@@ -150,7 +150,7 @@
 
   (if (schrenker/wsl2-p)
       (progn
-        (set-frame-font "JetBrainsMono Nerd Font 10" nil t)
+        (set-frame-font "JetBrainsMono Nerd Font 11" nil t)
         (schrenker/zoom-frame))
     (set-frame-font "JetBrainsMono Nerd Font 14" nil t))
 

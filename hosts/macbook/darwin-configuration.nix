@@ -20,8 +20,7 @@
   };
   nix.settings.trusted-users = [ "@admin" ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ "raycast" ];
+  nixpkgs.config.allowUnfree = true;
 
   # auto upgrade nix package and the daemon service
   services.nix-daemon.enable = true;

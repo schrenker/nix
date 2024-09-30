@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   # environment.systemPackages = with pkgs;
   #   [
   #     # define packages available on system level for all users
@@ -19,6 +19,9 @@
     };
   };
   nix.settings.trusted-users = [ "@admin" ];
+
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [ "raycast" ];
 
   # auto upgrade nix package and the daemon service
   services.nix-daemon.enable = true;
@@ -45,15 +48,7 @@
   };
 
   homebrew.enable = true;
-  homebrew.brews = [
-    "aspell"
-    "coreutils"
-    "editorconfig"
-    "gcc"
-    "libtool"
-    "pngpaste"
-    "svn"
-  ];
+  homebrew.brews = [ "gcc" "svn" ];
   homebrew.casks = [
     "alt-tab"
     "betterdisplay"
@@ -61,7 +56,6 @@
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
     "hazeover"
-    "iterm2"
     "jordanbaird-ice"
     "karabiner-elements"
     "keymapp"
@@ -70,22 +64,13 @@
     "lulu"
     "numi"
     "onecast"
-    "raycast"
     "syncthing"
-    "synologyassistant"
-    "vmware-fusion"
-    "zsa-wally"
   ];
-  homebrew.taps = [
-    "d12frosted/emacs-plus"
-    "homebrew/cask-drivers"
-    "homebrew/cask-fonts"
-    "homebrew/cask-versions"
-    "homebrew/services"
-  ];
+  homebrew.taps = [ "d12frosted/emacs-plus" "homebrew/services" ];
 
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
+  homebrew.onActivation.autoUpdate = true;
   homebrew.extraConfig = ''
     brew "emacs-plus", args: ["with-dbus", "with-mailutils", "with-no-frame-refocus", "with-xwidgets", "with-imagemagick", "with-native-comp", "with-nobu417-big-sur-icon", "with-poll"]
   '';

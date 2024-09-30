@@ -1,7 +1,17 @@
 { inputs, lib, pkgs, ... }: {
+
   home.homeDirectory = "/Users/sebastian";
 
-  home.packages = with pkgs; [ pinentry_mac docker-client utm ];
+  home.packages = with pkgs; [
+    coreutils-prefixed
+    docker-client
+    iterm2
+    libtool
+    pinentry_mac
+    pngpaste
+    raycast
+    utm
+  ];
 
   programs.fish.shellAliases.sw = "darwin-rebuild switch --flake ~/.config/nix";
 

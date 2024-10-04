@@ -1017,7 +1017,7 @@ If no criteria is met, call org-sort."
                                    :empty-lines 1
                                    :prepend t)
                                   ("P" "Project Task" entry
-                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tag "project")) "Tasks" "Backlog")
+                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tag "project")) "Tasks")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
                                    :prepend t)

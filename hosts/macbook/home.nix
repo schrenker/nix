@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, ... }: {
+{ pkgs, ... }: {
 
   home.homeDirectory = "/Users/sebastian";
 
@@ -24,5 +24,7 @@
       ./dotfiles/iterm2/com.googlecode.iterm2.plist;
     "Library/Application Support/iTerm2/Scripts/AutoLaunch/auto_dark_mode.py".source =
       ./dotfiles/iterm2/auto_dark_mode.py;
+    ".config/karabiner/karabiner.json".source = ./dotfiles/karabiner/karabiner.json;
+    ".config/karabiner/assets/".source = ./dotfiles/karabiner/assets;
   };
 }

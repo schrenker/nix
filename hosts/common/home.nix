@@ -31,9 +31,13 @@
     fish
     jq
     poppler_utils
-    proselint
     yq-go
     wget
+
+    # CODE
+    shfmt
+    shellcheck
+    bashate
 
     # DEPS
     cmake

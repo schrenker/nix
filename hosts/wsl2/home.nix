@@ -2,12 +2,11 @@
   home.homeDirectory = "/home/sebastian";
 
   home.packages = with pkgs; [
-    emacs29-pgtk
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-    gitleaks
     docker
+    emacs29-pgtk
+    gitleaks
     syncthing
-    shfmt
     yamllint
   ];
 

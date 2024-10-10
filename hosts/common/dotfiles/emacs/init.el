@@ -536,6 +536,13 @@ If no repository is found, prompt user to create one."
     (let ((aw-ignore-current t))
       (ace-swap-window)))
 
+  (defun schrenker/aw-flip-window-anyway ()
+    "aw-flip-window, but if aw--window-ring is empty, then opt to ace-select-window instead."
+    (interactive)
+    (let ((res (ignore-errors (aw-flip-window))))
+      (if res res
+        (ace-select-window))))
+
   :config
   (setopt aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
 
@@ -2052,7 +2059,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    '("SPC t" . (lambda () (interactive) (aw-transpose-frame (car (window-list)))))
    '("SPC x" . delete-window)
    '("SPC X" . ace-delete-window)
-   '("SPC o" . aw-flip-window)
+   '("SPC o" . schrenker/aw-flip-window-anyway)
    '("SPC O" . ace-select-window)
    '("SPC s" . schrenker/ace-swap-window)
    '("SPC +" . hydra-uictl/schrenker/zoom-frame)

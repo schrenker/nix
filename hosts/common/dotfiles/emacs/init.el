@@ -426,6 +426,12 @@
   (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
+(use-package autorevert
+  :ensure nil
+  :config
+  (setopt global-auto-revert-non-file-buffers t)
+  (global-auto-revert-mode 1))
+
 (use-package transient
   :config
   (with-eval-after-load 'magit
@@ -469,8 +475,6 @@ If no repository is found, prompt user to create one."
     (interactive)
     (let ((current-prefix-arg '(4)))
       (call-interactively 'magit-status)))
-
-  (setopt auto-revert-buffer-list-filter #'magit-auto-revert-repository-buffer-p)
 
   :config
   (setopt magit-display-buffer-function #'magit-display-buffer-fullframe-status-topleft-v1
@@ -1420,7 +1424,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
               (setq-local display-buffer-base-action '((display-buffer-reuse-window
                                                         ace-display-buffer))
                           aw-ignore-current t)
-              (auto-revert-mode)
               (display-line-numbers-mode -1)))
 
   :config

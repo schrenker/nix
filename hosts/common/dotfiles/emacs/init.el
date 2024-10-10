@@ -1194,8 +1194,8 @@ If no criteria is met, call org-sort."
     (org-roam-node-file
      (org-roam-node-read nil
                          (lambda (node) (and
-                                         (member TAG (org-roam-node-tags node))
-                                         (not (string= (concat "#" TAG) (org-roam-node-title node))))))))
+                                    (member TAG (org-roam-node-tags node))
+                                    (not (string= (concat "#" TAG) (org-roam-node-title node))))))))
 
   (defun schrenker/org-roam-update-tag-collection-nodes ()
     "Tags files are collection of links to all org-roam nodes with respective FILETAGS.

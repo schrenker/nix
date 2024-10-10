@@ -1142,7 +1142,7 @@ If no criteria is met, call org-sort."
               ("RET" . org-open-at-point)))
 
 (use-package org-roam
-  :autoload (org-roam-db-query)
+  :autoload (org-roam-db-query org-roam-node-file)
   :commands (org-roam-capture-p)
   :after org
   :bind (("C-c n l" . org-roam-buffer-toggle)

@@ -1948,7 +1948,9 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (add-hook 'prog-mode-hook 'format-all-mode)
   :config
   (add-hook 'go-mode-hook (lambda ()
-                            (add-to-list 'format-all-formatters '("Go" gofmt goimports)))))
+                            (add-to-list 'format-all-formatters '("Go" gofmt goimports))))
+  (add-hook 'bash-ts-mode-hook (lambda ()
+                            (add-to-list 'format-all-formatters '("Shell" (shfmt "-i" "4"))))))
 
 (use-package meow
   :config
@@ -2243,6 +2245,13 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (add-hook 'eglot-managed-mode-hook (lambda ()
                                        (when (derived-mode-p 'go-mode)
                                          (flymake-golangci-load-backend)))))
+
+(use-package flymake-bashate
+  :commands flymake-bashate-setup
+  :hook (((bash-ts-mode sh-mode) . flymake-bashate-setup)
+         ((bash-ts-mode sh-mode) . flymake-mode))
+  :config
+  (setopt flymake-bashate-max-line-length 80))
 
 ;;;;;; CONFIGURATION LANGUAGES ;;;;;;
 (use-package jsonnet-mode :bind (:map jsonnet-mode-map ("C-c C-f" . format-all-region-or-buffer)))

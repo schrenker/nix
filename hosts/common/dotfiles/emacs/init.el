@@ -903,6 +903,8 @@ If no criteria is met, call org-sort."
           org-M-RET-may-split-line '((default . nil))
           org-archive-location (concat org-directory "03_archives/%s_archive::")
           org-archive-tag "archive"
+          org-ctags-enabled-p nil
+          org-ctags-open-link-functions '()
           org-default-notes-file (concat org-directory "inbox.org")
           org-element-archive-tag "archive"
           org-fontify-quote-and-verse-blocks t

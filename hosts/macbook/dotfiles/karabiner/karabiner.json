@@ -125,7 +125,16 @@
                         "is_keyboard": true,
                         "product_id": 6505,
                         "vendor_id": 12951
-                    }
+                    },
+                    "ignore": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 50475,
+                        "vendor_id": 1133
+                    },
+                    "ignore": true
                 }
             ],
             "name": "Default profile",

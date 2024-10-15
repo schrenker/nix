@@ -227,7 +227,10 @@
   :init
   (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90)
   :config
-  (setopt envrc-show-summary-in-minibuffer nil))
+  (setopt envrc-none-lighter '()
+          envrc-on-lighter '(" " (:propertize "Env+" face envrc-mode-line-on-face))
+          envrc-error-lighter '(" " (:propertize "Env!" face envrc-mode-line-error-face))
+          envrc-show-summary-in-minibuffer nil))
 
 (use-package orderless
   :config

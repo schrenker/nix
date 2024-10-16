@@ -2248,14 +2248,42 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
 (use-package flymake
   :ensure nil
-  :hook ((prog-mode text-mode org-mode) . flymake-mode)
+  :hook ((prog-mode) . flymake-mode)
+  :init
+  (defun schrenker/flymake--mode-line-exception ()
+    "Helper for `flymake-mode-line-exception'."
+    (pcase-let* ((running) (reported)
+                 (`(,ind ,face ,explain)
+                  (cond ((zerop (hash-table-count flymake--state))
+                         '("?" nil "No known backends"))
+                        ((cl-set-difference
+                          (setq running (flymake-running-backends))
+                          (setq reported (flymake-reporting-backends)))
+                         `("Wait" compilation-mode-line-run
+                           ,(format "Waiting for %s running backend(s)"
+                                    (length (cl-set-difference running reported)))))
+                        ((and (flymake-disabled-backends) (null running))
+                         '("!" compilation-mode-line-run
+                           "All backends disabled"))
+                        (t
+                         '(nil nil nil)))))
+      (when ind
+        `("["
+          (:propertize ,ind face ,face
+                       help-echo ,explain
+                       keymap ,(let ((map (make-sparse-keymap)))
+                                 (define-key map [mode-line mouse-1]
+                                             'flymake-switch-to-log-buffer)
+                                 map)) "]"))))
   :config
-  (setopt flymake-mode-line-lighter "FM"
+  (advice-add 'flymake--mode-line-exception :override #'schrenker/flymake--mode-line-exception)
+  (setopt flymake-mode-line-lighter ""
           flymake-show-diagnostics-at-end-of-line 'short))
 
 (use-package flymake-yamllint
   :init
-  (add-hook 'yaml-mode-hook #'flymake-yamllint-setup))
+  (add-hook 'yaml-mode-hook #'flymake-yamllint-setup)
+  (add-hook 'yaml-mode-hook #'flymake-mode))
 
 (use-package flymake-golangci
   :ensure (flymake-golangci :host github :repo "storvik/flymake-golangci")

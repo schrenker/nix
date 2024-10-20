@@ -14,11 +14,14 @@
   (setq native-comp-async-jobs-number 8)
   ;;(setenv "LIBRARY_PATH" "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib")
   (setenv "LIBRARY_PATH"
-	(string-join
-	 '("/opt/homebrew/opt/gcc/lib/gcc/14"
-	   "/opt/homebrew/opt/libgccjit/lib/gcc/14"
-	   "/opt/homebrew/opt/gcc/lib/gcc/14/gcc/aarch64-apple-darwin23/14")
-	 ":")))
+	      (let*
+              ((base "/opt/homebrew/opt/gcc/lib/gcc/")
+               (version (car (directory-files base nil "[^a-zA-Z.]" nil 1)))
+               (macversion (car (directory-files (concat base version "/gcc/") nil "[^.]" nil 1)))
+               (gcc (concat base version))
+               (libgccjit (concat "/opt/homebrew/opt/libgccjit/lib/gcc/" version))
+               (macgcc (concat base version "/gcc/" macversion "/" version)))
+            (string-join (list gcc libgccjit macgcc) ":"))))
 
 (provide 'early-init)
 ;;; early-init.el ends here.

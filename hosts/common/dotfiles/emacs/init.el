@@ -530,6 +530,14 @@ If no repository is found, prompt user to create one."
    :host "github.com"
    :repo "artawower/persistent-kmacro.el"))
 
+(use-package inhibit-mouse
+  :ensure (inhibit-mouse
+             :type git
+             :host github
+             :repo "jamescherti/inhibit-mouse.el")
+  :config
+  (inhibit-mouse-mode))
+
 (use-package posframe
   :if (display-graphic-p))
 
@@ -1693,6 +1701,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
     (blackout 'vi-tilde-fringe-mode))
   (with-eval-after-load 'autorevert
     (blackout 'auto-revert-mode))
+  (with-eval-after-load 'inhibit-mouse
+    (blackout 'inhibit-mouse-mode))
   (with-eval-after-load 'meow
     (blackout 'meow-beacon-mode)
     (blackout 'meow-keypad-mode)

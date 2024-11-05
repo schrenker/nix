@@ -1385,7 +1385,8 @@ littering my org mode with ton of PROPERTY drawers under each heading."
           org-icalendar-deadline-summary-prefix ""
           org-icalendar-store-UID nil)
 
-  (advice-add 'org-icalendar--vevent :override #'schrenker/org-icalendar--vevent))
+  (advice-add 'org-icalendar--vevent :override #'schrenker/org-icalendar--vevent)
+  (advice-add 'org-icalendar-combine-agenda-files :before #'schrenker/agenda-files-update))
 
 (use-package ibuffer
   :ensure nil

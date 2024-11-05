@@ -1185,7 +1185,7 @@ If no criteria is met, call org-sort."
     (setopt org-agenda-files (seq-uniq
                               (seq-filter
                                (lambda (EL) (not (or (string-match "03_archives" EL)
-                                                (string-match "99_tags" EL))))
+                                                     (string-match "99_tags" EL))))
                                (seq-map
                                 #'car
                                 (org-roam-db-query
@@ -1216,8 +1216,8 @@ If no criteria is met, call org-sort."
     (org-roam-node-file
      (org-roam-node-read nil
                          (lambda (node) (and
-                                    (member TAG (org-roam-node-tags node))
-                                    (not (string= (concat "#" TAG) (org-roam-node-title node))))))))
+                                         (member TAG (org-roam-node-tags node))
+                                         (not (string= (concat "#" TAG) (org-roam-node-title node))))))))
 
   (defun schrenker/org-roam-update-tag-collection-nodes ()
     "Tags files are collection of links to all org-roam nodes with respective FILETAGS.
@@ -1979,7 +1979,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (add-hook 'go-mode-hook (lambda ()
                             (add-to-list 'format-all-formatters '("Go" gofmt goimports))))
   (add-hook 'bash-ts-mode-hook (lambda ()
-                            (add-to-list 'format-all-formatters '("Shell" (shfmt "-i" "4"))))))
+                                 (add-to-list 'format-all-formatters '("Shell" (shfmt "-i" "4"))))))
 
 (use-package meow
   :config

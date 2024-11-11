@@ -13,6 +13,8 @@
 
 * ${title}
 DEADLINE: %^{When the project should end?}t
+- Note taken on *creation* \\
+  The goal of this project is...
 
 * Journal
 

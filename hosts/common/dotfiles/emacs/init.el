@@ -578,7 +578,9 @@ If no repository is found, prompt user to create one."
           persp-mode-prefix-key (kbd "C-<tab>")
           persp-purge-initial-persp-on-save t
           persp-show-modestring nil
-          persp-state-default-file (concat user-emacs-directory "perspfile.el"))
+          persp-state-default-file (concat user-emacs-directory "perspfile.el")
+          switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (persp-is-current-buffer buff))))
+
   (add-hook 'kill-emacs-hook #'persp-state-save)
   (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
 

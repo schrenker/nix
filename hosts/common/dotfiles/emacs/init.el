@@ -863,22 +863,6 @@ If no applicable mode is present, default to uictl."
               ("C-c l" . org-store-link)
               ("C-c C-^" . schrenker/org-sort-dwim))
   :init
-  (defun schrenker/org-unarchive ()
-    "Restore an entry that has been archived.
-This function restores the entry to its original location, and
-removes the ARCHIVE_TIME, ARCHIVE_FILE, ARCHIVE_OLPATH,
-ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
-    (interactive)
-    (let ((orig-file (org-entry-get-with-inheritance "ARCHIVE_FILE"))
-          (orig-path (org-entry-get-with-inheritance "ARCHIVE_OLPATH")))
-      (org-delete-property "ARCHIVE_FILE")
-      (org-delete-property "ARCHIVE_OLPATH")
-      (org-delete-property "ARCHIVE_TIME")
-      (org-delete-property "ARCHIVE_CATEGORY")
-      (org-delete-property "ARCHIVE_TODO")
-      (org-delete-property "ARCHIVE_ITAGS")
-      (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
-
   (defun schrenker/org-jump-to-heading (heading)
     "Jump to any string in the file. The purpose of this is to jump to org-mode headings.
 To jump to org-mode heading, pass in literal heading, like '** Notes'."
@@ -925,8 +909,6 @@ If no criteria is met, call org-sort."
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
   (setopt org-directory "~/org/"
           org-M-RET-may-split-line '((default . nil))
-          org-archive-location (concat org-directory "03_archives/%s_archive::")
-          org-archive-tag "archive"
           org-ctags-enabled-p nil
           org-ctags-open-link-functions '()
           org-default-notes-file (concat org-directory "inbox.org")
@@ -1000,6 +982,29 @@ If no criteria is met, call org-sort."
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
   (add-hook 'org-mode-hook (lambda () (org-format-on-save-mode 1)))
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1))))
+
+(use-package org-archive
+  :ensure nil
+  :after org
+  :init
+  (defun schrenker/org-unarchive ()
+    "Restore an entry that has been archived.
+This function restores the entry to its original location, and
+removes the ARCHIVE_TIME, ARCHIVE_FILE, ARCHIVE_OLPATH,
+ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
+    (interactive)
+    (let ((orig-file (org-entry-get-with-inheritance "ARCHIVE_FILE"))
+          (orig-path (org-entry-get-with-inheritance "ARCHIVE_OLPATH")))
+      (org-delete-property "ARCHIVE_FILE")
+      (org-delete-property "ARCHIVE_OLPATH")
+      (org-delete-property "ARCHIVE_TIME")
+      (org-delete-property "ARCHIVE_CATEGORY")
+      (org-delete-property "ARCHIVE_TODO")
+      (org-delete-property "ARCHIVE_ITAGS")
+      (org-refile nil nil (list nil orig-file nil (org-find-olp `(,orig-file ,@(split-string orig-path "/")) nil)))))
+  :config
+  (setopt org-archive-location (concat org-directory "03_archives/%s_archive::")
+          org-archive-tag "archive"))
 
 (use-package org-crypt
   :ensure nil

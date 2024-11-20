@@ -1013,6 +1013,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (setopt epg-pinentry-mode 'loopback
           org-crypt-disable-auto-save t
           org-crypt-key (rot13 "fronfgvna@mnjnqmxv.grpu"))
+  (remove-hook 'org-fold-reveal-start-hook #'org-decrypt-entry)
   (org-crypt-use-before-save-magic))
 
 (use-package org-reverse-datetree

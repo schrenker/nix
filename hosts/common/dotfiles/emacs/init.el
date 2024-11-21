@@ -153,7 +153,8 @@
         (set-frame-font "JetBrainsMono Nerd Font 11" nil t))
     (set-frame-font "JetBrainsMono Nerd Font 14" nil t))
 
-  (put 'upcase-region 'disabled nil))
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil))
 
 (defvar elpaca-installer-version 0.8)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -2375,4 +2376,3 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
 (provide 'init)
 ;;; init.el ends here.
-;;;;;;;;;;;;;; CURATION POINT ;;;;;;;;;;;;;;

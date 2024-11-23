@@ -905,8 +905,22 @@ If no criteria is met, call org-sort."
     "Refile target heading into target file, under possibly nested heading, like Tasks/Active."
     (org-refile arg nil (list nil file nil (org-find-olp `(,file ,@(split-string headline "/")) nil))))
 
+  (defun schrenker/org-format-ensure-empty-lines-between-notes (&rest r)
+    "Make sure there's empty lines between notes that start with '- Note taken on[...]'"
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward-regexp "^- Note taken on" nil t)
+        (goto-char (line-beginning-position))
+        (unless (bobp)
+          (forward-char -1)
+          (when (not (string-match-p "\\`\\s-*$" (thing-at-point 'line)))
+            (newline))
+          (forward-line 2)))))
+
   :config
   (load-file (concat user-emacs-directory "lisp/org-format.el"))
+  (advice-add 'org-format-all-headings :before #'schrenker/org-format-ensure-empty-lines-between-notes)
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
   (setopt org-directory "~/org/"
           org-M-RET-may-split-line '((default . nil))

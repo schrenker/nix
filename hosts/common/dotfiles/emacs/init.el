@@ -9,6 +9,7 @@
 ;; :ensure
 ;; :if
 ;; :after
+;; :load-path
 ;; :autoload
 ;; :commands
 ;; :hooks
@@ -860,7 +861,6 @@ If no applicable mode is present, default to uictl."
               ("M-l" . org-metaright)
               ("M-L" . org-shiftmetaright)
               ("C-c C-j" . nil)
-              ("C-c C-f" . org-format-all-headings)
               ("C-c l" . org-store-link)
               ("C-c C-^" . schrenker/org-sort-dwim))
   :init
@@ -905,22 +905,7 @@ If no criteria is met, call org-sort."
     "Refile target heading into target file, under possibly nested heading, like Tasks/Active."
     (org-refile arg nil (list nil file nil (org-find-olp `(,file ,@(split-string headline "/")) nil))))
 
-  (defun schrenker/org-format-ensure-empty-lines-between-notes (&rest r)
-    "Make sure there's empty lines between notes that start with '- Note taken on[...]'"
-    (interactive)
-    (save-excursion
-      (goto-char (point-min))
-      (while (search-forward-regexp "^- Note taken on" nil t)
-        (goto-char (line-beginning-position))
-        (unless (bobp)
-          (forward-char -1)
-          (when (not (string-match-p "\\`\\s-*$" (thing-at-point 'line)))
-            (newline))
-          (forward-line 2)))))
-
   :config
-  (load-file (concat user-emacs-directory "lisp/org-format.el"))
-  (advice-add 'org-format-all-headings :before #'schrenker/org-format-ensure-empty-lines-between-notes)
   (setf (alist-get 'file org-link-frame-setup) #'find-file)
   (setopt org-directory "~/org/"
           org-M-RET-may-split-line '((default . nil))
@@ -1147,6 +1132,28 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   (add-hook 'org-mode-hook
             (lambda ()
               (add-hook 'before-save-hook #'schrenker/trim-src-block-buffer nil t))))
+
+(use-package org-format
+  :ensure nil
+  :after org
+  :load-path "lisp"
+  :bind (:map org-mode-map
+              ("C-c C-f" . org-format-all-headings))
+  :init
+  (defun schrenker/org-format-ensure-empty-lines-between-notes (&rest r)
+    "Make sure there's empty lines between notes that start with '- Note taken on[...]'"
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward-regexp "^- Note taken on" nil t)
+        (goto-char (line-beginning-position))
+        (unless (bobp)
+          (forward-char -1)
+          (when (not (string-match-p "\\`\\s-*$" (thing-at-point 'line)))
+            (newline))
+          (forward-line 2)))))
+  :config
+  (advice-add 'org-format-all-headings :before #'schrenker/org-format-ensure-empty-lines-between-notes))
 
 (use-package corg
   :ensure (:host github :repo "isamert/corg.el")

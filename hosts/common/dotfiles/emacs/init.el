@@ -980,7 +980,6 @@ If no criteria is met, call org-sort."
                               completion-at-point-functions
                               (delete 'pcomplete-completions-at-point completion-at-point-functions))))
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'org-mode-hook (lambda () (org-format-on-save-mode 1)))
   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1))))
 
 (use-package org-archive
@@ -1136,6 +1135,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package org-format
   :ensure nil
   :after org
+  :autoload org-format-on-save-mode
   :load-path "lisp"
   :bind (:map org-mode-map
               ("C-c C-f" . org-format-all-headings))
@@ -1152,8 +1152,11 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
           (when (not (string-match-p "\\`\\s-*$" (thing-at-point 'line)))
             (newline))
           (forward-line 2)))))
+
+  (add-hook 'org-mode-hook #'org-format-on-save-mode)
   :config
   (advice-add 'org-format-all-headings :before #'schrenker/org-format-ensure-empty-lines-between-notes))
+
 
 (use-package corg
   :ensure (:host github :repo "isamert/corg.el")

@@ -1,15 +1,21 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  outputs = inputs@{ self, nixpkgs, flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      perSystem = { config, self', inputs', pkgs, system, ... }: {
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = with pkgs; [ python shellcheck virtualenv ];
+          shellHook = ''
+            virtualenv venv
+            source venv/bin/activate
+          '';
+        };
+      };
+    };
 
-with pkgs;
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-mkShell {
-  buildInputs = [
-    python39
-    shellcheck
-    virtualenv
-  ];
-  shellHook = ''
-    virtualenv venv
-    source venv/bin/activate
-  '';
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
+  };
 }

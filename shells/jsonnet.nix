@@ -1,11 +1,21 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  outputs = inputs@{ self, nixpkgs, flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      perSystem = { config, self', inputs', pkgs, system, ... }: {
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = with pkgs; [
+            go-jsonnet
+            jsonnet-bundler
+            jsonnet-language-server
+          ];
+        };
+      };
+    };
 
-with pkgs;
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-mkShell {
-  buildInputs = [
-    go-jsonnet
-    jsonnet-bundler
-    jsonnet-language-server
-  ];
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
+  };
 }

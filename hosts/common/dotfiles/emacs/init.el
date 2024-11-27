@@ -2009,6 +2009,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   :bind
   (("C-c C-f" . format-all-region-or-buffer)
    :map emacs-lisp-mode-map
+   ("C-c C-f" . format-all-region-or-buffer)
+   :map python-mode-map
    ("C-c C-f" . format-all-region-or-buffer))
   :init
   (add-hook 'prog-mode-hook 'format-all-mode)
@@ -2016,7 +2018,9 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (add-hook 'go-mode-hook (lambda ()
                             (add-to-list 'format-all-formatters '("Go" gofmt goimports))))
   (add-hook 'bash-ts-mode-hook (lambda ()
-                                 (add-to-list 'format-all-formatters '("Shell" (shfmt "-i" "4"))))))
+                                 (add-to-list 'format-all-formatters '("Shell" (shfmt "-i" "4")))))
+  (add-hook 'python-mode-hook (lambda ()
+                                (add-to-list 'format-all-formatters '("Python" black)))))
 
 (use-package meow
   :config
@@ -2388,7 +2392,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
 
 ;;;;;; PYTHON ;;;;;;
-(use-package python-mode
+(use-package python
+  :ensure nil
   :init
   (setopt python-indent-offset 4))
 

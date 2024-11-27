@@ -501,7 +501,9 @@ If no repository is found, prompt user to create one."
    ([remap describe-command]  . helpful-command)
    ([remap describe-variable] . helpful-variable)
    ([remap describe-function] . helpful-callable)
-   ([remap describe-symbol]   . helpful-symbol))
+   ([remap describe-symbol]   . helpful-symbol)
+   :map helpful-mode-map
+   ("K" . helpful-at-point))
   :init
   ;; Override describe commands when called interactively
   (advice-add 'describe-variable :around

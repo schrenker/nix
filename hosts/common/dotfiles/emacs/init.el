@@ -1791,9 +1791,12 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
           solarized-scale-org-headlines nil
           solarized-scale-outline-headlines nil
           solarized-use-variable-pitch nil
-          solarized-use-more-italic t)
-  (load-file (concat user-emacs-directory "lisp/solarized-overlay.el"))
+          solarized-use-more-italic t))
 
+(use-package solarized-overlay
+  :ensure nil
+  :after solarized-theme
+  :load-path "lisp"
   :config
   (schrenker/setup-theme))
 

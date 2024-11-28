@@ -1709,9 +1709,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
 (use-package prism
   :config
-  ;; Needed before https://github.com/alphapapa/prism.el/issues/22 is fixed.
-  (unless (display-graphic-p)
-    (load (concat user-emacs-directory "lisp/prism-cl.el") 'noerror 'nomessage))
   (setopt prism-comments nil
           prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
                                           (python-mode . python-indent-offset)

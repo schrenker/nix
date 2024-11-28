@@ -23,5 +23,9 @@
                (macgcc (concat base version "/gcc/" macversion "/" version)))
             (string-join (list gcc libgccjit macgcc) ":"))))
 
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+
 (provide 'early-init)
 ;;; early-init.el ends here.

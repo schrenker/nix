@@ -105,10 +105,6 @@
           visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
           x-stretch-cursor t)
 
-  (menu-bar-mode -1)
-  (when (display-graphic-p)
-    (scroll-bar-mode -1)
-    (tool-bar-mode -1))
   (flymake-mode -1)
 
   (column-number-mode 1)

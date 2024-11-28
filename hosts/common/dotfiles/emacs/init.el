@@ -1794,8 +1794,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   :ensure nil
   :after solarized-theme
   :load-path "lisp"
-  :config
-  (schrenker/setup-theme))
+  :init
+  (add-hook 'elpaca-after-init-hook #'schrenker/setup-theme))
 
 (use-package nerd-icons
   :config

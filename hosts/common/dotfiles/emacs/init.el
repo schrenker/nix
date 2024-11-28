@@ -144,6 +144,7 @@
   (global-set-key (kbd "C-x 2") 'schrenker/split-and-follow-horizontally)
   (global-set-key (kbd "C-x 3") 'schrenker/split-and-follow-vertically)
   (global-set-key (kbd "<A-backspace>") 'schrenker/backward-kill-word)
+  (define-key global-map (kbd "C-g") #'schrenker/keyboard-quit-dwim)
 
   (if (schrenker/wsl2-p)
       (progn

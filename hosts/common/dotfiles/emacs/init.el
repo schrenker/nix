@@ -140,10 +140,10 @@
   (unbind-key (kbd "<f2>"))
   (unbind-key (kbd "<f10>"))
 
-  (global-set-key (kbd "C-x k") 'schrenker/kill-this-buffer)
-  (global-set-key (kbd "C-x 2") 'schrenker/split-and-follow-horizontally)
-  (global-set-key (kbd "C-x 3") 'schrenker/split-and-follow-vertically)
-  (global-set-key (kbd "<A-backspace>") 'schrenker/backward-kill-word)
+  (define-key global-map (kbd "C-x k") #'schrenker/kill-this-buffer)
+  (define-key global-map (kbd "C-x 2") #'schrenker/split-and-follow-horizontally)
+  (define-key global-map (kbd "C-x 3") #'schrenker/split-and-follow-vertically)
+  (define-key global-map (kbd "<A-backspace>") #'schrenker/backward-kill-word)
   (define-key global-map (kbd "C-g") #'schrenker/keyboard-quit-dwim)
 
   (if (schrenker/wsl2-p)
@@ -2072,13 +2072,13 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
           (insert clip))
         (if arg (kill-new clip))))
 
-    (global-set-key (kbd "M-w") 'schrenker/wsl-copy-region-to-clipboard)
-    (global-set-key (kbd "C-w") 'schrenker/wsl-kill-region-to-clipboard)
-    (global-set-key (kbd "C-v") 'schrenker/meow-yank-forward)
-    (global-set-key (kbd "C-y") 'schrenker/wsl-paste-from-clipboard))
+    (define-key global-map (kbd "M-w") #'schrenker/wsl-copy-region-to-clipboard)
+    (define-key global-map (kbd "C-w") #'schrenker/wsl-kill-region-to-clipboard)
+    (define-key global-map (kbd "C-v") #'schrenker/meow-yank-forward)
+    (define-key global-map (kbd "C-y") #'schrenker/wsl-paste-from-clipboard))
 
-  (global-set-key (kbd "M-p") 'meow-yank-pop)
-  (global-set-key (kbd "C-o") (lambda ()
+  (define-key global-map (kbd "M-p") #'meow-yank-pop)
+  (define-key global-map (kbd "C-o") (lambda ()
                                 (interactive)
                                 (let ((current-prefix-arg '(4))) ;; emulate C-u
                                   (call-interactively 'set-mark-command))))

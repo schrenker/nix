@@ -532,6 +532,7 @@ If no repository is found, prompt user to create one."
    :repo "artawower/persistent-kmacro.el"))
 
 (use-package inhibit-mouse
+  :disabled t
   :ensure (inhibit-mouse
              :type git
              :host github

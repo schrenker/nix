@@ -2395,7 +2395,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 (use-package python
   :ensure nil
   :init
-  (setopt python-indent-offset 4))
+  (setopt python-indent-offset 4
+          python-prettify-symbols-alist nil))
 
 ;;;;;; MISC ;;;;;;
 (use-package lua-mode)

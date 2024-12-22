@@ -82,6 +82,7 @@
     "ImageFinder for Safari" = 1514863337;
     "Microsoft Remote Desktop" = 1295203466;
     "Noir" = 1592917505;
+    "RYTD"  = 6463305263;
     "SponsorBlock for YouTube - Skip Sponsorships" = 1573461917;
     "Wipr" = 1320666476;
     "uBlacklist for Safari" = 1547912640;

@@ -1442,7 +1442,8 @@ littering my org mode with ton of PROPERTY drawers under each heading."
    :map dired-mode-map
    ("_" . dired-create-empty-file)
    ("J" . dired-goto-file)
-   ("K" . dired-kill-subdir))
+   ("K" . dired-kill-subdir)
+   ("C-c C-p" . wdired-change-to-wdired-mode))
   :init
   ;; aw-flip-window dired workflow start
   (defvar schrenker/last-dired-window-before-jump nil)
@@ -1495,7 +1496,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 (use-package dired-preview
   :bind
   (:map dired-mode-map
-        ("C-c C-p" . dired-preview-global-mode))
+        ("C-c C-t" . dired-preview-global-mode))
   :init
   (setopt dired-preview-delay 0.1
           dired-preview-max-size (expt 2 20)

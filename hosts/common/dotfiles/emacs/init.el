@@ -2023,6 +2023,11 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (add-hook 'python-mode-hook (lambda ()
                                 (add-to-list 'format-all-formatters '("Python" black)))))
 
+(use-package visual-regexp
+  :bind
+  (("C-c r" . vr/replace)
+   ("C-c q" . vr/query-replace)))
+
 (use-package meow
   :config
   (load-file (concat user-emacs-directory "lisp/meovim.el"))
@@ -2160,8 +2165,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
   ;;Modify
   (meow-normal-define-key
-   '("'" . meow-query-replace)
-   '("\"" . meow-query-replace-regexp)
+   '("'" . vr/replace)
+   '("\"" . vr/query-replace)
    '("c" . schrenker/meow-change)
    '("C" . schrenker/meow-change-to-eol)
    '("d" . schrenker/meow-kill)

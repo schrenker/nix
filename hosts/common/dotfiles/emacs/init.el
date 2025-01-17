@@ -912,6 +912,7 @@ If no criteria is met, call org-sort."
           org-ctags-enabled-p nil
           org-ctags-open-link-functions '()
           org-default-notes-file (concat org-directory "inbox.org")
+          org-export-with-broken-links 'mark
           org-element-archive-tag "archive"
           org-fontify-quote-and-verse-blocks t
           org-fontify-whole-heading-line t

@@ -50,6 +50,7 @@
   homebrew.brews = [ "gcc" "svn" ];
   homebrew.casks = [
     "alt-tab"
+    "balenaetcher"
     "betterdisplay"
     "crossover"
     "font-jetbrains-mono"

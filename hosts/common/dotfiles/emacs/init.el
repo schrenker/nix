@@ -320,6 +320,7 @@
          ("M-s L" . consult-line-multi)
          ("M-s k" . consult-keep-lines)
          ("M-s u" . consult-focus-lines)
+         ("M-s f" . consult-fd)
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
@@ -1444,6 +1445,7 @@ littering my org mode with ton of PROPERTY drawers under each heading."
    ("_" . dired-create-empty-file)
    ("J" . dired-goto-file)
    ("K" . dired-kill-subdir)
+   ("M-s f f" . consult-fd)
    ("C-c C-p" . wdired-change-to-wdired-mode))
   :init
   ;; aw-flip-window dired workflow start

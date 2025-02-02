@@ -2235,9 +2235,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
      '("SPC ms" . persistent-kmacro-save-session)
      '("SPC ml" . persistent-kmacro-restore-sesstion)))
 
-  (add-hook 'meow-insert-exit-hook 'corfu-quit)
-  (add-hook 'meow-switch-state-hook (lambda (&rest _) (when (symbol-value 'meow-beacon-mode) (corfu-quit))))
-
   (setopt meow-use-clipboard t
           meow-use-cursor-position-hack t
           meow-expand-exclude-mode-list nil

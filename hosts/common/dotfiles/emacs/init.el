@@ -1527,6 +1527,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (global-dired-collapse-mode))
 
 (use-package dired-subtree
+  :demand t
   :bind
   (:map dired-mode-map
         ("TAB" . dired-subtree-toggle)))

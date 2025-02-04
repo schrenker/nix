@@ -1,4 +1,5 @@
-{ inputs, lib, pkgs, ... }: {
+{ pkgs, ... }: {
+  home.username = "sebastian";
   home.homeDirectory = "/home/sebastian";
 
   home.packages = with pkgs; [
@@ -17,4 +18,6 @@
     ".ssh/git".source = ./secrets/git;
     ".ssh/config".source = ./secrets/ssh_config;
   };
+
+  home.stateVersion = "23.11";
 }

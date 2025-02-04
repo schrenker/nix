@@ -20,18 +20,10 @@
         };
 
         homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
-          # system = "x86_64-linux";
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
             ./hosts/common/home.nix
             ./hosts/wsl2/home.nix
-            {
-              home = {
-                username = "sebastian";
-                homeDirectory = "/home/sebastian";
-                stateVersion = "23.11";
-              };
-            }
           ];
           extraSpecialArgs = { inherit inputs; };
         };

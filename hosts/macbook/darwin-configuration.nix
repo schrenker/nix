@@ -126,5 +126,11 @@
   system.activationScripts.preActivation.text = ''
     sudo rm -f /etc/shells /etc/bashrc /etc/zshrc
   '';
+
+  system.defaults.CustomUserPreferences = {
+    "org.gnu.Emacs" = {
+      AppleFontSmoothing = 0;
+    };
+  };
   security.pam.enableSudoTouchIdAuth = true;
 }

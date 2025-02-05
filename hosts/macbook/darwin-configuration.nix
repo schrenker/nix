@@ -7,6 +7,7 @@
   nix.linux-builder = {
     enable = true;
     ephemeral = true;
+    systems = [ "aarch64-linux" "x86_64-linux"];
     maxJobs = 4;
     config = {
       virtualisation = {
@@ -65,6 +66,7 @@
     "numi"
     "onecast"
     "syncthing"
+    "whisky"
   ];
   homebrew.taps = [ "d12frosted/emacs-plus" "homebrew/services" ];
 

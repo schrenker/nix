@@ -52,7 +52,7 @@
           custom-file null-device
           default-frame-alist (if (schrenker/wsl2-p)
                                   '((top . 1) (left . 1) (width . 120) (height . 40))
-                                '((fullscreen . maximized) (ns-transparent-titlebar . t)))
+                                '((fullscreen . maximized) (ns-transparent-titlebar . t) (internal-border-width . 3)))
           delete-by-moving-to-trash t
           delete-old-versions t
           delete-pair-blink-delay 0
@@ -104,6 +104,9 @@
           visible-bell (schrenker/wsl2-p)
           visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
           x-stretch-cursor t)
+
+  (set-display-table-slot standard-display-table 'truncation (make-glyph-code ?…))
+  (set-display-table-slot standard-display-table 'wrap (make-glyph-code ?–))
 
   (flymake-mode -1)
 

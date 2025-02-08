@@ -1982,6 +1982,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
   (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
+  (add-to-list 'meow-mode-state-list '(helpful-mode . normal))
 
   (defun schrenker/meow-old-quit ()
     "Quit current window or buffer."

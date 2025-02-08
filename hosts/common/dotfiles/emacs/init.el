@@ -2184,7 +2184,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    '("S" . schrenker/meow-change-to-eol)
    '("u" . meow-undo)
    '("U" . meow-undo-in-selection)
-   '("x" . meow-delete)
+   '("x" . schrenker/meow-delete)
    '("X" . meow-backward-delete))
 
   ;;Clipboard

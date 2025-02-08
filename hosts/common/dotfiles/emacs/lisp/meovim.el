@@ -199,6 +199,14 @@ If there is region selected with meow navigation function, then expand it."
     (meow-beginning-of-thing ?l)
     (call-interactively #'meow-save)))
 
+(defun schrenker/meow-delete ()
+  "Delete char."
+  (interactive)
+  (if (derived-mode-p 'eat-mode)
+      (eat-self-input 1 ?\C-d)
+    (call-interactively 'meow-delete)))
+
+
 (defun schrenker/meow-change ()
   (interactive)
   (cond ((meow-beacon-mode-p) (call-interactively #'meow-beacon-change))

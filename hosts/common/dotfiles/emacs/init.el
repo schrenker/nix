@@ -1535,33 +1535,98 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (:map dired-mode-map
         ("TAB" . dired-subtree-toggle)))
 
-(use-package vterm
+(use-package eat
+  :ensure (eat :type git
+               :host "codeberg.org"
+               :repo "akib/emacs-eat"
+               :files ("*.el" ("term" "term/*.el") "*.texi"
+                       "*.ti" ("terminfo/e" "terminfo/e/*")
+                       ("terminfo/65" "terminfo/65/*")
+                       ("integration" "integration/*")
+                       (:exclude ".dir-locals.el" "*-tests.el")))
   :bind
-  (("C-c v" . schrenker/vterm-project)
-   ("C-c V" . schrenker/vterm-project-other-window))
-  :init
-  (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
-  :config
-  (with-eval-after-load 'perspective
-    (defun schrenker/vterm-project (&optional arg)
-      (interactive "P")
-      (if (eq (persp-current-name) persp-initial-frame-name)
-          (vterm arg)
-        (let* ((default-directory-old default-directory)
-               (default-directory (project-root (project-current t)))
-               (vterm-buffer-name (concat (project-prefixed-buffer-name "vterm") " (" (persp-current-name) ")"))
-               (default-directory default-directory-old))
-          (vterm arg))))
+  (("C-c v" . eat-project)
+   ("C-c V" . eat-project-other-window)
+   :map eat-mode-map
+   ("C-c C-c" . eat-self-input)
+   ("C-d" . eat-self-input)
+   ("RET" . schrenker/eat-ret-dwim))
 
-    (defun schrenker/vterm-project-other-window (&optional arg)
+  :init
+  (defun schrenker/line-of-current-prompt ()
+    "Get the prompt line of current eat buffer, and save it to a variable."
+    (save-excursion
+      (goto-char (point-max))
+      (setq-local schrenker/eat-prompt-line (array-current-line))))
+
+  (defun schrenker/prompt-line-p ()
+    "Check if point is at prompt line or not. Do it by comparing to variable set by schrenker/line-of-current-prompt function."
+    (eq (array-current-line) schrenker/eat-prompt-line))
+
+  (defun schrenker/eat-ret-dwim ()
+    "If currently in insert mode, send RET. If not in insert mode, enter insert mode, and go to the end of the command, regardless of cursor position."
+    (interactive)
+    (if eat--semi-char-mode
+        (eat-self-input 1)
+      (progn
+        (goto-line (point-max))
+        (eat-self-input 1 ?\C-a)
+        (eat-self-input 1 ?\C-e)
+        (call-interactively #'meow-insert))))
+
+  (add-hook 'eat-mode-hook (lambda ()
+                             (setq-local
+                              mode-line-process nil
+                              mode-line-buffer-identification (propertized-buffer-identification "%b"))))
+
+  :config
+  (setopt eat-kill-buffer-on-exit t
+          eat-term-name "xterm-256color")
+
+  (with-eval-after-load 'perspective
+    (defun schrenker/eat-project (&optional arg)
       (interactive "P")
       (if (eq (persp-current-name) persp-initial-frame-name)
-          (vterm-other-window arg)
+          (eat nil arg)
         (let* ((default-directory-old default-directory)
                (default-directory (project-root (project-current t)))
-               (vterm-buffer-name (concat (project-prefixed-buffer-name "vterm") " (" (persp-current-name) ")"))
+               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")"))
                (default-directory default-directory-old))
-          (vterm-other-window arg))))))
+          (eat nil arg))))
+
+    (defun schrenker/eat-project-other-window (&optional arg)
+      (interactive "P")
+      (if (eq (persp-current-name) persp-initial-frame-name)
+          (eat-other-window nil arg)
+        (let* ((default-directory-old default-directory)
+               (default-directory (project-root (project-current t)))
+               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")"))
+               (default-directory default-directory-old))
+          (eat-other-window nil arg))))
+
+    (advice-add 'eat-project :override
+                #'schrenker/eat-project)
+    (advice-add 'eat-project-other-window :override
+                #'schrenker/eat-project-other-window))
+
+  (with-eval-after-load 'meow
+    (push '(eat-mode . insert) meow-mode-state-list)
+    (add-hook 'eat-mode-hook
+              (lambda ()
+                (add-hook 'meow-insert-enter-hook
+                          (lambda ()
+                            (when eat-terminal ;; throws "Process is not running" without this
+                              (eat-semi-char-mode)))
+                          nil t)
+                (add-hook 'meow-insert-exit-hook
+                          (lambda ()
+                            (eat-emacs-mode)
+                            (schrenker/line-of-current-prompt))
+                          nil t))))
+  (add-hook 'eat-mode-hook (lambda ()
+                             (display-line-numbers-mode -1)
+                             (corfu-mode -1)
+                             (vi-tilde-fringe-mode -1))))
 
 (use-package pdf-tools
   :init
@@ -1687,10 +1752,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
     (blackout 'meow-motion-mode)
     (blackout 'meow-normal-mode)
     (blackout 'meow-insert-mode))
-  (with-eval-after-load 'meow-vterm
-    (blackout 'meow-vterm-mode))
-  (with-eval-after-load 'vterm
-    (blackout 'vterm-copy-mode))
   (with-eval-after-load 'nerd-icons-dired
     (blackout 'nerd-icons-dired-mode)))
 
@@ -2205,22 +2266,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (meow-global-mode)
   (meow-setup-indicator))
 
-(use-package meow-vterm
-  :ensure (meow-vterm
-           :host "github.com"
-           :repo "schrenker/meow-vterm")
-  :config
-  (add-to-list 'meow-replace-state-name-list '(vterm-insert . "I"))
-  (add-to-list 'meow-replace-state-name-list '(vterm-normal . "N"))
-  (add-hook 'vterm-mode-hook #'meow-vterm-mode)
-  (meow-define-keys 'vterm-normal
-    '("P" . meow-vterm-yank)
-    '("p" . meow-vterm-yank)
-    '("u" . meow-vterm-undo)
-    '("d" . meow-vterm-kill)
-    '("x" . meow-vterm-delete)
-    '("X" . meow-vterm-backspace)
-    '("G" . ignore)))
 
 (use-package eglot
   :ensure nil

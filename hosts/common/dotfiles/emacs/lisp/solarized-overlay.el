@@ -237,14 +237,6 @@
                             :background (if (eq appearance 'light) yellow yellow-d)
                             :foreground white))
 
-      (with-eval-after-load 'meow-vterm
-        (set-face-attribute 'meow-vterm-normal-indicator nil
-                            :background (if (eq appearance 'light) blue blue-d)
-                            :foreground white)
-        (set-face-attribute 'meow-vterm-insert-indicator nil
-                            :background (if (eq appearance 'light) green green-d)
-                            :foreground white))
-
       t)))
 
 (defun schrenker/apply-overlay (appearance)

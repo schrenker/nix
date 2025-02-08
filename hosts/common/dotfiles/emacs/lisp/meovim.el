@@ -18,24 +18,24 @@ If there is region selected with meow navigation function, then expand it."
   (interactive)
   (cond ((derived-mode-p 'magit-mode)(call-interactively #'magit-next-line))
         ((derived-mode-p 'dired-mode)(call-interactively #'dired-next-line))
-        ((and (schrenker/meow-selection-p)
+        ((and (region-active-p)
               (eq (cdr (car meow--selection)) 'line))
          (if (meow--direction-forward-p)
              (call-interactively #'meow-line)
            (meow-pop-selection)))
-        ((schrenker/meow-selection-p)(call-interactively #'meow-next-expand))
+        ((region-active-p)(call-interactively #'meow-next-expand))
         (t (call-interactively #'meow-next))))
 
 (defun schrenker/meow-prev ()
   (interactive)
   (cond ((derived-mode-p 'magit-mode)(call-interactively #'magit-previous-line))
         ((derived-mode-p 'dired-mode)(call-interactively #'dired-previous-line))
-        ((and (schrenker/meow-selection-p)
+        ((and (region-active-p)
               (eq (cdr (car meow--selection)) 'line))
          (if (meow--direction-backward-p)
              (call-interactively #'meow-line)
            (meow-pop-selection)))
-        ((schrenker/meow-selection-p)(call-interactively #'meow-prev-expand))
+        ((region-active-p)(call-interactively #'meow-prev-expand))
         (t (call-interactively #'meow-prev))))
 
 (defun schrenker/meow-left ()
@@ -43,7 +43,7 @@ If there is region selected with meow navigation function, then expand it."
   (cond ((derived-mode-p 'eat-mode) (if (schrenker/prompt-line-p)
                                         (eat-self-input 1 'left)
                                       (call-interactively #'meow-left)))
-        ((schrenker/meow-selection-p)(call-interactively #'meow-left-expand))
+        ((region-active-p)(call-interactively #'meow-left-expand))
         (t (call-interactively #'meow-left))))
 
 (defun schrenker/meow-right ()
@@ -51,7 +51,7 @@ If there is region selected with meow navigation function, then expand it."
   (cond ((derived-mode-p 'eat-mode) (if (schrenker/prompt-line-p)
                                         (eat-self-input 1 'right)
                                       (call-interactively #'meow-right)))
-        ((schrenker/meow-selection-p)(call-interactively #'meow-right-expand))
+        ((region-active-p)(call-interactively #'meow-right-expand))
         (t (call-interactively #'meow-right))))
 
 (defun schrenker/meow-visual ()
@@ -143,16 +143,10 @@ If there is region selected with meow navigation function, then expand it."
 
 (defun schrenker/meow-change-to-eol ()
   (interactive)
-  (when (schrenker/meow-selection-p)
+  (when (region-active-p)
     (goto-char (region-beginning)))
   (meow-end-of-thing ?l)
   (call-interactively #'meow-change))
-
-
-(defun schrenker/meow-selection-p ()
-  (and (region-active-p)
-       ;; (meow--selection-type)
-       ))
 
 (defun schrenker/meow-kill-to-bol ()
   (interactive)
@@ -182,7 +176,7 @@ If there is region selected with meow navigation function, then expand it."
 (defun schrenker/meow-copy-to-eol ()
   (interactive)
   (save-excursion
-    (when (schrenker/meow-selection-p)
+    (when (region-active-p)
       (goto-char (region-beginning)))
     (meow-end-of-thing ?l)
     (call-interactively #'meow-save)))
@@ -210,18 +204,18 @@ If there is region selected with meow navigation function, then expand it."
 (defun schrenker/meow-change ()
   (interactive)
   (cond ((meow-beacon-mode-p) (call-interactively #'meow-beacon-change))
-        ((schrenker/meow-selection-p) (call-interactively #'meow-change))
+        ((region-active-p) (call-interactively #'meow-change))
         (t (set-transient-map schrenker/meow-c nil nil "Meow change command... $0c" 5))))
 
 (defun schrenker/meow-kill ()
   (interactive)
   (cond ((meow-beacon-mode-p) (call-interactively #'meow-beacon-kill-delete))
-        ((schrenker/meow-selection-p) (call-interactively #'meow-kill))
+        ((region-active-p) (call-interactively #'meow-kill))
         (t (set-transient-map schrenker/meow-d nil nil "Meow delete command... $0d" 5))))
 
 (defun schrenker/meow-copy ()
   (interactive)
-  (cond ((schrenker/meow-selection-p) (call-interactively #'meow-save))
+  (cond ((region-active-p) (call-interactively #'meow-save))
         (t (set-transient-map schrenker/meow-y nil nil "Meow copy command... $0y" 5))))
 
 (defvar-keymap schrenker/meow-d

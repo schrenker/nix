@@ -1,15 +1,8 @@
 {
-  outputs = inputs @ {
-    self,
-    flake-parts,
-    darwin,
-    home-manager,
-    nixpkgs,
-    nvf,
-    ...
-  }:
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-darwin"];
+  outputs =
+    inputs@{ self, flake-parts, darwin, home-manager, nixpkgs, nvf, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" "aarch64-darwin" ];
       flake = {
         darwinConfigurations."Macbook" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
@@ -20,38 +13,28 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.sebastian = {
-                imports = [./hosts/common/home.nix ./hosts/macbook/home.nix];
+                imports = [ ./hosts/common/home.nix ./hosts/macbook/home.nix ];
               };
-              home-manager.extraSpecialArgs = {inherit inputs;};
+              home-manager.extraSpecialArgs = { inherit inputs; };
             }
           ];
         };
 
         homeConfigurations."WSL2" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [
-            ./hosts/common/home.nix
-            ./hosts/wsl2/home.nix
-          ];
-          extraSpecialArgs = {inherit inputs;};
+          modules = [ ./hosts/common/home.nix ./hosts/wsl2/home.nix ];
+          extraSpecialArgs = { inherit inputs; };
         };
       };
 
-      perSystem = {
-        config,
-        self',
-        inputs',
-        pkgs,
-        system,
-        ...
-      }: {
+      perSystem = { config, self', inputs', pkgs, system, ... }: {
         packages.default = (nvf.lib.neovimConfiguration {
-                    pkgs = nixpkgs.legacyPackages.${system};
-                    modules = [ ./hosts/common/dotfiles/nvf.nix ];
-                }).neovim; 
+          pkgs = nixpkgs.legacyPackages.${system};
+          modules = [ ./hosts/common/dotfiles/nvf.nix ];
+        }).neovim;
 
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [inputs.nil.packages.${system}.nil];
+          nativeBuildInputs = with pkgs; [ inputs.nil.packages.${system}.nil ];
         };
       };
     };

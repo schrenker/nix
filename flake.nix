@@ -1,6 +1,5 @@
 {
-  outputs =
-    inputs@{ self, flake-parts, darwin, home-manager, nixpkgs, nvf, ... }:
+  outputs = inputs@{ self, flake-parts, darwin, home-manager, nixpkgs, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-darwin" ];
       flake = {
@@ -28,13 +27,8 @@
       };
 
       perSystem = { config, self', inputs', pkgs, system, ... }: {
-        packages.default = (nvf.lib.neovimConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
-          modules = [ ./hosts/common/dotfiles/nvf.nix ];
-        }).neovim;
-
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [ inputs.nil.packages.${system}.nil ];
+          nativeBuildInputs = [ inputs.nil.packages.${system}.nil ];
         };
       };
     };
@@ -58,8 +52,6 @@
       url = "github:oxalica/nil";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nvf.url = "github:notashelf/nvf";
 
     fish-plugin-bang-bang = {
       url = "github:oh-my-fish/plugin-bang-bang";

@@ -484,7 +484,8 @@ If no repository is found, prompt user to create one."
 
   :config
   (setopt magit-display-buffer-function #'magit-display-buffer-fullframe-status-topleft-v1
-          magit-bury-buffer-function #'magit-restore-window-configuration))
+          magit-bury-buffer-function #'magit-restore-window-configuration
+          magit-format-file-function #'magit-format-file-nerd-icons))
 
 (use-package git-timemachine
   :commands (git-timemachine))

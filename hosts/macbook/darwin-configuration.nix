@@ -54,6 +54,7 @@
     "balenaetcher"
     "betterdisplay"
     "crossover"
+    "doll"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
     "hazeover"

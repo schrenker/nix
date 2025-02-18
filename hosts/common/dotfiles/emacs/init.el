@@ -1526,9 +1526,9 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
         ("C-c f" . dired-narrow)
         ("C-c F" . dired-narrow-fuzzy)))
 
-(use-package dired-collapse
-  :config
-  (global-dired-collapse-mode))
+(use-package dired-collapse)
+  ;; :config
+  ;; (global-dired-collapse-mode))
 
 (use-package dired-subtree
   :demand t

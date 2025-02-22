@@ -48,6 +48,7 @@
           auto-window-vscroll nil
           backup-by-copying t
           backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
+          compile-command ""
           create-lockfiles nil
           custom-file null-device
           default-frame-alist (if (schrenker/wsl2-p)

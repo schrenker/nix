@@ -23,9 +23,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # auto upgrade nix package and the daemon service
-  services.nix-daemon.enable = true;
-
   # create /etc shell files that loads the nix-darwin environment
   programs.fish.enable = true;
   environment.shells = with pkgs; [ bashInteractive fish zsh ];

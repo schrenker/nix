@@ -66,8 +66,8 @@
     "lulu"
     "numi"
     "onecast"
+    "steam"
     "syncthing"
-    "whisky"
   ];
   homebrew.taps = [ "d12frosted/emacs-plus" "homebrew/services" ];
 

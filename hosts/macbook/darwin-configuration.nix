@@ -90,6 +90,8 @@
   };
 
   ids.uids.nixbld = 450;
+  ids.gids.nixbld = 450;
+
 
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.finder.ShowStatusBar = true;

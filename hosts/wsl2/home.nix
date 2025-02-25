@@ -5,11 +5,16 @@
   home.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     docker
-    emacs30-pgtk
     gitleaks
     syncthing
     yamllint
   ];
+
+  programs.emacs = {
+    enable = true;
+    package = pkgs.emacs30-pgtk;
+    extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
+  };
 
   programs.fish.shellAliases.sw =
     "home-manager switch --flake ~/.config/nix#WSL2";

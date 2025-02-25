@@ -17,7 +17,6 @@
 ;; :init
 ;; :config
 
-;;;;;;;;;;;;;; HOOKATION POINT ;;;;;;;;;;;;;;
 (use-package emacs
   :ensure nil
   :init
@@ -1495,6 +1494,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
                                    "\\|^\\.git"
                                    "\\|^\\.stfolder")))
 
+;; https://github.com/Fuco1/dired-hacks/issues/200
 (use-package dired-filter
   :init
   (define-key dired-mode-map (kbd "/") dired-filter-map)

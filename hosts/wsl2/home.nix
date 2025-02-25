@@ -5,7 +5,7 @@
   home.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     docker
-    emacs29-pgtk
+    emacs30-pgtk
     gitleaks
     syncthing
     yamllint

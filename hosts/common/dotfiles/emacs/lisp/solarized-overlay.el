@@ -145,7 +145,7 @@
                           :foreground fg-emph
                           :overline blue-d
                           :underline nil
-                          :box '(:line-width 1 :color ,blue-d))
+                          :box `(:line-width 1 :color ,blue-d))
       (set-face-attribute 'mode-line-active nil
                           :background blue-2bg
                           :foreground fg-emph
@@ -196,7 +196,7 @@
         (run-with-idle-timer 0 nil (lambda ()(mapc (lambda (buffer) (with-current-buffer buffer (when (derived-mode-p 'org-mode)(font-lock-update)))) (buffer-list)))))
 
       (with-eval-after-load 'org-modern
-        (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width (1 . 0)))
+        (set-face-attribute 'org-modern-todo nil :height 1.0 :weight 'bold :box '(:line-width 1))
         (set-face-attribute 'org-modern-date-active nil :foreground fg-emph :background bg-alt)
         (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)
         (set-face-attribute 'org-modern-time-active nil :foreground fg-emph :background bg-main :inverse-video t)

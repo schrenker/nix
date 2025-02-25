@@ -45,7 +45,6 @@
             browse-url-browser-function #'browse-url-generic))
 
   (setopt auto-revert-check-vc-info t
-          auto-window-vscroll nil
           backup-by-copying t
           backup-directory-alist `(("." . ,(concat user-emacs-directory "backup/")))
           compile-command ""
@@ -158,7 +157,7 @@
   (put 'upcase-region 'disabled nil)
   (put 'downcase-region 'disabled nil))
 
-(defvar elpaca-installer-version 0.9)
+(defvar elpaca-installer-version 0.10)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -173,7 +172,7 @@
   (add-to-list 'load-path (if (file-exists-p build) build repo))
   (unless (file-exists-p repo)
     (make-directory repo t)
-    (when (< emacs-major-version 28) (require 'subr-x))
+    (when (<= emacs-major-version 28) (require 'subr-x))
     (condition-case-unless-debug err
         (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
                   ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
@@ -1723,11 +1722,12 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (setopt prism-comments nil
           prism-whitespace-mode-indents '((yaml-mode . yaml-indent-offset)
                                           (python-mode . python-indent-offset)
+                                          (python-ts-mode . python-indent-offset)
                                           (t . 2)))
   (add-hook 'yaml-mode-hook #'prism-whitespace-mode)
   (add-hook 'bash-ts-mode-hook #'prism-whitespace-mode)
   (add-hook 'shell-script-mode-hook #'prism-whitespace-mode)
-  (add-hook 'python-mode-hook #'prism-whitespace-mode)
+  (add-hook 'python-base-mode-hook #'prism-whitespace-mode)
   (add-hook 'emacs-lisp-mode-hook #'prism-mode))
 
 (use-package blackout
@@ -2029,7 +2029,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
                             (add-to-list 'format-all-formatters '("Go" gofmt goimports))))
   (add-hook 'bash-ts-mode-hook (lambda ()
                                  (add-to-list 'format-all-formatters '("Shell" (shfmt "-i" "4")))))
-  (add-hook 'python-mode-hook (lambda ()
+  (add-hook 'python-base-mode-hook (lambda ()
                                 (add-to-list 'format-all-formatters '("Python" black)))))
 
 (use-package visual-regexp
@@ -2410,7 +2410,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   :init
   (setopt python-indent-offset 4
           python-prettify-symbols-alist nil
-          python-shell-dedicated 'project))
+          python-shell-dedicated 'project)
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode)))
 
 ;;;;;; MISC ;;;;;;
 (use-package lua-mode)

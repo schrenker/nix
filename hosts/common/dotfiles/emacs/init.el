@@ -2022,6 +2022,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    :map emacs-lisp-mode-map
    ("C-c C-f" . format-all-region-or-buffer)
    :map python-mode-map
+   ("C-c C-f" . format-all-region-or-buffer)
+   :map python-ts-mode-map
    ("C-c C-f" . format-all-region-or-buffer))
   :init
   (add-hook 'prog-mode-hook 'format-all-mode)

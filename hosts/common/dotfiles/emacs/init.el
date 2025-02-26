@@ -2308,7 +2308,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
                                                     :compositeLiteralFields t
                                                     :compositeLiteralTypes t
                                                     :constantValues t)))))
-  (add-to-list 'eglot-server-programs '(jsonnet-mode . ("jsonnet-language-server"))))
+  (add-to-list 'eglot-server-programs '(jsonnet-mode . ("jsonnet-language-server")))
+  (add-to-list 'eglot-server-programs '(helm-mode "helm_ls" "serve")))
 
 (use-package consult-eglot
   :after eglot
@@ -2370,7 +2371,10 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
 ;;;;;; CONFIGURATION LANGUAGES ;;;;;;
 (use-package jsonnet-mode :bind (:map jsonnet-mode-map ("C-c C-f" . format-all-region-or-buffer)))
-(use-package yaml-mode)
+(use-package yaml-mode
+  :config
+  (define-derived-mode helm-mode yaml-mode "helm"
+    "Major mode for editing kubernetes helm templates"))
 
 ;;;;;; DOMAIN-SPECIFIC LANGUAGES ;;;;;;
 (use-package apparmor-mode)

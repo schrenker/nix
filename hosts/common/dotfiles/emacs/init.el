@@ -1491,6 +1491,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   :config
   (setopt dired-omit-files (concat dired-omit-files
                                    "\\|^\\.DS_Store"
+                                   "\\|^\\.direnv"
                                    "\\|^\\.git"
                                    "\\|^\\.stfolder")))
 

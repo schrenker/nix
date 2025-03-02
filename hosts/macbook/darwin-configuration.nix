@@ -7,7 +7,7 @@
   nix.linux-builder = {
     enable = true;
     ephemeral = true;
-    systems = [ "aarch64-linux" "x86_64-linux"];
+    systems = [ "aarch64-linux" "x86_64-linux" ];
     maxJobs = 4;
     config = {
       virtualisation = {
@@ -83,7 +83,7 @@
     "ImageFinder for Safari" = 1514863337;
     "Microsoft Remote Desktop" = 1295203466;
     "Noir" = 1592917505;
-    "RYTD"  = 6463305263;
+    "RYTD" = 6463305263;
     "SponsorBlock for YouTube - Skip Sponsorships" = 1573461917;
     "Wipr" = 1320666476;
     "uBlacklist for Safari" = 1547912640;
@@ -91,7 +91,6 @@
 
   ids.uids.nixbld = 450;
   ids.gids.nixbld = 450;
-
 
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.finder.ShowStatusBar = true;
@@ -128,9 +127,7 @@
   '';
 
   system.defaults.CustomUserPreferences = {
-    "org.gnu.Emacs" = {
-      AppleFontSmoothing = 0;
-    };
+    "org.gnu.Emacs" = { AppleFontSmoothing = 0; };
   };
   security.pam.services.sudo_local.touchIdAuth = true;
 }

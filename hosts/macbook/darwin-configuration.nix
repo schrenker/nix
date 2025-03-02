@@ -45,7 +45,7 @@
   };
 
   homebrew.enable = true;
-  homebrew.brews = [ "gcc" "svn" ];
+  homebrew.brews = [ "gcc" "colima" ];
   homebrew.casks = [
     "alt-tab"
     "badgeify"

@@ -1505,6 +1505,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
         ("C-c C-t" . dired-preview-global-mode))
   :init
   (setopt dired-preview-delay 0.1
+          dired-preview-buffer-name-indicator ""
           dired-preview-max-size (expt 2 20)
           dired-preview-display-action-alist-function (lambda () '((display-buffer-in-previous-window)
                                                               (inhibit-same-window . t)))
@@ -1526,8 +1527,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
         ("C-c F" . dired-narrow-fuzzy)))
 
 (use-package dired-collapse)
-  ;; :config
-  ;; (global-dired-collapse-mode))
 
 (use-package dired-subtree
   :demand t

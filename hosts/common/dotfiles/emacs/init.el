@@ -2344,6 +2344,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
                                  map)) "]"))))
   :config
   (advice-add 'flymake--mode-line-exception :override #'schrenker/flymake--mode-line-exception)
+  (with-eval-after-load 'corfu
+    (advice-add #'eldoc-display-message-no-interference-p :before-while #'corfu--eldoc-advice))
   (setopt flymake-mode-line-lighter ""
           flymake-show-diagnostics-at-end-of-line 'short))
 

@@ -143,10 +143,15 @@ If there is region selected with meow navigation function, then expand it."
 
 (defun schrenker/meow-change-to-eol ()
   (interactive)
-  (when (region-active-p)
-    (goto-char (region-beginning)))
-  (meow-end-of-thing ?l)
-  (call-interactively #'meow-change))
+  (if (derived-mode-p 'eat-mode)
+      (progn
+        (eat-self-input 1 ?\C-k)
+        (call-interactively #'schrenker/meow-smart-append))
+    (progn
+      (when (region-active-p)
+        (goto-char (region-beginning)))
+      (meow-end-of-thing ?l)
+      (call-interactively #'meow-change))))
 
 (defun schrenker/meow-kill-to-bol ()
   (interactive)
@@ -155,18 +160,32 @@ If there is region selected with meow navigation function, then expand it."
 
 (defun schrenker/meow-kill-to-eol ()
   (interactive)
-  (meow-end-of-thing ?l)
-  (call-interactively #'meow-kill))
+  (if (derived-mode-p 'eat-mode)
+      (eat-self-input 1 ?\C-k)
+    (progn
+      (meow-end-of-thing ?l)
+      (call-interactively #'meow-kill))))
 
 (defun schrenker/meow-change-line ()
   (interactive)
-  (meow-inner-of-thing ?l)
-  (call-interactively #'meow-change))
+  (if (derived-mode-p 'eat-mode)
+      (progn
+        (eat-self-input 1 ?\C-a)
+        (eat-self-input 1 ?\C-k)
+        (call-interactively #'schrenker/meow-smart-append))
+    (progn
+      (meow-inner-of-thing ?l)
+      (call-interactively #'meow-change))))
 
 (defun schrenker/meow-delete-line ()
   (interactive)
-  (meow-bounds-of-thing ?l)
-  (call-interactively #'meow-kill))
+  (if (derived-mode-p 'eat-mode)
+      (progn
+        (eat-self-input 1 ?\C-a)
+        (eat-self-input 1 ?\C-k))
+    (progn
+      (meow-bounds-of-thing ?l)
+      (call-interactively #'meow-kill))))
 
 (defun schrenker/meow-change-to-bol ()
   (interactive)

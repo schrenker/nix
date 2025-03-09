@@ -378,7 +378,9 @@
                                 erc-mode
                                 circe-mode
                                 help-mode
+                                helpful-mode
                                 gud-mode
+                                eat-mode
                                 vterm-mode) t)
           corfu-cycle t
           corfu-preselect 'prompt

@@ -26,5 +26,6 @@
       ./dotfiles/iterm2/auto_dark_mode.py;
     ".config/karabiner/karabiner.json".source = ./dotfiles/karabiner/karabiner.json;
     ".config/karabiner/assets/".source = ./dotfiles/karabiner/assets;
+    ".config/vivaldi/".source = ./dotfiles/vivaldi;
   };
 }

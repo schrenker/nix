@@ -149,8 +149,7 @@
   (define-key global-map (kbd "C-g") #'schrenker/keyboard-quit-dwim)
 
   (if (schrenker/wsl2-p)
-      (progn
-        (set-frame-font "JetBrainsMono Nerd Font 11" nil t))
+      (set-frame-font "JetBrainsMono Nerd Font 11" nil t)
     (set-frame-font "JetBrainsMono Nerd Font 14" nil t))
 
   (put 'upcase-region 'disabled nil)

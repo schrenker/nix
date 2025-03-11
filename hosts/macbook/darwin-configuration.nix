@@ -54,6 +54,7 @@
     "crossover"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
+    "ghostty"
     "hazeover"
     "jordanbaird-ice"
     "karabiner-elements"
@@ -65,7 +66,6 @@
     "onecast"
     "steam"
     "syncthing"
-    "vivaldi"
   ];
   homebrew.taps = [ "d12frosted/emacs-plus" "homebrew/services" ];
 

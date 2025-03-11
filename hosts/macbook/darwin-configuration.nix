@@ -47,7 +47,6 @@
   homebrew.enable = true;
   homebrew.brews = [ "gcc" "colima" ];
   homebrew.casks = [
-    "alt-tab"
     "badgeify"
     "balenaetcher"
     "betterdisplay"
@@ -56,13 +55,9 @@
     "font-jetbrains-mono-nerd-font"
     "ghostty"
     "hazeover"
-    "jordanbaird-ice"
-    "karabiner-elements"
     "keymapp"
-    "knockknock"
     "logitech-options"
     "lulu"
-    "numi"
     "onecast"
     "steam"
     "syncthing"

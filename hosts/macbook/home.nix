@@ -3,9 +3,13 @@
   home.homeDirectory = "/Users/sebastian";
 
   home.packages = with pkgs; [
+    alt-tab-macos
     coreutils-prefixed
     docker-client
+    ice-bar
+    karabiner-elements
     libtool
+    numi
     pinentry_mac
     pngpaste
     raycast

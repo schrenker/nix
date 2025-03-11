@@ -55,6 +55,7 @@
     "font-jetbrains-mono-nerd-font"
     "ghostty"
     "hazeover"
+    "karabiner-elements"
     "keymapp"
     "logitech-options"
     "lulu"

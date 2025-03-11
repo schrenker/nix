@@ -7,7 +7,6 @@
     coreutils-prefixed
     docker-client
     ice-bar
-    karabiner-elements
     libtool
     numi
     pinentry_mac

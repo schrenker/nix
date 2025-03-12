@@ -63,14 +63,15 @@
     "steam"
     "syncthing"
   ];
-  homebrew.taps = [ "d12frosted/emacs-plus" "homebrew/services" ];
+  homebrew.taps = [ # "d12frosted/emacs-plus"
+                    "homebrew/services" ];
 
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
   homebrew.onActivation.autoUpdate = true;
-  homebrew.extraConfig = ''
-    brew "emacs-plus@30", args: ["with-mailutils", "with-xwidgets", "with-imagemagick", "with-nobu417-big-sur-icon"]
-  '';
+  # homebrew.extraConfig = ''
+  #   brew "emacs-plus@30", args: ["with-mailutils", "with-xwidgets", "with-imagemagick", "with-nobu417-big-sur-icon"]
+  # '';
   homebrew.masApps = {
     "Amphetamine" = 937984704;
     "Bitwarden" = 1352778147;
@@ -119,9 +120,9 @@
   system.defaults.loginwindow.GuestEnabled = false;
 
   system.defaults.screencapture.location = "~/Pictures/Screenshots";
-  system.activationScripts.preActivation.text = ''
-    sudo rm -f /etc/shells /etc/bashrc /etc/zshrc
-  '';
+  # system.activationScripts.preActivation.text = ''
+  #   sudo rm -f /etc/shells /etc/bashrc /etc/zshrc
+  # '';
 
   system.defaults.CustomUserPreferences = {
     "org.gnu.Emacs" = { AppleFontSmoothing = 0; };

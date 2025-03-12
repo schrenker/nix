@@ -15,6 +15,12 @@
     utm
   ];
 
+  programs.emacs = {
+    enable = true;
+    package = pkgs.callPackage ./custom/emacs/emacs.nix {};
+    extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
+  };
+
   programs.fish.shellAliases.sw = "darwin-rebuild switch --flake ~/.config/nix";
 
   home.file = {

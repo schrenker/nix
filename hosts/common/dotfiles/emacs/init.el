@@ -1483,7 +1483,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
           dired-dwim-target t)
 
   (when (eq system-type 'darwin)
-    (setopt insert-directory-program "/opt/homebrew/bin/gls")))
+    (setopt insert-directory-program "/etc/profiles/per-user/sebastian/bin/gls")))
 
 (use-package dired-x
   :ensure nil

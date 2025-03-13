@@ -2043,7 +2043,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 (use-package meow
   :config
   (load-file (concat user-emacs-directory "lisp/meovim.el"))
-  (global-unset-key (kbd "C-c SPC"))
+  ;; (global-unset-key (kbd "C-c SPC"))
   (add-to-list 'meow-mode-state-list '(elpaca-ui-mode . motion))
   (add-to-list 'meow-mode-state-list '(dired-mode . motion))
   (add-to-list 'meow-mode-state-list '(ibuffer-mode . motion))
@@ -2121,32 +2121,32 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    '("E" . ignore)
    '("q" . ignore))
 
-  ;;Leader
-  (schrenker/meow-prefix-define-key
-   '("SPC" . nil)
-   '("SPC SPC" . consult-project-extra-find)
-   '("S-SPC SPC" . consult-project-extra-find-other-window)
-   '("SPC ." . popper-toggle)
-   '("SPC ," . popper-cycle)
-   '("SPC '" . popper-toggle-type)
-   '("SPC <" . previous-buffer)
-   '("SPC >" . next-buffer)
-   '("SPC u" . winner-undo)
-   '("SPC r" . winner-redo)
-   '("SPC t" . (lambda () (interactive) (aw-transpose-frame (car (window-list)))))
-   '("SPC x" . delete-window)
-   '("SPC X" . ace-delete-window)
-   '("SPC o" . schrenker/aw-flip-window-anyway)
-   '("SPC O" . ace-select-window)
-   '("SPC s" . schrenker/ace-swap-window)
-   '("SPC +" . hydra-uictl/schrenker/zoom-frame)
-   '("SPC -" . hydra-uictl/schrenker/zoom-frame-out)
-   '("SPC _" . hydra-uictl/maximize-window)
-   '("SPC =" . hydra-uictl/balance-windows)
-   '("SPC M-j" . hydra-uictl/enlarge-window)
-   '("SPC M-k" . hydra-uictl/shrink-window)
-   '("SPC M-h" . hydra-uictl/shrink-window-horizontally)
-   '("SPC M-l" . hydra-uictl/enlarge-window-horizontally))
+  (defvar-keymap schrenker/leader
+    :doc "Leader keymap"
+    :prefix 'leader
+    "SPC"   #'consult-project-extra-find
+    "S-SPC" #'consult-project-extra-find-other-window
+    "."     #'popper-toggle
+    ","     #'popper-cycle
+    "'"     #'popper-toggle-type
+    "<"     #'previous-buffer
+    ">"     #'next-buffer
+    "u"     #'winner-undo
+    "r"     #'winner-redo
+    "t"     (lambda () (interactive) (aw-transpose-frame (car (window-list))))
+    "x"     #'delete-window
+    "X"     #'ace-delete-window
+    "o"     #'schrenker/aw-flip-window-anyway
+    "O"     #'ace-select-window
+    "s"     #'schrenker/ace-swap-window
+    "+"     #'hydra-uictl/schrenker/zoom-frame
+    "-"     #'hydra-uictl/schrenker/zoom-frame-out
+    "_"     #'hydra-uictl/maximize-window
+    "="     #'hydra-uictl/balance-windows
+    "M-j"   #'hydra-uictl/enlarge-window
+    "M-k"   #'hydra-uictl/shrink-window
+    "M-h"   #'hydra-uictl/shrink-window-horizontally
+    "M-l"   #'hydra-uictl/enlarge-window-horizontally)
 
   ;;Movement
   (meow-normal-define-key
@@ -2236,20 +2236,20 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    '("Q" . schrenker/meow-old-quit))
 
 
-  (with-eval-after-load 'persistent-kmacro
-    (meow-normal-define-key
-     '("SPC mm" . persistent-kmacro-execute-macro)
-     '("SPC ma" . persistent-kmacro-name-last-kbd-macro)
-     '("SPC mr" . persistent-kmacro-remove-macro)
-     '("SPC ms" . persistent-kmacro-save-session)
-     '("SPC ml" . persistent-kmacro-restore-sesstion)))
+  ;; (with-eval-after-load 'persistent-kmacro
+  ;;   (meow-normal-define-key
+  ;;    '("SPC mm" . persistent-kmacro-execute-macro)
+  ;;    '("SPC ma" . persistent-kmacro-name-last-kbd-macro)
+  ;;    '("SPC mr" . persistent-kmacro-remove-macro)
+  ;;    '("SPC ms" . persistent-kmacro-save-session)
+  ;;    '("SPC ml" . persistent-kmacro-restore-sesstion)))
 
   (setopt meow-use-clipboard t
           meow-use-cursor-position-hack t
           meow-expand-exclude-mode-list nil
           meow-use-enhanced-selection-effect t
+          meow-keypad-leader-dispatch schrenker/leader
           meow-select-on-change nil
-          meow-motion-remap-prefix "A-C-M-"
           meow-replace-state-name-list '((normal . "N")
                                          (motion . "M")
                                          (keypad . "K")

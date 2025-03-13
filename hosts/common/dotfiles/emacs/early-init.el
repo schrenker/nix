@@ -6,7 +6,6 @@
 ;;; Code:
 
 (setq package-enable-at-startup nil)
-(setq elpaca-aot-native-compilation t)
 
 ;; Fix for ld: library not found for -lemutls_w libgccjit.so: error: error invoking gcc driver
 (when (eq system-type 'darwin)

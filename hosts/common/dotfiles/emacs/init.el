@@ -66,7 +66,6 @@
           inhibit-startup-screen t
           initial-major-mode 'fundamental-mode
           initial-scratch-message nil
-          isearch-wrap-pause 'no
           kept-new-versions 6
           kept-old-versions 2
           load-prefer-newer t
@@ -76,7 +75,7 @@
           max-lisp-eval-depth 10000
           minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
           mode-line-position-column-line-format '("(%l,%c)")
-          native-comp-async-report-warnings-errors nil
+          native-comp-async-report-warnings-errors 'silent
           ns-use-proxy-icon (display-graphic-p)
           read-extended-command-predicate #'command-completion-default-include-p
           read-process-output-max (* 1024 1024)
@@ -91,10 +90,6 @@
           switch-to-buffer-obey-display-actions t
           tab-always-indent 'complete
           tab-width 4
-          time-stamp-active t
-          time-stamp-end "$"
-          time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]"
-          time-stamp-start "#\\+modified: [ \t]*"
           truncate-string-ellipsis "…"
           user-full-name (rot13 "Fronfgvna Mnjnqmxv")
           user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")
@@ -107,7 +102,7 @@
   (set-display-table-slot standard-display-table 'truncation (make-glyph-code ?…))
   (set-display-table-slot standard-display-table 'wrap (make-glyph-code ?–))
 
-  (flymake-mode -1)
+  ;; (flymake-mode -1)
 
   (column-number-mode 1)
   (electric-indent-mode 1)
@@ -132,7 +127,6 @@
   (advice-add #'completing-read-multiple :filter-args #'schrenker/crm-indicator)
 
   (add-hook 'emacs-startup-hook #'schrenker/measure-startup-time)
-  (add-hook 'before-save-hook #'time-stamp)
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode) ;; Do not allow the cursor in the minibuffer prompt
 
   (unbind-key (kbd "M-r"))
@@ -936,7 +930,12 @@ If no criteria is met, call org-sort."
           org-tags-column -77
           org-tags-exclude-from-inheritance '("crypt" "verb" "agenda")
           org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "INPROGRESS(i!)" "BLOCKED(b@/!)" "ONHOLD(o@/!)" "REVIEW(r!)" "|" "DELEGATED(e@/@)" "CANCELLED(c@/@)" "DONE(d/@)"))
-          org-use-fast-todo-selection 'expert)
+          org-use-fast-todo-selection 'expert
+          time-stamp-active t
+          time-stamp-end "$"
+          time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]"
+          time-stamp-start "#\\+modified: [ \t]*"
+ )
 
   (with-eval-after-load 'org-roam
     (let ((refile-targets (schrenker/org-roam-fetch-refile-targets)))
@@ -984,7 +983,8 @@ If no criteria is met, call org-sort."
                               completion-at-point-functions
                               (delete 'pcomplete-completions-at-point completion-at-point-functions))))
   (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1))))
+  (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
+  (add-hook 'org-mode-hook (lambda () (add-hook 'before-save-hook #'time-stamp nil t))))
 
 (use-package org-archive
   :ensure nil

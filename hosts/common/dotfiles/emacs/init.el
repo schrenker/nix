@@ -1106,6 +1106,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
       (save-excursion
         (schrenker/trim-src-block))))
 
+  (defun schrenker/org-babel-load-language (orig-fun &rest args)
+    "Load language if needed."
+    (let ((language (org-element-property :language (org-element-at-point))))
+      (unless (cdr (assoc (intern language) org-babel-load-languages))
+        (add-to-list 'org-babel-load-languages (cons (intern language) t))
+        (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)))
+    (apply orig-fun args))
+
   :config
   (setopt org-edit-src-content-indentation 0
           org-src-window-setup 'split-window-below
@@ -1124,13 +1132,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                  (shell . t)
                                  (python . t)))
 
-  (defadvice org-babel-execute-src-block (around load-language nil activate)
-    "Load language if needed"
-    (let ((language (org-element-property :language (org-element-at-point))))
-      (unless (cdr (assoc (intern language) org-babel-load-languages))
-        (add-to-list 'org-babel-load-languages (cons (intern language) t))
-        (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-      ad-do-it))
+  (advice-add 'org-babel-execute-src-block :around #'schrenker/org-babel-load-language)
 
   (add-hook 'org-mode-hook
             (lambda ()

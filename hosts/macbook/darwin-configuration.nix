@@ -10,6 +10,7 @@
     systems = [ "aarch64-linux" "x86_64-linux" ];
     maxJobs = 4;
     config = {
+      networking.nameservers = [ "192.168.1.254" "9.9.9.9" ];
       virtualisation = {
         darwin-builder = {
           diskSize = 60 * 1024;

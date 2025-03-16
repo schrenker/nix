@@ -2059,10 +2059,14 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
         (delete-window)
       (previous-buffer)))
 
-  (defun schrenker/meow-prefix-define-key (&rest keybinds)
-    "DRY function to define common MOTION and NORMAL mode keybinds."
-    (apply #'meow-define-keys 'normal keybinds)
-    (apply #'meow-define-keys 'motion keybinds))
+ (defun schrenker/meow-motion-normal-mode-switch ()
+    "If normal mode, switch to motion mode.
+If motion mode, switch to normal mode."
+    (interactive)
+    (cond (meow-normal-mode (meow-motion-mode 1))
+          (meow-motion-mode (meow-normal-mode 1))
+          (meow-beacon-mode nil)
+          (t (meow-normal-mode 1))))
 
   (when (schrenker/wsl2-p)
     (defun schrenker/wsl-copy-region-to-clipboard (start end)
@@ -2114,7 +2118,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (meow-motion-overwrite-define-key
    '("j" . schrenker/meow-next)
    '("k" . schrenker/meow-prev)
-   '("C-M-O" . meow-normal-mode)
    '("<escape>" . nil))
 
   ;;Disable
@@ -2141,6 +2144,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
     "o"     #'schrenker/aw-flip-window-anyway
     "O"     #'ace-select-window
     "s"     #'schrenker/ace-swap-window
+    "N"     #'schrenker/meow-motion-normal-mode-switch
     "+"     #'hydra-uictl/schrenker/zoom-frame
     "-"     #'hydra-uictl/schrenker/zoom-frame-out
     "_"     #'hydra-uictl/maximize-window

@@ -2036,10 +2036,10 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
     "If normal mode, switch to motion mode.
 If motion mode, switch to normal mode."
     (interactive)
-    (cond ((and meow-normal-mode (eq (meow--mode-get-state) 'motion)) (meow-motion-mode 1))
-          (meow-motion-mode (meow-normal-mode 1))
+    (cond ((and meow-normal-mode (eq (meow--mode-get-state) 'motion)) (meow--switch-state 'motion))
+          (meow-motion-mode (meow--switch-state 'normal))
           (meow-beacon-mode nil)
-          (t (meow-normal-mode 1))))
+          (t (meow--switch-state 'normal))))
 
   (when (schrenker/wsl2-p)
     (defun schrenker/wsl-copy-region-to-clipboard (start end)

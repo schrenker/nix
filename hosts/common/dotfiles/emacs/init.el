@@ -524,12 +524,6 @@ If no repository is found, prompt user to create one."
                   (funcall orig-fun command))))
   (advice-add 'describe-key :override 'helpful-key))
 
-(use-package persistent-kmacro
-  :ensure
-  (persistent-kmacro
-   :host "github.com"
-   :repo "artawower/persistent-kmacro.el"))
-
 (use-package inhibit-mouse
   :disabled t
   :ensure (inhibit-mouse
@@ -2213,15 +2207,6 @@ If motion mode, switch to normal mode."
    '("n" . schrenker/meow-search)
    '("N" . schrenker/meow-search-backwards)
    '("Q" . schrenker/meow-old-quit))
-
-
-  ;; (with-eval-after-load 'persistent-kmacro
-  ;;   (meow-normal-define-key
-  ;;    '("SPC mm" . persistent-kmacro-execute-macro)
-  ;;    '("SPC ma" . persistent-kmacro-name-last-kbd-macro)
-  ;;    '("SPC mr" . persistent-kmacro-remove-macro)
-  ;;    '("SPC ms" . persistent-kmacro-save-session)
-  ;;    '("SPC ml" . persistent-kmacro-restore-sesstion)))
 
   (setopt meow-use-clipboard t
           meow-use-cursor-position-hack t

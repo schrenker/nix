@@ -5,6 +5,7 @@
   home.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     docker
+    dos2unix
     gitleaks
     syncthing
     yamllint

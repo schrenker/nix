@@ -2333,7 +2333,7 @@ If motion mode, switch to normal mode."
   :hook (((bash-ts-mode sh-mode) . flymake-bashate-setup)
          ((bash-ts-mode sh-mode) . flymake-mode))
   :config
-  (setopt flymake-bashate-max-line-length 80))
+  (setopt flymake-bashate-ignore "E006"))
 
 ;;;;;; CONFIGURATION LANGUAGES ;;;;;;
 (use-package jsonnet-mode :bind (:map jsonnet-mode-map ("C-c C-f" . format-all-region-or-buffer)))

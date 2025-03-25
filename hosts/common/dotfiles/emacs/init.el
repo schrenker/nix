@@ -90,6 +90,7 @@
           switch-to-buffer-obey-display-actions t
           tab-always-indent 'complete
           tab-width 4
+          text-mode-ispell-word-completion nil
           truncate-string-ellipsis "…"
           user-full-name (rot13 "Fronfgvna Mnjnqmxv")
           user-mail-address (rot13 "fronfgvna@mnjnqmxv.grpu")

@@ -70,6 +70,7 @@
       kd = "kubectl describe";
       kx = "kubectx";
       kns = "kubens";
+      kickemacs = "pkill -SIGUSR2 Emacs";
     };
 
     functions = {

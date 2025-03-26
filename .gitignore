@@ -31,3 +31,4 @@ hosts/common/dotfiles/emacs/tabsession.el
 hosts/common/dotfiles/emacs/var/
 hosts/common/dotfiles/emacs/perspfile.el
 hosts/common/dotfiles/emacs/.lsp-session-v1
+/registry.json

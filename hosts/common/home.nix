@@ -1,4 +1,6 @@
 { inputs, lib, pkgs, ... }: {
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+
   home.stateVersion = "23.11";
   home.username = "sebastian";
 
@@ -6,7 +8,6 @@
 
   home.packages = with pkgs; [
     # NIX
-    any-nix-shell
     nix-direnv
     nixfmt
 
@@ -54,10 +55,6 @@
   programs.fish = {
     enable = true;
 
-    interactiveShellInit = ''
-      ${pkgs.any-nix-shell}/bin/any-nix-shell fish | source
-    '';
-
     shellInit = builtins.readFile ./dotfiles/fish/config.fish;
 
     shellAliases = {
@@ -84,6 +81,21 @@
             end
         '';
 
+      };
+
+      nixshell = {
+        description = "Spawn new nix shell with specified command";
+        body = ''
+          set -fax additional_pkgs $argv
+          eval nix shell (echo $argv | sed 's/[^ ]*/nixpkgs#&/g')
+        '';
+      };
+
+      nixrun = {
+        description = "Run nix command from nixpkgs";
+        body = ''
+          nix run nixpkgs#$argv[1] -- $argv[2..-1]
+        '';
       };
     };
 

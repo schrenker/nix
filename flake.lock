@@ -72,11 +72,11 @@
     "fish-plugin-theme-solarfish": {
       "flake": false,
       "locked": {
-        "lastModified": 1736000635,
-        "narHash": "sha256-GQbJzR+mwqDPSJf9nZ7MRrH6YNDcWRnX2fHQoB5ZZtc=",
+        "lastModified": 1743026227,
+        "narHash": "sha256-6iRovHCFlRGxcRLSbDsnqTp/EQfTviDi1fMOR5nOCTI=",
         "owner": "schrenker",
         "repo": "solarfish",
-        "rev": "40af1b8316427ed07baff4444f249ec3c91306ff",
+        "rev": "23c91a8653ed594079bccbb4be5822d4e4d0d30e",
         "type": "github"
       },
       "original": {

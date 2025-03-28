@@ -670,7 +670,8 @@ If anything fails, set path to home directory."
                     (with-perspective persp
                       (dolist (buf (persp-current-buffers))
                         (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
-                          (call-interactively #'magit-mode-bury-buffer))))))))))
+                          (call-interactively #'magit-mode-bury-buffer)))))))))
+  (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name))))
 
 (use-package perspective-tabs
   :after perspective

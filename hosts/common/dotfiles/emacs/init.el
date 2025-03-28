@@ -2086,7 +2086,6 @@ If motion mode, switch to normal mode."
                        '(pair ("<") (">"))
                        '(pair ("<") (">")))
 
-  (setopt meow-cheatsheet-layout meow-cheatsheet-layout-dvorak)
   (meow-motion-overwrite-define-key
    '("j" . schrenker/meow-next)
    '("k" . schrenker/meow-prev)

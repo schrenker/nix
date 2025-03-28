@@ -660,7 +660,7 @@ If anything fails, set path to home directory."
               persp-consult-source
               consult-project-extra--source-project)))
   (with-eval-after-load 'magit
-    (add-hook persp-state-before-save-hook
+    (add-hook 'persp-state-before-save-hook
               (lambda ()
                 (let ((perspectives '()))
                   (maphash (lambda (key value)

@@ -2090,6 +2090,7 @@ If motion mode, switch to normal mode."
   (meow-motion-overwrite-define-key
    '("j" . schrenker/meow-next)
    '("k" . schrenker/meow-prev)
+   '("Q" . schrenker/meow-old-quit)
    '("<escape>" . nil))
 
   ;;Disable

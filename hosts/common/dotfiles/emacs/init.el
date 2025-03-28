@@ -658,7 +658,19 @@ If anything fails, set path to home directory."
             '(consult-project-extra--source-buffer
               consult-project-extra--source-file
               persp-consult-source
-              consult-project-extra--source-project))))
+              consult-project-extra--source-project)))
+  (with-eval-after-load 'magit
+    (add-hook persp-state-before-save-hook
+              (lambda ()
+                (let ((perspectives '()))
+                  (maphash (lambda (key value)
+                             (push key perspectives))
+                           (perspectives-hash))
+                  (dolist (persp perspectives)
+                    (with-perspective persp
+                      (dolist (buf (persp-current-buffers))
+                        (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
+                          (call-interactively #'magit-mode-bury-buffer))))))))))
 
 (use-package perspective-tabs
   :after perspective

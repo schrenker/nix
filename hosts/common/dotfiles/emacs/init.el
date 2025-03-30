@@ -1564,9 +1564,17 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    :map eat-mode-map
    ("C-c C-c" . eat-self-input)
    ("C-d" . eat-self-input)
-   ("RET" . schrenker/eat-ret-dwim))
+   ("RET" . schrenker/eat-ret-dwim)
+   :map eat-semi-char-mode-map
+   ("DEL" . schrenker/eat-simple-delete)
+   ("<backspace>" . schrenker/eat-simple-delete))
 
   :init
+  (defun schrenker/eat-simple-delete ()
+    (interactive)
+    (eat-self-input 1 ?\C-b)
+    (eat-self-input 1 ?\C-d))
+
   (defun schrenker/line-of-current-prompt ()
     "Get the prompt line of current eat buffer, and save it to a variable."
     (save-excursion

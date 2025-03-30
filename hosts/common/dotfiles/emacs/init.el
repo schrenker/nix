@@ -1567,13 +1567,22 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    ("RET" . schrenker/eat-ret-dwim)
    :map eat-semi-char-mode-map
    ("DEL" . schrenker/eat-simple-delete)
-   ("<backspace>" . schrenker/eat-simple-delete))
+   ("<backspace>" . schrenker/eat-simple-delete)
+   ("<A-backspace>" . schrenker/eat-backward-delete))
 
   :init
   (defun schrenker/eat-simple-delete ()
+    "FIXME: Work around some regression in eat, that makes backspace behave weirdly on subsequent terminals spawned.
+Could be my fault, could be eat's, but it's working currently with this."
     (interactive)
     (eat-self-input 1 ?\C-b)
     (eat-self-input 1 ?\C-d))
+
+  (defun schrenker/eat-backward-delete ()
+    "Dirty dirty workaround to delete whole words backwards with cmd|alt-tab"
+    (interactive)
+    (eat-self-input 1 27)  ; Send ESC
+    (eat-self-input 1 127)) ; Send DEL
 
   (defun schrenker/line-of-current-prompt ()
     "Get the prompt line of current eat buffer, and save it to a variable."

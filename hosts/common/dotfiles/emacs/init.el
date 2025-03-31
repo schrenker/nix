@@ -1568,7 +1568,8 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    :map eat-semi-char-mode-map
    ("DEL" . schrenker/eat-simple-delete)
    ("<backspace>" . schrenker/eat-simple-delete)
-   ("<A-backspace>" . schrenker/eat-backward-delete))
+   ("<A-backspace>" . schrenker/eat-backward-delete)
+   ("<C-backspace>" . schrenker/eat-backward-delete))
 
   :init
   (defun schrenker/eat-simple-delete ()

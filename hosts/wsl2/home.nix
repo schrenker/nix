@@ -1,14 +1,12 @@
 { pkgs, ... }: {
-  home.username = "sebastian";
+
   home.homeDirectory = "/home/sebastian";
 
   home.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
     docker
-    dos2unix
     gitleaks
+    nerd-fonts.jetbrains-mono
     syncthing
-    yamllint
   ];
 
   programs.emacs = {

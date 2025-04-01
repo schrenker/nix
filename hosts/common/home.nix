@@ -24,19 +24,21 @@
     gnutls
 
     # UTILS
-    arping
     (aspellWithDicts (dicts: with dicts; [ en en-computers pl ]))
+    arping
     fd
     fish
     jq
     poppler_utils
-    yq-go
     wget
+    yq-go
 
     # CODE
-    shfmt
-    shellcheck
     bashate
+    dos2unix
+    shellcheck
+    shfmt
+    yamllint
 
     # DEPS
     cmake

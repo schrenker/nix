@@ -2383,7 +2383,7 @@ If motion mode, switch to normal mode."
 (use-package dockerfile-mode)
 (use-package jenkinsfile-mode :mode "\\.jenkinsfile\\'")
 (use-package nginx-mode)
-(use-package nix-mode)
+(use-package nix-ts-mode :mode "\\.nix\\'")
 (use-package prometheus-mode)
 (use-package promql-mode :ensure (promql-mode :host "github.com" :repo "Andor/promql-mode"))
 (use-package rego-mode)

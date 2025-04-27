@@ -1075,6 +1075,13 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                                     (org-reverse-datetree-goto-date-in-file
                                                      nil :olp '("Journal"))))
                                    ""
+                                   :tree-type week :unnarrowed t :empty-lines-after 2)
+                                  ("jt" "Training" plain
+                                   (file+function "~/org/01_areas/training.org"
+                                                  (lambda ()
+                                                    (org-reverse-datetree-goto-date-in-file
+                                                     nil :olp '("Journal"))))
+                                   ""
                                    :tree-type week :unnarrowed t :empty-lines-after 2)))
 
   (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage)))

@@ -1068,16 +1068,15 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
                                    :prepend t)
-                                  ("j" "Journal")
-                                  ("ji" "Inbox" plain
-                                   (file+function org-default-notes-file
+                                  ("j" "Project Journal" plain
+                                   (file+function (lambda () (schrenker/org-roam-read-node-by-tag "project"))
                                                   (lambda ()
                                                     (org-reverse-datetree-goto-date-in-file
                                                      nil :olp '("Journal"))))
                                    ""
                                    :tree-type week :unnarrowed t :empty-lines-after 2)
-                                  ("jt" "Training" plain
-                                   (file+function "~/org/01_areas/training.org"
+                                  ("J" "Area Journal" plain
+                                   (file+function (lambda () (schrenker/org-roam-read-node-by-tag "area"))
                                                   (lambda ()
                                                     (org-reverse-datetree-goto-date-in-file
                                                      nil :olp '("Journal"))))

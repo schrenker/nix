@@ -201,10 +201,10 @@
         (set-face-attribute 'org-modern-date-inactive nil :foreground fg-alt :background bg-alt)
         (set-face-attribute 'org-modern-time-active nil :foreground fg-emph :background bg-main :inverse-video t)
         (set-face-attribute 'org-modern-time-inactive nil :foreground fg-alt :background bg-main :inverse-video t)
-        (custom-set-faces `(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :foreground ,violet :inverse-video t)))))
+        (custom-set-faces `(org-modern-tag ((t (:inherit (secondary-selection org-modern-label) :weight bold :height 1.0 :foreground ,violet :inverse-video t)))))
         (custom-set-faces `(org-modern-statistics ((t (:inherit org-modern-label :weight bold :background ,bg-alt :foreground ,green)))))
         (advice-add
-         'org-modern--update-label-face
+         'org-modern--update-faces
          :override
          (lambda (&rest r)
            (set-face-attribute 'org-modern-label nil :height 1.0 :box nil))))

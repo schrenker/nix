@@ -1583,8 +1583,10 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
     "FIXME: Work around some regression in eat, that makes backspace behave weirdly on subsequent terminals spawned.
 Could be my fault, could be eat's, but it's working currently with this."
     (interactive)
-    (eat-self-input 1 ?\C-b)
-    (eat-self-input 1 ?\C-d))
+    (let (p (point))
+      (eat-self-input 1 ?\C-b)
+      (unless (equal p (point))
+        (eat-self-input 1 ?\C-d))))
 
   (defun schrenker/eat-backward-delete ()
     "Dirty dirty workaround to delete whole words backwards with cmd|alt-tab"

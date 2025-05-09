@@ -1987,6 +1987,7 @@ Could be my fault, could be eat's, but it's working currently with this."
   (global-vi-tilde-fringe-mode 1))
 
 (use-package ws-butler
+  :ensure (ws-butler :inherit elpaca-menu-melpa)
   :config
   (ws-butler-global-mode 1))
 

@@ -1795,7 +1795,9 @@ Could be my fault, could be eat's, but it's working currently with this."
     (blackout 'meow-normal-mode)
     (blackout 'meow-insert-mode))
   (with-eval-after-load 'nerd-icons-dired
-    (blackout 'nerd-icons-dired-mode)))
+    (blackout 'nerd-icons-dired-mode))
+  (with-eval-after-load 'sideline
+    (blackout 'sideline-mode)))
 
 (use-package solaire-mode
   :init
@@ -2359,7 +2361,7 @@ If motion mode, switch to normal mode."
   (with-eval-after-load 'corfu
     (advice-add #'eldoc-display-message-no-interference-p :before-while #'corfu--eldoc-advice))
   (setopt flymake-mode-line-lighter ""
-          flymake-show-diagnostics-at-end-of-line 'short))
+          flymake-show-diagnostics-at-end-of-line nil))
 
 (use-package flymake-yamllint
   :init
@@ -2379,6 +2381,14 @@ If motion mode, switch to normal mode."
          ((bash-ts-mode sh-mode) . flymake-mode))
   :config
   (setopt flymake-bashate-ignore "E006"))
+
+(use-package sideline-flymake
+  :hook (flymake-mode . sideline-mode)
+  :init
+  (setopt sideline-flymake-display-mode 'line ; 'point to show errors only on point
+          sideline-backends-right '(sideline-flymake)))
+
+(use-package sideline)
 
 ;;;;;; CONFIGURATION LANGUAGES ;;;;;;
 (use-package jsonnet-mode :bind (:map jsonnet-mode-map ("C-c C-f" . format-all-region-or-buffer)))

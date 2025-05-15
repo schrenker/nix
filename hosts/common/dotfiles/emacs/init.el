@@ -451,8 +451,10 @@
 (use-package magit
   :bind (("C-x g" . magit-status)
          ("C-x G" . schrenker/magit-status-with-prefix)
+         :map magit-mode-map
+         ("o" . magit-diff-visit-file-other-window)
          :map magit-status-mode-map
-         ("o" . schrenker/magit-diff-visit-file-other-window)
+         ("o" . magit-diff-visit-file-other-window)
          ("K" . magit-discard)
          ("e" . nil)
          ("E" . nil)
@@ -468,12 +470,6 @@
     (let* ((section (magit-current-section))
            (value (oref section value)))
       (magit-diff-range (magit-rev-parse value))))
-
-  (defun schrenker/magit-diff-visit-file-other-window ()
-    "From a diff visit the appropriate version of FILE. Display the buffer in another window."
-    (interactive)
-    (let ((current-prefix-arg 4))
-      (call-interactively 'magit-diff-visit-file)))
 
   (defun schrenker/magit-status-with-prefix ()
     "Prompt for a path of a repository, and view it's status.

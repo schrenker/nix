@@ -1566,30 +1566,10 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    ("C-c V" . eat-project-other-window)
    :map eat-mode-map
    ("C-c C-c" . eat-self-input)
-   ("C-d" . eat-self-input)
+   ;; ("C-d" . eat-self-input)
    ("RET" . schrenker/eat-ret-dwim))
-   ;; :map eat-semi-char-mode-map
-   ;; ("DEL" . schrenker/eat-simple-delete)
-   ;; ("<backspace>" . schrenker/eat-simple-delete)
-   ;; ("<A-backspace>" . schrenker/eat-backward-delete)
-   ;; ("<C-backspace>" . schrenker/eat-backward-delete))
 
   :init
-;;   (defun schrenker/eat-simple-delete ()
-;;     "FIXME: Work around some regression in eat, that makes backspace behave weirdly on subsequent terminals spawned.
-;; Could be my fault, could be eat's, but it's working currently with this."
-;;     (interactive)
-;;     (let (p (point))
-;;       (eat-self-input 1 ?\C-b)
-;;       (unless (equal p (point))
-;;         (eat-self-input 1 ?\C-d))))
-
-;;   (defun schrenker/eat-backward-delete ()
-;;     "Dirty dirty workaround to delete whole words backwards with cmd|alt-tab"
-;;     (interactive)
-;;     (eat-self-input 1 27)  ; Send ESC
-;;     (eat-self-input 1 127)) ; Send DEL
-
   (defun schrenker/line-of-current-prompt ()
     "Get the prompt line of current eat buffer, and save it to a variable."
     (save-excursion
@@ -1617,6 +1597,10 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
                               mode-line-buffer-identification (propertized-buffer-identification "%b"))))
 
   :config
+  (when (eq system-type 'darwin)
+    (define-key eat-semi-char-mode-map (kbd "C-h")  #'eat-self-input)
+    (define-key eat-semi-char-mode-map (kbd "<backspace>") (kbd "C-h")))
+
   (setopt eat-kill-buffer-on-exit t
           eat-term-name "xterm-256color")
 

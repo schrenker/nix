@@ -1050,22 +1050,26 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                    (file+headline org-default-notes-file "Notes")
                                    ,(schrenker/get-org-template "note")
                                    :empty-lines 1
-                                   :prepend nil)
+                                   :prepend nil
+                                   :kill-buffer t)
                                   ("I" "Inbox Task" entry
                                    (file+headline org-default-notes-file "Tasks")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
-                                   :prepend t)
+                                   :prepend t
+                                   :kill-buffer t)
                                   ("n" "Note" entry
                                    (file+headline (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project"))) "Notes")
                                    ,(schrenker/get-org-template "note")
                                    :empty-lines 1
-                                   :prepend t)
+                                   :prepend t
+                                   :kill-buffer t)
                                   ("t" "Task" entry
                                    (file+olp (lambda () (schrenker/org-roam-read-node-by-tags '("project"))) "Tasks")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
-                                   :prepend t)
+                                   :prepend t
+                                   :kill-buffer t)
                                   ("j" "Journal" plain
                                    (file+function (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project")))
                                                   (lambda ()

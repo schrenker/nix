@@ -1056,30 +1056,18 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
                                    :prepend t)
-                                  ("a" "Area Note" entry
-                                   (file+headline (lambda () (schrenker/org-roam-read-node-by-tag "area")) "Notes")
+                                  ("n" "Note" entry
+                                   (file+headline (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project"))) "Notes")
                                    ,(schrenker/get-org-template "note")
                                    :empty-lines 1
                                    :prepend t)
-                                  ("p" "Project Note" entry
-                                   (file+headline (lambda () (schrenker/org-roam-read-node-by-tag "project")) "Notes")
-                                   ,(schrenker/get-org-template "note")
-                                   :empty-lines 1
-                                   :prepend t)
-                                  ("P" "Project Task" entry
-                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tag "project")) "Tasks")
+                                  ("t" "Task" entry
+                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tags '("project"))) "Tasks")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
                                    :prepend t)
-                                  ("j" "Project Journal" plain
-                                   (file+function (lambda () (schrenker/org-roam-read-node-by-tag "project"))
-                                                  (lambda ()
-                                                    (org-reverse-datetree-goto-date-in-file
-                                                     nil :olp '("Journal"))))
-                                   ""
-                                   :tree-type week :unnarrowed t :empty-lines-after 2)
-                                  ("J" "Area Journal" plain
-                                   (file+function (lambda () (schrenker/org-roam-read-node-by-tag "area"))
+                                  ("j" "Journal" plain
+                                   (file+function (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project")))
                                                   (lambda ()
                                                     (org-reverse-datetree-goto-date-in-file
                                                      nil :olp '("Journal"))))
@@ -1272,13 +1260,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                 :order-by [(asc title)]]
                        TAG (concat "#" TAG)))
 
-  (defun schrenker/org-roam-read-node-by-tag (TAG)
+  (defun schrenker/org-roam-read-node-by-tags (TAGS)
     "Select an org-roam node from a list filtered by their filetag TAG."
     (org-roam-node-file
      (org-roam-node-read nil
                          (lambda (node) (and
-                                         (member TAG (org-roam-node-tags node))
-                                         (not (string= (concat "#" TAG) (org-roam-node-title node))))))))
+                                    (seq-intersection TAGS (org-roam-node-tags node))
+                                    (not (member "tag" (org-roam-node-tags node)))
+                                    (not (member "archive" (org-roam-node-tags node))))))))
 
   (defun schrenker/org-roam-update-tag-collection-nodes ()
     "Tags files are collection of links to all org-roam nodes with respective FILETAGS.

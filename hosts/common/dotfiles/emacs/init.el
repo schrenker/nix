@@ -438,6 +438,13 @@
   (setopt global-auto-revert-non-file-buffers t)
   (global-auto-revert-mode 1))
 
+(use-package ediff
+  :ensure nil
+  :init
+  (setopt ediff-diff-options "-w"
+          ediff-split-window-function 'split-window-horizontally
+          ediff-window-setup-function 'ediff-setup-windows-plain))
+
 (use-package transient
   :config
   (with-eval-after-load 'magit

@@ -536,9 +536,9 @@ If no repository is found, prompt user to create one."
 (use-package inhibit-mouse
   :disabled t
   :ensure (inhibit-mouse
-             :type git
-             :host github
-             :repo "jamescherti/inhibit-mouse.el")
+           :type git
+           :host github
+           :repo "jamescherti/inhibit-mouse.el")
   :config
   (inhibit-mouse-mode))
 
@@ -950,8 +950,7 @@ If no criteria is met, call org-sort."
           time-stamp-active t
           time-stamp-end "$"
           time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]"
-          time-stamp-start "#\\+modified: [ \t]*"
- )
+          time-stamp-start "#\\+modified: [ \t]*")
 
   (with-eval-after-load 'org-roam
     (let ((refile-targets (schrenker/org-roam-fetch-refile-targets)))
@@ -1238,7 +1237,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
     (setopt org-agenda-files (seq-uniq
                               (seq-filter
                                (lambda (EL) (not (or (string-match "03_archives" EL)
-                                                     (string-match "99_tags" EL))))
+                                                (string-match "99_tags" EL))))
                                (seq-map
                                 #'car
                                 (org-roam-db-query
@@ -2030,7 +2029,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (add-hook 'bash-ts-mode-hook (lambda ()
                                  (add-to-list 'format-all-formatters '("Shell" (shfmt "-i" "4")))))
   (add-hook 'python-base-mode-hook (lambda ()
-                                (add-to-list 'format-all-formatters '("Python" black)))))
+                                     (add-to-list 'format-all-formatters '("Python" black)))))
 
 (use-package visual-regexp
   :bind
@@ -2054,7 +2053,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
         (delete-window)
       (previous-buffer)))
 
- (defun schrenker/meow-motion-normal-mode-switch ()
+  (defun schrenker/meow-motion-normal-mode-switch ()
     "If normal mode, switch to motion mode.
 If motion mode, switch to normal mode."
     (interactive)
@@ -2100,9 +2099,9 @@ If motion mode, switch to normal mode."
 
   (define-key global-map (kbd "M-p") #'meow-yank-pop)
   (define-key global-map (kbd "C-o") (lambda ()
-                                (interactive)
-                                (let ((current-prefix-arg '(4))) ;; emulate C-u
-                                  (call-interactively 'set-mark-command))))
+                                       (interactive)
+                                       (let ((current-prefix-arg '(4))) ;; emulate C-u
+                                         (call-interactively 'set-mark-command))))
 
 
   (meow-thing-register 'angle

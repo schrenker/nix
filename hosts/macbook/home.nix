@@ -21,7 +21,7 @@
     extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
   };
 
-  programs.fish.shellAliases.sw = "darwin-rebuild switch --flake ~/.config/nix";
+  programs.fish.shellAliases.sw = "sudo darwin-rebuild switch --flake ~/.config/nix";
 
   home.file = {
     ".ssh/git".source = ./secrets/git;

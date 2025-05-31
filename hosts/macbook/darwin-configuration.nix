@@ -89,6 +89,8 @@
     "uBlacklist for Safari" = 1547912640;
   };
 
+  system.primaryUser = "sebastian";
+
   ids.uids.nixbld = 450;
   ids.gids.nixbld = 450;
 

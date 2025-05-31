@@ -60,7 +60,7 @@
     "keymapp"
     "logitech-options"
     "lulu"
-    "mullvadvpn"
+    "mullvad-vpn"
     "onecast"
     "steam"
     "syncthing"

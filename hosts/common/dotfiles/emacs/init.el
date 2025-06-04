@@ -554,7 +554,7 @@ If no repository is found, prompt user to create one."
         (ace-select-window))))
 
   :config
-  (setopt aw-keys '(?e ?t ?u ?h ?o ?n ?a ?s))
+  (setopt aw-keys '(?e ?u ?t ?h ?o ?n ?a ?s))
 
   (when (display-graphic-p)
     (with-eval-after-load 'posframe

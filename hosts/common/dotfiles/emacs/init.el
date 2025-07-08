@@ -1350,7 +1350,7 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
                                         :unnarrowed t)
                                        ("rc" "Culinary" plain "%?"
                                         :target (file+head
-                                                 ,(concat "02_resources/culinary/" schrenker/org-fileslug)
+                                                 ,(concat "02_resources/" schrenker/org-fileslug)
                                                  ,(schrenker/get-org-template "resource-culinary"))
                                         :unnarrowed t)
                                        ("ri" "Investigation" plain "%?"

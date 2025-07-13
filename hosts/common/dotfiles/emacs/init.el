@@ -1556,7 +1556,10 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
    ("C-c V" . eat-project-other-window)
    :map eat-mode-map
    ("C-c C-c" . eat-self-input)
-   ;; ("C-d" . eat-self-input)
+   ("M-1" . (lambda () (interactive) (schrenker/eat-project)))
+   ("M-2" . (lambda () (interactive) (schrenker/eat-project 2)))
+   ("M-3" . (lambda () (interactive) (schrenker/eat-project 3)))
+   ("M-4" . (lambda () (interactive) (schrenker/eat-project 4)))
    ("RET" . schrenker/eat-ret-dwim))
 
   :init

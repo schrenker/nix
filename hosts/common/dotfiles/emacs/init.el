@@ -1321,16 +1321,10 @@ Naming format of these files are: tag:FILETAG.org. Update these files."
 
   :config
   (setopt schrenker/org-fileslug "${slug}.org"
-          org-roam-capture-templates `(("p" "Project")
-                                       ("pp" "Minor Project" plain "%?"
+          org-roam-capture-templates `(("p" "Project" plain "%?"
                                         :target (file+head
                                                  ,(concat "00_projects/" schrenker/org-fileslug)
-                                                 ,(schrenker/get-org-template "project-minor"))
-                                        :unnarrowed t)
-                                       ("pP" "Major Project" plain "%?"
-                                        :target (file+head
-                                                 ,(concat "00_projects/" schrenker/org-fileslug)
-                                                 ,(schrenker/get-org-template "project-major"))
+                                                 ,(schrenker/get-org-template "project"))
                                         :unnarrowed t)
                                        ("a" "Area" plain "%?"
                                         :target (file+head

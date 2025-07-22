@@ -11,6 +11,10 @@
     nix-direnv
     nixfmt
 
+    # ENC
+    sops
+    age
+
     # CONTAINERS
     kind
     kubectl

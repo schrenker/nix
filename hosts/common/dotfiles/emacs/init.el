@@ -579,6 +579,10 @@ If no repository is found, prompt user to create one."
   (add-hook 'kill-emacs-hook #'persp-state-save)
   (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
 
+  (defun schrenker/backup-perspfile ()
+    (copy-file persp-state-default-file
+               (concat persp-state-default-file ".autobackup") t))
+
   (defun schrenker/fix-scratch-buffer-default-directory ()
     "Make sure that default-directory for scratch buffers doesn't leak from other perspectives.
 
@@ -666,7 +670,8 @@ If anything fails, set path to home directory."
                       (dolist (buf (persp-current-buffers))
                         (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
                           (call-interactively #'magit-mode-bury-buffer)))))))))
-  (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name))))
+  (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name)))
+  (add-hook 'persp-state-before-save-hook #'schrenker/backup-perspfile))
 
 (use-package perspective-tabs
   :after perspective

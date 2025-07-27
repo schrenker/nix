@@ -116,10 +116,11 @@
   system.defaults.dock.wvous-tr-corner = 1;
   system.defaults.dock.wvous-br-corner = 1;
 
-  system.defaults.alf.globalstate = 1;
-  system.defaults.alf.allowsignedenabled = 1;
-  system.defaults.alf.allowdownloadsignedenabled = 1;
-  system.defaults.alf.stealthenabled = 1;
+  networking.applicationFirewall.enable = true;
+  networking.applicationFirewall.blockAllIncoming = true;
+  networking.applicationFirewall.allowSignedApp = true;
+  networking.applicationFirewall.allowSigned = true;
+  networking.applicationFirewall.enableStealthMode = true;
 
   system.defaults.loginwindow.GuestEnabled = false;
 

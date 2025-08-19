@@ -11,13 +11,25 @@
 :CONTENTS:
 :END:
 
-* Metadata
-- Description :: %^{Problem description}
-- Objective :: %^{What is the runbook objective?}
-- Scope & Audience :: %^{Who is this runbook for?}
+* Overview
+- Description :: A quick summary of the issue or task.
+- Objective   :: What this runbook aims to achieve.
+- Audience    :: Who should use this runbook.
 
-* Steps
+* Diagnosis & Triage
+- How to Confirm :: Commands or checks to verify the problem.
+- Severity       :: What is the impact?
 
-* Troubleshooting
+* Procedure
+1. Action 1
 
-* References
+* Troubleshooting & Rollback
+
+** Common Issues
+1. What to do if the main steps fail.
+
+** Rollback
+1. How to revert changes if needed.
+
+* References & Links
+- Dashboards, logs, or other relevant documentation.

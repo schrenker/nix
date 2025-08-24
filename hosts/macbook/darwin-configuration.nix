@@ -63,7 +63,7 @@
     "mullvad-vpn"
     "onecast"
     "steam"
-    "syncthing"
+    "syncthing-app"
   ];
   homebrew.taps = [ # "d12frosted/emacs-plus"
                     "homebrew/services" ];

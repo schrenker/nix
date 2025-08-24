@@ -18,8 +18,8 @@ fi
 cd "$(dirname "$0")"
 
 main() {
-    if [[ ! -d "~/.config/nix" ]]; then
-        git clone git@github.com:schrenker/nix.git ~/.config/nix
+    if [[ ! -d "$HOME/.config/nix" ]]; then
+        git clone git@github.com:schrenker/nix.git "$HOME/.config/nix"
     fi
 
     if [[ $(uname) == "Linux" ]]; then

@@ -1869,7 +1869,9 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
 (use-package nerd-icons-dired
   :init
-  (add-hook 'dired-mode-hook #'nerd-icons-dired-mode))
+  (add-hook 'dired-mode-hook #'nerd-icons-dired-mode)
+  :config
+  (setopt nerd-icons-dir-icon-alist (delete '("go" nerd-icons-devicon "nf-dev-go") nerd-icons-dir-icon-alist)))
 
 (use-package nerd-icons-completion
   :after marginalia

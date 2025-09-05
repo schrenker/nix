@@ -57,7 +57,9 @@ If there is region selected with meow navigation function, then expand it."
 (defun schrenker/meow-visual ()
   "Start selection at point."
   (interactive)
-  (meow--select (meow--make-selection '(expand . char) (point) (point))))
+  (thread-first
+    (meow--make-selection '(expand . char) (point) (point))
+    (meow--select t)))
 
 
 (defun schrenker/meow-yank-forward ()

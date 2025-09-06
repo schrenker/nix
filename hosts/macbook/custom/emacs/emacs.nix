@@ -5,7 +5,7 @@ pkgs.emacs.overrideAttrs (old: {
     ++ [ pkgs.mailutils pkgs.imagemagick pkgs.libgccjit ];
   configureFlags = old.configureFlags ++ [
     "--with-imagemagick"
-    #"--with-native-compilation=aot"
+    "--with-native-compilation"
     "--with-mailutils"
     "--with-xwidgets"
   ];

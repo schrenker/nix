@@ -11,16 +11,17 @@
 (when (eq system-type 'darwin)
   (customize-set-variable 'native-comp-driver-options '("-Wl,-w"))
   (setq native-comp-async-jobs-number 8)
-  ;;(setenv "LIBRARY_PATH" "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib")
-  (setenv "LIBRARY_PATH"
-	      (let*
-              ((base "/opt/homebrew/opt/gcc/lib/gcc/")
-               (version (car (directory-files base nil "[^a-zA-Z.]" nil 1)))
-               (macversion (car (directory-files (concat base version "/gcc/") nil "[^.]" nil 1)))
-               (gcc (concat base version))
-               (libgccjit (concat "/opt/homebrew/opt/libgccjit/lib/gcc/" version))
-               (macgcc (concat base version "/gcc/" macversion "/" version)))
-            (string-join (list gcc libgccjit macgcc) ":"))))
+  ;; (setenv "LIBRARY_PATH" "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib")
+  ;; (setenv "LIBRARY_PATH"
+  ;;         (let*
+  ;;             ((base "/opt/homebrew/opt/gcc/lib/gcc/")
+  ;;              (version (car (directory-files base nil "[^a-zA-Z.]" nil 1)))
+  ;;              (macversion (car (directory-files (concat base version "/gcc/") nil "[^.]" nil 1)))
+  ;;              (gcc (concat base version))
+  ;;              (libgccjit (concat "/opt/homebrew/opt/libgccjit/lib/gcc/" version))
+  ;;              (macgcc (concat base version "/gcc/" macversion "/" version)))
+  ;;           (string-join (list gcc libgccjit macgcc) ":")))
+  )
 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)

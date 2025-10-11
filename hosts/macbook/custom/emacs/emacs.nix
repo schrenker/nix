@@ -16,6 +16,7 @@ pkgs.emacs.overrideAttrs (old: {
   ];
   postInstall = ''
     ${old.postInstall}
+    # For liquid ass icons: https://github.com/jimeh/emacs-liquid-glass-icons
     cp ${./Emacs.icns} $out/Applications/Emacs.app/Contents/Resources/Emacs.icns
   '';
 })

@@ -10,6 +10,7 @@
     # NIX
     nix-direnv
     nixfmt
+    nil
 
     # ENC
     sops

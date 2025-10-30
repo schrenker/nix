@@ -28,7 +28,7 @@
 
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = [ inputs.nil.packages.${system}.nil ];
+          # nativeBuildInputs = [ inputs.nil.packages.${system}.nil ];
         };
       };
     };
@@ -48,10 +48,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nil = {
-      url = "github:oxalica/nil";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nil = {
+    #   url = "github:oxalica/nil";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     fish-plugin-bang-bang = {
       url = "github:oh-my-fish/plugin-bang-bang";

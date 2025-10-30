@@ -3,16 +3,23 @@
   home.homeDirectory = "/Users/sebastian";
 
   home.packages = with pkgs; [
+    # APPLICATIONS
     alt-tab-macos
-    coreutils-prefixed
-    docker-client
     ice-bar
-    libtool
     numi
-    pinentry_mac
-    pngpaste
     raycast
     utm
+
+    # CONTAINERS
+    docker-client # interface to colima docker server
+
+    # UTILS
+    coreutils-prefixed
+    pinentry_mac
+    pngpaste
+
+    # DEPS
+    libtool
   ];
 
   programs.emacs = {

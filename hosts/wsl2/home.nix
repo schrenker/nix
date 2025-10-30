@@ -22,6 +22,4 @@
     ".ssh/git".source = ./secrets/git;
     ".ssh/config".source = ./secrets/ssh_config;
   };
-
-  home.stateVersion = "23.11";
 }

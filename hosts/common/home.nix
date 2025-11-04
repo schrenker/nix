@@ -1,4 +1,10 @@
-{ inputs, lib, pkgs, ... }: {
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
+{
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   home.stateVersion = "23.11";
@@ -17,6 +23,7 @@
     age
 
     # CONTAINERS
+    k9s
     kind
     kubectl
     kubectx
@@ -29,7 +36,13 @@
     gnutls
 
     # UTILS
-    (aspellWithDicts (dicts: with dicts; [ en en-computers pl ]))
+    (aspellWithDicts (
+      dicts: with dicts; [
+        en
+        en-computers
+        pl
+      ]
+    ))
     arping
     fd
     fish
@@ -140,7 +153,9 @@
     userEmail = "sebastian@zawadzki.tech";
     userName = "Sebastian Zawadzki";
 
-    extraConfig = { init.defaultBranch = "master"; };
+    extraConfig = {
+      init.defaultBranch = "master";
+    };
 
     ignores = [ ".DS_Store" ];
   };
@@ -149,6 +164,10 @@
     ".gnupg/gpg-agent.conf".source = ./dotfiles/gpg-agent.conf;
     ".gnupg/gpg.conf".source = ./dotfiles/gpg.conf;
     ".npmrc".source = ./dotfiles/.npmrc;
+    ".config/k9s" = {
+      source = ./dotfiles/k9s;
+      recursive = true; # Links all files inside the directory
+    };
   };
 
   # Linking dynamic files that might change on the destination.

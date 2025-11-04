@@ -62,6 +62,7 @@
     "lulu"
     "mullvad-vpn"
     "onecast"
+    "pcsx2"
     "steam"
     "syncthing-app"
   ];

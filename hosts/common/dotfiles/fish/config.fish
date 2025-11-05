@@ -37,6 +37,7 @@ set -gx GOPATH ~/.local/go
 set -gx NIX_PATH "$NIX_PATH:nixpkgs=/run/current-system/sw/nixpkgs"
 set -gx LANG en_US.UTF-8
 set -gx K9S_CONFIG_DIR ~/.config/k9s
+set -gx GPG_TTY (tty)
 
 alias em='COLORTERM=TRUECOLOR emacs -nw'
 

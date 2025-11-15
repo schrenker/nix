@@ -1878,6 +1878,9 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 (use-package nerd-icons-completion
   :after marginalia
   :config
+  (setopt nerd-icons-completion-category-icons
+          (delete '(nil nerd-icons-codicon "nf-cod-arrow_small_right" nerd-icons-silver)
+                  nerd-icons-completion-category-icons))
   (nerd-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 

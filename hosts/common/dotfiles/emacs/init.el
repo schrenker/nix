@@ -1483,12 +1483,14 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
               (setq-local display-buffer-base-action '((display-buffer-reuse-window
                                                         ace-display-buffer))
                           aw-ignore-current t)
-              (display-line-numbers-mode -1)))
+              (display-line-numbers-mode -1)
+              (dired-hide-details-mode)))
 
   :config
   (setopt dired-listing-switches "-l --almost-all --sort=extension --human-readable --group-directories-first --no-group"
           dired-kill-when-opening-new-dired-buffer t
-          dired-dwim-target t)
+          dired-dwim-target t
+          dired-hide-details-preserved-columns (delete 2 (number-sequence 1 10)))
 
   (when (eq system-type 'darwin)
     (setopt insert-directory-program "/etc/profiles/per-user/sebastian/bin/gls")))

@@ -1827,9 +1827,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 (use-package nerd-icons
   :config
   (setopt nerd-icons-font-family "Symbols Nerd Font Mono")
-  (add-to-list 'nerd-icons-extension-icon-alist '("jar"           nerd-icons-devicon "nf-dev-java"       :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("jenkinsfile"   nerd-icons-devicon "nf-dev-jenkins"    :face nerd-icons-dpurple))
-  (add-to-list 'nerd-icons-extension-icon-alist '("groovy"        nerd-icons-devicon "nf-dev-groovy"     :face nerd-icons-cyan))
   (add-to-list 'nerd-icons-extension-icon-alist '("org_archive"   nerd-icons-sucicon "nf-custom-orgmode" :face nerd-icons-dgreen))
   (add-to-list 'nerd-icons-extension-icon-alist '("jsonnet"       nerd-icons-mdicon  "nf-md-code_json"   :face nerd-icons-blue-alt))
   (add-to-list 'nerd-icons-extension-icon-alist '("libsonnet"     nerd-icons-mdicon  "nf-md-code_json"   :face nerd-icons-blue))

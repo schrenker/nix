@@ -562,127 +562,141 @@ If no repository is found, prompt user to create one."
     (with-eval-after-load 'posframe
       (ace-window-posframe-mode 1))))
 
-(use-package perspective
+;; (use-package perspective
+;;   :bind
+;;   (("C-x C-b" . schrenker/persp-ibuffer)
+;;    :map perspective-map
+;;    ("B" . nil)
+;;    ("s" . persp-switch-to-scratch-buffer)
+;;    ("C-<tab>" . persp-switch)
+;;    ("TAB" . persp-switch-last))
+;;   :init
+;;   (setopt persp-initial-frame-name "!Main"
+;;           persp-mode-prefix-key (kbd "C-<tab>")
+;;           persp-purge-initial-persp-on-save t
+;;           persp-show-modestring nil
+;;           persp-state-default-file (concat user-emacs-directory "perspfile.el")
+;;           switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (persp-is-current-buffer buff))))
+
+;;   (add-hook 'kill-emacs-hook #'persp-state-save)
+;;   (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
+
+;;   (defun schrenker/backup-perspfile ()
+;;     (copy-file persp-state-default-file
+;;                (concat persp-state-default-file ".autobackup") t))
+
+;;   (defun schrenker/fix-scratch-buffer-default-directory ()
+;;     "Make sure that default-directory for scratch buffers doesn't leak from other perspectives.
+
+;; This function fetches list of all file-visiting buffers in a perspective, and gets project root from the topmost one of the list. Then it applies this project root to scratch buffer. This ensures, that utilities such as Eat, or Magit start in correct path in a perspective. This approach works, because I usually don't run more than a single vc project in a perspective.
+
+;; If anything fails, set path to home directory."
+;;     (let* ((realbufs (seq-filter (lambda (buf) (buffer-file-name buf)) (persp-current-buffers)))
+;;            (defdir (or (ignore-errors (with-current-buffer (car realbufs)
+;;                                         (project-root (project-current))))
+;;                        "~/"))
+;;            (scratch (persp-get-scratch-buffer)))
+;;       (with-current-buffer scratch
+;;         (setq-local default-directory defdir))))
+
+;;   (add-hook 'persp-state-after-load-hook (lambda ()
+;;                                            (add-hook 'persp-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
+;;                                            (add-hook 'project-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
+;;                                            (advice-add 'project-switch-project :after
+;;                                                        (lambda (&rest r) (run-hooks 'project-switch-hook)))))
+
+;;   (with-eval-after-load 'ibuf-ext
+;;     (define-ibuffer-filter perspective-local-buffers
+;;         "Limit current view to local buffers."
+;;       (:description "local buffers" :reader nil)
+;;       (persp-is-current-buffer buf nil)))
+
+;;   (with-eval-after-load 'ibuffer
+;;     (require 'ibuf-ext)
+
+;;     (define-key ibuffer--filter-map (kbd "l")
+;;                 #'ibuffer-filter-by-perspective-local-buffers)
+
+;;     (define-ibuffer-op schrenker/persp-ibuffer-add-to-perspective ()
+;;       "Add marked buffers to current perspective."
+;;       (:opstring "added"
+;;        :active-opstring "add"
+;;        :dangerous t
+;;        :complex t)
+;;       (persp-add-buffer buf))
+
+;;     (define-ibuffer-op schrenker/persp-ibuffer-remove-from-perspective ()
+;;       "Remove marked buffers from current perspective."
+;;       (:opstring "removed"
+;;        :active-opstring "remove"
+;;        :dangerous t
+;;        :complex t)
+;;       (persp-remove-buffer buf)))
+
+;;   (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
+;;     "Create dedicated ibuffer instance for current perspective, filtering by current perspective buffers by default."
+;;     (interactive)
+;;     (let ((name (or
+;;                  (seq-find (lambda (b)
+;;                              (string-match-p
+;;                               (concat "*Persp Ibuffer (" (persp-current-name) ")*")
+;;                               (buffer-name b)))
+;;                            (buffer-list))
+;;                  (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ")*")))))
+;;       (ibuffer other-window-p name '((perspective-local-buffers . nil))
+;;                noselect shrink)))
+
+;;   (persp-mode)
+
+;;   :config
+;;   (defalias 'persp-feature-flag-prevent-killing-last-buffer-in-perspective #'ignore)
+
+;;   (with-eval-after-load 'consult
+;;     (consult-customize consult--source-buffer :hidden t :default nil)
+;;     (add-to-list 'consult-buffer-sources persp-consult-source))
+;;   (with-eval-after-load 'consult-project-extra
+;;     (setopt consult-project-extra-sources
+;;             '(consult-project-extra--source-buffer
+;;               consult-project-extra--source-file
+;;               persp-consult-source
+;;               consult-project-extra--source-project)))
+;;   (with-eval-after-load 'magit
+;;     (add-hook 'persp-state-before-save-hook
+;;               (lambda ()
+;;                 (let ((perspectives '()))
+;;                   (maphash (lambda (key value)
+;;                              (push key perspectives))
+;;                            (perspectives-hash))
+;;                   (dolist (persp perspectives)
+;;                     (with-perspective persp
+;;                       (dolist (buf (persp-current-buffers))
+;;                         (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
+;;                           (call-interactively #'magit-mode-bury-buffer)))))))))
+;;   (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name)))
+;;   (add-hook 'persp-state-before-save-hook #'schrenker/backup-perspfile))
+
+;; (use-package perspective-tabs
+;;   :after perspective
+;;   :ensure (perspective-tabs :host sourcehut :repo "woozong/perspective-tabs")
+;;   :init
+;;   (add-hook 'persp-mode-hook #'perspective-tabs-mode))
+
+(use-package activities
   :bind
-  (("C-x C-b" . schrenker/persp-ibuffer)
-   :map perspective-map
-   ("B" . nil)
-   ("s" . persp-switch-to-scratch-buffer)
-   ("C-<tab>" . persp-switch)
-   ("TAB" . persp-switch-last))
+  (("C-<tab> n" . activities-new)
+   ("C-<tab> d" . activities-define)
+   ("C-<tab> k" . activities-kill)
+   ("C-<tab> C-<tab>" . activities-switch)
+   ("C-<tab> b" . activities-switch-buffer)
+   ("C-<tab> l" . activities-list))
   :init
-  (setopt persp-initial-frame-name "!Main"
-          persp-mode-prefix-key (kbd "C-<tab>")
-          persp-purge-initial-persp-on-save t
-          persp-show-modestring nil
-          persp-state-default-file (concat user-emacs-directory "perspfile.el")
-          switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (persp-is-current-buffer buff))))
-
-  (add-hook 'kill-emacs-hook #'persp-state-save)
-  (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
-
-  (defun schrenker/backup-perspfile ()
-    (copy-file persp-state-default-file
-               (concat persp-state-default-file ".autobackup") t))
-
-  (defun schrenker/fix-scratch-buffer-default-directory ()
-    "Make sure that default-directory for scratch buffers doesn't leak from other perspectives.
-
-This function fetches list of all file-visiting buffers in a perspective, and gets project root from the topmost one of the list. Then it applies this project root to scratch buffer. This ensures, that utilities such as Eat, or Magit start in correct path in a perspective. This approach works, because I usually don't run more than a single vc project in a perspective.
-
-If anything fails, set path to home directory."
-    (let* ((realbufs (seq-filter (lambda (buf) (buffer-file-name buf)) (persp-current-buffers)))
-           (defdir (or (ignore-errors (with-current-buffer (car realbufs)
-                                        (project-root (project-current))))
-                       "~/"))
-           (scratch (persp-get-scratch-buffer)))
-      (with-current-buffer scratch
-        (setq-local default-directory defdir))))
-
-  (add-hook 'persp-state-after-load-hook (lambda ()
-                                           (add-hook 'persp-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
-                                           (add-hook 'project-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
-                                           (advice-add 'project-switch-project :after
-                                                       (lambda (&rest r) (run-hooks 'project-switch-hook)))))
-
-  (with-eval-after-load 'ibuf-ext
-    (define-ibuffer-filter perspective-local-buffers
-        "Limit current view to local buffers."
-      (:description "local buffers" :reader nil)
-      (persp-is-current-buffer buf nil)))
-
-  (with-eval-after-load 'ibuffer
-    (require 'ibuf-ext)
-
-    (define-key ibuffer--filter-map (kbd "l")
-                #'ibuffer-filter-by-perspective-local-buffers)
-
-    (define-ibuffer-op schrenker/persp-ibuffer-add-to-perspective ()
-      "Add marked buffers to current perspective."
-      (:opstring "added"
-       :active-opstring "add"
-       :dangerous t
-       :complex t)
-      (persp-add-buffer buf))
-
-    (define-ibuffer-op schrenker/persp-ibuffer-remove-from-perspective ()
-      "Remove marked buffers from current perspective."
-      (:opstring "removed"
-       :active-opstring "remove"
-       :dangerous t
-       :complex t)
-      (persp-remove-buffer buf)))
-
-  (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
-    "Create dedicated ibuffer instance for current perspective, filtering by current perspective buffers by default."
-    (interactive)
-    (let ((name (or
-                 (seq-find (lambda (b)
-                             (string-match-p
-                              (concat "*Persp Ibuffer (" (persp-current-name) ")*")
-                              (buffer-name b)))
-                           (buffer-list))
-                 (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ")*")))))
-      (ibuffer other-window-p name '((perspective-local-buffers . nil))
-               noselect shrink)))
-
-  (persp-mode)
-
-  :config
-  (defalias 'persp-feature-flag-prevent-killing-last-buffer-in-perspective #'ignore)
-
-  (with-eval-after-load 'consult
-    (consult-customize consult--source-buffer :hidden t :default nil)
-    (add-to-list 'consult-buffer-sources persp-consult-source))
-  (with-eval-after-load 'consult-project-extra
-    (setopt consult-project-extra-sources
-            '(consult-project-extra--source-buffer
-              consult-project-extra--source-file
-              persp-consult-source
-              consult-project-extra--source-project)))
-  (with-eval-after-load 'magit
-    (add-hook 'persp-state-before-save-hook
-              (lambda ()
-                (let ((perspectives '()))
-                  (maphash (lambda (key value)
-                             (push key perspectives))
-                           (perspectives-hash))
-                  (dolist (persp perspectives)
-                    (with-perspective persp
-                      (dolist (buf (persp-current-buffers))
-                        (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
-                          (call-interactively #'magit-mode-bury-buffer)))))))))
-  (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name)))
-  (add-hook 'persp-state-before-save-hook #'schrenker/backup-perspfile))
-
-(use-package perspective-tabs
-  :after perspective
-  :ensure (perspective-tabs :host sourcehut :repo "woozong/perspective-tabs")
-  :init
-  (add-hook 'persp-mode-hook #'perspective-tabs-mode))
+  (activities-mode)
+  (activities-tabs-mode)
+  ;; Prevent `edebug' default bindings from interfering.
+  (setq edebug-inhibit-emacs-lisp-mode-bindings t))
 
 (use-package popper
-  :after perspective
+  ;:after perspective
   :init
   (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
     "Display popups at the bottom of the screen.
@@ -691,7 +705,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
         (display-buffer-no-window buffer '((allow-no-window . t)))
       (popper-select-popup-at-bottom buffer _act)))
   :config
-  (setopt popper-group-function #'popper-group-by-perspective
+  (setopt popper-group-function #'popper-group-by-project
           popper-display-function #'popper-select-popup-at-bottom-maybe-hide
           popper-mode-line '(:eval (propertize " POP " 'face 'mode-line-emphasis))
           popper-mode-line-position 1

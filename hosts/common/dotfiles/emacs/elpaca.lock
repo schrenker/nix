@@ -732,8 +732,9 @@
  (nerd-icons :source "elpaca-menu-lock-file" :recipe
              (:package "nerd-icons" :repo
                        "rainstormstudio/nerd-icons.el" :fetcher github
-                       :files (:defaults "data") :source "MELPA"
-                       :protocol https :inherit t :depth treeless :ref
+                       :files (:defaults "data") :source
+                       "elpaca-menu-lock-file" :protocol https
+                       :inherit t :depth treeless :ref
                        "940b28d3dbd134696ef448e906e42a87a9d61e20"))
  (nerd-icons-completion :source "elpaca-menu-lock-file" :recipe
                         (:package "nerd-icons-completion" :repo
@@ -750,8 +751,9 @@
                                              "*-test.el" "*-tests.el"
                                              "LICENSE" "README*"
                                              "*-pkg.el"))
-                                  :source "MELPA" :protocol https
-                                  :inherit t :depth treeless :ref
+                                  :source "elpaca-menu-lock-file"
+                                  :protocol https :inherit t :depth
+                                  treeless :ref
                                   "d09ea987ed3d2cc64137234f27851594050e2b64"))
  (nerd-icons-dired :source "elpaca-menu-lock-file" :recipe
                    (:package "nerd-icons-dired" :repo
@@ -783,8 +785,9 @@
                                           "tests.el" "*-test.el"
                                           "*-tests.el" "LICENSE"
                                           "README*" "*-pkg.el"))
-                               :source "MELPA" :protocol https
-                               :inherit t :depth treeless :ref
+                               :source "elpaca-menu-lock-file"
+                               :protocol https :inherit t :depth
+                               treeless :ref
                                "590bd834cf5f1898320f5f16ecbed0d5fd3167ed"))
  (nginx-mode :source "elpaca-menu-lock-file" :recipe
              (:package "nginx-mode" :fetcher github :repo

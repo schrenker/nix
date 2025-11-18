@@ -1655,24 +1655,24 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (setopt eat-kill-buffer-on-exit t
           eat-term-name "xterm-256color")
 
-  (with-eval-after-load 'perspective
+  (with-eval-after-load 'activities
     (defun schrenker/eat-project (&optional arg)
       (interactive "P")
-      (if (eq (persp-current-name) persp-initial-frame-name)
+      (if (not (activities-current))
           (eat nil arg)
         (let* ((default-directory-old default-directory)
                (default-directory (project-root (project-current t)))
-               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")"))
+               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (activities-current-name) ")"))
                (default-directory default-directory-old))
           (eat nil arg))))
 
     (defun schrenker/eat-project-other-window (&optional arg)
       (interactive "P")
-      (if (eq (persp-current-name) persp-initial-frame-name)
+      (if (not (activities-current))
           (eat-other-window nil arg)
         (let* ((default-directory-old default-directory)
                (default-directory (project-root (project-current t)))
-               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")"))
+               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (activities-current-name) ")"))
                (default-directory default-directory-old))
           (eat-other-window nil arg))))
 

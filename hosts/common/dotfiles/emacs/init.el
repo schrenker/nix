@@ -583,6 +583,19 @@ If no repository is found, prompt user to create one."
           schrenker/activities-buffer-list-filter-exceptions '("*scratch* (")
           switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (activities-local-buffer-p buff))))
 
+  (defun schrenker/activities-switch (activity)
+    "Switch to ACTIVITY.
+Interactively, offers active activities. Default to previously used activity."
+    (interactive
+     (list (activities-completing-read
+            :activities (cl-remove-if-not #'activities-activity-active-p activities-activities :key #'cdr)
+            :default (cadr activities-completing-read-history)
+            :prompt "Switch to activity")))
+    (activities--switch activity)
+    (run-hook-with-args 'activities-after-switch-functions activity))
+
+  (advice-add 'activities-switch :override #'schrenker/activities-switch)
+
   (defun activities-local-buffer-p (buffer)
     "Returns non-nil if BUFFER is present in `activities-current'."
     (when (activities-current)

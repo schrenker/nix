@@ -605,61 +605,11 @@ If no repository is found, prompt user to create one."
 ;;                                            (advice-add 'project-switch-project :after
 ;;                                                        (lambda (&rest r) (run-hooks 'project-switch-hook)))))
 
-;;   (with-eval-after-load 'ibuf-ext
-;;     (define-ibuffer-filter perspective-local-buffers
-;;         "Limit current view to local buffers."
-;;       (:description "local buffers" :reader nil)
-;;       (persp-is-current-buffer buf nil)))
 
-;;   (with-eval-after-load 'ibuffer
-;;     (require 'ibuf-ext)
-
-;;     (define-key ibuffer--filter-map (kbd "l")
-;;                 #'ibuffer-filter-by-perspective-local-buffers)
-
-;;     (define-ibuffer-op schrenker/persp-ibuffer-add-to-perspective ()
-;;       "Add marked buffers to current perspective."
-;;       (:opstring "added"
-;;        :active-opstring "add"
-;;        :dangerous t
-;;        :complex t)
-;;       (persp-add-buffer buf))
-
-;;     (define-ibuffer-op schrenker/persp-ibuffer-remove-from-perspective ()
-;;       "Remove marked buffers from current perspective."
-;;       (:opstring "removed"
-;;        :active-opstring "remove"
-;;        :dangerous t
-;;        :complex t)
-;;       (persp-remove-buffer buf)))
-
-;;   (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
-;;     "Create dedicated ibuffer instance for current perspective, filtering by current perspective buffers by default."
-;;     (interactive)
-;;     (let ((name (or
-;;                  (seq-find (lambda (b)
-;;                              (string-match-p
-;;                               (concat "*Persp Ibuffer (" (persp-current-name) ")*")
-;;                               (buffer-name b)))
-;;                            (buffer-list))
-;;                  (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ")*")))))
-;;       (ibuffer other-window-p name '((perspective-local-buffers . nil))
-;;                noselect shrink)))
-
-;;   (persp-mode)
 
 ;;   :config
 ;;   (defalias 'persp-feature-flag-prevent-killing-last-buffer-in-perspective #'ignore)
 
-;;   (with-eval-after-load 'consult
-;;     (consult-customize consult--source-buffer :hidden t :default nil)
-;;     (add-to-list 'consult-buffer-sources persp-consult-source))
-;;   (with-eval-after-load 'consult-project-extra
-;;     (setopt consult-project-extra-sources
-;;             '(consult-project-extra--source-buffer
-;;               consult-project-extra--source-file
-;;               persp-consult-source
-;;               consult-project-extra--source-project)))
 ;;   (with-eval-after-load 'magit
 ;;     (add-hook 'persp-state-before-save-hook
 ;;               (lambda ()
@@ -675,28 +625,98 @@ If no repository is found, prompt user to create one."
 ;;   (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name)))
 ;;   (add-hook 'persp-state-before-save-hook #'schrenker/backup-perspfile))
 
-;; (use-package perspective-tabs
-;;   :after perspective
-;;   :ensure (perspective-tabs :host sourcehut :repo "woozong/perspective-tabs")
-;;   :init
-;;   (add-hook 'persp-mode-hook #'perspective-tabs-mode))
-
 (use-package activities
   :bind
   (("C-<tab> n" . activities-new)
    ("C-<tab> d" . activities-define)
    ("C-<tab> k" . activities-kill)
    ("C-<tab> C-<tab>" . activities-switch)
+   ("C-<tab> TAB" . activities-resume)
    ("C-<tab> b" . activities-switch-buffer)
-   ("C-<tab> l" . activities-list))
+   ("C-<tab> l" . activities-list)
+   ("C-x C-b" . schrenker/activities-ibuffer))
   :init
   (activities-mode)
   (activities-tabs-mode)
   ;; Prevent `edebug' default bindings from interfering.
-  (setq edebug-inhibit-emacs-lisp-mode-bindings t))
+  (setopt edebug-inhibit-emacs-lisp-mode-bindings t
+          switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (activities-local-buffer-p buff))))
+
+  (defun activities-local-buffer-p (buffer)
+    "Returns non-nil if BUFFER is present in `activities-current'."
+    (when (activities-current)
+      (memq buffer (activities-tabs--tab-parameter 'activities-buffer-list (activities-tabs--tab (activities-current))))))
+
+  (defun activities-current-name ()
+    (activities-activity-name (activities-current)))
+
+  :config
+  (with-eval-after-load 'ibuf-ext
+    (define-ibuffer-filter activities-local-buffers
+        "Limit current view to local buffers."
+      (:description "local buffers" :reader nil)
+      (activities-local-buffer-p buf)))
+
+  (with-eval-after-load 'ibuffer
+    (require 'ibuf-ext)
+
+    (define-key ibuffer--filter-map (kbd "l")
+                #'ibuffer-filter-by-activities-local-buffers)
+
+    ;; (define-ibuffer-op schrenker/persp-ibuffer-add-to-perspective ()
+    ;;   "Add marked buffers to current perspective."
+    ;;   (:opstring "added"
+    ;;              :active-opstring "add"
+    ;;              :dangerous t
+    ;;              :complex t)
+    ;;   (persp-add-buffer buf))
+
+    ;; (define-ibuffer-op schrenker/persp-ibuffer-remove-from-perspective ()
+    ;;   "Remove marked buffers from current perspective."
+    ;;   (:opstring "removed"
+    ;;              :active-opstring "remove"
+    ;;              :dangerous t
+    ;;              :complex t)
+    ;;   (persp-remove-buffer buf))
+
+
+  (defun schrenker/activities-ibuffer (&optional other-window-p noselect shrink)
+    "Create dedicated ibuffer instance for current activity, filtering by current activity buffers by default."
+    (interactive)
+    (let ((name (or
+                 (seq-find (lambda (b)
+                             (string-match-p
+                              (concat "*Activity Ibuffer (" (activities-current-name) ")*")
+                              (buffer-name b)))
+                           (buffer-list))
+                 (generate-new-buffer-name (concat "*Activity Ibuffer (" (activities-current-name) ")*")))))
+      (ibuffer other-window-p name '((activities-local-buffers . nil))
+               noselect shrink))))
+
+  (with-eval-after-load 'consult
+    (defvar activities-consult-source
+      (list :name     "Activity"
+            :narrow   ?s
+            :category 'buffer
+            :state    #'consult--buffer-state
+            :history  'buffer-name-history
+            :default  t
+            :items
+            #'(lambda () (consult--buffer-query :sort 'visibility
+                                           :predicate '(lambda (buf) (activities-local-buffer-p buf))
+                                           :as #'buffer-name))))
+    (consult-customize consult--source-buffer :hidden t :default nil)
+    (add-to-list 'consult-buffer-sources activities-consult-source))
+
+  (with-eval-after-load 'consult-project-extra
+    (setopt consult-project-extra-sources
+            '(consult-project-extra--source-buffer
+              consult-project-extra--source-file
+              activities-consult-source
+              consult-project-extra--source-project))))
 
 (use-package popper
-  ;:after perspective
+  :after activities
   :init
   (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
     "Display popups at the bottom of the screen.
@@ -705,7 +725,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
         (display-buffer-no-window buffer '((allow-no-window . t)))
       (popper-select-popup-at-bottom buffer _act)))
   :config
-  (setopt popper-group-function #'popper-group-by-project
+  (setopt popper-group-function #'activities-current-name
           popper-display-function #'popper-select-popup-at-bottom-maybe-hide
           popper-mode-line '(:eval (propertize " POP " 'face 'mode-line-emphasis))
           popper-mode-line-position 1

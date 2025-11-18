@@ -579,9 +579,7 @@ If no repository is found, prompt user to create one."
   :init
   (activities-mode)
   (activities-tabs-mode)
-  ;; Prevent `edebug' default bindings from interfering.
-  (setopt edebug-inhibit-emacs-lisp-mode-bindings t
-          schrenker/activities-initial-tab-name "!Main"
+  (setopt schrenker/activities-initial-tab-name "!Main"
           schrenker/activities-buffer-list-filter-exceptions '("*scratch* (")
           switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (activities-local-buffer-p buff))))
 

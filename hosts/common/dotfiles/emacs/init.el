@@ -604,6 +604,7 @@ If no repository is found, prompt user to create one."
    ("C-<tab> TAB" . activities-resume)
    ("C-<tab> b" . activities-switch-buffer)
    ("C-<tab> l" . activities-list)
+   ("C-<tab> s" . schrenker/activities-switch-to-scratch-buffer)
    ("C-x C-b" . schrenker/activities-ibuffer)
    ("C-<tab> 0" . (lambda () (interactive) (tab-bar-select-tab 1))))
   :init
@@ -611,6 +612,7 @@ If no repository is found, prompt user to create one."
   (activities-tabs-mode)
   ;; Prevent `edebug' default bindings from interfering.
   (setopt edebug-inhibit-emacs-lisp-mode-bindings t
+          schrenker/activities-initial-tab-name "!Main"
           switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (activities-local-buffer-p buff))))
 
   (defun activities-local-buffer-p (buffer)
@@ -646,12 +648,48 @@ If no repository is found, prompt user to create one."
   (defun schrenker/activities-prep-main-tab (&rest _)
     (when tab-bar-mode
       (unless (string-prefix-p activities-name-prefix (alist-get 'name (car (tab-bar-tabs))))
-        (tab-bar-rename-tab "!Main" 1))))
+        (tab-bar-rename-tab schrenker/activities-initial-tab-name 1))))
 
   (advice-add 'activities-resume :after (lambda (&rest r) (run-hook-with-args 'activities-after-resume-functions r)))
   (add-hook 'activities-tabs-mode-hook #'schrenker/activities-prep-main-tab)
   (add-hook 'activities-after-switch-functions #'schrenker/activities-prep-main-tab)
   (add-hook 'activities-after-resume-functions #'schrenker/activities-prep-main-tab)
+
+  (defun schrenker/activities-scratch-buffer (&optional name)
+    (let* ((current-name  (activities-current-name))
+           (name          (or name current-name))
+           (main-tab (equal name schrenker/activities-initial-tab-name)))
+      (concat "*scratch*"
+              (unless main-tab
+                (format " (%s)" name)))))
+
+  (defun schrenker/activities-get-scratch-buffer (&optional name)
+    "Return the \"*scratch* (NAME)\" buffer.
+Create it if the current activity doesn't have one yet."
+    (let* ((scratch-buffer-name (schrenker/activities-scratch-buffer name))
+           (scratch-buffer (get-buffer scratch-buffer-name)))
+      ;; Do not interfere with an existing scratch buffer's status.
+      (unless scratch-buffer
+        (setq scratch-buffer (get-buffer-create scratch-buffer-name))
+        (with-current-buffer scratch-buffer
+          (when (eq major-mode 'fundamental-mode)
+            (funcall initial-major-mode))
+          (when (and (zerop (buffer-size))
+                     initial-scratch-message)
+            (insert (substitute-command-keys initial-scratch-message))
+            (set-buffer-modified-p nil))
+          ;; Turn flymake off to prevent the annoying error in the
+          ;; minibuffer
+          (when (and (require 'flymake nil t)
+                     (boundp flymake-mode))
+            (flymake-mode -1))))
+      scratch-buffer))
+
+  (defun schrenker/activities-switch-to-scratch-buffer ()
+    "Switch to the current activity scratch buffer.
+Create the scratch buffer if there isn't one yet."
+    (interactive)
+    (switch-to-buffer (schrenker/activities-get-scratch-buffer)))
 
   :config
   (with-eval-after-load 'ibuf-ext

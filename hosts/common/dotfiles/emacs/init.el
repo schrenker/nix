@@ -573,7 +573,9 @@ If no repository is found, prompt user to create one."
    ("C-<tab> l" . activities-list)
    ("C-<tab> s" . schrenker/activities-switch-to-scratch-buffer)
    ("C-x C-b" . schrenker/activities-ibuffer)
-   ("C-<tab> 0" . (lambda () (interactive) (tab-bar-select-tab 1))))
+   ("C-<tab> 0" . (lambda () (interactive)
+                    (push (activities-current-name) activities-completing-read-history)
+                    (tab-bar-select-tab 1))))
   :init
   (activities-mode)
   (activities-tabs-mode)

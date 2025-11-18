@@ -564,12 +564,7 @@ If no repository is found, prompt user to create one."
 
 ;; (use-package perspective
 ;;   :bind
-;;   (("C-x C-b" . schrenker/persp-ibuffer)
-;;    :map perspective-map
-;;    ("B" . nil)
 ;;    ("s" . persp-switch-to-scratch-buffer)
-;;    ("C-<tab>" . persp-switch)
-;;    ("TAB" . persp-switch-last))
 ;;   :init
 ;;   (setopt persp-initial-frame-name "!Main"
 ;;           persp-mode-prefix-key (kbd "C-<tab>")
@@ -599,20 +594,6 @@ If no repository is found, prompt user to create one."
 ;;       (with-current-buffer scratch
 ;;         (setq-local default-directory defdir))))
 
-;;   (add-hook 'persp-state-after-load-hook (lambda ()
-;;                                            (add-hook 'persp-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
-;;                                            (add-hook 'project-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
-;;                                            (advice-add 'project-switch-project :after
-;;                                                        (lambda (&rest r) (run-hooks 'project-switch-hook)))))
-
-
-
-;;   :config
-;;   (defalias 'persp-feature-flag-prevent-killing-last-buffer-in-perspective #'ignore)
-
-
-;;   (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name)))
-;;   (add-hook 'persp-state-before-save-hook #'schrenker/backup-perspfile))
 
 (use-package activities
   :bind

@@ -580,6 +580,7 @@ If no repository is found, prompt user to create one."
   ;; Prevent `edebug' default bindings from interfering.
   (setopt edebug-inhibit-emacs-lisp-mode-bindings t
           schrenker/activities-initial-tab-name "!Main"
+          schrenker/activities-buffer-list-filter-exceptions '("*scratch* (")
           switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (activities-local-buffer-p buff))))
 
   (defun activities-local-buffer-p (buffer)
@@ -596,21 +597,24 @@ If no repository is found, prompt user to create one."
                  (activities-tabs--tab-parameter
                   'activities-buffer-list
                   (activities-tabs--tab (activities-current)))))
-           (exceptions '("*scratch*"))
+           (exceptions schrenker/activities-buffer-list-filter-exceptions)
            (filtered-buffers nil))
 
       (dolist (buffer all-buffers (nreverse filtered-buffers))
         (when (buffer-live-p buffer)
           (let ((name (buffer-name buffer)))
-            (cond
-             ((member name exceptions)
-              (push buffer filtered-buffers))
-             ((buffer-file-name buffer)
-              (push buffer filtered-buffers))
-             (t
-              (unless (or (string-match-p "\\` " name)
-                          (string-match-p "\\*\\'" name 0))
-                (push buffer filtered-buffers)))))))))
+            (catch 'prefix-match
+              (dolist (prefix exceptions)
+                (when (string-prefix-p prefix name)
+                  (push buffer filtered-buffers)
+                  (throw 'prefix-match t)))
+              (cond
+               ((buffer-file-name buffer)
+                (push buffer filtered-buffers))
+               (t
+                (unless (or (string-match-p "\\` " name)
+                            (string-match-p "\\*\\'" name 0))
+                  (push buffer filtered-buffers))))))))))
 
   (defun schrenker/activities-prep-main-tab (&rest _)
     (when tab-bar-mode

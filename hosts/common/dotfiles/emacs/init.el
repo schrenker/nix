@@ -673,7 +673,9 @@ Create it if the current activity doesn't have one yet."
     "Switch to the current activity scratch buffer.
 Create the scratch buffer if there isn't one yet."
     (interactive)
-    (switch-to-buffer (schrenker/activities-get-scratch-buffer)))
+    (if (activities-current)
+        (switch-to-buffer (schrenker/activities-get-scratch-buffer))
+      (scratch-buffer)))
 
   :config
   (with-eval-after-load 'ibuf-ext

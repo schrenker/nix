@@ -713,8 +713,8 @@ Create the scratch buffer if there isn't one yet."
       (dolist (a activities-activities)
         (when (activities-activity-active-p (cdr a))
           (activities-with (cdr a) (dolist (buf (schrenker/activities-buffer-list))
-                               (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
-                                 (call-interactively #'magit-mode-bury-buffer)))))))
+                                     (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
+                                       (call-interactively #'magit-mode-bury-buffer)))))))
 
     (add-hook 'kill-emacs-hook #'schrenker/bury-visible-magit-buffers -10)))
 

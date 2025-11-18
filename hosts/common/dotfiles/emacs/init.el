@@ -643,6 +643,16 @@ If no repository is found, prompt user to create one."
                           (string-match-p "\\*\\'" name 0))
                 (push buffer filtered-buffers)))))))))
 
+  (defun schrenker/activities-prep-main-tab (&rest _)
+    (when tab-bar-mode
+      (unless (string-prefix-p activities-name-prefix (alist-get 'name (car (tab-bar-tabs))))
+        (tab-bar-rename-tab "!Main" 1))))
+
+  (advice-add 'activities-resume :after (lambda (&rest r) (run-hook-with-args 'activities-after-resume-functions r)))
+  (add-hook 'activities-tabs-mode-hook #'schrenker/activities-prep-main-tab)
+  (add-hook 'activities-after-switch-functions #'schrenker/activities-prep-main-tab)
+  (add-hook 'activities-after-resume-functions #'schrenker/activities-prep-main-tab)
+
   :config
   (with-eval-after-load 'ibuf-ext
     (define-ibuffer-filter activities-local-buffers

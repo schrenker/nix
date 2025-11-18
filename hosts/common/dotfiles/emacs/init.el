@@ -604,7 +604,8 @@ If no repository is found, prompt user to create one."
    ("C-<tab> TAB" . activities-resume)
    ("C-<tab> b" . activities-switch-buffer)
    ("C-<tab> l" . activities-list)
-   ("C-x C-b" . schrenker/activities-ibuffer))
+   ("C-x C-b" . schrenker/activities-ibuffer)
+   ("C-<tab> 0" . (lambda () (interactive) (tab-bar-select-tab 1))))
   :init
   (activities-mode)
   (activities-tabs-mode)
@@ -672,18 +673,20 @@ If no repository is found, prompt user to create one."
     ;;   (persp-remove-buffer buf))
 
 
-  (defun schrenker/activities-ibuffer (&optional other-window-p noselect shrink)
-    "Create dedicated ibuffer instance for current activity, filtering by current activity buffers by default."
-    (interactive)
-    (let ((name (or
-                 (seq-find (lambda (b)
-                             (string-match-p
-                              (concat "*Activity Ibuffer (" (activities-current-name) ")*")
-                              (buffer-name b)))
-                           (buffer-list))
-                 (generate-new-buffer-name (concat "*Activity Ibuffer (" (activities-current-name) ")*")))))
-      (ibuffer other-window-p name '((activities-local-buffers . nil))
-               noselect shrink))))
+    (defun schrenker/activities-ibuffer (&optional other-window-p noselect shrink)
+      "Create dedicated ibuffer instance for current activity, filtering by current activity buffers by default."
+      (interactive)
+      (if (not (activities-current))
+          (ibuffer)
+        (let ((name (or
+                     (seq-find (lambda (b)
+                                 (string-match-p
+                                  (concat "*Activity Ibuffer (" (activities-current-name) ")*")
+                                  (buffer-name b)))
+                               (buffer-list))
+                     (generate-new-buffer-name (concat "*Activity Ibuffer (" (activities-current-name) ")*")))))
+          (ibuffer other-window-p name '((activities-local-buffers . nil))
+                   noselect shrink)))))
 
   (with-eval-after-load 'consult
     (defvar activities-consult-source

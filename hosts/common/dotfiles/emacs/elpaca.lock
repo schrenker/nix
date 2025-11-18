@@ -12,6 +12,14 @@
                        :source "elpaca-menu-lock-file" :protocol https
                        :inherit t :depth treeless :ref
                        "77115afc1b0b9f633084cf7479c767988106c196"))
+ (activities :source "elpaca-menu-lock-file" :recipe
+             (:package "activities" :repo
+                       ("https://github.com/alphapapa/activities.el.git"
+                        . "activities")
+                       :files ("*" (:exclude ".git")) :source
+                       "elpaca-menu-lock-file" :protocol https
+                       :inherit t :depth treeless :ref
+                       "a4ce6ce854807fe284da41f6d5292edb26c7f983"))
  (apparmor-mode :source "elpaca-menu-lock-file" :recipe
                 (:package "apparmor-mode" :fetcher gitlab :repo
                           "apparmor/apparmor-mode" :files
@@ -301,7 +309,7 @@
    "elpaca-menu-lock-file" :recipe
    (:source nil :protocol https :inherit ignore :depth 1 :repo
             "https://github.com/progfolio/elpaca.git" :ref
-            "10e65441f34253254272aeacd300574b576894a2" :files
+            "b5ef5f19ac1224853234c9acdac0ec9ea1c440a1" :files
             (:defaults "elpaca-test.el" (:exclude "extensions"))
             :build (:not elpaca--activate-package) :package "elpaca"))
  (elpaca-use-package :source "elpaca-menu-lock-file" :recipe
@@ -315,7 +323,7 @@
                                :source "elpaca-menu-lock-file"
                                :protocol https :inherit t :depth
                                treeless :ref
-                               "10e65441f34253254272aeacd300574b576894a2"))
+                               "b5ef5f19ac1224853234c9acdac0ec9ea1c440a1"))
  (emacsql :source "elpaca-menu-lock-file" :recipe
           (:package "emacsql" :fetcher github :repo "magit/emacsql"
                     :files (:defaults "README.md" "sqlite") :source
@@ -945,26 +953,15 @@
                       :source "elpaca-menu-lock-file" :protocol https
                       :inherit t :depth treeless :ref
                       "30b50544e55b8dbf683c2d932d5c33ac73323a16"))
- (perspective :source "elpaca-menu-lock-file" :recipe
-              (:package "perspective" :fetcher github :repo
-                        "nex3/perspective-el" :files
-                        ("*.el" "*.el.in" "dir" "*.info" "*.texi"
-                         "*.texinfo" "doc/dir" "doc/*.info"
-                         "doc/*.texi" "doc/*.texinfo" "lisp/*.el"
-                         "docs/dir" "docs/*.info" "docs/*.texi"
-                         "docs/*.texinfo"
-                         (:exclude ".dir-locals.el" "test.el"
-                                   "tests.el" "*-test.el" "*-tests.el"
-                                   "LICENSE" "README*" "*-pkg.el"))
-                        :source "elpaca-menu-lock-file" :protocol
-                        https :inherit t :depth treeless :ref
-                        "7f47c9a7be7b7d03f6d8430c84eec80ae5896699"))
- (perspective-tabs :source "elpaca-menu-lock-file" :recipe
-                   (:source "elpaca-menu-lock-file" :protocol https
-                            :inherit t :depth treeless :host sourcehut
-                            :repo "woozong/perspective-tabs" :package
-                            "perspective-tabs" :ref
-                            "f113f335ff42dd344eacafc8b191e9389b80d312"))
+ (persist :source "elpaca-menu-lock-file" :recipe
+          (:package "persist" :repo
+                    ("https://github.com/emacsmirror/gnu_elpa"
+                     . "persist")
+                    :branch "externals/persist" :files
+                    ("*" (:exclude ".git")) :source
+                    "elpaca-menu-lock-file" :protocol https :inherit t
+                    :depth treeless :ref
+                    "3b4b421d5185f2c33bae478aa057dff13701cc25"))
  (popon :source "elpaca-menu-lock-file" :recipe
         (:package "popon" :repo
                   ("https://codeberg.org/akib/emacs-popon" . "popon")

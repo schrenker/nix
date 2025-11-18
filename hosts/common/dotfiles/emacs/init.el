@@ -610,18 +610,7 @@ If no repository is found, prompt user to create one."
 ;;   :config
 ;;   (defalias 'persp-feature-flag-prevent-killing-last-buffer-in-perspective #'ignore)
 
-;;   (with-eval-after-load 'magit
-;;     (add-hook 'persp-state-before-save-hook
-;;               (lambda ()
-;;                 (let ((perspectives '()))
-;;                   (maphash (lambda (key value)
-;;                              (push key perspectives))
-;;                            (perspectives-hash))
-;;                   (dolist (persp perspectives)
-;;                     (with-perspective persp
-;;                       (dolist (buf (persp-current-buffers))
-;;                         (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
-;;                           (call-interactively #'magit-mode-bury-buffer)))))))))
+
 ;;   (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name)))
 ;;   (add-hook 'persp-state-before-save-hook #'schrenker/backup-perspfile))
 
@@ -649,6 +638,28 @@ If no repository is found, prompt user to create one."
 
   (defun activities-current-name ()
     (activities-activity-name (activities-current)))
+
+  (defun schrenker/activities-buffer-list ()
+    (let* ((all-buffers
+            (and (activities-current)
+                 (activities-tabs--tab-parameter
+                  'activities-buffer-list
+                  (activities-tabs--tab (activities-current)))))
+           (exceptions '("*scratch*"))
+           (filtered-buffers nil))
+
+      (dolist (buffer all-buffers (nreverse filtered-buffers))
+        (when (buffer-live-p buffer)
+          (let ((name (buffer-name buffer)))
+            (cond
+             ((member name exceptions)
+              (push buffer filtered-buffers))
+             ((buffer-file-name buffer)
+              (push buffer filtered-buffers))
+             (t
+              (unless (or (string-match-p "\\` " name)
+                          (string-match-p "\\*\\'" name 0))
+                (push buffer filtered-buffers)))))))))
 
   :config
   (with-eval-after-load 'ibuf-ext
@@ -713,7 +724,17 @@ If no repository is found, prompt user to create one."
             '(consult-project-extra--source-buffer
               consult-project-extra--source-file
               activities-consult-source
-              consult-project-extra--source-project))))
+              consult-project-extra--source-project)))
+
+  (with-eval-after-load 'magit
+    (defun schrenker/bury-visible-magit-buffers ()
+      (dolist (a activities-activities)
+        (when (activities-activity-active-p (cdr a))
+          (activities-with (cdr a) (dolist (buf (schrenker/activities-buffer-list))
+                               (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
+                                 (call-interactively #'magit-mode-bury-buffer)))))))
+
+    (add-hook 'kill-emacs-hook #'schrenker/bury-visible-magit-buffers -10)))
 
 (use-package popper
   :after activities

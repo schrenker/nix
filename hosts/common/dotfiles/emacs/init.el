@@ -562,39 +562,6 @@ If no repository is found, prompt user to create one."
     (with-eval-after-load 'posframe
       (ace-window-posframe-mode 1))))
 
-;; (use-package perspective
-;;   :bind
-;;    ("s" . persp-switch-to-scratch-buffer)
-;;   :init
-;;   (setopt persp-initial-frame-name "!Main"
-;;           persp-mode-prefix-key (kbd "C-<tab>")
-;;           persp-purge-initial-persp-on-save t
-;;           persp-show-modestring nil
-;;           persp-state-default-file (concat user-emacs-directory "perspfile.el")
-;;           switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (persp-is-current-buffer buff))))
-
-;;   (add-hook 'kill-emacs-hook #'persp-state-save)
-;;   (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
-
-;;   (defun schrenker/backup-perspfile ()
-;;     (copy-file persp-state-default-file
-;;                (concat persp-state-default-file ".autobackup") t))
-
-;;   (defun schrenker/fix-scratch-buffer-default-directory ()
-;;     "Make sure that default-directory for scratch buffers doesn't leak from other perspectives.
-
-;; This function fetches list of all file-visiting buffers in a perspective, and gets project root from the topmost one of the list. Then it applies this project root to scratch buffer. This ensures, that utilities such as Eat, or Magit start in correct path in a perspective. This approach works, because I usually don't run more than a single vc project in a perspective.
-
-;; If anything fails, set path to home directory."
-;;     (let* ((realbufs (seq-filter (lambda (buf) (buffer-file-name buf)) (persp-current-buffers)))
-;;            (defdir (or (ignore-errors (with-current-buffer (car realbufs)
-;;                                         (project-root (project-current))))
-;;                        "~/"))
-;;            (scratch (persp-get-scratch-buffer)))
-;;       (with-current-buffer scratch
-;;         (setq-local default-directory defdir))))
-
-
 (use-package activities
   :bind
   (("C-<tab> n" . activities-new)
@@ -703,23 +670,6 @@ Create the scratch buffer if there isn't one yet."
 
     (define-key ibuffer--filter-map (kbd "l")
                 #'ibuffer-filter-by-activities-local-buffers)
-
-    ;; (define-ibuffer-op schrenker/persp-ibuffer-add-to-perspective ()
-    ;;   "Add marked buffers to current perspective."
-    ;;   (:opstring "added"
-    ;;              :active-opstring "add"
-    ;;              :dangerous t
-    ;;              :complex t)
-    ;;   (persp-add-buffer buf))
-
-    ;; (define-ibuffer-op schrenker/persp-ibuffer-remove-from-perspective ()
-    ;;   "Remove marked buffers from current perspective."
-    ;;   (:opstring "removed"
-    ;;              :active-opstring "remove"
-    ;;              :dangerous t
-    ;;              :complex t)
-    ;;   (persp-remove-buffer buf))
-
 
     (defun schrenker/activities-ibuffer (&optional other-window-p noselect shrink)
       "Create dedicated ibuffer instance for current activity, filtering by current activity buffers by default."
@@ -1524,8 +1474,6 @@ littering my org mode with ton of PROPERTY drawers under each heading."
   :ensure nil
   :bind (("C-x C-b" . ibuffer)
          :map ibuffer-mode-map
-         ("A" . ibuffer-do-schrenker/persp-ibuffer-add-to-perspective)
-         ("K" . ibuffer-do-schrenker/persp-ibuffer-remove-from-perspective)
          ("J" . ibuffer-jump-to-buffer)
          ("M-o" . nil))
   :config

@@ -567,8 +567,7 @@ If no repository is found, prompt user to create one."
   (("C-<tab> n" . activities-new)
    ("C-<tab> d" . activities-define)
    ("C-<tab> k" . activities-kill)
-   ("C-<tab> C-<tab>" . activities-switch)
-   ("C-<tab> TAB" . activities-resume)
+   ("C-<tab> C-<tab>" . activities-resume)
    ("C-<tab> b" . activities-switch-buffer)
    ("C-<tab> l" . activities-list)
    ("C-<tab> s" . schrenker/activities-switch-to-scratch-buffer)
@@ -583,18 +582,23 @@ If no repository is found, prompt user to create one."
           schrenker/activities-buffer-list-filter-exceptions '("*scratch* (")
           switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (activities-local-buffer-p buff))))
 
-  (defun schrenker/activities-switch (activity)
-    "Switch to ACTIVITY.
-Interactively, offers active activities. Default to previously used activity."
+  (cl-defun schrenker/activities-resume (activity &key resetp)
+    "Resume ACTIVITY.
+If RESETP (interactively, with universal prefix), reset to
+ACTIVITY's default state; otherwise, resume its last state, if
+available."
     (interactive
      (list (activities-completing-read
-            :activities (cl-remove-if-not #'activities-activity-active-p activities-activities :key #'cdr)
+            :prompt "Resume activity"
             :default (cadr activities-completing-read-history)
-            :prompt "Switch to activity")))
-    (activities--switch activity)
-    (run-hook-with-args 'activities-after-switch-functions activity))
+            :default nil)
+           :resetp current-prefix-arg))
+    (let ((already-active-p (activities-activity-active-p activity)))
+      (activities--switch activity)
+      (when (or resetp (not already-active-p))
+        (activities-set activity :state (if resetp 'default 'last)))))
 
-  (advice-add 'activities-switch :override #'schrenker/activities-switch)
+  (advice-add 'activities-resume :override #'schrenker/activities-resume)
 
   (defun activities-local-buffer-p (buffer)
     "Returns non-nil if BUFFER is present in `activities-current'."

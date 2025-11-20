@@ -785,8 +785,7 @@ If no applicable mode is present, default to uictl."
     (interactive)
     (cond ((bound-and-true-p smerge-mode) (hydra-smerge/body))
           ((bound-and-true-p dape--process) (hydra-dape/body))
-          ((bound-and-true-p git-timemachine-mode) (hydra-git-timemachine/body))
-          ((eq major-mode 'org-mode) (hydra-org/body))))
+          ((bound-and-true-p git-timemachine-mode) (hydra-git-timemachine/body))))
 
   (defhydra hydra-uictl
     (:hint nil)
@@ -806,33 +805,6 @@ If no applicable mode is present, default to uictl."
     ("M-h" shrink-window-horizontally)
     ("M-l" enlarge-window-horizontally)
     ("q" nil :color blue))
-
-  (with-eval-after-load 'org
-    (defhydra hydra-org (:hint nil)
-      "
-
-  Movement^               ^Refile^                ^Misc
-╭─────────────────────────────────────────────────────────────^^^^^^
-  [_K_] Prev Heading^^                             [_s_] Sort
-  [_J_] Next Heading^^                             [_/_] Find
-  [_b_] Tasks/Backlog      [_B_] Tasks/Backlog
-  [_a_] Tasks/Active       [_A_] Tasks/Active
-  [_c_] Tasks/Completed    [_C_] Tasks/Completed
-  [_n_] Notes^^                                    [_q_] Quit Hydra
- ^^^^^^─────────────────────────────────────────────────────────────╯
-"
-      ("K" outline-previous-heading)
-      ("J" outline-next-heading)
-      ("b" (schrenker/org-jump-to-heading "** Backlog"))
-      ("a" (schrenker/org-jump-to-heading "** Active"))
-      ("c" (schrenker/org-jump-to-heading "** Completed"))
-      ("n" (schrenker/org-jump-to-heading "* Notes"))
-      ("B" (schrenker/refile (buffer-file-name) "Tasks/Backlog"))
-      ("A" (schrenker/refile (buffer-file-name) "Tasks/Active"))
-      ("C" (schrenker/refile (buffer-file-name) "Tasks/Completed"))
-      ("s" (schrenker/org-sort-dwim))
-      ("/" consult-org-heading)
-      ("q" nil :color blue)))
 
   (with-eval-after-load 'git-timemachine
     (defhydra hydra-git-timemachine (:hint nil)
@@ -965,7 +937,7 @@ If no criteria is met, call org-sort."
     (interactive)
     (cond ((string= (org-no-properties (org-get-heading t t t t)) "Notes")
            (org-sort-entries nil ?T))
-          ((cl-some (lambda (x) (string= (org-no-properties (org-get-heading t t t t)) x)) '("Tasks" "Backlog" "Active" "Completed"))
+          ((cl-some (lambda (x) (string= (org-no-properties (org-get-heading t t t t)) x)) '("Tasks"))
            (org-sort-entries nil ?a)
            (org-sort-entries nil ?p)
            (org-sort-entries nil ?o))
@@ -1128,7 +1100,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                    :prepend t
                                    :kill-buffer t)
                                   ("t" "Task" entry
-                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tags '("project"))) "Tasks")
+                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project"))) "Tasks")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
                                    :prepend t

@@ -33,3 +33,4 @@ hosts/common/dotfiles/emacs/perspfile.el
 hosts/common/dotfiles/emacs/perspfile.el.autobackup
 hosts/common/dotfiles/emacs/.lsp-session-v1
 /registry.json
+/hosts/common/dotfiles/emacs/persist/

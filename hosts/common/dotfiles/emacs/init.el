@@ -562,127 +562,193 @@ If no repository is found, prompt user to create one."
     (with-eval-after-load 'posframe
       (ace-window-posframe-mode 1))))
 
-(use-package perspective
+(use-package activities
   :bind
-  (("C-x C-b" . schrenker/persp-ibuffer)
-   :map perspective-map
-   ("B" . nil)
-   ("s" . persp-switch-to-scratch-buffer)
-   ("C-<tab>" . persp-switch)
-   ("TAB" . persp-switch-last))
+  (("C-<tab> n" . activities-new)
+   ("C-<tab> d" . activities-define)
+   ("C-<tab> k" . activities-kill)
+   ("C-<tab> C-<tab>" . activities-resume)
+   ("C-<tab> b" . activities-switch-buffer)
+   ("C-<tab> l" . activities-list)
+   ("C-<tab> s" . schrenker/activities-switch-to-scratch-buffer)
+   ("C-x C-b" . schrenker/activities-ibuffer)
+   ("C-<tab> 0" . (lambda () (interactive)
+                    (push (schrenker/activities-current-name) activities-completing-read-history)
+                    (tab-bar-select-tab 1))))
   :init
-  (setopt persp-initial-frame-name "!Main"
-          persp-mode-prefix-key (kbd "C-<tab>")
-          persp-purge-initial-persp-on-save t
-          persp-show-modestring nil
-          persp-state-default-file (concat user-emacs-directory "perspfile.el")
-          switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (persp-is-current-buffer buff))))
+  (activities-mode)
+  (activities-tabs-mode)
+  (setopt schrenker/activities-initial-tab-name "!Main"
+          schrenker/activities-buffer-list-filter-exceptions '("*scratch* (")
+          switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (schrenker/activities-local-buffer-p buff))))
 
-  (add-hook 'kill-emacs-hook #'persp-state-save)
-  (add-hook 'elpaca-after-init-hook (lambda () (persp-state-load persp-state-default-file)))
+  (cl-defun schrenker/activities-resume (activity &key resetp)
+    "Resume ACTIVITY.
+If RESETP (interactively, with universal prefix), reset to
+ACTIVITY's default state; otherwise, resume its last state, if
+available."
+    (interactive
+     (list (activities-completing-read
+            :prompt "Resume activity"
+            :default (cadr activities-completing-read-history)
+            :default nil)
+           :resetp current-prefix-arg))
+    (let ((already-active-p (activities-activity-active-p activity)))
+      (activities--switch activity)
+      (when (or resetp (not already-active-p))
+        (activities-set activity :state (if resetp 'default 'last)))))
 
-  (defun schrenker/backup-perspfile ()
-    (copy-file persp-state-default-file
-               (concat persp-state-default-file ".autobackup") t))
+  (advice-add 'activities-resume :override #'schrenker/activities-resume)
 
-  (defun schrenker/fix-scratch-buffer-default-directory ()
-    "Make sure that default-directory for scratch buffers doesn't leak from other perspectives.
+  (defun schrenker/activities-local-buffer-p (buffer)
+    "Returns non-nil if BUFFER is present in `activities-current'."
+    (when (activities-current)
+      (memq buffer (activities-tabs--tab-parameter 'activities-buffer-list (activities-tabs--tab (activities-current))))))
 
-This function fetches list of all file-visiting buffers in a perspective, and gets project root from the topmost one of the list. Then it applies this project root to scratch buffer. This ensures, that utilities such as Eat, or Magit start in correct path in a perspective. This approach works, because I usually don't run more than a single vc project in a perspective.
+  (defun schrenker/activities-current-name ()
+    "Return current activity name"
+    (activities-activity-name (activities-current)))
 
-If anything fails, set path to home directory."
-    (let* ((realbufs (seq-filter (lambda (buf) (buffer-file-name buf)) (persp-current-buffers)))
-           (defdir (or (ignore-errors (with-current-buffer (car realbufs)
-                                        (project-root (project-current))))
-                       "~/"))
-           (scratch (persp-get-scratch-buffer)))
-      (with-current-buffer scratch
-        (setq-local default-directory defdir))))
+  (defun schrenker/activities-buffer-list ()
+    "Return buffers belonging to current activity, excluding special and hidden buffers.
+Optionally include any buffers with use of 'schrenker/activities-buffer-list-filter-exceptions' variable, that would be othewise excluded."
+    (let* ((all-buffers
+            (and (activities-current)
+                 (activities-tabs--tab-parameter
+                  'activities-buffer-list
+                  (activities-tabs--tab (activities-current)))))
+           (exceptions schrenker/activities-buffer-list-filter-exceptions)
+           (filtered-buffers nil))
 
-  (add-hook 'persp-state-after-load-hook (lambda ()
-                                           (add-hook 'persp-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
-                                           (add-hook 'project-switch-hook #'schrenker/fix-scratch-buffer-default-directory)
-                                           (advice-add 'project-switch-project :after
-                                                       (lambda (&rest r) (run-hooks 'project-switch-hook)))))
+      (dolist (buffer all-buffers (nreverse filtered-buffers))
+        (when (buffer-live-p buffer)
+          (let ((name (buffer-name buffer)))
+            (catch 'prefix-match
+              (dolist (prefix exceptions)
+                (when (string-prefix-p prefix name)
+                  (push buffer filtered-buffers)
+                  (throw 'prefix-match t)))
+              (cond
+               ((buffer-file-name buffer)
+                (push buffer filtered-buffers))
+               (t
+                (unless (or (string-match-p "\\` " name)
+                            (string-match-p "\\*\\'" name 0))
+                  (push buffer filtered-buffers))))))))))
 
+  (defun schrenker/activities-prep-main-tab (&rest _)
+    "Rename very first tab that's not an activity to value of 'schrenker/activities-initial-tab-name'.
+This tab is created on emacs startup, and does not belong to any activity, thus I tend to use it for non-activity related tasks."
+    (when tab-bar-mode
+      (unless (string-prefix-p activities-name-prefix (alist-get 'name (car (tab-bar-tabs))))
+        (tab-bar-rename-tab schrenker/activities-initial-tab-name 1))))
+
+  (advice-add 'activities-resume :after (lambda (&rest r) (run-hook-with-args 'activities-after-resume-functions r)))
+  (add-hook 'activities-tabs-mode-hook #'schrenker/activities-prep-main-tab)
+  (add-hook 'activities-after-switch-functions #'schrenker/activities-prep-main-tab)
+  (add-hook 'activities-after-resume-functions #'schrenker/activities-prep-main-tab)
+
+  (defun schrenker/activities-scratch-buffer (&optional name)
+    "Return name of scratch buffer, related to current activity. Optionally specify 'name'"
+    (let* ((current-name  (schrenker/activities-current-name))
+           (name          (or name current-name))
+           (main-tab (equal name schrenker/activities-initial-tab-name)))
+      (concat "*scratch*"
+              (unless main-tab
+                (format " (%s)" name)))))
+
+  (defun schrenker/activities-get-scratch-buffer (&optional name)
+    "Return the \"*scratch* (NAME)\" buffer.
+Create it if the current activity doesn't have one yet."
+    (let* ((scratch-buffer-name (schrenker/activities-scratch-buffer name))
+           (scratch-buffer (get-buffer scratch-buffer-name)))
+      ;; Do not interfere with an existing scratch buffer's status.
+      (unless scratch-buffer
+        (setq scratch-buffer (get-buffer-create scratch-buffer-name))
+        (with-current-buffer scratch-buffer
+          (when (eq major-mode 'fundamental-mode)
+            (funcall initial-major-mode))
+          (when (and (zerop (buffer-size))
+                     initial-scratch-message)
+            (insert (substitute-command-keys initial-scratch-message))
+            (set-buffer-modified-p nil))
+          ;; Turn flymake off to prevent the annoying error in the
+          ;; minibuffer
+          (when (and (require 'flymake nil t)
+                     (boundp flymake-mode))
+            (flymake-mode -1))))
+      scratch-buffer))
+
+  (defun schrenker/activities-switch-to-scratch-buffer ()
+    "Switch to the current activity scratch buffer.
+Create the scratch buffer if there isn't one yet."
+    (interactive)
+    (if (activities-current)
+        (switch-to-buffer (schrenker/activities-get-scratch-buffer))
+      (scratch-buffer)))
+
+  :config
   (with-eval-after-load 'ibuf-ext
-    (define-ibuffer-filter perspective-local-buffers
+    (define-ibuffer-filter activities-local-buffers
         "Limit current view to local buffers."
       (:description "local buffers" :reader nil)
-      (persp-is-current-buffer buf nil)))
+      (schrenker/activities-local-buffer-p buf)))
 
   (with-eval-after-load 'ibuffer
     (require 'ibuf-ext)
 
     (define-key ibuffer--filter-map (kbd "l")
-                #'ibuffer-filter-by-perspective-local-buffers)
+                #'ibuffer-filter-by-activities-local-buffers)
 
-    (define-ibuffer-op schrenker/persp-ibuffer-add-to-perspective ()
-      "Add marked buffers to current perspective."
-      (:opstring "added"
-       :active-opstring "add"
-       :dangerous t
-       :complex t)
-      (persp-add-buffer buf))
-
-    (define-ibuffer-op schrenker/persp-ibuffer-remove-from-perspective ()
-      "Remove marked buffers from current perspective."
-      (:opstring "removed"
-       :active-opstring "remove"
-       :dangerous t
-       :complex t)
-      (persp-remove-buffer buf)))
-
-  (defun schrenker/persp-ibuffer (&optional other-window-p noselect shrink)
-    "Create dedicated ibuffer instance for current perspective, filtering by current perspective buffers by default."
-    (interactive)
-    (let ((name (or
-                 (seq-find (lambda (b)
-                             (string-match-p
-                              (concat "*Persp Ibuffer (" (persp-current-name) ")*")
-                              (buffer-name b)))
-                           (buffer-list))
-                 (generate-new-buffer-name (concat "*Persp Ibuffer (" (persp-current-name) ")*")))))
-      (ibuffer other-window-p name '((perspective-local-buffers . nil))
-               noselect shrink)))
-
-  (persp-mode)
-
-  :config
-  (defalias 'persp-feature-flag-prevent-killing-last-buffer-in-perspective #'ignore)
+    (defun schrenker/activities-ibuffer (&optional other-window-p noselect shrink)
+      "Create dedicated ibuffer instance for current activity, filtering by current activity buffers by default."
+      (interactive)
+      (if (not (activities-current))
+          (ibuffer)
+        (let ((name (or
+                     (seq-find (lambda (b)
+                                 (string-match-p
+                                  (concat "*Activity Ibuffer (" (schrenker/activities-current-name) ")*")
+                                  (buffer-name b)))
+                               (buffer-list))
+                     (generate-new-buffer-name (concat "*Activity Ibuffer (" (schrenker/activities-current-name) ")*")))))
+          (ibuffer other-window-p name '((activities-local-buffers . nil))
+                   noselect shrink)))))
 
   (with-eval-after-load 'consult
+    (defvar activities-consult-source
+      (list :name     "Activity"
+            :narrow   ?s
+            :category 'buffer
+            :state    #'consult--buffer-state
+            :history  'buffer-name-history
+            :default  t
+            :items
+            #'(lambda () (consult--buffer-query :sort 'visibility
+                                           :predicate '(lambda (buf) (schrenker/activities-local-buffer-p buf))
+                                           :as #'buffer-name))))
     (consult-customize consult--source-buffer :hidden t :default nil)
-    (add-to-list 'consult-buffer-sources persp-consult-source))
+    (add-to-list 'consult-buffer-sources activities-consult-source))
+
   (with-eval-after-load 'consult-project-extra
     (setopt consult-project-extra-sources
             '(consult-project-extra--source-buffer
               consult-project-extra--source-file
-              persp-consult-source
+              activities-consult-source
               consult-project-extra--source-project)))
-  (with-eval-after-load 'magit
-    (add-hook 'persp-state-before-save-hook
-              (lambda ()
-                (let ((perspectives '()))
-                  (maphash (lambda (key value)
-                             (push key perspectives))
-                           (perspectives-hash))
-                  (dolist (persp perspectives)
-                    (with-perspective persp
-                      (dolist (buf (persp-current-buffers))
-                        (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
-                          (call-interactively #'magit-mode-bury-buffer)))))))))
-  (add-hook 'persp-state-before-save-hook (lambda () (persp-switch persp-initial-frame-name)))
-  (add-hook 'persp-state-before-save-hook #'schrenker/backup-perspfile))
 
-(use-package perspective-tabs
-  :after perspective
-  :ensure (perspective-tabs :host sourcehut :repo "woozong/perspective-tabs")
-  :init
-  (add-hook 'persp-mode-hook #'perspective-tabs-mode))
+  (with-eval-after-load 'magit
+    (defun schrenker/bury-visible-magit-buffers ()
+      (dolist (a activities-activities)
+        (when (activities-activity-active-p (cdr a))
+          (activities-with (cdr a) (dolist (buf (schrenker/activities-buffer-list))
+                                     (when (and (get-buffer-window buf 'visible) (derived-mode-p 'magit-mode))
+                                       (call-interactively #'magit-mode-bury-buffer)))))))
+
+    (add-hook 'kill-emacs-hook #'schrenker/bury-visible-magit-buffers -10)))
 
 (use-package popper
-  :after perspective
+  :after activities
   :init
   (defun popper-select-popup-at-bottom-maybe-hide (buffer &optional _act)
     "Display popups at the bottom of the screen.
@@ -691,7 +757,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
         (display-buffer-no-window buffer '((allow-no-window . t)))
       (popper-select-popup-at-bottom buffer _act)))
   :config
-  (setopt popper-group-function #'popper-group-by-perspective
+  (setopt popper-group-function #'schrenker/activities-current-name
           popper-display-function #'popper-select-popup-at-bottom-maybe-hide
           popper-mode-line '(:eval (propertize " POP " 'face 'mode-line-emphasis))
           popper-mode-line-position 1
@@ -1437,8 +1503,6 @@ littering my org mode with ton of PROPERTY drawers under each heading."
   :ensure nil
   :bind (("C-x C-b" . ibuffer)
          :map ibuffer-mode-map
-         ("A" . ibuffer-do-schrenker/persp-ibuffer-add-to-perspective)
-         ("K" . ibuffer-do-schrenker/persp-ibuffer-remove-from-perspective)
          ("J" . ibuffer-jump-to-buffer)
          ("M-o" . nil))
   :config
@@ -1600,24 +1664,24 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (setopt eat-kill-buffer-on-exit t
           eat-term-name "xterm-256color")
 
-  (with-eval-after-load 'perspective
+  (with-eval-after-load 'activities
     (defun schrenker/eat-project (&optional arg)
       (interactive "P")
-      (if (eq (persp-current-name) persp-initial-frame-name)
+      (if (not (activities-current))
           (eat nil arg)
         (let* ((default-directory-old default-directory)
                (default-directory (project-root (project-current t)))
-               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")"))
+               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (schrenker/activities-current-name) ")"))
                (default-directory default-directory-old))
           (eat nil arg))))
 
     (defun schrenker/eat-project-other-window (&optional arg)
       (interactive "P")
-      (if (eq (persp-current-name) persp-initial-frame-name)
+      (if (not (activities-current))
           (eat-other-window nil arg)
         (let* ((default-directory-old default-directory)
                (default-directory (project-root (project-current t)))
-               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (persp-current-name) ")"))
+               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (schrenker/activities-current-name) ")"))
                (default-directory default-directory-old))
           (eat-other-window nil arg))))
 

@@ -573,14 +573,14 @@ If no repository is found, prompt user to create one."
    ("C-<tab> s" . schrenker/activities-switch-to-scratch-buffer)
    ("C-x C-b" . schrenker/activities-ibuffer)
    ("C-<tab> 0" . (lambda () (interactive)
-                    (push (activities-current-name) activities-completing-read-history)
+                    (push (schrenker/activities-current-name) activities-completing-read-history)
                     (tab-bar-select-tab 1))))
   :init
   (activities-mode)
   (activities-tabs-mode)
   (setopt schrenker/activities-initial-tab-name "!Main"
           schrenker/activities-buffer-list-filter-exceptions '("*scratch* (")
-          switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (activities-local-buffer-p buff))))
+          switch-to-prev-buffer-skip (lambda (win buff bury-or-kill) (not (schrenker/activities-local-buffer-p buff))))
 
   (cl-defun schrenker/activities-resume (activity &key resetp)
     "Resume ACTIVITY.
@@ -600,12 +600,12 @@ available."
 
   (advice-add 'activities-resume :override #'schrenker/activities-resume)
 
-  (defun activities-local-buffer-p (buffer)
+  (defun schrenker/activities-local-buffer-p (buffer)
     "Returns non-nil if BUFFER is present in `activities-current'."
     (when (activities-current)
       (memq buffer (activities-tabs--tab-parameter 'activities-buffer-list (activities-tabs--tab (activities-current))))))
 
-  (defun activities-current-name ()
+  (defun schrenker/activities-current-name ()
     (activities-activity-name (activities-current)))
 
   (defun schrenker/activities-buffer-list ()
@@ -644,7 +644,7 @@ available."
   (add-hook 'activities-after-resume-functions #'schrenker/activities-prep-main-tab)
 
   (defun schrenker/activities-scratch-buffer (&optional name)
-    (let* ((current-name  (activities-current-name))
+    (let* ((current-name  (schrenker/activities-current-name))
            (name          (or name current-name))
            (main-tab (equal name schrenker/activities-initial-tab-name)))
       (concat "*scratch*"
@@ -686,7 +686,7 @@ Create the scratch buffer if there isn't one yet."
     (define-ibuffer-filter activities-local-buffers
         "Limit current view to local buffers."
       (:description "local buffers" :reader nil)
-      (activities-local-buffer-p buf)))
+      (schrenker/activities-local-buffer-p buf)))
 
   (with-eval-after-load 'ibuffer
     (require 'ibuf-ext)
@@ -702,10 +702,10 @@ Create the scratch buffer if there isn't one yet."
         (let ((name (or
                      (seq-find (lambda (b)
                                  (string-match-p
-                                  (concat "*Activity Ibuffer (" (activities-current-name) ")*")
+                                  (concat "*Activity Ibuffer (" (schrenker/activities-current-name) ")*")
                                   (buffer-name b)))
                                (buffer-list))
-                     (generate-new-buffer-name (concat "*Activity Ibuffer (" (activities-current-name) ")*")))))
+                     (generate-new-buffer-name (concat "*Activity Ibuffer (" (schrenker/activities-current-name) ")*")))))
           (ibuffer other-window-p name '((activities-local-buffers . nil))
                    noselect shrink)))))
 
@@ -719,7 +719,7 @@ Create the scratch buffer if there isn't one yet."
             :default  t
             :items
             #'(lambda () (consult--buffer-query :sort 'visibility
-                                           :predicate '(lambda (buf) (activities-local-buffer-p buf))
+                                           :predicate '(lambda (buf) (schrenker/activities-local-buffer-p buf))
                                            :as #'buffer-name))))
     (consult-customize consult--source-buffer :hidden t :default nil)
     (add-to-list 'consult-buffer-sources activities-consult-source))
@@ -751,7 +751,7 @@ Mark buffer as shown without showing it, if it's supposed to be suppressed."
         (display-buffer-no-window buffer '((allow-no-window . t)))
       (popper-select-popup-at-bottom buffer _act)))
   :config
-  (setopt popper-group-function #'activities-current-name
+  (setopt popper-group-function #'schrenker/activities-current-name
           popper-display-function #'popper-select-popup-at-bottom-maybe-hide
           popper-mode-line '(:eval (propertize " POP " 'face 'mode-line-emphasis))
           popper-mode-line-position 1
@@ -1665,7 +1665,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
           (eat nil arg)
         (let* ((default-directory-old default-directory)
                (default-directory (project-root (project-current t)))
-               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (activities-current-name) ")"))
+               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (schrenker/activities-current-name) ")"))
                (default-directory default-directory-old))
           (eat nil arg))))
 
@@ -1675,7 +1675,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
           (eat-other-window nil arg)
         (let* ((default-directory-old default-directory)
                (default-directory (project-root (project-current t)))
-               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (activities-current-name) ")"))
+               (eat-buffer-name (concat (project-prefixed-buffer-name "eat") " (" (schrenker/activities-current-name) ")"))
                (default-directory default-directory-old))
           (eat-other-window nil arg))))
 

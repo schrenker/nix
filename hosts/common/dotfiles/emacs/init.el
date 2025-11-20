@@ -606,9 +606,12 @@ available."
       (memq buffer (activities-tabs--tab-parameter 'activities-buffer-list (activities-tabs--tab (activities-current))))))
 
   (defun schrenker/activities-current-name ()
+    "Return current activity name"
     (activities-activity-name (activities-current)))
 
   (defun schrenker/activities-buffer-list ()
+    "Return buffers belonging to current activity, excluding special and hidden buffers.
+Optionally include any buffers with use of 'schrenker/activities-buffer-list-filter-exceptions' variable, that would be othewise excluded."
     (let* ((all-buffers
             (and (activities-current)
                  (activities-tabs--tab-parameter
@@ -634,6 +637,8 @@ available."
                   (push buffer filtered-buffers))))))))))
 
   (defun schrenker/activities-prep-main-tab (&rest _)
+    "Rename very first tab that's not an activity to value of 'schrenker/activities-initial-tab-name'.
+This tab is created on emacs startup, and does not belong to any activity, thus I tend to use it for non-activity related tasks."
     (when tab-bar-mode
       (unless (string-prefix-p activities-name-prefix (alist-get 'name (car (tab-bar-tabs))))
         (tab-bar-rename-tab schrenker/activities-initial-tab-name 1))))
@@ -644,6 +649,7 @@ available."
   (add-hook 'activities-after-resume-functions #'schrenker/activities-prep-main-tab)
 
   (defun schrenker/activities-scratch-buffer (&optional name)
+    "Return name of scratch buffer, related to current activity. Optionally specify 'name'"
     (let* ((current-name  (schrenker/activities-current-name))
            (name          (or name current-name))
            (main-tab (equal name schrenker/activities-initial-tab-name)))

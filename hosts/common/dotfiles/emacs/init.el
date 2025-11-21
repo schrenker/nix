@@ -590,8 +590,7 @@ available."
     (interactive
      (list (activities-completing-read
             :prompt "Resume activity"
-            :default (cadr activities-completing-read-history)
-            :default nil)
+            :default (cadr activities-completing-read-history))
            :resetp current-prefix-arg))
     (let ((already-active-p (activities-activity-active-p activity)))
       (activities--switch activity)

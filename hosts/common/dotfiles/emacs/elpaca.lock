@@ -1317,9 +1317,8 @@
              t :depth treeless :ref
              "72e80f1236237f346d9692ab8e793798b8c038c5"))
  (ws-butler :source "elpaca-menu-lock-file" :recipe
-            (:package "ws-butler" :fetcher git :url
-                      "https://git.savannah.gnu.org/git/emacs/nongnu.git"
-                      :branch "elpa/ws-butler" :files
+            (:package "ws-butler" :fetcher github :repo
+                      "lewang/ws-butler" :files
                       ("*.el" "*.el.in" "dir" "*.info" "*.texi"
                        "*.texinfo" "doc/dir" "doc/*.info" "doc/*.texi"
                        "doc/*.texinfo" "lisp/*.el" "docs/dir"
@@ -1327,8 +1326,8 @@
                        (:exclude ".dir-locals.el" "test.el" "tests.el"
                                  "*-test.el" "*-tests.el" "LICENSE"
                                  "README*" "*-pkg.el"))
-                      :source "MELPA" :protocol https :inherit
-                      elpaca-menu-melpa :depth treeless :ref
+                      :source "elpaca-menu-lock-file" :protocol https
+                      :inherit t :depth treeless :ref
                       "67c49cfdf5a5a9f28792c500c8eb0017cfe74a3a"))
  (yaml-mode :source "elpaca-menu-lock-file" :recipe
             (:package "yaml-mode" :repo "yoshiki/yaml-mode" :fetcher

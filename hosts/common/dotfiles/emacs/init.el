@@ -2003,7 +2003,6 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
   (global-vi-tilde-fringe-mode 1))
 
 (use-package ws-butler
-  :ensure (ws-butler :inherit elpaca-menu-melpa)
   :config
   (ws-butler-global-mode 1))
 

@@ -570,6 +570,8 @@ If no repository is found, prompt user to create one."
    ("C-<tab> C-<tab>" . activities-resume)
    ("C-<tab> b" . activities-switch-buffer)
    ("C-<tab> l" . activities-list)
+   ("C-<tab> r" . activities-rename)
+   ("C-<tab> R" . schrenker/redefine-activity)
    ("C-<tab> s" . schrenker/activities-switch-to-scratch-buffer)
    ("C-x C-b" . schrenker/activities-ibuffer)
    ("C-<tab> 0" . (lambda () (interactive)
@@ -598,6 +600,11 @@ available."
         (activities-set activity :state (if resetp 'default 'last)))))
 
   (advice-add 'activities-resume :override #'schrenker/activities-resume)
+
+  (defun schrenker/redefine-activity ()
+    "Make current activity setup the default."
+    (interactive)
+    (activities-define (schrenker/activities-current-name) :forcep t))
 
   (defun schrenker/activities-local-buffer-p (buffer)
     "Returns non-nil if BUFFER is present in `activities-current'."

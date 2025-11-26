@@ -4,7 +4,6 @@
 
   home.packages = with pkgs; [
     docker
-    gitleaks
     nerd-fonts.jetbrains-mono
     syncthing
   ];

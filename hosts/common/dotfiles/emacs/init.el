@@ -1870,16 +1870,22 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
 
 (use-package nerd-icons
   :config
-  (setopt nerd-icons-font-family "Symbols Nerd Font Mono")
+  (setopt nerd-icons-font-family "Symbols Nerd Font Mono"
+          nerd-icons-extension-icon-alist (cl-remove-if (lambda (x)
+                                                          (cl-member (car x) '("yml" "yaml") :test 'equal))
+                                                        nerd-icons-extension-icon-alist))
+
   (add-to-list 'nerd-icons-extension-icon-alist '("jenkinsfile"   nerd-icons-devicon "nf-dev-jenkins"    :face nerd-icons-dpurple))
   (add-to-list 'nerd-icons-extension-icon-alist '("org_archive"   nerd-icons-sucicon "nf-custom-orgmode" :face nerd-icons-dgreen))
   (add-to-list 'nerd-icons-extension-icon-alist '("jsonnet"       nerd-icons-mdicon  "nf-md-code_json"   :face nerd-icons-blue-alt))
   (add-to-list 'nerd-icons-extension-icon-alist '("libsonnet"     nerd-icons-mdicon  "nf-md-code_json"   :face nerd-icons-blue))
 
-  (add-to-list 'nerd-icons-regexp-icon-alist '("postgresql.conf$" nerd-icons-devicon "nf-dev-postgresql" :face nerd-icons-blue))
-  (add-to-list 'nerd-icons-regexp-icon-alist '("^flake.lock$"     nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dblue))
-  (add-to-list 'nerd-icons-regexp-icon-alist '("^nix.conf$"       nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dpink))
-  (add-to-list 'nerd-icons-regexp-icon-alist '("Jenkinsfile\\'"   nerd-icons-sucicon "nf-seti-jenkins"   :face nerd-icons-cyan-alt))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("postgresql.conf$"                   nerd-icons-devicon "nf-dev-postgresql" :face nerd-icons-blue))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("^flake.lock$"                       nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dblue))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("^nix.conf$"                         nerd-icons-mdicon  "nf-md-nix"         :face nerd-icons-dpink))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("Jenkinsfile\\'"                     nerd-icons-sucicon "nf-seti-jenkins"   :face nerd-icons-cyan-alt))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("\\.\\(yml\\|yaml\\)\\'"             nerd-icons-codicon "nf-cod-settings"   :face nerd-icons-dyellow))
+  (add-to-list 'nerd-icons-regexp-icon-alist '("\\.gitlab-ci\\.\\(yml\\|yaml\\)\\'" nerd-icons-faicon  "nf-fa-gitlab"      :face nerd-icons-lorange))
 
   (setcdr (assoc "nf-dev-go" nerd-icons/devicon-alist) "󰟓"))
 

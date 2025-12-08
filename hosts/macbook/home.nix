@@ -29,6 +29,7 @@
   };
 
   programs.fish.shellAliases.sw = "sudo darwin-rebuild switch --flake ~/.config/nix";
+  programs.fish.shellAliases.reset_dns = "sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder";
 
   home.file = {
     ".ssh/git".source = ./secrets/git;

@@ -936,7 +936,7 @@
                      (:defaults "extensions/*") :source
                      "elpaca-menu-lock-file" :protocol https :inherit
                      t :depth treeless :ref
-                     "6abb3bdc5a4491bbfa01d1f10d9ddb4fd4626887"))
+                     "89dfaef38b6caa3027f20f96a551dc8f194ac533"))
  (ox-confluence-modern :source "elpaca-menu-lock-file" :recipe
                        (:source "elpaca-menu-lock-file" :protocol
                                 https :inherit t :depth treeless :host

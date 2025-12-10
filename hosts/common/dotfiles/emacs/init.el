@@ -452,9 +452,9 @@
   :bind (("C-x g" . magit-status)
          ("C-x G" . schrenker/magit-status-with-prefix)
          :map magit-mode-map
-         ("o" . magit-diff-visit-file-other-window)
+         ("o" . magit-diff-visit-worktree-file-other-window)
          :map magit-status-mode-map
-         ("o" . magit-diff-visit-file-other-window)
+         ("o" . magit-diff-visit-worktree-file-other-window)
          ("K" . magit-discard)
          ("e" . nil)
          ("E" . nil)

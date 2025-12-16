@@ -65,16 +65,13 @@
     "pcsx2"
     "steam"
     "syncthing-app"
+    "vivaldi"
   ];
-  homebrew.taps = [ # "d12frosted/emacs-plus"
-                    "homebrew/services" ];
+  homebrew.taps = ["homebrew/services" ];
 
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
   homebrew.onActivation.autoUpdate = true;
-  # homebrew.extraConfig = ''
-  #   brew "emacs-plus@30", args: ["with-mailutils", "with-xwidgets", "with-imagemagick", "with-nobu417-big-sur-icon"]
-  # '';
   homebrew.masApps = {
     "Amphetamine" = 937984704;
     "Bitwarden" = 1352778147;

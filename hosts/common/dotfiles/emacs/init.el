@@ -1759,7 +1759,7 @@ Additionally, disable dired-preview-mode, if target buffer is dired buffer."
         (setq buffer-name-relative-prefix ""))))
 
   :config
-  (setopt buffer-name-relative-abbrev-limit 20)
+  (setopt buffer-name-relative-abbrev-limit 30)
   (advice-add 'buffer-name-relative--abbrev-directory-impl
               :override
               #'schrenker/buffer-name-relative--abbrev-directory-impl)

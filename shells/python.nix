@@ -4,12 +4,12 @@
       systems = [ "x86_64-linux" "aarch64-darwin" ];
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [ python313 ];
+          nativeBuildInputs = with pkgs; [ python313 uv ];
           shellHook = ''
-            python3.13 -m venv .venv
+            uv venv --python 3.13
             source .venv/bin/activate
 
-            pip -q install pyright black
+            uv pip -q install pyright black
           '';
         };
       };

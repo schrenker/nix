@@ -52,6 +52,7 @@
     "balenaetcher"
     "betterdisplay"
     "crossover"
+    "ente-auth"
     "font-jetbrains-mono"
     "font-jetbrains-mono-nerd-font"
     "ghostty"

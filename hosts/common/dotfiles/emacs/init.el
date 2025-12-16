@@ -215,6 +215,9 @@
   :init
   (add-hook 'elpaca-after-init-hook #'envrc-global-mode -90)
   :config
+  (defalias 'direnv-allow  #'envrc-allow)
+  (defalias 'direnv-deny   #'envrc-deny)
+  (defalias 'direnv-reload #'envrc-reload)
   (setopt envrc-none-lighter '()
           envrc-on-lighter '(" " (:propertize "Env+" face envrc-mode-line-on-face))
           envrc-error-lighter '(" " (:propertize "Env!" face envrc-mode-line-error-face))

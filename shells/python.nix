@@ -6,7 +6,7 @@
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [ python313 uv ];
           shellHook = ''
-            uv venv --python 3.13
+            uv venv --python 3.13 --clear
             source .venv/bin/activate
 
             uv pip -q install pyright black

@@ -1090,26 +1090,14 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
   :after org
   :bind (("C-c n n" . org-capture))
   :config
-  (setopt org-capture-templates `(("i" "Inbox Note" entry
-                                   (file+headline org-default-notes-file "Notes")
-                                   ,(schrenker/get-org-template "note")
-                                   :empty-lines 1
-                                   :prepend nil
-                                   :kill-buffer t)
-                                  ("I" "Inbox Task" entry
-                                   (file+headline org-default-notes-file "Tasks")
-                                   ,(schrenker/get-org-template "task")
-                                   :empty-lines 1
-                                   :prepend t
-                                   :kill-buffer t)
-                                  ("n" "Note" entry
-                                   (file+headline (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project"))) "Notes")
+  (setopt org-capture-templates `(("n" "Note" entry
+                                   (file+headline (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project" "inbox"))) "Notes")
                                    ,(schrenker/get-org-template "note")
                                    :empty-lines 1
                                    :prepend t
                                    :kill-buffer t)
                                   ("t" "Task" entry
-                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project"))) "Tasks")
+                                   (file+olp (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project" "inbox"))) "Tasks")
                                    ,(schrenker/get-org-template "task")
                                    :empty-lines 1
                                    :prepend t
@@ -1120,7 +1108,7 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
                                                     (org-reverse-datetree-goto-date-in-file
                                                      nil :olp '("Journal"))))
                                    ""
-                                   :tree-type week :unnarrowed t :empty-lines-after 2)))
+                                   :tree-type week :unnarrowed t :empty-lines-after 1)))
 
   (when (schrenker/wsl2-p) (load "~/.config/emacs/secret/work.el" 'noerror 'nomessage)))
 

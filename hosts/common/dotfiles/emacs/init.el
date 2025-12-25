@@ -1088,7 +1088,9 @@ ARCHIVE_CATEGORY, ARCHIVE_TODO, and ARCHIVE_ITAGS properties."
 (use-package org-capture
   :ensure nil
   :after org
-  :bind (("C-c n n" . org-capture))
+  :bind (("C-c n n" . (lambda ()(interactive)(org-capture nil "n")))
+         ("C-c n t" . (lambda ()(interactive)(org-capture nil "t")))
+         ("C-c n j" . (lambda ()(interactive)(org-capture nil "j"))))
   :config
   (setopt org-capture-templates `(("n" "Note" entry
                                    (file+headline (lambda () (schrenker/org-roam-read-node-by-tags '("area" "project" "inbox"))) "Notes")

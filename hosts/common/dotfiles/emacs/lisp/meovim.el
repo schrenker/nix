@@ -98,7 +98,7 @@ If there is region selected with meow navigation function, then expand it."
   (meow-end-of-thing ?l)
   (call-interactively #'meow-next)
   (call-interactively #'meow-join)
-  (call-interactively #'meow-kill))
+  (call-interactively #'delete-region))
 
 (defun schrenker/meow-smart-append ()
   (interactive)

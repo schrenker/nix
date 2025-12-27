@@ -3,6 +3,7 @@
 #+date: %U
 #+modified: [1970-01-01 Thu 00:00]
 #+filetags: :resource:runbook:
+%(s-join "\n" (seq-filter (lambda (str) (not (string-match-p "project\\|area\\|resource\\|archive\\|runbook" str))) (mapcar (lambda (str) (concat (string-remove-suffix ".org" (string-remove-prefix "tag:" str)) ":")) (directory-files (concat org-directory "99_tags") nil "^tag"))))
 
 * TOC
 :PROPERTIES:
